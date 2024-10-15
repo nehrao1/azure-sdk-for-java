@@ -221,6 +221,8 @@ public final class CosmosChangeFeedRequestOptions {
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
+
+
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromBeginning(),

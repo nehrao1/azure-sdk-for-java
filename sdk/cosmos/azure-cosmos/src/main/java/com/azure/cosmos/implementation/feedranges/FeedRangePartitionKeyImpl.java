@@ -72,7 +72,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     throw new IllegalStateException("Collection cannot be null");
                 }
 
-                Range<String> range = getEffectiveRange(collection.getPartitionKey());
+                var key = collection.getPartitionKey();
+                Range<String> range = getEffectiveRange(key);
                 return Mono.just(range);
             });
     }
@@ -165,11 +166,18 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
         return this
             .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .flatMap(effectiveRange -> {
+                FeedRangeEpkImpl feedRangeEpkImpl = new FeedRangeEpkImpl(effectiveRange);
+                return feedRangeEpkImpl.populateFeedRangeFilteringHeaders(routingMapProvider, request, collectionResolutionMono);
+            });
+
+        /*return this
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
                 request.setHasFeedRangeFilteringBeenApplied(true);
                 return request;
-            });
+            });*/
     }
 
     @Override

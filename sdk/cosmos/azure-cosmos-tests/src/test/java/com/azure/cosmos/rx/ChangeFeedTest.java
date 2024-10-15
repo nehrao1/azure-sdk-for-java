@@ -21,14 +21,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ChangeFeedPolicy;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.*;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -68,6 +61,19 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
+    }
+
+    static protected DocumentCollection getHpkCollectionDefinition(List<String> partitionKey) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        partitionKeyDef.setPaths(partitionKey);
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
     }
 
     static protected DocumentCollection getCollectionDefinition(boolean enableFullFidelity) {
@@ -117,8 +123,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             count += changeFeedPage.getResults().size();
             assertThat(changeFeedPage.getResults().size())
-            .as("change feed should contain all the previously created documents")
-            .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
+                .as("change feed should contain all the previously created documents")
+                .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
         }
         assertThat(count).as("the number of changes").isEqualTo(expectedDocuments.size());
     }
@@ -126,10 +132,10 @@ public class ChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "query" }, timeOut = 5 * TIMEOUT)
     public void changesFromPartitionKeyRangeId_FromBeginning() {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), (CosmosQueryRequestOptions) null)
-                .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
-                .map(Resource::getId)
-                .collectList()
-                .block();
+                                                  .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
+                                                  .map(Resource::getId)
+                                                  .collectList()
+                                                  .block();
 
         assertThat(partitionKeyRangeIds.size()).isGreaterThan(1);
 
@@ -152,8 +158,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             count += changeFeedPage.getResults().size();
             assertThat(changeFeedPage.getResults().size())
-            .as("change feed should contain all the previously created documents")
-            .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
+                .as("change feed should contain all the previously created documents")
+                .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
 
             assertThat(changeFeedPage.getContinuationToken())
                 .as("Response continuation should not be null")
@@ -185,7 +191,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
         validator.validate(changeFeedResultsList);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
     private void changeFeed_withUpdatesAndDelete(boolean enableFullFidelityChangeFeedMode) {
@@ -214,7 +220,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .build();
         validator.validate(changeFeedResultsList);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
 
         String continuationToken = changeFeedResultsList
             .get(changeFeedResultsList.size() - 1)
@@ -239,7 +245,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .build();
         validatorAfterDeletes.validate(changeFeedResultsListAfterDeletes);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
 
         continuationToken = changeFeedResultsListAfterDeletes
             .get(changeFeedResultsList.size() - 1)
@@ -267,7 +273,46 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         validatorAfterUpdates.validate(changeFeedResultsListAfterUpdates);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
+    }
+
+    @Test()
+    public void changeFeedTest() throws Exception {
+        // List of partition keys, in hierarchical order. You can have up to three levels of keys.
+        List<String> subpartitionKeyPaths = new ArrayList<String>();
+        subpartitionKeyPaths.add("/TenantId");
+        subpartitionKeyPaths.add("/UserId");
+        subpartitionKeyPaths.add("/SessionId");
+
+        //Create a partition key definition object with Kind ("MultiHash") and Version V2
+        /*PartitionKeyDefinition subpartitionKeyDefinition = new PartitionKeyDefinition();
+        subpartitionKeyDefinition.setPaths(subpartitionKeyPaths);
+        subpartitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        subpartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);*/
+
+        DocumentCollection pkDef = getHpkCollectionDefinition(subpartitionKeyPaths);
+
+        // Create a container that's subpartitioned by TenantId > UserId > SessionId
+        // Mono<CosmosContainerResponse> container = createdDatabase.createContainerIfNotExists(containerProperties, throughputProperties);
+
+        RequestOptions options = new RequestOptions();
+        options.setOfferThroughput(400);
+        createdCollection = createCollection(
+            client,
+            createdDatabase.getId(),
+            //getHpkCollectionDefinition(subpartitionKeyPaths),
+            pkDef,
+            options);
+
+        PartitionKey shardPartitionKey = new PartitionKeyBuilder().add("Paris").build();
+
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+            FeedRange.forLogicalPartition(shardPartitionKey)
+        );
+
+        // container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class);
+        List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(createdCollection,
+            changeFeedRequestOptions, Document.class).collectList().block();
     }
 
     @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
@@ -324,7 +369,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(createdCollection,
-                changeFeedOption, Document.class).collectList().block();
+            changeFeedOption, Document.class).collectList().block();
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -444,9 +489,9 @@ public class ChangeFeedTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
-                .createDocument(getCollectionLink(), docDefinition, null, false)
-                .block()
-                .getResource();
+            .createDocument(getCollectionLink(), docDefinition, null, false)
+            .block()
+            .getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
     }
 
@@ -472,8 +517,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
 
         return Flux.merge(
-            Flux.fromIterable(result),
-            100)
+                       Flux.fromIterable(result),
+                       100)
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
