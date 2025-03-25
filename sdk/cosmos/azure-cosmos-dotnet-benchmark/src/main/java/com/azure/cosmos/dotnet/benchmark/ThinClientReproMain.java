@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.UUID;
 
 public class ThinClientReproMain {
+
+
     public static void main(String[] args) {
         try {
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
@@ -35,6 +37,7 @@ public class ThinClientReproMain {
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();
             doc.put("id", idValue);
+            doc.put("pk", idValue);
             System.out.println("Document to be ingested - " + doc.toPrettyString());
 
             try {
@@ -42,8 +45,8 @@ public class ThinClientReproMain {
                 //                        "HelloWorld",
                 //                        new PartitionKey("HelloWorld"),
                 //                        ObjectNode.class)
-                CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
-                System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
+                //CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
+                //System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
             } catch (CosmosException cosmosError) {
                 System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
             }
@@ -51,7 +54,6 @@ public class ThinClientReproMain {
             CosmosItemResponse<ObjectNode> response = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             System.out.println("READ DIAGNOSTICS: " + response.getDiagnostics());
             ObjectNode readDoc = response.getItem();
-
             System.out.println("Document read - " + readDoc.toPrettyString());
         } catch (CosmosException cosmosException) {
             System.out.println("COSMOS ERROR: " + cosmosException);

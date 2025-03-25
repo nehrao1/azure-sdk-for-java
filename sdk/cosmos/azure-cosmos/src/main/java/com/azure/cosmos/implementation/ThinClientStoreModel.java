@@ -111,18 +111,34 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 response.setDecodeEndTime(Instant.now());
                 response.setDecodeStartTime(decodeStartTime);
 
-                return super.unwrapToStoreResponse(
-                    request,
-                    response.getStatus().code(),
-                    new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
-                    response.getContent()
-                );
+                StoreResponse storeResponse = null;
+                try {
+                    storeResponse = super.unwrapToStoreResponse(
+                        request,
+                        response.getStatus().code(),
+                        new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
+                        response.getContent()
+                    );
+                } catch (Exception error) {
+                    logger.error("Decoding error happened", error);
+
+                    throw error;
+                }
+
+                return storeResponse;
             }
 
             return super.unwrapToStoreResponse(request, statusCode, headers, null);
         }
 
         throw new IllegalStateException("Invalid rntbd response");
+    }
+
+    private static String toHexString(byte[] ba) {
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < ba.length; i++)
+            str.append(String.format("%x", ba[i]));
+        return str.toString();
     }
 
     @Override
@@ -132,10 +148,17 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         request.setThinclientHeaders(request.getOperationType().name(), request.getResourceType().name());
 
         byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
+        logger.error("EPK Base64: {}", java.util.Base64.getEncoder().encodeToString(epk));
+        logger.error("EPK HEX: {}", toHexString(epk));
         if (request.properties == null) {
             request.properties = new HashMap<>();
         }
 
+        //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
+        //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "thinclienttest"); // "chukangzhongstagesignoff"
+        request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "zd0DAK23P8I=");
+        // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
         HttpHeaders headers = this.getHttpHeaders();
@@ -191,6 +214,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         Map<String, String> defaultHeaders = this.getDefaultHeaders();
 
         for (Map.Entry<String, String> header : defaultHeaders.entrySet()) {
+            logger.error("HTTP Header {}: {}", header.getKey(), header.getValue());
             httpHeaders.set(header.getKey(), header.getValue());
         }
 
