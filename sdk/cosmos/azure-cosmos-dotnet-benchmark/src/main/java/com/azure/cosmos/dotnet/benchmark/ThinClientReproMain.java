@@ -21,14 +21,14 @@ public class ThinClientReproMain {
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             CosmosAsyncClient client = new CosmosClientBuilder()
-                //.key(TestConfigurations.MASTER_KEY)
-                //.endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .userAgentSuffix("fabianmThinClientProxyTest")
                 .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("HashV2Small1").getContainer("HashV2Small1");
+            CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
             CosmosContainerResponse containerResponse = container.read().block();
             System.out.println("Container RID: " + containerResponse.getProperties().getResourceId());
             ObjectMapper mapper = new ObjectMapper();
