@@ -519,6 +519,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
 
+            logger.error("Error body: {} - {}", statusCode, body);
             CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;

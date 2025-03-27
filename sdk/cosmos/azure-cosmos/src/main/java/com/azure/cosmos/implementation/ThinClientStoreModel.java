@@ -85,6 +85,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
         defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+        defaultHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "000000-0000-0000-00000-000000000001");
 
         return defaultHeaders;
     }

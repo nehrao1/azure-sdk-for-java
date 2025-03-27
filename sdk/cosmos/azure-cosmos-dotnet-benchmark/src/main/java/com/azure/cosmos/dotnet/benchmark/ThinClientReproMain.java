@@ -27,7 +27,7 @@ public class ThinClientReproMain {
                 .endpoint(TestConfigurations.HOST)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
-                .userAgentSuffix("fabianmThinClientProxyTest")
+                .userAgentSuffix("fabianmThinClientProxyTest02")
                 .buildAsyncClient();
 
             CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
@@ -45,8 +45,8 @@ public class ThinClientReproMain {
                 //                        "HelloWorld",
                 //                        new PartitionKey("HelloWorld"),
                 //                        ObjectNode.class)
-                //CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
-                //System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
+                CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
+                System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
             } catch (CosmosException cosmosError) {
                 System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
             }
