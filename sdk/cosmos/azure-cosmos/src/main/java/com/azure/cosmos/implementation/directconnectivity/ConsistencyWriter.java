@@ -38,13 +38,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -338,6 +332,7 @@ public class ConsistencyWriter {
                     throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
+                request.requestContext.globalStrongWriteRegion = request.requestContext.regionalRoutingContextToRoute.getRegion();
                 request.requestContext.globalStrongWriteResponse = response;
                 request.requestContext.globalCommittedSelectedLSN = lsn.v;
 
@@ -384,10 +379,34 @@ public class ConsistencyWriter {
         }
     }
 
+    private void validateGlobalStrongWriteRegion(RxDocumentServiceRequest barrierRequest)
+    {
+        // validate that a regional failover has not occurred since the initial write.
+        String currentRegion = barrierRequest.requestContext.regionalRoutingContextToRoute.getRegion();
+        logger.info("Entered validateGlobalStrongWriteRegion. CurrentRegion: {}, OriginalWriteRegion: {}",
+            currentRegion, barrierRequest.requestContext.globalStrongWriteRegion);
+        if (barrierRequest.requestContext.globalStrongWriteRegion != null &&
+            !Objects.equals(barrierRequest.requestContext.globalStrongWriteRegion, currentRegion))
+        {
+            logger.info(
+                "ConsistencyWriter: Failover detected during strong consistency write. Original write was to region "
+                    + barrierRequest.requestContext.globalStrongWriteRegion + " but retry is targeting currentRegion "
+                    + currentRegion + ". Failing request.");
+
+            throw new RequestTimeoutException(
+                "The write operation was initiated in region " + barrierRequest.requestContext.globalStrongWriteRegion
+                    + " but a regional failover occurred. The current attempt is to endpoint " + currentRegion
+                    + ". The state of the write is ambiguous.",
+                null,
+                HttpConstants.SubStatusCodes.WRITE_REGION_BARRIER_CHANGED_MID_OPERATION);
+        }
+    }
+
     private Mono<Boolean> waitForWriteBarrierAsync(RxDocumentServiceRequest barrierRequest, long selectedGlobalCommittedLsn) {
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
         return Flux.defer(() -> {
+            this.validateGlobalStrongWriteRegion(barrierRequest);
             if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
                 return Flux.error(new RequestTimeoutException());
             }

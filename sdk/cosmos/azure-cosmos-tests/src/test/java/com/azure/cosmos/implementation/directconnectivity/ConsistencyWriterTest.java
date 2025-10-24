@@ -5,31 +5,24 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.RetryContext;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionTokenHelper;
-import com.azure.cosmos.implementation.StoreResponseBuilder;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,9 +39,12 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTI
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ConsistencyWriterTest {
     private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+
+    private static Logger logger = LoggerFactory.getLogger(ConsistencyWriterTest.class);
 
     private AddressSelector addressSelector;
     private ISessionContainer sessionContainer;
@@ -368,6 +364,70 @@ public class ConsistencyWriterTest {
 
         assertThat(consistencyWriter.isGlobalStrongRequest(req, storeResponse)).isEqualTo(isGlobalStrongExpected);
     }
+
+    @Test(groups = "unit")
+    public void globalStrongWriteThrowsTimeoutOnRegionalFailoverAsync() throws URISyntaxException {
+        String originalRegion = "eastus";
+        String failoverRegion = "westus";
+
+        URI originalUri = new URI("https://eastus.documents.azure.com:443/");
+        URI failoverUri = new URI("https://westus.documents.azure.com:443/");
+
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(Uri.create(originalRegion))
+            .withSecondary(ImmutableList.of(Uri.create(failoverRegion)))
+            .build();
+
+        sessionContainer = Mockito.mock(ISessionContainer.class);
+        transportClient = Mockito.mock(TransportClient.class);
+
+        IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.STRONG).when(this.serviceConfigReader).getDefaultConsistencyLevel();
+
+        consistencyWriter = new ConsistencyWriter(clientContext,
+            addressSelectorWrapper.addressSelector,
+            sessionContainer,
+            transportClient,
+            authorizationTokenProvider,
+            serviceConfigReader,
+            false,
+            null);
+
+        DiagnosticsClientContext mockClientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
+        Mockito
+            .doReturn(ImplementationBridgeHelpers
+                .CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor()
+                .create(clientContext, 1d))
+            .when(clientContext).createDiagnostics();
+
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockClientContext, OperationType.Create, ResourceType.Document, "/dbs/db1/colls/coll1/docs", null);
+        entity.setResourceId("1-MxAPlgMgA=");
+        entity.requestContext.globalStrongWriteResponse = StoreResponseBuilder.create()
+            .withHeader(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS, Integer.toString(2))
+            .build();
+        entity.requestContext.globalStrongWriteRegion = originalRegion;
+        entity.requestContext.routeToLocation(new RegionalRoutingContext(failoverUri, failoverRegion));
+        entity.requestContext.globalCommittedSelectedLSN = 100;
+
+        try {
+            consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
+            fail("Expected RequestTimeoutException was not thrown on regional failover.");
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(RequestTimeoutException.class);
+            RequestTimeoutException requestTimeoutException = (RequestTimeoutException) e;
+            assertThat(requestTimeoutException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.WRITE_REGION_BARRIER_CHANGED_MID_OPERATION);
+            assertThat(e).message().contains("The write operation was initiated in region eastus but a regional failover occurred. The current attempt is to endpoint westus. The state of the write is ambiguous.");
+        }
+    }
+
+    /*@Test(groups = "unit")
+    public void globalStrongWriteSucceedsOnBarrierRetryInSameRegionAsync() throws URISyntaxException {
+        transportClient = Mockito.mock(TransportClient.class);
+        Mockito.doReturn().when(transportClient).invokeStoreAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.any(TimeoutHelper.class));
+    }*/
 
     private void initializeConsistencyWriter(boolean useMultipleWriteLocation) {
         addressSelector = Mockito.mock(AddressSelector.class);
