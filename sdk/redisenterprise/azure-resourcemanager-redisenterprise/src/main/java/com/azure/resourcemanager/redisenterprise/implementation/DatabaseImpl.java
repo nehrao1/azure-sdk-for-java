@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
+import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
@@ -43,6 +45,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Protocol clientProtocol() {
@@ -92,6 +98,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
 
     public DeferUpgradeSetting deferUpgrade() {
         return this.innerModel().deferUpgrade();
+    }
+
+    public AccessKeysAuthentication accessKeysAuthentication() {
+        return this.innerModel().accessKeysAuthentication();
     }
 
     public String resourceGroupName() {
@@ -235,8 +245,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
             .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
-    public void flush(FlushParameters parameters) {
-        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters);
+    public void flush() {
+        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName);
     }
 
     public void flush(FlushParameters parameters, Context context) {
@@ -267,8 +277,13 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public DatabaseImpl withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
-        this.innerModel().withClusteringPolicy(clusteringPolicy);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClusteringPolicy(clusteringPolicy);
+            return this;
+        } else {
+            this.updateParameters.withClusteringPolicy(clusteringPolicy);
+            return this;
+        }
     }
 
     public DatabaseImpl withEvictionPolicy(EvictionPolicy evictionPolicy) {
@@ -311,7 +326,17 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         }
     }
 
+    public DatabaseImpl withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
+        if (isInCreateMode()) {
+            this.innerModel().withAccessKeysAuthentication(accessKeysAuthentication);
+            return this;
+        } else {
+            this.updateParameters.withAccessKeysAuthentication(accessKeysAuthentication);
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

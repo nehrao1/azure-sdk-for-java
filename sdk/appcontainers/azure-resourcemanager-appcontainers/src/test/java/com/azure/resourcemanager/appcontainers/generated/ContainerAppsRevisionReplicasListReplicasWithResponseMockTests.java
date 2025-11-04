@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ReplicaCollection;
@@ -20,17 +20,18 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
     @Test
     public void testListReplicasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-09-15T19:47Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"khvuhxepmrutz\",\"containers\":[{},{}],\"initContainers\":[{}]},\"id\":\"nslujd\",\"name\":\"ltymkmvguihywart\",\"type\":\"pphkixkykxds\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-29T14:21:44Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"kvwjtqpkevmy\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{}]},\"id\":\"pxklurccl\",\"name\":\"gxannnoytzposewx\",\"type\":\"gpxvkqmaupxvpi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicaCollection response = manager.containerAppsRevisionReplicas()
-            .listReplicasWithResponse("vteo", "xvgpiude", "gfsxzec", com.azure.core.util.Context.NONE)
+            .listReplicasWithResponse("wltxeqipxgzdyims", "ayorprav", "jogeslabnsmjkwyn",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

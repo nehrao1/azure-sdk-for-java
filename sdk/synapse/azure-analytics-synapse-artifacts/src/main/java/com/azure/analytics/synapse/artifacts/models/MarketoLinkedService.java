@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,46 +22,57 @@ public class MarketoLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Marketo";
 
     /*
      * The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com)
      */
+    @Generated
     private Object endpoint;
 
     /*
      * The client Id of your Marketo service.
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret of your Marketo service.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of MarketoLinkedService class.
      */
+    @Generated
     public MarketoLinkedService() {
     }
 
@@ -69,6 +81,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -79,6 +92,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the endpoint value.
      */
+    @Generated
     public Object getEndpoint() {
         return this.endpoint;
     }
@@ -89,6 +103,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param endpoint the endpoint value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setEndpoint(Object endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -99,6 +114,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -109,6 +125,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -119,6 +136,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -129,6 +147,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -140,6 +159,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -151,6 +171,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -162,6 +183,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -173,6 +195,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -184,6 +207,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -195,6 +219,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -206,6 +231,7 @@ public class MarketoLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -217,6 +243,7 @@ public class MarketoLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MarketoLinkedService object itself.
      */
+    @Generated
     public MarketoLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -225,6 +252,17 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public MarketoLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public MarketoLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -234,6 +272,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MarketoLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -243,6 +282,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MarketoLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -252,6 +292,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MarketoLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -261,9 +302,11 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -280,10 +323,18 @@ public class MarketoLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("endpoint", this.endpoint);
             jsonWriter.writeUntypedField("clientId", this.clientId);
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -303,6 +354,7 @@ public class MarketoLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MarketoLinkedService.
      */
+    @Generated
     public static MarketoLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MarketoLinkedService deserializedMarketoLinkedService = new MarketoLinkedService();
@@ -311,7 +363,9 @@ public class MarketoLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMarketoLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMarketoLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMarketoLinkedService.setDescription(reader.getString());

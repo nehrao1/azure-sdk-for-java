@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 
 /**
@@ -13,43 +14,55 @@ import com.azure.core.util.CoreUtils;
 @Fluent
 public final class PathHttpHeaders {
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
+    @Generated
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
+    @Generated
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
+    @Generated
     private String contentLanguage;
 
     /*
      * Optional. Sets the blob's Content-Disposition header.
      */
+    @Generated
     private String contentDisposition;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
+    @Generated
     private String contentType;
 
     /*
      * Specify the transactional md5 for the body, to be validated by the service.
      */
+    @Generated
     private byte[] contentMd5;
 
     /*
      * Specify the transactional md5 for the body, to be validated by the service.
      */
+    @Generated
     private byte[] transactionalContentHash;
 
     /**
      * Creates an instance of PathHttpHeaders class.
      */
+    @Generated
     public PathHttpHeaders() {
     }
 
@@ -59,6 +72,7 @@ public final class PathHttpHeaders {
      * 
      * @return the cacheControl value.
      */
+    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -70,6 +84,7 @@ public final class PathHttpHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -81,6 +96,7 @@ public final class PathHttpHeaders {
      * 
      * @return the contentEncoding value.
      */
+    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -92,6 +108,7 @@ public final class PathHttpHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -103,6 +120,7 @@ public final class PathHttpHeaders {
      * 
      * @return the contentLanguage value.
      */
+    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -114,6 +132,7 @@ public final class PathHttpHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -124,6 +143,7 @@ public final class PathHttpHeaders {
      * 
      * @return the contentDisposition value.
      */
+    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -134,6 +154,7 @@ public final class PathHttpHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -145,6 +166,7 @@ public final class PathHttpHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -156,6 +178,7 @@ public final class PathHttpHeaders {
      * @param contentType the contentType value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -166,6 +189,7 @@ public final class PathHttpHeaders {
      * 
      * @return the contentMd5 value.
      */
+    @Generated
     public byte[] getContentMd5() {
         return CoreUtils.clone(this.contentMd5);
     }
@@ -176,6 +200,7 @@ public final class PathHttpHeaders {
      * @param contentMd5 the contentMd5 value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
@@ -187,6 +212,7 @@ public final class PathHttpHeaders {
      * 
      * @return the transactionalContentHash value.
      */
+    @Generated
     public byte[] getTransactionalContentHash() {
         return CoreUtils.clone(this.transactionalContentHash);
     }
@@ -198,6 +224,7 @@ public final class PathHttpHeaders {
      * @param transactionalContentHash the transactionalContentHash value to set.
      * @return the PathHttpHeaders object itself.
      */
+    @Generated
     public PathHttpHeaders setTransactionalContentHash(byte[] transactionalContentHash) {
         this.transactionalContentHash = CoreUtils.clone(transactionalContentHash);
         return this;

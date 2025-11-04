@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ActivityOnInactiveMarkAs;
@@ -26,14 +26,14 @@ public final class PipelinesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"nqiighpxxw\",\"activities\":[{\"type\":\"Activity\",\"name\":\"mqugovcddxlrb\",\"description\":\"qrgjejabqvg\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"pxlyabjrzgssjf\",\"dependencyConditions\":[]},{\"activity\":\"urhku\",\"dependencyConditions\":[]},{\"activity\":\"phbwmbgwgmyglnsn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"qdsygdzzufrj\",\"value\":\"datawqwdglmfsjplfd\"},{\"name\":\"zlt\",\"value\":\"dataywykfuovk\"}],\"\":{\"pgvxii\":\"datazghtjxtzywoq\"}}],\"parameters\":{\"lt\":{\"type\":\"Float\",\"defaultValue\":\"datakthxudowj\"},\"cohsqufsyihsnzsj\":{\"type\":\"SecureString\",\"defaultValue\":\"datazq\"},\"jzalhunbmngstvnk\":{\"type\":\"Array\",\"defaultValue\":\"dataogyake\"},\"yinxxgxncoai\":{\"type\":\"Object\",\"defaultValue\":\"dataulltvlylbo\"}},\"variables\":{\"taocxaku\":{\"type\":\"Array\",\"defaultValue\":\"datamdjz\"}},\"concurrency\":64653521,\"annotations\":[\"datahan\"],\"runDimensions\":{\"el\":\"dataojod\"},\"folder\":{\"name\":\"dxqlrwwm\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"datavgusfrkjfrtauf\"}}},\"name\":\"xvzqine\",\"type\":\"jodvkn\",\"etag\":\"tttkhm\",\"\":{\"vdqfkjg\":\"datacasfqodc\",\"plxbxfrl\":\"datalcfoaabltvltt\"},\"id\":\"ikcnlbehxo\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"nqiighpxxw\",\"activities\":[{\"type\":\"Activity\",\"name\":\"mqugovcddxlrb\",\"description\":\"qrgjejabqvg\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"pxlyabjrzgssjf\",\"dependencyConditions\":[]},{\"activity\":\"urhku\",\"dependencyConditions\":[]},{\"activity\":\"phbwmbgwgmyglnsn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"qdsygdzzufrj\",\"value\":\"datawqwdglmfsjplfd\"},{\"name\":\"zlt\",\"value\":\"dataywykfuovk\"}],\"pgvxii\":\"datazghtjxtzywoq\"}],\"parameters\":{\"lt\":{\"type\":\"Float\",\"defaultValue\":\"datakthxudowj\"},\"cohsqufsyihsnzsj\":{\"type\":\"SecureString\",\"defaultValue\":\"datazq\"},\"jzalhunbmngstvnk\":{\"type\":\"Array\",\"defaultValue\":\"dataogyake\"},\"yinxxgxncoai\":{\"type\":\"Object\",\"defaultValue\":\"dataulltvlylbo\"}},\"variables\":{\"taocxaku\":{\"type\":\"Array\",\"defaultValue\":\"datamdjz\"}},\"concurrency\":64653521,\"annotations\":[\"datahan\"],\"runDimensions\":{\"el\":\"dataojod\"},\"folder\":{\"name\":\"dxqlrwwm\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"datavgusfrkjfrtauf\"}}},\"name\":\"xvzqine\",\"type\":\"jodvkn\",\"etag\":\"tttkhm\",\"vdqfkjg\":\"datacasfqodc\",\"plxbxfrl\":\"datalcfoaabltvltt\",\"id\":\"ikcnlbehxo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PipelineResource> response
             = manager.pipelines().listByFactory("ho", "cchynnm", com.azure.core.util.Context.NONE);

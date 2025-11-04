@@ -14,9 +14,9 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     public void testDeserialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model = BinaryData
             .fromString(
-                "{\"userAssignedIdentityResourceId\":\"wfndiodjpsl\",\"identityType\":\"systemAssignedIdentity\"}")
+                "{\"userAssignedIdentityResourceId\":\"qjbpfzfsin\",\"identityType\":\"systemAssignedIdentity\"}")
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("wfndiodjpsl", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("qjbpfzfsin", model.userAssignedIdentityResourceId());
         Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
     }
 
@@ -24,11 +24,11 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     public void testSerialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model
             = new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
-                .withUserAssignedIdentityResourceId("wfndiodjpsl")
+                .withUserAssignedIdentityResourceId("qjbpfzfsin")
                 .withIdentityType(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY);
         model = BinaryData.fromObject(model)
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("wfndiodjpsl", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("qjbpfzfsin", model.userAssignedIdentityResourceId());
         Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
     }
 }

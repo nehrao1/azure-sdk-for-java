@@ -15,31 +15,27 @@ public final class WorkloadProfileStatesCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProfileStatesCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"minimumCount\":125361630,\"maximumCount\":325946802,\"currentCount\":808258027},\"id\":\"wpgdak\",\"name\":\"hzyvlixqnrkcx\",\"type\":\"jibnxmysu\"},{\"properties\":{\"minimumCount\":1250131057,\"maximumCount\":1365374514,\"currentCount\":342142930},\"id\":\"wijpsttexoqqpwc\",\"name\":\"yufmhruncuwmq\",\"type\":\"pkcdqzhlct\"},{\"properties\":{\"minimumCount\":1078377836,\"maximumCount\":538765688,\"currentCount\":801241331},\"id\":\"pchrqbn\",\"name\":\"jrcg\",\"type\":\"gydcw\"}],\"nextLink\":\"xjumvq\"}")
+            "{\"value\":[{\"properties\":{\"minimumCount\":1115502807,\"maximumCount\":874789657,\"currentCount\":1233115603},\"id\":\"ljhlnymzotq\",\"name\":\"ryuzcbmqqv\",\"type\":\"mv\"},{\"properties\":{\"minimumCount\":958382528,\"maximumCount\":1895835136,\"currentCount\":414360047},\"id\":\"supe\",\"name\":\"jlzqnhc\",\"type\":\"sqltnzo\"}],\"nextLink\":\"gsxgnxfyqon\"}")
             .toObject(WorkloadProfileStatesCollection.class);
-        Assertions.assertEquals(125361630, model.value().get(0).properties().minimumCount());
-        Assertions.assertEquals(325946802, model.value().get(0).properties().maximumCount());
-        Assertions.assertEquals(808258027, model.value().get(0).properties().currentCount());
+        Assertions.assertEquals(1115502807, model.value().get(0).properties().minimumCount());
+        Assertions.assertEquals(874789657, model.value().get(0).properties().maximumCount());
+        Assertions.assertEquals(1233115603, model.value().get(0).properties().currentCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadProfileStatesCollection model = new WorkloadProfileStatesCollection().withValue(Arrays.asList(
             new WorkloadProfileStatesInner()
-                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(125361630)
-                    .withMaximumCount(325946802)
-                    .withCurrentCount(808258027)),
+                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(1115502807)
+                    .withMaximumCount(874789657)
+                    .withCurrentCount(1233115603)),
             new WorkloadProfileStatesInner()
-                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(1250131057)
-                    .withMaximumCount(1365374514)
-                    .withCurrentCount(342142930)),
-            new WorkloadProfileStatesInner()
-                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(1078377836)
-                    .withMaximumCount(538765688)
-                    .withCurrentCount(801241331))));
+                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(958382528)
+                    .withMaximumCount(1895835136)
+                    .withCurrentCount(414360047))));
         model = BinaryData.fromObject(model).toObject(WorkloadProfileStatesCollection.class);
-        Assertions.assertEquals(125361630, model.value().get(0).properties().minimumCount());
-        Assertions.assertEquals(325946802, model.value().get(0).properties().maximumCount());
-        Assertions.assertEquals(808258027, model.value().get(0).properties().currentCount());
+        Assertions.assertEquals(1115502807, model.value().get(0).properties().minimumCount());
+        Assertions.assertEquals(874789657, model.value().get(0).properties().maximumCount());
+        Assertions.assertEquals(1233115603, model.value().get(0).properties().currentCount());
     }
 }

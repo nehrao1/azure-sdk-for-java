@@ -20,6 +20,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
@@ -56,6 +57,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -203,7 +205,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -226,7 +230,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
-    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
+        "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -235,6 +241,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             safeDeleteDatabase(SHARED_DATABASE);
             CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
         }
+    }
+
+    @AfterSuite(groups = { "emulator-vnext" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    public void afterSuitEmulatorVNext() {
+        // can not use the after suite method directly as for vnext, query databases is not implemented, so it will error out
+        logger.info("afterSuite for emulator vnext group started. ");
+        safeDeleteDatabase(SHARED_DATABASE);
     }
 
     protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
@@ -664,6 +677,32 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return collectionDefinition;
     }
 
+    static protected CosmosContainerProperties getCollectionDefinitionForHashV2WithHpk(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/state");
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
+    }
+
+
+    static protected CosmosContainerProperties getCollectionDefinitionWithHpk(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/state");
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
+    }
+
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
     }
@@ -1080,6 +1119,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithGatewayAndHttp2() {
+        return new Object[][]{
+            {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
+        };
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
@@ -1287,7 +1333,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             false,
             null,
             true,
-            true);
+            true,
+            false);
         injectedProviderParameters[0] = builder;
 
         providers.add(injectedProviderParameters);
@@ -1425,7 +1472,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             multiMasterEnabled,
             preferredRegions,
             contentResponseOnWriteEnabled,
-            retryOnThrottledRequests);
+            retryOnThrottledRequests,
+            false);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(
@@ -1434,9 +1482,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean multiMasterEnabled,
         List<String> preferredRegions,
         boolean contentResponseOnWriteEnabled,
-        boolean retryOnThrottledRequests) {
+        boolean retryOnThrottledRequests,
+        boolean isHttp2TransportRequired) {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        if (Configs.isHttp2Enabled() || isHttp2TransportRequired) {
+            Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig()
+                .setEnabled(true)
+                .setMaxConnectionPoolSize(10)
+                .setMinConnectionPoolSize(1)
+                .setMaxConcurrentStreams(30);
+            gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
+        }
+
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
             .credential(credential)
             .gatewayMode(gatewayConnectionConfig)

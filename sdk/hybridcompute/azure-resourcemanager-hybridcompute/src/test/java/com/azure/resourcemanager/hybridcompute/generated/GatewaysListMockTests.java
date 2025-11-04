@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
@@ -23,20 +23,20 @@ public final class GatewaysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"r\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"hkpigqfusuckzmkw\",\"allowedFeatures\":[\"noxaxmqeqal\",\"hjnhgwydyynfsvk\",\"gbv\"]},\"location\":\"anarfdlpukhpyrne\",\"tags\":{\"ddbhf\":\"cpeogkhnmgbrou\",\"ontacnpq\":\"pfpazjzoywjxhpdu\",\"xh\":\"tehtuevrhrljyoog\"},\"id\":\"sd\",\"name\":\"ugwbsreurfqkf\",\"type\":\"arenlvhhtklnvnaf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"gatewayId\":\"utvlxhr\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"mblcouqehbhbcds\",\"allowedFeatures\":[\"yr\",\"ndo\"]},\"location\":\"mbltoo\",\"tags\":{\"aolnjpnnbmjk\":\"fqlwxldykalsy\",\"nadzyq\":\"ibjgsjjxxahm\"},\"id\":\"gxyivpinbmh\",\"name\":\"bjijkgqxnh\",\"type\":\"bkezn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Gateway> response = manager.gateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("anarfdlpukhpyrne", response.iterator().next().location());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.iterator().next().tags().get("ddbhf"));
+        Assertions.assertEquals("mbltoo", response.iterator().next().location());
+        Assertions.assertEquals("fqlwxldykalsy", response.iterator().next().tags().get("aolnjpnnbmjk"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("noxaxmqeqal", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("yr", response.iterator().next().allowedFeatures().get(0));
     }
 }

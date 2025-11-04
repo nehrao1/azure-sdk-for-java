@@ -52,7 +52,7 @@ public final class ServicePrincipalCredential extends Credential {
      * 
      * @return the innerTypeProperties value.
      */
-    private ServicePrincipalCredentialTypeProperties innerTypeProperties() {
+    ServicePrincipalCredentialTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -150,7 +150,6 @@ public final class ServicePrincipalCredential extends Credential {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

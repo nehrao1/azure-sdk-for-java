@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.redisenterprise.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
@@ -11,11 +12,16 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointCo
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
+import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
+import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
+import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
+import com.azure.resourcemanager.redisenterprise.models.SkuDetailsList;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +58,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public Kind kind() {
+        return this.innerModel().kind();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
@@ -69,6 +79,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().identity();
     }
 
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public HighAvailability highAvailability() {
+        return this.innerModel().highAvailability();
+    }
+
     public TlsVersion minimumTlsVersion() {
         return this.innerModel().minimumTlsVersion();
     }
@@ -83,6 +101,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public RedundancyMode redundancyMode() {
+        return this.innerModel().redundancyMode();
     }
 
     public ResourceState resourceState() {
@@ -198,6 +220,15 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
+    public Response<SkuDetailsList> listSkusForScalingWithResponse(Context context) {
+        return serviceManager.redisEnterprises()
+            .listSkusForScalingWithResponse(resourceGroupName, clusterName, context);
+    }
+
+    public SkuDetailsList listSkusForScaling() {
+        return serviceManager.redisEnterprises().listSkusForScaling(resourceGroupName, clusterName);
+    }
+
     public ClusterImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -243,6 +274,26 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public ClusterImpl withHighAvailability(HighAvailability highAvailability) {
+        if (isInCreateMode()) {
+            this.innerModel().withHighAvailability(highAvailability);
+            return this;
+        } else {
+            this.updateParameters.withHighAvailability(highAvailability);
+            return this;
+        }
+    }
+
     public ClusterImpl withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         if (isInCreateMode()) {
             this.innerModel().withMinimumTlsVersion(minimumTlsVersion);
@@ -264,6 +315,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

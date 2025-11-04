@@ -12,14 +12,21 @@ import java.util.Collection;
  */
 public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachineState> {
     /**
-     * Static value Running for VirtualMachineState.
+     * The virtual machine is up and running.
      */
     public static final VirtualMachineState RUNNING = fromString("Running");
 
     /**
-     * Static value Deallocated for VirtualMachineState.
+     * The virtual machine has released the lease on the underlying hardware and is powered off.
      */
     public static final VirtualMachineState DEALLOCATED = fromString("Deallocated");
+
+    /**
+     * The virtual machine has released the lease on the underlying hardware and is powered off. Memory contents of the
+     * VM are stored in the OS disk. When started again, applications and processes that were previously running in your
+     * VM resume from the state prior to hibernation.
+     */
+    public static final VirtualMachineState HIBERNATED = fromString("Hibernated");
 
     /**
      * Creates a new instance of VirtualMachineState value.

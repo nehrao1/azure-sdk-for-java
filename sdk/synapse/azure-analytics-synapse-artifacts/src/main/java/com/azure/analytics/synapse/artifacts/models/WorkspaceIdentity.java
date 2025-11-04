@@ -4,7 +4,8 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,26 +15,30 @@ import java.io.IOException;
 /**
  * Identity properties of the workspace resource.
  */
-@Fluent
+@Immutable
 public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdentity> {
     /*
      * The identity type. Currently the only supported type is 'SystemAssigned'.
      */
-    private String type = "SystemAssigned";
+    @Generated
+    private final String type = "SystemAssigned";
 
     /*
      * The principal id of the identity.
      */
+    @Generated
     private String principalId;
 
     /*
      * The client tenant id of the identity.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of WorkspaceIdentity class.
      */
+    @Generated
     public WorkspaceIdentity() {
     }
 
@@ -42,19 +47,9 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The identity type. Currently the only supported type is 'SystemAssigned'.
-     * 
-     * @param type the type value to set.
-     * @return the WorkspaceIdentity object itself.
-     */
-    public WorkspaceIdentity setType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -62,6 +57,7 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
      * 
      * @return the principalId value.
      */
+    @Generated
     public String getPrincipalId() {
         return this.principalId;
     }
@@ -71,6 +67,7 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -78,6 +75,7 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +92,7 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkspaceIdentity.
      */
+    @Generated
     public static WorkspaceIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WorkspaceIdentity deserializedWorkspaceIdentity = new WorkspaceIdentity();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,26 @@ public final class SalesforceSource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SalesforceSource";
 
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or Expression with resultType string).
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object readBehavior;
 
     /**
      * Creates an instance of SalesforceSource class.
      */
+    @Generated
     public SalesforceSource() {
     }
 
@@ -43,6 +49,7 @@ public final class SalesforceSource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +60,7 @@ public final class SalesforceSource extends TabularSource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -63,6 +71,7 @@ public final class SalesforceSource extends TabularSource {
      * @param query the query value to set.
      * @return the SalesforceSource object itself.
      */
+    @Generated
     public SalesforceSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -74,6 +83,7 @@ public final class SalesforceSource extends TabularSource {
      * 
      * @return the readBehavior value.
      */
+    @Generated
     public Object getReadBehavior() {
         return this.readBehavior;
     }
@@ -85,6 +95,7 @@ public final class SalesforceSource extends TabularSource {
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceSource object itself.
      */
+    @Generated
     public SalesforceSource setReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
         return this;
@@ -93,6 +104,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -102,6 +114,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -111,6 +124,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -120,6 +134,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -129,6 +144,7 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -138,17 +154,32 @@ public final class SalesforceSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("readBehavior", this.readBehavior);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.readBehavior != null) {
+            jsonWriter.writeUntypedField("readBehavior", this.readBehavior);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -165,6 +196,7 @@ public final class SalesforceSource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceSource.
      */
+    @Generated
     public static SalesforceSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceSource deserializedSalesforceSource = new SalesforceSource();

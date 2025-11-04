@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
     /*
      * Managed Virtual Network reference type.
      */
-    private String type = "ManagedVirtualNetworkReference";
+    @Generated
+    private final String type = "ManagedVirtualNetworkReference";
 
     /*
      * Reference ManagedVirtualNetwork name.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of ManagedVirtualNetworkReference class.
      */
+    @Generated
     public ManagedVirtualNetworkReference() {
     }
 
@@ -37,19 +41,9 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Managed Virtual Network reference type.
-     * 
-     * @param type the type value to set.
-     * @return the ManagedVirtualNetworkReference object itself.
-     */
-    public ManagedVirtualNetworkReference setType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -57,6 +51,7 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +62,7 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
      * @param referenceName the referenceName value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */
+    @Generated
     public ManagedVirtualNetworkReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +71,7 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +89,7 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ManagedVirtualNetworkReference.
      */
+    @Generated
     public static ManagedVirtualNetworkReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedVirtualNetworkReference deserializedManagedVirtualNetworkReference

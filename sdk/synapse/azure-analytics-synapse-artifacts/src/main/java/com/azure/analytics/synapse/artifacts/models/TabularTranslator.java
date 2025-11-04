@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,46 +21,67 @@ public final class TabularTranslator extends CopyTranslator {
     /*
      * Copy translator type.
      */
+    @Generated
     private String type = "TabularTranslator";
 
     /*
-     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with resultType string). This property will be retired. Please use mappings property.
+     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
+     * resultType string). This property will be retired. Please use mappings property.
      */
+    @Generated
     private Object columnMappings;
 
     /*
-     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType object). This property will be retired. Please use mappings property.
+     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1",
+     * "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType
+     * object). This property will be retired. Please use mappings property.
      */
+    @Generated
     private Object schemaMapping;
 
     /*
-     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType object).
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType
+     * object).
      */
+    @Generated
     private Object collectionReference;
 
     /*
-     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression with resultType boolean).
+     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression
+     * with resultType boolean).
      */
+    @Generated
     private Object mapComplexValuesToString;
 
     /*
-     * Column mappings with logical types. Tabular->tabular example: [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].  Hierarchical->tabular example: [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or Expression with resultType object).
+     * Column mappings with logical types. Tabular->tabular example:
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
+     * "name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * Hierarchical->tabular example:
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
+     * "path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or
+     * Expression with resultType object).
      */
+    @Generated
     private Object mappings;
 
     /*
-     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with resultType boolean).
+     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with
+     * resultType boolean).
      */
+    @Generated
     private Object typeConversion;
 
     /*
      * Type conversion settings
      */
+    @Generated
     private TypeConversionSettings typeConversionSettings;
 
     /**
      * Creates an instance of TabularTranslator class.
      */
+    @Generated
     public TabularTranslator() {
     }
 
@@ -68,6 +90,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -79,6 +102,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the columnMappings value.
      */
+    @Generated
     public Object getColumnMappings() {
         return this.columnMappings;
     }
@@ -90,6 +114,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param columnMappings the columnMappings value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setColumnMappings(Object columnMappings) {
         this.columnMappings = columnMappings;
         return this;
@@ -102,6 +127,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the schemaMapping value.
      */
+    @Generated
     public Object getSchemaMapping() {
         return this.schemaMapping;
     }
@@ -114,6 +140,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param schemaMapping the schemaMapping value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setSchemaMapping(Object schemaMapping) {
         this.schemaMapping = schemaMapping;
         return this;
@@ -125,6 +152,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the collectionReference value.
      */
+    @Generated
     public Object getCollectionReference() {
         return this.collectionReference;
     }
@@ -136,6 +164,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param collectionReference the collectionReference value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setCollectionReference(Object collectionReference) {
         this.collectionReference = collectionReference;
         return this;
@@ -147,6 +176,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the mapComplexValuesToString value.
      */
+    @Generated
     public Object getMapComplexValuesToString() {
         return this.mapComplexValuesToString;
     }
@@ -158,6 +188,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param mapComplexValuesToString the mapComplexValuesToString value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setMapComplexValuesToString(Object mapComplexValuesToString) {
         this.mapComplexValuesToString = mapComplexValuesToString;
         return this;
@@ -172,6 +203,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the mappings value.
      */
+    @Generated
     public Object getMappings() {
         return this.mappings;
     }
@@ -186,6 +218,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param mappings the mappings value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setMappings(Object mappings) {
         this.mappings = mappings;
         return this;
@@ -197,6 +230,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the typeConversion value.
      */
+    @Generated
     public Object getTypeConversion() {
         return this.typeConversion;
     }
@@ -208,6 +242,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param typeConversion the typeConversion value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setTypeConversion(Object typeConversion) {
         this.typeConversion = typeConversion;
         return this;
@@ -218,6 +253,7 @@ public final class TabularTranslator extends CopyTranslator {
      * 
      * @return the typeConversionSettings value.
      */
+    @Generated
     public TypeConversionSettings getTypeConversionSettings() {
         return this.typeConversionSettings;
     }
@@ -228,6 +264,7 @@ public final class TabularTranslator extends CopyTranslator {
      * @param typeConversionSettings the typeConversionSettings value to set.
      * @return the TabularTranslator object itself.
      */
+    @Generated
     public TabularTranslator setTypeConversionSettings(TypeConversionSettings typeConversionSettings) {
         this.typeConversionSettings = typeConversionSettings;
         return this;
@@ -236,16 +273,29 @@ public final class TabularTranslator extends CopyTranslator {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("columnMappings", this.columnMappings);
-        jsonWriter.writeUntypedField("schemaMapping", this.schemaMapping);
-        jsonWriter.writeUntypedField("collectionReference", this.collectionReference);
-        jsonWriter.writeUntypedField("mapComplexValuesToString", this.mapComplexValuesToString);
-        jsonWriter.writeUntypedField("mappings", this.mappings);
-        jsonWriter.writeUntypedField("typeConversion", this.typeConversion);
+        if (this.columnMappings != null) {
+            jsonWriter.writeUntypedField("columnMappings", this.columnMappings);
+        }
+        if (this.schemaMapping != null) {
+            jsonWriter.writeUntypedField("schemaMapping", this.schemaMapping);
+        }
+        if (this.collectionReference != null) {
+            jsonWriter.writeUntypedField("collectionReference", this.collectionReference);
+        }
+        if (this.mapComplexValuesToString != null) {
+            jsonWriter.writeUntypedField("mapComplexValuesToString", this.mapComplexValuesToString);
+        }
+        if (this.mappings != null) {
+            jsonWriter.writeUntypedField("mappings", this.mappings);
+        }
+        if (this.typeConversion != null) {
+            jsonWriter.writeUntypedField("typeConversion", this.typeConversion);
+        }
         jsonWriter.writeJsonField("typeConversionSettings", this.typeConversionSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -263,6 +313,7 @@ public final class TabularTranslator extends CopyTranslator {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TabularTranslator.
      */
+    @Generated
     public static TabularTranslator fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TabularTranslator deserializedTabularTranslator = new TabularTranslator();

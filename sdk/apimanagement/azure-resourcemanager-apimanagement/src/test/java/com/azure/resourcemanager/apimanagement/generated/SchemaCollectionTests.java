@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"contentType\":\"dlfp\",\"document\":{\"value\":\"pucygvoavyunss\",\"definitions\":\"dataghiee\",\"components\":\"datalgvvpaseksgbu\"}},\"id\":\"antuygdhgaqipirp\",\"name\":\"wrq\",\"type\":\"fulopmjnlexwhcb\"}],\"count\":6406773935608396321,\"nextLink\":\"e\"}")
-                .toObject(SchemaCollection.class);
-        Assertions.assertEquals(6406773935608396321L, model.count());
+        SchemaCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"contentType\":\"atbnxwbj\",\"document\":{\"value\":\"dbirkfpksokdgo\",\"definitions\":\"datawijymr\",\"components\":\"dataguzozkyew\"},\"provisioningState\":\"nzhhhqos\"},\"id\":\"ffjkutycyarnroo\",\"name\":\"g\",\"type\":\"abzoghktdpyczhco\"},{\"properties\":{\"contentType\":\"cnhz\",\"document\":{\"value\":\"ot\",\"definitions\":\"datazcfyjzptwrl\",\"components\":\"dataapqinf\"},\"provisioningState\":\"pyglqdhmrjzral\"},\"id\":\"xpjb\",\"name\":\"ypsjoq\",\"type\":\"jenkyh\"},{\"properties\":{\"contentType\":\"zv\",\"document\":{\"value\":\"xfxjelgcmpzqj\",\"definitions\":\"datahqxu\",\"components\":\"datavcacoyv\"},\"provisioningState\":\"bsizus\"},\"id\":\"szlbscm\",\"name\":\"lzijiufehgmvflnw\",\"type\":\"v\"}],\"count\":5178927041008286811,\"nextLink\":\"rlniyl\"}")
+            .toObject(SchemaCollection.class);
+        Assertions.assertEquals(5178927041008286811L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaCollection model = new SchemaCollection().withCount(6406773935608396321L);
+        SchemaCollection model = new SchemaCollection().withCount(5178927041008286811L);
         model = BinaryData.fromObject(model).toObject(SchemaCollection.class);
-        Assertions.assertEquals(6406773935608396321L, model.count());
+        Assertions.assertEquals(5178927041008286811L, model.count());
     }
 }

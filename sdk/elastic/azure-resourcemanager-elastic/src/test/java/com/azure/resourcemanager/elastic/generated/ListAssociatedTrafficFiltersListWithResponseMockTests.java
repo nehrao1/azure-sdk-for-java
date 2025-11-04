@@ -6,71 +6,45 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.ElasticTrafficFilterResponse;
 import com.azure.resourcemanager.elastic.models.Type;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ListAssociatedTrafficFiltersListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"rulesets\":[{\"id\":\"tcypsxjvfoim\",\"name\":\"slirciz\",\"description\":\"vydfceacvlhvygdy\",\"region\":\"umrtwnawjsl\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[{\"source\":\"yztsfmz\",\"description\":\"aeqphchqnr\",\"azureEndpointGuid\":\"pxehuwrykqga\",\"azureEndpointName\":\"mvikl\",\"id\":\"dvk\"},{\"source\":\"ejd\",\"description\":\"xcv\",\"azureEndpointGuid\":\"rhnj\",\"azureEndpointName\":\"olvtnovqfzge\",\"id\":\"dftuljltduce\"},{\"source\":\"tmczuomejwcwwqi\",\"description\":\"nssxmojmsvpk\",\"azureEndpointGuid\":\"rvkwc\",\"azureEndpointName\":\"ql\",\"id\":\"x\"},{\"source\":\"czheyd\",\"description\":\"dshmkxmaehvbbx\",\"azureEndpointGuid\":\"iplt\",\"azureEndpointName\":\"htba\",\"id\":\"gx\"}]},{\"id\":\"rc\",\"name\":\"yklyhpluodpvruud\",\"description\":\"zibt\",\"region\":\"stgktst\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[{\"source\":\"dqbcvhzlhplod\",\"description\":\"dlwwqfbumlkxt\",\"azureEndpointGuid\":\"jfsmlmbtxhwgfwsr\",\"azureEndpointName\":\"wcoezbrhub\",\"id\":\"hud\"},{\"source\":\"oookkqfq\",\"description\":\"vleo\",\"azureEndpointGuid\":\"ml\",\"azureEndpointName\":\"qtqzfavyv\",\"id\":\"qybaryeua\"},{\"source\":\"kq\",\"description\":\"qgzsles\",\"azureEndpointGuid\":\"bhernntiew\",\"azureEndpointName\":\"cv\",\"id\":\"uwrbehwagoh\"},{\"source\":\"f\",\"description\":\"mrqemvvhmx\",\"azureEndpointGuid\":\"rjfut\",\"azureEndpointName\":\"oe\",\"id\":\"vewzcj\"}]},{\"id\":\"m\",\"name\":\"pmguaadraufac\",\"description\":\"ahzovajjziuxxp\",\"region\":\"neekulfg\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[{\"source\":\"lenrd\",\"description\":\"tujbazpju\",\"azureEndpointGuid\":\"minyflnorwm\",\"azureEndpointName\":\"vwpklvxwmygdxp\",\"id\":\"qchiszep\"},{\"source\":\"bjcrxgibbdaxco\",\"description\":\"ozauorsukokwb\",\"azureEndpointGuid\":\"lhlv\",\"azureEndpointName\":\"uepzl\",\"id\":\"hw\"},{\"source\":\"oldweyuqdu\",\"description\":\"mnnrwr\",\"azureEndpointGuid\":\"ork\",\"azureEndpointName\":\"lywjhh\",\"id\":\"nhxmsi\"}]},{\"id\":\"omi\",\"name\":\"xggdufi\",\"description\":\"dieuzaofj\",\"region\":\"vcyy\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[{\"source\":\"ubiipuipwoqonma\",\"description\":\"ekni\",\"azureEndpointGuid\":\"hqvcimpevfgmblr\",\"azureEndpointName\":\"lbywdxsm\",\"id\":\"cwrwfs\"},{\"source\":\"fnynszqujizdvoqy\",\"description\":\"byowbblgyavutp\",\"azureEndpointGuid\":\"joxoism\",\"azureEndpointName\":\"sbpimlq\",\"id\":\"jxkcgxxlxsff\"},{\"source\":\"vizqzdwl\",\"description\":\"lyoupfgfbkju\",\"azureEndpointGuid\":\"yhgk\",\"azureEndpointName\":\"in\",\"id\":\"owzfttsttkt\"},{\"source\":\"hbq\",\"description\":\"tx\",\"azureEndpointGuid\":\"zukxitmmqtgqq\",\"azureEndpointName\":\"hrnxrxc\",\"id\":\"uisavokq\"}]}]}";
 
-        String responseStr =
-            "{\"rulesets\":[{\"id\":\"hxw\",\"name\":\"tyq\",\"description\":\"lbbovplw\",\"region\":\"hvgyuguosvmk\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticManager manager = ElasticManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ElasticTrafficFilterResponse response = manager.listAssociatedTrafficFilters()
+            .listWithResponse("uutpwoqhih", "jqgwzp", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ElasticManager manager =
-            ElasticManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ElasticTrafficFilterResponse response =
-            manager
-                .listAssociatedTrafficFilters()
-                .listWithResponse("ytxhp", "xbzpfzab", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("hxw", response.rulesets().get(0).id());
-        Assertions.assertEquals("tyq", response.rulesets().get(0).name());
-        Assertions.assertEquals("lbbovplw", response.rulesets().get(0).description());
-        Assertions.assertEquals("hvgyuguosvmk", response.rulesets().get(0).region());
-        Assertions.assertEquals(Type.IP, response.rulesets().get(0).type());
-        Assertions.assertEquals(false, response.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals("tcypsxjvfoim", response.rulesets().get(0).id());
+        Assertions.assertEquals("slirciz", response.rulesets().get(0).name());
+        Assertions.assertEquals("vydfceacvlhvygdy", response.rulesets().get(0).description());
+        Assertions.assertEquals("umrtwnawjsl", response.rulesets().get(0).region());
+        Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, response.rulesets().get(0).type());
+        Assertions.assertFalse(response.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals("yztsfmz", response.rulesets().get(0).rules().get(0).source());
+        Assertions.assertEquals("aeqphchqnr", response.rulesets().get(0).rules().get(0).description());
+        Assertions.assertEquals("pxehuwrykqga", response.rulesets().get(0).rules().get(0).azureEndpointGuid());
+        Assertions.assertEquals("mvikl", response.rulesets().get(0).rules().get(0).azureEndpointName());
+        Assertions.assertEquals("dvk", response.rulesets().get(0).rules().get(0).id());
     }
 }

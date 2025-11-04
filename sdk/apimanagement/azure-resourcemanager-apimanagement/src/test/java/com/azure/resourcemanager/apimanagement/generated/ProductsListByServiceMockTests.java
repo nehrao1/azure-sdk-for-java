@@ -6,80 +6,42 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProductsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"lonalpwaulkwuy\",\"description\":\"j\",\"terms\":\"wnjdrnfgtmupbl\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":2027369838,\"state\":\"notPublished\"},\"id\":\"xufuwcajyezlk\",\"name\":\"iveftugiwsvlfp\",\"type\":\"bpnrgnxwrfu\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"yqoytwss\",\"description\":\"qnp\",\"terms\":\"wdmuvyakrbqpw\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":263641155,\"state\":\"published\"},\"id\":\"k\",\"name\":\"thyfjbpnhdhfr\",\"type\":\"sizfwgnpcjni\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ProductContract> response = manager.products()
+            .listByService("fxlrxixymfqmvnh", "fjxtus", "jxpuokkd", 1535635275, 187284174, false, "pg",
+                com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ProductContract> response =
-            manager
-                .products()
-                .listByService(
-                    "wjsyutezlghkvo",
-                    "dpor",
-                    "k",
-                    1299820957,
-                    1646084614,
-                    false,
-                    "utog",
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("yqoytwss", response.iterator().next().displayName());
-        Assertions.assertEquals("qnp", response.iterator().next().description());
-        Assertions.assertEquals("wdmuvyakrbqpw", response.iterator().next().terms());
-        Assertions.assertEquals(true, response.iterator().next().subscriptionRequired());
-        Assertions.assertEquals(true, response.iterator().next().approvalRequired());
-        Assertions.assertEquals(263641155, response.iterator().next().subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, response.iterator().next().state());
+        Assertions.assertEquals("lonalpwaulkwuy", response.iterator().next().displayName());
+        Assertions.assertEquals("j", response.iterator().next().description());
+        Assertions.assertEquals("wnjdrnfgtmupbl", response.iterator().next().terms());
+        Assertions.assertTrue(response.iterator().next().subscriptionRequired());
+        Assertions.assertFalse(response.iterator().next().approvalRequired());
+        Assertions.assertEquals(2027369838, response.iterator().next().subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, response.iterator().next().state());
     }
 }

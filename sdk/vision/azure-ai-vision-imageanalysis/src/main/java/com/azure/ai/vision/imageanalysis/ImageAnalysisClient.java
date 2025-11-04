@@ -98,15 +98,18 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -192,7 +195,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -267,7 +271,7 @@ public final class ImageAnalysisClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-            .toObject(ImageAnalysisResult.class);
+                .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -293,7 +297,7 @@ public final class ImageAnalysisClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).getValue()
-            .toObject(ImageAnalysisResult.class);
+                .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -327,13 +331,16 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -419,7 +426,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.

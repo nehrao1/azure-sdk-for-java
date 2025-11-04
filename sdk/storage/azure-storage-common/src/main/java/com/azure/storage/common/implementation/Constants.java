@@ -54,18 +54,17 @@ public final class Constants {
     /**
      * Exception message when the value could not be parsed into an enum.
      */
-    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
-        "%s could not be parsed from '%s' due to invalid value %s.";
+    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE
+        = "%s could not be parsed from '%s' due to invalid value %s.";
 
+    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER
+        = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
-    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
+    public static final String BLOB_ALREADY_EXISTS
+        = "Blob already exists. Specify overwrite to true to force update the blob.";
 
-    public static final String BLOB_ALREADY_EXISTS =
-        "Blob already exists. Specify overwrite to true to force update the blob.";
-
-    public static final String FILE_ALREADY_EXISTS =
-        "File already exists. Specify overwrite to true to force update the file.";
+    public static final String FILE_ALREADY_EXISTS
+        = "File already exists. Specify overwrite to true to force update the file.";
 
     /**
      * Buffer width used to copy data to output streams.
@@ -88,8 +87,12 @@ public final class Constants {
 
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
-    public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2024-11-04");
+    public static final String SAS_SERVICE_VERSION
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-11-05");
+
+    public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
+
+    public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
 
     private Constants() {
     }
@@ -194,7 +197,7 @@ public final class Constants {
          * The default account key for the development storage.
          */
         public static final String EMULATOR_ACCOUNT_KEY
-                = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+            = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 
         /**
          * The default account name for the development storage.
@@ -217,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2024-11-04";
+        public static final String TARGET_STORAGE_VERSION = "2025-11-05";
 
         /**
          * Error code returned from the service.
@@ -247,6 +250,16 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        /**
+         * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
+         *
+         * <p>Azure Blob Storage has a flat namespace and doesn't inherently support directories.
+         * To implement directory-like organization, the Azure Storage client libraries use
+         * the convention of empty blobs with this metadata key set to "true".
+         *
+         * <p>When this metadata is present on a zero-length blob without extension, it should
+         * be treated as a directory marker rather than a regular blob.
+         */
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
 
         public static final String X_MS_META = "x-ms-meta";
@@ -254,6 +267,10 @@ public final class Constants {
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
+
+        public static final String VERSION = "x-ms-version";
+
+        public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
         private HeaderConstants() {
             // Private to prevent construction.

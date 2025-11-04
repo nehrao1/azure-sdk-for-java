@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Replication properties.
@@ -33,14 +33,47 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     private ReplicationSchedule replicationSchedule;
 
     /*
-     * The resource ID of the remote volume.
+     * The resource ID of the remote volume. Required for cross region and cross zone replication
      */
     private String remoteVolumeResourceId;
+
+    /*
+     * The full path to a volume that is to be migrated into ANF. Required for Migration volumes
+     */
+    private RemotePath remotePath;
 
     /*
      * The remote region for the other end of the Volume Replication.
      */
     private String remoteVolumeRegion;
+
+    /*
+     * A list of destination replications
+     */
+    private List<DestinationReplication> destinationReplications;
+
+    /*
+     * Property that only applies to external replications. Provides a machine-readable value for the status of the
+     * external replication setup.
+     */
+    private ExternalReplicationSetupStatus externalReplicationSetupStatus;
+
+    /*
+     * Contains human-readable instructions on what the next step is to finish the external replication setup.
+     */
+    private String externalReplicationSetupInfo;
+
+    /*
+     * The mirror state property describes the current status of data replication for a replication. It provides insight
+     * into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to
+     * be initialized.
+     */
+    private MirrorState mirrorState;
+
+    /*
+     * The status of the Volume Replication
+     */
+    private RelationshipStatus relationshipStatus;
 
     /**
      * Creates an instance of ReplicationObject class.
@@ -68,18 +101,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
-     * Set the endpointType property: Indicates whether the local volume is the source or destination for the Volume
-     * Replication.
-     * 
-     * @param endpointType the endpointType value to set.
-     * @return the ReplicationObject object itself.
-     */
-    public ReplicationObject withEndpointType(EndpointType endpointType) {
-        this.endpointType = endpointType;
-        return this;
-    }
-
-    /**
      * Get the replicationSchedule property: Schedule.
      * 
      * @return the replicationSchedule value.
@@ -100,7 +121,8 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
-     * Get the remoteVolumeResourceId property: The resource ID of the remote volume.
+     * Get the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
+     * cross zone replication.
      * 
      * @return the remoteVolumeResourceId value.
      */
@@ -109,13 +131,36 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
-     * Set the remoteVolumeResourceId property: The resource ID of the remote volume.
+     * Set the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
+     * cross zone replication.
      * 
      * @param remoteVolumeResourceId the remoteVolumeResourceId value to set.
      * @return the ReplicationObject object itself.
      */
     public ReplicationObject withRemoteVolumeResourceId(String remoteVolumeResourceId) {
         this.remoteVolumeResourceId = remoteVolumeResourceId;
+        return this;
+    }
+
+    /**
+     * Get the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @return the remotePath value.
+     */
+    public RemotePath remotePath() {
+        return this.remotePath;
+    }
+
+    /**
+     * Set the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @param remotePath the remotePath value to set.
+     * @return the ReplicationObject object itself.
+     */
+    public ReplicationObject withRemotePath(RemotePath remotePath) {
+        this.remotePath = remotePath;
         return this;
     }
 
@@ -140,19 +185,67 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
+     * Get the destinationReplications property: A list of destination replications.
+     * 
+     * @return the destinationReplications value.
+     */
+    public List<DestinationReplication> destinationReplications() {
+        return this.destinationReplications;
+    }
+
+    /**
+     * Get the externalReplicationSetupStatus property: Property that only applies to external replications. Provides a
+     * machine-readable value for the status of the external replication setup.
+     * 
+     * @return the externalReplicationSetupStatus value.
+     */
+    public ExternalReplicationSetupStatus externalReplicationSetupStatus() {
+        return this.externalReplicationSetupStatus;
+    }
+
+    /**
+     * Get the externalReplicationSetupInfo property: Contains human-readable instructions on what the next step is to
+     * finish the external replication setup.
+     * 
+     * @return the externalReplicationSetupInfo value.
+     */
+    public String externalReplicationSetupInfo() {
+        return this.externalReplicationSetupInfo;
+    }
+
+    /**
+     * Get the mirrorState property: The mirror state property describes the current status of data replication for a
+     * replication. It provides insight into whether the data is actively being mirrored, if the replication process has
+     * been paused, or if it has yet to be initialized.
+     * 
+     * @return the mirrorState value.
+     */
+    public MirrorState mirrorState() {
+        return this.mirrorState;
+    }
+
+    /**
+     * Get the relationshipStatus property: The status of the Volume Replication.
+     * 
+     * @return the relationshipStatus value.
+     */
+    public RelationshipStatus relationshipStatus() {
+        return this.relationshipStatus;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (remoteVolumeResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property remoteVolumeResourceId in model ReplicationObject"));
+        if (remotePath() != null) {
+            remotePath().validate();
+        }
+        if (destinationReplications() != null) {
+            destinationReplications().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ReplicationObject.class);
 
     /**
      * {@inheritDoc}
@@ -160,10 +253,10 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
-        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("replicationSchedule",
             this.replicationSchedule == null ? null : this.replicationSchedule.toString());
+        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
+        jsonWriter.writeJsonField("remotePath", this.remotePath);
         jsonWriter.writeStringField("remoteVolumeRegion", this.remoteVolumeRegion);
         return jsonWriter.writeEndObject();
     }
@@ -174,7 +267,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
      * @param jsonReader The JsonReader being read.
      * @return An instance of ReplicationObject if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ReplicationObject.
      */
     public static ReplicationObject fromJson(JsonReader jsonReader) throws IOException {
@@ -184,17 +276,33 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("remoteVolumeResourceId".equals(fieldName)) {
-                    deserializedReplicationObject.remoteVolumeResourceId = reader.getString();
-                } else if ("replicationId".equals(fieldName)) {
+                if ("replicationId".equals(fieldName)) {
                     deserializedReplicationObject.replicationId = reader.getString();
                 } else if ("endpointType".equals(fieldName)) {
                     deserializedReplicationObject.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("replicationSchedule".equals(fieldName)) {
                     deserializedReplicationObject.replicationSchedule
                         = ReplicationSchedule.fromString(reader.getString());
+                } else if ("remoteVolumeResourceId".equals(fieldName)) {
+                    deserializedReplicationObject.remoteVolumeResourceId = reader.getString();
+                } else if ("remotePath".equals(fieldName)) {
+                    deserializedReplicationObject.remotePath = RemotePath.fromJson(reader);
                 } else if ("remoteVolumeRegion".equals(fieldName)) {
                     deserializedReplicationObject.remoteVolumeRegion = reader.getString();
+                } else if ("destinationReplications".equals(fieldName)) {
+                    List<DestinationReplication> destinationReplications
+                        = reader.readArray(reader1 -> DestinationReplication.fromJson(reader1));
+                    deserializedReplicationObject.destinationReplications = destinationReplications;
+                } else if ("externalReplicationSetupStatus".equals(fieldName)) {
+                    deserializedReplicationObject.externalReplicationSetupStatus
+                        = ExternalReplicationSetupStatus.fromString(reader.getString());
+                } else if ("externalReplicationSetupInfo".equals(fieldName)) {
+                    deserializedReplicationObject.externalReplicationSetupInfo = reader.getString();
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedReplicationObject.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedReplicationObject.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

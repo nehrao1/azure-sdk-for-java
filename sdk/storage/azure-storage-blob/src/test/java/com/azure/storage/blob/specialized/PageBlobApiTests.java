@@ -4,16 +4,19 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -35,6 +38,7 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
@@ -50,6 +54,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
@@ -85,8 +90,8 @@ public class PageBlobApiTests extends BlobTestBase {
     public void createAllNull() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
 
-        Response<PageBlobItem> response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null,
-            null);
+        Response<PageBlobItem> response
+            = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
@@ -102,8 +107,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void createSequenceNumber() {
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null,
-            null, null);
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null, null, null);
         assertEquals(bc.getProperties().getBlobSequenceNumber(), 2);
     }
 
@@ -131,8 +135,7 @@ public class PageBlobApiTests extends BlobTestBase {
     private static Stream<Arguments> createHeadersSupplier() throws NoSuchAlgorithmException {
         return Stream.of(Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
-                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())),
-                "type"));
+                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type"));
     }
 
     @ParameterizedTest
@@ -153,10 +156,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz")
-        );
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -180,11 +180,8 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createTagsSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"),
-            Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null)
-        );
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"),
+            Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -195,8 +192,7 @@ public class PageBlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -211,35 +207,42 @@ public class PageBlobApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null,
-            null, bac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null));
     }
 
     @Test
     public void createError() {
-        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES,
-            null, null, null, new BlobRequestConditions().setLeaseId("id"), null, null));
+        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null,
+            null, new BlobRequestConditions().setLeaseId("id"), null, null));
     }
 
     @Test
     public void createIfNotExistsAllNull() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
 
-        Response<PageBlobItem> response = bc.createIfNotExistsWithResponse(
-            new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null);
+        Response<PageBlobItem> response
+            = bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
         assertNull(response.getValue().getContentMd5());
         assertTrue(response.getValue().isServerEncrypted());
+    }
+
+    @Test
+    public void createIfNotExistsSimple() {
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+
+        bc.createIfNotExists(PageBlobClient.PAGE_BYTES);
+        assertTrue(bc.exists());
     }
 
     @Test
@@ -260,8 +263,8 @@ public class PageBlobApiTests extends BlobTestBase {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getPageBlobClient();
 
-        assertResponseStatusCode(bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES),
-            null, null), 201);
+        assertResponseStatusCode(
+            bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null), 201);
     }
 
     @Test
@@ -289,8 +292,8 @@ public class PageBlobApiTests extends BlobTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers),
-            null, null);
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers), null,
+            null);
 
         Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, null);
 
@@ -302,10 +305,8 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createIfNotExistsHeadersSupplier() throws NoSuchAlgorithmException {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
-            Arguments.of("control", "disposition", "encoding", "language",
-                MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()), "type"));
+        return Stream.of(Arguments.of(null, null, null, null, null, null), Arguments.of("control", "disposition",
+            "encoding", "language", MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()), "type"));
     }
 
     @ParameterizedTest
@@ -331,9 +332,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createIfNotExistsMetadataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"));
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -351,8 +350,8 @@ public class PageBlobApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags),
-            null, null);
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null,
+            null);
 
         Response<Map<String, String>> response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null);
 
@@ -361,47 +360,44 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createIfNotExistsTagsSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"),
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"),
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-
     @Test
     public void uploadPage() {
-        Response<PageBlobItem> response = bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
+        Response<PageBlobItem> response
+            = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
-        assertNotNull(response.getHeaders().getValue("x-ms-content-crc64"));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
         assertEquals(response.getValue().getBlobSequenceNumber(), 0);
         assertTrue(response.getValue().isServerEncrypted());
     }
 
     @Test
     public void uploadPageMin() {
-        assertResponseStatusCode(bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null), 201);
+        assertResponseStatusCode(
+            bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null),
+            201);
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageIASupplier")
     public void uploadPageIA(Integer dataSize, Throwable exceptionType) {
         ByteArrayInputStream data = (dataSize == null) ? null : new ByteArrayInputStream(getRandomByteArray(dataSize));
-        assertThrows(exceptionType.getClass(), () -> bc.uploadPages(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1), data));
+        assertThrows(exceptionType.getClass(),
+            () -> bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1), data));
     }
 
     private static Stream<Arguments> uploadPageIASupplier() {
-        return Stream.of(
-            Arguments.of(null, new NullPointerException()),
+        return Stream.of(Arguments.of(null, new NullPointerException()),
             Arguments.of(PageBlobClient.PAGE_BYTES, new UnexpectedLengthException(null, 0L, 0L /* dummy values */)),
-            Arguments.of(PageBlobClient.PAGE_BYTES * 3, new UnexpectedLengthException(null, 0L, 0L /* dummy values */))
-        );
+            Arguments.of(PageBlobClient.PAGE_BYTES * 3,
+                new UnexpectedLengthException(null, 0L, 0L /* dummy values */)));
     }
 
     @Test
@@ -409,15 +405,16 @@ public class PageBlobApiTests extends BlobTestBase {
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
         byte[] md5 = MessageDigest.getInstance("MD5").digest(data);
 
-        assertResponseStatusCode(bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(data), md5, null, null, null), 201);
+        assertResponseStatusCode(
+            bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(data), md5, null, null, null),
+            201);
     }
 
     @Test
     public void uploadPageTransactionalMD5Fail() {
-        BlobStorageException e = assertThrows(BlobStorageException.class, () ->
-            bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
                 new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
                 MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null));
         assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
@@ -431,8 +428,7 @@ public class PageBlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -442,9 +438,10 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null), 201);
+        assertResponseStatusCode(
+            bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null),
+            201);
     }
 
     private static Stream<Arguments> uploadPageACSupplier() {
@@ -466,8 +463,7 @@ public class PageBlobApiTests extends BlobTestBase {
         String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual, String tags) {
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -477,14 +473,13 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null));
     }
 
     private static Stream<Arguments> uploadPageACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null, null, null, null),
@@ -499,10 +494,10 @@ public class PageBlobApiTests extends BlobTestBase {
     public void uploadPageError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
 
-        assertThrows(BlobStorageException.class, () -> bc.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
-            new PageBlobRequestConditions().setLeaseId("id"), null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
+                new PageBlobRequestConditions().setLeaseId("id"), null, null));
     }
 
     @Test
@@ -529,15 +524,14 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = destURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        Response<PageBlobItem> response = bc.uploadPagesFromUrlWithResponse(pageRange,
-            destURL.getBlobUrl() + "?" + sas, null, null, null,
-            null, null, null);
+        Response<PageBlobItem> response = bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl() + "?" + sas,
+            null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -545,12 +539,16 @@ public class PageBlobApiTests extends BlobTestBase {
         destBlob.createIfNotExists(Constants.KB);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
 
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
+    }
 
     @Test
     public void uploadPageFromURLRange() {
@@ -571,18 +569,18 @@ public class PageBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         destURL.downloadStream(outputStream);
-        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(),
-            0, PageBlobClient.PAGE_BYTES * 2);
+        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(), 0,
+            PageBlobClient.PAGE_BYTES * 2);
     }
 
     @Test
     public void uploadPageFromURLIA() {
-        assertThrows(IllegalArgumentException.class, () -> bc.uploadPagesFromUrl(null, bc.getBlobUrl(),
-            (long) PageBlobClient.PAGE_BYTES));
+        assertThrows(IllegalArgumentException.class,
+            () -> bc.uploadPagesFromUrl(null, bc.getBlobUrl(), (long) PageBlobClient.PAGE_BYTES));
     }
 
     @Test
-    public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+    public void uploadPageFromURLMD5() {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
@@ -591,9 +589,8 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
-            null, MessageDigest.getInstance("MD5").digest(data), null,
-            null, null, null));
+        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas, null,
+            MessageDigest.getInstance("MD5").digest(data), null, null, null, null));
     }
 
     @Test
@@ -605,9 +602,9 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> destURL.uploadPagesFromUrlWithResponse(pageRange,
-            bc.getBlobUrl() + "?" + sas, null, MessageDigest.getInstance("MD5")
-            .digest("garbage".getBytes()), null, null, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, null));
 
     }
 
@@ -615,8 +612,8 @@ public class PageBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void uploadPageFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                               String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
-                                               String tags) {
+        String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+        String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
@@ -625,8 +622,7 @@ public class PageBlobApiTests extends BlobTestBase {
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -638,24 +634,22 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
-            null, null, pac, null, null, null),
-            201);
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas, null,
+            null, pac, null, null, null), 201);
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageACFailSupplier")
     public void uploadPageFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                                   String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
-                                                   String tags) {
+        String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+        String tags) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -667,72 +661,63 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null, pac,
-            null, null, null));
+        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(pageRange,
+            sourceURL.getBlobUrl() + "?" + sas, null, null, pac, null, null, null));
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageFromURLSourceACSupplier")
     public void uploadPageFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-                                          String sourceIfMatch, String sourceIfNoneMatch) {
+        String sourceIfMatch, String sourceIfNoneMatch) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
         sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch);
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
+        BlobRequestConditions smac = new BlobRequestConditions().setIfModifiedSince(sourceIfModifiedSince)
             .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(sourceIfNoneMatch);
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
-            null, null, null, smac, null, null),
-            201);
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas, null,
+            null, null, smac, null, null), 201);
     }
 
     private static Stream<Arguments> uploadPageFromURLSourceACSupplier() {
-        return Stream.of(Arguments.of(null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null),
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null), Arguments.of(null, null, RECEIVED_ETAG, null),
             Arguments.of(null, null, null, GARBAGE_ETAG));
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageFromURLSourceACFailSupplier")
     public void uploadPageFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
-                                              OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
+        BlobRequestConditions smac = new BlobRequestConditions().setIfModifiedSince(sourceIfModifiedSince)
             .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null,
-            null, smac, null, null));
+        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(pageRange,
+            sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac, null, null));
     }
 
     private static Stream<Arguments> uploadPageFromURLSourceACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG));
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null), Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clearPage() {
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -764,8 +749,7 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -787,8 +771,7 @@ public class PageBlobApiTests extends BlobTestBase {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
-        PageBlobRequestConditions pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
+        PageBlobRequestConditions pac = new PageBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -798,24 +781,26 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.clearPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), pac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), pac,
+                null, null));
     }
 
     @Test
     public void clearPageError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
 
-        assertThrows(BlobStorageException.class, () ->
-            bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)));
+        assertThrows(BlobStorageException.class,
+            () -> bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRanges() {
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
-        Response<PageList> response = bc.getPageRangesWithResponse(new BlobRange(0,
-            (long) PageBlobClient.PAGE_BYTES), null, null, null);
+        Response<PageList> response
+            = bc.getPageRangesWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), null, null, null);
 
         assertResponseStatusCode(response, 200);
         assertEquals(1, response.getValue().getPageRange().size());
@@ -823,11 +808,13 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals("512", response.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesMin() {
         assertDoesNotThrow(() -> bc.getPageRanges(null));
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -838,34 +825,34 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertDoesNotThrow(() -> bc.getPageRangesWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES),
-            bac, null, null));
+        assertDoesNotThrow(
+            () -> bc.getPageRangesWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.getPageRangesWithResponse(
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), bac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.getPageRangesWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -906,9 +893,9 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
         // when: "max results on options"
-        Iterator<PagedResponse<PageRangeItem>> iterator = bc.listPageRanges(new ListPageRangesOptions(
-            new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1), null, null)
-            .iterableByPage().iterator();
+        Iterator<PagedResponse<PageRangeItem>> iterator
+            = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1),
+                null, null).iterableByPage().iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
         assertEquals(page.getValue().size(), 1);
@@ -919,8 +906,9 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
 
         // when: "max results on iterableByPage"
-        iterator = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)),
-            null, null).iterableByPage(1).iterator();
+        iterator = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)), null, null)
+            .iterableByPage(1)
+            .iterator();
         page = iterator.next();
 
         assertEquals(page.getValue().size(), 1);
@@ -941,13 +929,14 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1));
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
-        Iterator<PagedResponse<PageRangeItem>> iterator = bc.listPageRanges(new ListPageRangesOptions(
-            new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1), null, null)
-            .iterableByPage().iterator();
+        Iterator<PagedResponse<PageRangeItem>> iterator
+            = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1),
+                null, null).iterableByPage().iterator();
         String token = iterator.next().getContinuationToken();
 
-        iterator = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)),
-            null, null).iterableByPage(token).iterator();
+        iterator = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)), null, null)
+            .iterableByPage(token)
+            .iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
         assertEquals(page.getValue().size(), 1);
@@ -964,8 +953,9 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1));
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
-        Iterator<PageRangeItem> iterator = bc.listPageRanges(new ListPageRangesOptions(
-            new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB)), null, null).iterator();
+        Iterator<PageRangeItem> iterator
+            = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB)), null,
+                null).iterator();
 
         int size = 0;
         while (iterator.hasNext()) {
@@ -985,16 +975,16 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertDoesNotThrow(() -> bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0,
-            (long) PageBlobClient.PAGE_BYTES)).setRequestConditions(bac), null, null));
+        assertDoesNotThrow(() -> bc.listPageRanges(
+            new ListPageRangesOptions(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)).setRequestConditions(bac),
+            null, null));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
@@ -1002,19 +992,20 @@ public class PageBlobApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.listPageRanges(new ListPageRangesOptions(
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)).setRequestConditions(bac), null, null).stream()
-            .count());
+        assertThrows(BlobStorageException.class,
+            () -> bc.listPageRanges(
+                new ListPageRangesOptions(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)).setRequestConditions(bac),
+                null, null).stream().count());
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("getPageRangesDiffSupplier")
     public void getPageRangesDiff(List<PageRange> rangesToUpdate, List<PageRange> rangesToClear,
@@ -1026,13 +1017,13 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String snapId = bc.createSnapshot().getSnapshotId();
 
-        rangesToUpdate.forEach(it ->
-            bc.uploadPages(it, new ByteArrayInputStream(getRandomByteArray((int) (it.getEnd() - it.getStart()) + 1))));
+        rangesToUpdate.forEach(it -> bc.uploadPages(it,
+            new ByteArrayInputStream(getRandomByteArray((int) (it.getEnd() - it.getStart()) + 1))));
 
         rangesToClear.forEach(it -> bc.clearPages(it));
 
-        Response<PageList> response = bc.getPageRangesDiffWithResponse(new BlobRange(0, 4L * Constants.MB),
-            snapId, null, null, null);
+        Response<PageList> response
+            = bc.getPageRangesDiffWithResponse(new BlobRange(0, 4L * Constants.MB), snapId, null, null, null);
 
         assertTrue(validateBasicHeaders(response.getHeaders()));
         assertEquals(expectedPageRanges.size(), response.getValue().getPageRange().size());
@@ -1056,17 +1047,13 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> getPageRangesDiffSupplier() {
-        return Stream.of(
-            Arguments.of(createPageRanges(), createPageRanges(), createPageRanges(), createClearRanges()),
-            Arguments.of(createPageRanges(0, 511), createPageRanges(), createPageRanges(0, 511),
-                createClearRanges()),
-            Arguments.of(createPageRanges(), createPageRanges(0, 511), createPageRanges(),
-                createClearRanges(0, 511)),
-            Arguments.of(createPageRanges(0, 511), createPageRanges(512, 1023),
-                createPageRanges(0, 511), createClearRanges(512, 1023)),
+        return Stream.of(Arguments.of(createPageRanges(), createPageRanges(), createPageRanges(), createClearRanges()),
+            Arguments.of(createPageRanges(0, 511), createPageRanges(), createPageRanges(0, 511), createClearRanges()),
+            Arguments.of(createPageRanges(), createPageRanges(0, 511), createPageRanges(), createClearRanges(0, 511)),
+            Arguments.of(createPageRanges(0, 511), createPageRanges(512, 1023), createPageRanges(0, 511),
+                createClearRanges(512, 1023)),
             Arguments.of(createPageRanges(0, 511, 1024, 1535), createPageRanges(512, 1023, 1536, 2047),
-                createPageRanges(0, 511, 1024, 1535), createClearRanges(512, 1023, 1536, 2047))
-            );
+                createPageRanges(0, 511, 1024, 1535), createClearRanges(512, 1023, 1536, 2047)));
     }
 
     private static List<PageRange> createPageRanges(long... offsets) {
@@ -1096,12 +1083,14 @@ public class PageBlobApiTests extends BlobTestBase {
         return clearRanges;
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffMin() {
         String snapId = bc.createSnapshot().getSnapshotId();
         assertDoesNotThrow(() -> bc.getPageRangesDiff(null, snapId).getPageRange());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -1111,36 +1100,37 @@ public class PageBlobApiTests extends BlobTestBase {
         t.put("foo", "bar");
         bc.setTags(t);
         String snapId = bc.createSnapshot().getSnapshotId();
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertDoesNotThrow(() -> bc.getPageRangesDiffWithResponse(new BlobRange(0,
-            (long) PageBlobClient.PAGE_BYTES), snapId, bac, null, null));
+        assertDoesNotThrow(() -> bc.getPageRangesDiffWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES),
+            snapId, bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, String tags) {
         String snapId = bc.createSnapshot().getSnapshotId();
 
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.getPageRangesDiffWithResponse(
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapId, bac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.getPageRangesDiffWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapId, bac,
+                null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -1153,12 +1143,14 @@ public class PageBlobApiTests extends BlobTestBase {
     @Test
     public void getPageRangesDiffPrevSnapshotUrl() {
         BlobServiceClient managedDiskServiceClient = getServiceClient(ENVIRONMENT.getManagedDiskAccount());
-        BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName());
+        BlobContainerClient managedDiskContainer
+            = managedDiskServiceClient.getBlobContainerClient(generateContainerName());
         managedDiskContainer.create();
         PageBlobClient managedDiskBlob = managedDiskContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         managedDiskBlob.create(PageBlobClient.PAGE_BYTES * 2);
 
-        managedDiskBlob.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+        managedDiskBlob.uploadPages(
+            new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
         String snapUrl = managedDiskBlob.createSnapshot().getBlobUrl();
@@ -1166,7 +1158,8 @@ public class PageBlobApiTests extends BlobTestBase {
         managedDiskBlob.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
-        managedDiskBlob.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1));
+        managedDiskBlob
+            .clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1));
 
         Response<PageList> response = managedDiskBlob.getManagedDiskPageRangesDiffWithResponse(
             new BlobRange(0, PageBlobClient.PAGE_BYTES * 2L), snapUrl, null, null, null);
@@ -1197,8 +1190,8 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data);
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
-        Iterator<PageRangeItem> iterable = bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), snapshot)
-            .iterator();
+        Iterator<PageRangeItem> iterable
+            = bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), snapshot).iterator();
         PageRangeItem item = iterable.next();
 
         assertEquals(item.getRange(), new HttpRange(0L, (long) Constants.KB));
@@ -1250,8 +1243,8 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
 
         // when: "max results on iterableByPage"
-        iterator = bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB),
-            snapshot), null, null).iterableByPage(2).iterator();
+        iterator = bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot),
+            null, null).iterableByPage(2).iterator();
         page = iterator.next();
 
         assertEquals(page.getValue().size(), 2);
@@ -1277,9 +1270,9 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data);
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
-        Iterator<PagedResponse<PageRangeItem>> iterator = bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-            new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2), null, null)
-            .iterableByPage().iterator();
+        Iterator<PagedResponse<PageRangeItem>> iterator = bc.listPageRangesDiff(
+            new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2), null,
+            null).iterableByPage().iterator();
         String token = iterator.next().getContinuationToken();
 
         iterator = bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot),
@@ -1305,8 +1298,9 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data);
         bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1));
 
-        Iterator<PageRangeItem> iterator = bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-            new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB), snapshot), null, null).iterator();
+        Iterator<PageRangeItem> iterator = bc.listPageRangesDiff(
+            new ListPageRangesDiffOptions(new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB), snapshot), null, null)
+            .iterator();
 
         int size = 0;
         while (iterator.hasNext()) {
@@ -1331,17 +1325,21 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertDoesNotThrow(() -> bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapshot).setRequestConditions(bac), null, null)
-            .stream().count());
+        assertDoesNotThrow(
+            () -> bc
+                .listPageRangesDiff(
+                    new ListPageRangesDiffOptions(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapshot)
+                        .setRequestConditions(bac),
+                    null, null)
+                .stream()
+                .count());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
@@ -1350,17 +1348,21 @@ public class PageBlobApiTests extends BlobTestBase {
     public void listPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, String tags) {
         String snapshot = bc.createSnapshot().getSnapshotId();
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapshot).setRequestConditions(bac), null, null)
-            .stream().count());
+        assertThrows(BlobStorageException.class,
+            () -> bc
+                .listPageRangesDiff(
+                    new ListPageRangesDiffOptions(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapshot)
+                        .setRequestConditions(bac),
+                    null, null)
+                .stream()
+                .count());
     }
 
     @ParameterizedTest
@@ -1371,11 +1373,8 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> pageRangeIASupplier() {
-        return Stream.of(
-            Arguments.of(1, 1),
-            Arguments.of(-PageBlobClient.PAGE_BYTES, PageBlobClient.PAGE_BYTES - 1),
-            Arguments.of(0, 0),
-            Arguments.of(1, PageBlobClient.PAGE_BYTES - 1),
+        return Stream.of(Arguments.of(1, 1), Arguments.of(-PageBlobClient.PAGE_BYTES, PageBlobClient.PAGE_BYTES - 1),
+            Arguments.of(0, 0), Arguments.of(1, PageBlobClient.PAGE_BYTES - 1),
             Arguments.of(0, PageBlobClient.PAGE_BYTES),
             Arguments.of(PageBlobClient.PAGE_BYTES * 2, PageBlobClient.PAGE_BYTES - 1));
     }
@@ -1390,8 +1389,14 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void resizeSimple() {
+        bc.resize(PageBlobClient.PAGE_BYTES * 2);
+        assertEquals(PageBlobClient.PAGE_BYTES * 2, bc.getProperties().getBlobSize());
+    }
+
+    @Test
     public void resizeMin() {
-        assertResponseStatusCode(bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null),  200);
+        assertResponseStatusCode(bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null), 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1402,8 +1407,7 @@ public class PageBlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -1418,16 +1422,15 @@ public class PageBlobApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void resizeACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () ->
-            bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null));
     }
 
     @Test
@@ -1446,17 +1449,24 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals(response.getValue().getBlobSequenceNumber(), result);
     }
 
+    @ParameterizedTest
+    @MethodSource("sequenceNumberSupplier")
+    public void sequenceNumberSimple(SequenceNumberActionType action, Long number, Long result) {
+        bc.updateSequenceNumber(action, number);
+
+        assertEquals(result, bc.getProperties().getBlobSequenceNumber());
+    }
+
     private static Stream<Arguments> sequenceNumberSupplier() {
-        return Stream.of(
-            Arguments.of(SequenceNumberActionType.UPDATE, 5L, 5L),
+        return Stream.of(Arguments.of(SequenceNumberActionType.UPDATE, 5L, 5L),
             Arguments.of(SequenceNumberActionType.INCREMENT, null, 1L),
             Arguments.of(SequenceNumberActionType.MAX, 2L, 2L));
     }
 
     @Test
     public void sequenceNumberMin() {
-        assertResponseStatusCode(bc.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT,
-            null, null, null, null), 200);
+        assertResponseStatusCode(
+            bc.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT, null, null, null, null), 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1467,32 +1477,30 @@ public class PageBlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1L,
-            bac, null, null), 200);
+        assertResponseStatusCode(
+            bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1L, bac, null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void sequenceNumberACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () ->
-            bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1L, bac, null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1L, bac, null, null));
     }
 
     @Test
@@ -1509,8 +1517,8 @@ public class PageBlobApiTests extends BlobTestBase {
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
 
-        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapId, null, null,
-            null);
+        Response<CopyStatusType> copyResponse
+            = bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapId, null, null, null);
 
         CopyStatusType status = copyResponse.getValue();
         OffsetDateTime start = testResourceNamer.now();
@@ -1538,14 +1546,15 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot, null, null, null), 202);
+        assertResponseStatusCode(
+            bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot, null, null, null), 202);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                       String noneMatch, String tags) {
+        String noneMatch, String tags) {
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
 
@@ -1554,8 +1563,8 @@ public class PageBlobApiTests extends BlobTestBase {
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
 
-        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas,
-            snapshot, null, null, null);
+        Response<CopyStatusType> copyResponse
+            = bu2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot, null, null, null);
 
         CopyStatusType status = copyResponse.getValue();
         OffsetDateTime start = testResourceNamer.now();
@@ -1573,24 +1582,21 @@ public class PageBlobApiTests extends BlobTestBase {
 
         snapshot = bc.createSnapshot().getSnapshotId();
         match = setupBlobMatchCondition(bu2, match);
-        PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
+        PageBlobCopyIncrementalRequestConditions mac
+            = new PageBlobCopyIncrementalRequestConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch)
+                .setTagsConditions(tags);
 
         assertResponseStatusCode(bu2.copyIncrementalWithResponse(
-            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, snapshot).setRequestConditions(mac),
-            null, null),  202);
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, snapshot).setRequestConditions(mac), null,
+            null), 202);
     }
 
     private static Stream<Arguments> startIncrementalCopyACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null), Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null), Arguments.of(null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null),
             Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
     }
@@ -1598,7 +1604,7 @@ public class PageBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("startIncrementalCopyACFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                           String noneMatch, String tags) {
+        String noneMatch, String tags) {
 
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
@@ -1607,24 +1613,21 @@ public class PageBlobApiTests extends BlobTestBase {
         bu2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapshot);
         String finalSnapshot = bc.createSnapshot().getSnapshotId();
         noneMatch = setupBlobMatchCondition(bu2, noneMatch);
-        PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
+        PageBlobCopyIncrementalRequestConditions mac
+            = new PageBlobCopyIncrementalRequestConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch)
+                .setTagsConditions(tags);
 
         assertThrows(BlobStorageException.class, () -> bu2.copyIncrementalWithResponse(
-            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, finalSnapshot)
-            .setRequestConditions(mac), null, null));
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, finalSnapshot).setRequestConditions(mac),
+            null, null));
     }
 
     private static Stream<Arguments> startIncrementalCopyACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
             Arguments.of(null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
@@ -1653,14 +1656,10 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
-        return Stream.of(
-            Arguments.of("blobName", "blobName"),
-            Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
+        return Stream.of(Arguments.of("blobName", "blobName"), Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
             Arguments.of("path/to]a blob", "path/to]a blob"),
-            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"),
-            Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"),
-            Arguments.of("斑點", "斑點"));
+            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"), Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"), Arguments.of("斑點", "斑點"));
     }
 
     @Test
@@ -1677,9 +1676,8 @@ public class PageBlobApiTests extends BlobTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        PageBlobClient specialBlob = getSpecializedBuilder(bc.getBlobUrl())
-            .addPolicy(getPerCallVersionPolicy())
-            .buildPageBlobClient();
+        PageBlobClient specialBlob
+            = getSpecializedBuilder(bc.getBlobUrl()).addPolicy(getPerCallVersionPolicy()).buildPageBlobClient();
 
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
 
@@ -1688,9 +1686,8 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void defaultAudience() {
-        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(null)
-            .buildPageBlobClient();
+        PageBlobClient aadBlob
+            = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(null).buildPageBlobClient();
 
         assertTrue(aadBlob.exists());
     }
@@ -1723,10 +1720,44 @@ public class PageBlobApiTests extends BlobTestBase {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
-        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(audience)
-            .buildPageBlobClient();
+        PageBlobClient aadBlob
+            = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildPageBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        //Create destination page blob
+        PageBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getPageBlobClient();
+        destBlob.create(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // Upload page from URL with bearer token
+        destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
+
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 }

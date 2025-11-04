@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-standbypool</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,18 +45,14 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Microsoft Entra ID token authentication depends on correct configuration of the following environment variables.
+Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
-
-With above configuration, `azure` client can be authenticated using the following code:
+Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -64,7 +60,7 @@ StandbyPoolManager manager = StandbyPoolManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -74,6 +70,47 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
+
+// Create virtual network and virtual machine scale set
+virtualNetwork = this.computeManager.networkManager()
+    .networks()
+    .define("vmssvnet")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withAddressSpace("10.0.0.0/27")
+    .withSubnet("default", "10.0.0.0/27")
+    .create();
+
+virtualMachineScaleSet = computeManager.virtualMachineScaleSets()
+    .define("vmss")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withFlexibleOrchestrationMode()
+    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+    .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
+    .withoutPrimaryInternetFacingLoadBalancer()
+    .withoutPrimaryInternalLoadBalancer()
+    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+    .withRootUsername("Foo12")
+    .withSsh(sshPublicKey())
+    .withVirtualMachinePublicIp()
+    .withCapacity(3L)
+    .create();
+
+// create standby virtual machine pool
+standbyVirtualMachinePool = standbyPoolManager.standbyVirtualMachinePools()
+    .define(poolName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withProperties(new StandbyVirtualMachinePoolResourceProperties()
+        .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
+        .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
+        .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3L)
+            .withMinReadyCapacity(1L)))
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/standbypool/azure-resourcemanager-standbypool/SAMPLE.md)
 
 
@@ -97,11 +134,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstandbypool%2Fazure-resourcemanager-standbypool%2FREADME.png)

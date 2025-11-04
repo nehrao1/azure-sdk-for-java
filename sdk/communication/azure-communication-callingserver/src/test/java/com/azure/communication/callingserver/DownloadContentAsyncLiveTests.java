@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -24,9 +25,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -45,7 +44,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithConnectionStringAsyncClient");
+        CallAutomationAsyncClient conversationAsyncClient
+            = setupAsyncClient(builder, "downloadMetadataWithConnectionStringAsyncClient");
         downloadMetadata(conversationAsyncClient);
     }
 
@@ -58,7 +58,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void downloadMetadataWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithTokenCredentialAsyncClient");
+        CallAutomationAsyncClient conversationAsyncClient
+            = setupAsyncClient(builder, "downloadMetadataWithTokenCredentialAsyncClient");
         downloadMetadata(conversationAsyncClient);
     }
 
@@ -103,14 +104,13 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
 
         try {
-            StepVerifier.create(conversationAsyncClient.getCallRecordingAsync()
-                    .downloadStreamWithResponse(VIDEO_URL, null))
-                    .consumeNextWith(response -> StepVerifier.create(response.getValue())
-                        .consumeNextWith(byteBuffer ->
-                            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
-                            is(equalTo(byteBuffer.array().length))))
-                        .verifyComplete())
-                    .verifyComplete();
+            StepVerifier
+                .create(conversationAsyncClient.getCallRecordingAsync().downloadStreamWithResponse(VIDEO_URL, null))
+                .consumeNextWith(response -> StepVerifier.create(response.getValue())
+                    .consumeNextWith(byteBuffer -> assertEquals(byteBuffer.array().length,
+                        Integer.parseInt(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH))))
+                    .verifyComplete())
+                .verifyComplete();
         } catch (Exception e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Error", e);
             throw e;
@@ -139,23 +139,15 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
             completionHandler.completed(438, stream.position(stream.limit()));
             return null;
-        }).when(channel).write(any(ByteBuffer.class),
-            anyLong(),
-            any(),
-            any());
+        }).when(channel).write(any(ByteBuffer.class), anyLong(), any(), any());
 
         ParallelDownloadOptions parallelOptions = new ParallelDownloadOptions().setBlockSize(479L);
         DownloadToFileOptions options = new DownloadToFileOptions().setParallelDownloadOptions(parallelOptions);
-        conversationAsyncClient
-            .getCallRecordingAsync()
-            .downloadToWithResponse(METADATA_URL,
-                Paths.get("dummyPath"),
-                channel,
-                options,
-                Context.NONE).block();
+        conversationAsyncClient.getCallRecordingAsync()
+            .downloadToWithResponse(METADATA_URL, Paths.get("dummyPath"), channel, options, Context.NONE)
+            .block();
 
-        Mockito.verify(channel, times(2)).write(any(ByteBuffer.class), anyLong(),
-            any(), any());
+        Mockito.verify(channel, times(2)).write(any(ByteBuffer.class), anyLong(), any(), any());
     }
 
     @ParameterizedTest
@@ -177,22 +169,14 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
             completionHandler.completed(957, stream.position(stream.limit()));
             return null;
-        }).when(channel).write(any(ByteBuffer.class),
-            anyLong(),
-            any(),
-            any());
+        }).when(channel).write(any(ByteBuffer.class), anyLong(), any(), any());
 
+        conversationAsyncClient.getCallRecordingAsync()
+            .downloadToWithResponse(METADATA_URL, Paths.get("dummyPath"), channel, new DownloadToFileOptions(),
+                Context.NONE)
+            .block();
 
-        conversationAsyncClient
-            .getCallRecordingAsync()
-            .downloadToWithResponse(METADATA_URL,
-                Paths.get("dummyPath"),
-                channel,
-                new DownloadToFileOptions(),
-                Context.NONE).block();
-
-        Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
-            any(), any());
+        Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(), any(), any());
     }
 
     @ParameterizedTest
@@ -205,11 +189,10 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
     public void downloadContent404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
-        StepVerifier.create(conversationAsyncClient
-                .getCallRecordingAsync()
-                .downloadStreamWithResponse(CONTENT_URL_404, null))
+        StepVerifier
+            .create(conversationAsyncClient.getCallRecordingAsync().downloadStreamWithResponse(CONTENT_URL_404, null))
             .consumeNextWith(response -> {
-                assertThat(response.getStatusCode(), is(equalTo(404)));
+                assertEquals(404, response.getStatusCode());
                 StepVerifier.create(response.getValue()).verifyError(CallingServerErrorException.class);
             })
             .verifyComplete();
@@ -224,11 +207,10 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
     }
 
     private void validateMetadata(Flux<ByteBuffer> metadataByteBuffer) {
-        StepVerifier.create(metadataByteBuffer)
-            .consumeNextWith(byteBuffer -> {
-                String metadata = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-                assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
-            })
-            .verifyComplete();
+        StepVerifier.create(metadataByteBuffer).consumeNextWith(byteBuffer -> {
+            String metadata = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"),
+                "Expected " + metadata + " to contain '0-eus-d2-3cca2175891f21c6c9a5975a12c0141c'.");
+        }).verifyComplete();
     }
 }

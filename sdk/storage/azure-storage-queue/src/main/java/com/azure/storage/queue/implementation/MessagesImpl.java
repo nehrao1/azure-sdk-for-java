@@ -31,8 +31,8 @@ import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
-import reactor.core.publisher.Mono;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in Messages.
@@ -64,7 +64,7 @@ public final class MessagesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageMes")
+    @ServiceInterface(name = "AzureQueueStorageMessages")
     public interface MessagesService {
 
         @Get("/{queueName}/messages")
@@ -225,7 +225,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -238,10 +238,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> dequeueWithResponseAsync(
         String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.dequeue(this.client.getUrl(), queueName, numberOfMessages,
-                visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> dequeueWithResponseAsync(queueName, numberOfMessages, visibilitytimeout, timeout,
+                requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -257,7 +256,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -291,7 +290,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -320,7 +319,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -350,7 +349,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -363,10 +362,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueMessageItemInternalWrapper>> dequeueNoCustomHeadersWithResponseAsync(String queueName,
         Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.dequeueNoCustomHeaders(this.client.getUrl(), queueName, numberOfMessages,
-                visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> dequeueNoCustomHeadersWithResponseAsync(queueName, numberOfMessages,
+                visibilitytimeout, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -382,7 +380,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -415,7 +413,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -428,8 +426,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> dequeueWithResponse(String queueName,
         Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.dequeueSync(this.client.getUrl(), queueName, numberOfMessages, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -449,7 +447,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -481,7 +479,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -494,8 +492,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueMessageItemInternalWrapper> dequeueNoCustomHeadersWithResponse(String queueName,
         Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.dequeueNoCustomHeadersSync(this.client.getUrl(), queueName, numberOfMessages,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -508,7 +506,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -520,10 +518,7 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<MessagesClearHeaders, Void>> clearWithResponseAsync(String queueName, Integer timeout,
         String requestId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.clear(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
-                requestId, accept, context))
+        return FluxUtil.withContext(context -> clearWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -532,7 +527,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -556,7 +551,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -577,7 +572,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -599,7 +594,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -611,10 +606,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.clearNoCustomHeaders(this.client.getUrl(), queueName, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> clearNoCustomHeadersWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -623,7 +616,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -648,7 +641,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -661,8 +654,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesClearHeaders, Void> clearWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.clearSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId,
                 accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -675,7 +668,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -693,7 +686,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -706,8 +699,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.clearNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -733,7 +726,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -747,10 +740,9 @@ public final class MessagesImpl {
     public Mono<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> enqueueWithResponseAsync(
         String queueName, QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive,
         Integer timeout, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.enqueue(this.client.getUrl(), queueName, visibilitytimeout,
-                messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
+            .withContext(context -> enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout,
+                messageTimeToLive, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -772,7 +764,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -812,7 +804,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -826,7 +818,7 @@ public final class MessagesImpl {
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
             requestId).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -847,7 +839,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -862,7 +854,7 @@ public final class MessagesImpl {
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
             requestId, context).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -883,7 +875,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -897,10 +889,9 @@ public final class MessagesImpl {
     public Mono<Response<SendMessageResultWrapper>> enqueueNoCustomHeadersWithResponseAsync(String queueName,
         QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout,
         String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.enqueueNoCustomHeaders(this.client.getUrl(), queueName, visibilitytimeout,
-                messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
+            .withContext(context -> enqueueNoCustomHeadersWithResponseAsync(queueName, queueMessage, visibilitytimeout,
+                messageTimeToLive, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -922,7 +913,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -962,7 +953,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -976,8 +967,8 @@ public final class MessagesImpl {
     public ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> enqueueWithResponse(String queueName,
         QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout,
         String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.enqueueSync(this.client.getUrl(), queueName, visibilitytimeout, messageTimeToLive, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1003,7 +994,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1041,7 +1032,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1055,8 +1046,8 @@ public final class MessagesImpl {
     public Response<SendMessageResultWrapper> enqueueNoCustomHeadersWithResponse(String queueName,
         QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout,
         String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.enqueueNoCustomHeadersSync(this.client.getUrl(), queueName, visibilitytimeout,
                 messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1073,7 +1064,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1086,11 +1077,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>>
         peekWithResponseAsync(String queueName, Integer numberOfMessages, Integer timeout, String requestId) {
-        final String peekonly = "true";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.peek(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> peekWithResponseAsync(queueName, numberOfMessages, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1103,7 +1091,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1134,7 +1122,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1160,7 +1148,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1187,7 +1175,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1200,11 +1188,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PeekedMessageItemInternalWrapper>> peekNoCustomHeadersWithResponseAsync(String queueName,
         Integer numberOfMessages, Integer timeout, String requestId) {
-        final String peekonly = "true";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.peekNoCustomHeaders(this.client.getUrl(), queueName, peekonly,
-                numberOfMessages, timeout, this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(
+            context -> peekNoCustomHeadersWithResponseAsync(queueName, numberOfMessages, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1217,7 +1202,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1248,7 +1233,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1261,9 +1246,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> peekWithResponse(String queueName,
         Integer numberOfMessages, Integer timeout, String requestId, Context context) {
-        final String peekonly = "true";
-        final String accept = "application/xml";
         try {
+            final String peekonly = "true";
+            final String accept = "application/xml";
             return service.peekSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1280,7 +1265,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1308,7 +1293,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1321,9 +1306,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeekedMessageItemInternalWrapper> peekNoCustomHeadersWithResponse(String queueName,
         Integer numberOfMessages, Integer timeout, String requestId, Context context) {
-        final String peekonly = "true";
-        final String accept = "application/xml";
         try {
+            final String peekonly = "true";
+            final String accept = "application/xml";
             return service.peekNoCustomHeadersSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {

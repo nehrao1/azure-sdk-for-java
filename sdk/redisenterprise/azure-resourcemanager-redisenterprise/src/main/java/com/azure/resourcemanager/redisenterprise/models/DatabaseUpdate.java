@@ -5,22 +5,23 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseUpdateProperties;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A partial update to the RedisEnterprise database.
+ * A partial update to the Redis Enterprise database.
  */
 @Fluent
-public final class DatabaseUpdate {
+public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
     /*
-     * RedisEnterprise database properties
-     * 
      * Properties of the database.
      */
-    @JsonProperty(value = "properties")
-    private DatabaseProperties innerProperties;
+    private DatabaseUpdateProperties innerProperties;
 
     /**
      * Creates an instance of DatabaseUpdate class.
@@ -29,13 +30,11 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Get the innerProperties property: RedisEnterprise database properties
-     * 
-     * Properties of the database.
+     * Get the innerProperties property: Properties of the database.
      * 
      * @return the innerProperties value.
      */
-    private DatabaseProperties innerProperties() {
+    private DatabaseUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -58,7 +57,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withClientProtocol(Protocol clientProtocol) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withClientProtocol(clientProtocol);
         return this;
@@ -83,7 +82,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withPort(Integer port) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withPort(port);
         return this;
@@ -108,7 +107,9 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
+     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @return the clusteringPolicy value.
      */
@@ -117,14 +118,16 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
+     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @param clusteringPolicy the clusteringPolicy value to set.
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withClusteringPolicy(clusteringPolicy);
         return this;
@@ -147,7 +150,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withEvictionPolicy(EvictionPolicy evictionPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withEvictionPolicy(evictionPolicy);
         return this;
@@ -170,7 +173,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withPersistence(Persistence persistence) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withPersistence(persistence);
         return this;
@@ -195,7 +198,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withModules(List<Module> modules) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withModules(modules);
         return this;
@@ -218,7 +221,7 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withGeoReplication(geoReplication);
         return this;
@@ -252,9 +255,34 @@ public final class DatabaseUpdate {
      */
     public DatabaseUpdate withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withDeferUpgrade(deferUpgrade);
+        return this;
+    }
+
+    /**
+     * Get the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny access with the
+     * current access keys. Can be updated even after database is created.
+     * 
+     * @return the accessKeysAuthentication value.
+     */
+    public AccessKeysAuthentication accessKeysAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessKeysAuthentication();
+    }
+
+    /**
+     * Set the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny access with the
+     * current access keys. Can be updated even after database is created.
+     * 
+     * @param accessKeysAuthentication the accessKeysAuthentication value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseUpdateProperties();
+        }
+        this.innerProperties().withAccessKeysAuthentication(accessKeysAuthentication);
         return this;
     }
 
@@ -267,5 +295,41 @@ public final class DatabaseUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseUpdate.
+     */
+    public static DatabaseUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseUpdate deserializedDatabaseUpdate = new DatabaseUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDatabaseUpdate.innerProperties = DatabaseUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseUpdate;
+        });
     }
 }

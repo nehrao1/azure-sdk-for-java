@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,26 @@ public class HttpDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "HttpFile";
 
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
+    @Generated
     private Object relativeUrl;
 
     /*
      * The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object requestMethod;
 
     /*
      * The body for the HTTP request. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object requestBody;
 
     /*
@@ -43,21 +49,25 @@ public class HttpDataset extends Dataset {
      * ...
      * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object additionalHeaders;
 
     /*
      * The format of files.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used on files.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of HttpDataset class.
      */
+    @Generated
     public HttpDataset() {
     }
 
@@ -66,6 +76,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -77,6 +88,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the relativeUrl value.
      */
+    @Generated
     public Object getRelativeUrl() {
         return this.relativeUrl;
     }
@@ -88,6 +100,7 @@ public class HttpDataset extends Dataset {
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setRelativeUrl(Object relativeUrl) {
         this.relativeUrl = relativeUrl;
         return this;
@@ -99,6 +112,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the requestMethod value.
      */
+    @Generated
     public Object getRequestMethod() {
         return this.requestMethod;
     }
@@ -110,6 +124,7 @@ public class HttpDataset extends Dataset {
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setRequestMethod(Object requestMethod) {
         this.requestMethod = requestMethod;
         return this;
@@ -120,6 +135,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the requestBody value.
      */
+    @Generated
     public Object getRequestBody() {
         return this.requestBody;
     }
@@ -130,6 +146,7 @@ public class HttpDataset extends Dataset {
      * @param requestBody the requestBody value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setRequestBody(Object requestBody) {
         this.requestBody = requestBody;
         return this;
@@ -143,6 +160,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the additionalHeaders value.
      */
+    @Generated
     public Object getAdditionalHeaders() {
         return this.additionalHeaders;
     }
@@ -156,6 +174,7 @@ public class HttpDataset extends Dataset {
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setAdditionalHeaders(Object additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
         return this;
@@ -166,6 +185,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -176,6 +196,7 @@ public class HttpDataset extends Dataset {
      * @param format the format value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -186,6 +207,7 @@ public class HttpDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -196,6 +218,7 @@ public class HttpDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the HttpDataset object itself.
      */
+    @Generated
     public HttpDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -204,6 +227,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setDescription(String description) {
         super.setDescription(description);
@@ -213,6 +237,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -222,6 +247,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -231,6 +257,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -240,6 +267,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -249,6 +277,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -258,6 +287,7 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -267,13 +297,18 @@ public class HttpDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -285,10 +320,18 @@ public class HttpDataset extends Dataset {
             || format != null
             || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
-            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-            jsonWriter.writeUntypedField("requestBody", this.requestBody);
-            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+            if (this.relativeUrl != null) {
+                jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+            }
+            if (this.requestMethod != null) {
+                jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+            }
+            if (this.requestBody != null) {
+                jsonWriter.writeUntypedField("requestBody", this.requestBody);
+            }
+            if (this.additionalHeaders != null) {
+                jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+            }
             jsonWriter.writeJsonField("format", this.format);
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
@@ -310,6 +353,7 @@ public class HttpDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HttpDataset.
      */
+    @Generated
     public static HttpDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HttpDataset deserializedHttpDataset = new HttpDataset();

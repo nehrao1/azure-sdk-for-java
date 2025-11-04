@@ -48,7 +48,7 @@ public final class ComponentSetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private LicensedComponentSetupTypeProperties innerTypeProperties() {
+    LicensedComponentSetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -105,7 +105,6 @@ public final class ComponentSetup extends CustomSetupBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,35 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureSynapseArtifacts";
 
     /*
-     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression with resultType string).
+     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression
+     * with resultType string).
      */
+    @Generated
     private Object endpoint;
 
     /*
-     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or Expression with resultType string).
+     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object authentication;
 
     /*
-     * The resource ID of the Synapse workspace. The format should be: /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}. Type: string (or Expression with resultType string).
+     * The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{
+     * workspaceName}. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object workspaceResourceId;
 
     /**
      * Creates an instance of AzureSynapseArtifactsLinkedService class.
      */
+    @Generated
     public AzureSynapseArtifactsLinkedService() {
     }
 
@@ -49,6 +59,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +71,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * 
      * @return the endpoint value.
      */
+    @Generated
     public Object getEndpoint() {
         return this.endpoint;
     }
@@ -71,6 +83,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * @param endpoint the endpoint value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
+    @Generated
     public AzureSynapseArtifactsLinkedService setEndpoint(Object endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -82,6 +95,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * 
      * @return the authentication value.
      */
+    @Generated
     public Object getAuthentication() {
         return this.authentication;
     }
@@ -93,6 +107,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * @param authentication the authentication value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
+    @Generated
     public AzureSynapseArtifactsLinkedService setAuthentication(Object authentication) {
         this.authentication = authentication;
         return this;
@@ -105,6 +120,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * 
      * @return the workspaceResourceId value.
      */
+    @Generated
     public Object getWorkspaceResourceId() {
         return this.workspaceResourceId;
     }
@@ -117,6 +133,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
+    @Generated
     public AzureSynapseArtifactsLinkedService setWorkspaceResourceId(Object workspaceResourceId) {
         this.workspaceResourceId = workspaceResourceId;
         return this;
@@ -125,6 +142,17 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureSynapseArtifactsLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureSynapseArtifactsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -134,6 +162,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSynapseArtifactsLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -143,6 +172,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSynapseArtifactsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -152,6 +182,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSynapseArtifactsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -161,9 +192,11 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -172,8 +205,12 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
         if (endpoint != null || authentication != null || workspaceResourceId != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("endpoint", this.endpoint);
-            jsonWriter.writeUntypedField("authentication", this.authentication);
-            jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+            if (this.authentication != null) {
+                jsonWriter.writeUntypedField("authentication", this.authentication);
+            }
+            if (this.workspaceResourceId != null) {
+                jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -193,6 +230,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureSynapseArtifactsLinkedService.
      */
+    @Generated
     public static AzureSynapseArtifactsLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSynapseArtifactsLinkedService deserializedAzureSynapseArtifactsLinkedService
@@ -202,7 +240,9 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureSynapseArtifactsLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureSynapseArtifactsLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

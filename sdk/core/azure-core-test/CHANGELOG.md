@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.2 (Unreleased)
+## 1.27.0-beta.14 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,105 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.27.0-beta.13 (2025-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+
+## 1.27.0-beta.12 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+
+## 1.27.0-beta.11 (2025-08-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to `1.56.0`.
+- Upgraded Reactor from `3.4.41` to `3.7.8`. ([#46207](https://github.com/Azure/azure-sdk-for-java/pull/46207))
+
+## 1.27.0-beta.10 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+- Upgraded JUnit 5 from `5.11.2` to `5.13.1`.
+
+## 1.27.0-beta.9 (2025-06-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+
+## 1.27.0-beta.8 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.27.0-beta.7 (2025-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to `1.55.2`.
+
+## 1.27.0-beta.6 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
+
+## 1.27.0-beta.5 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.27.0-beta.4 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.27.0-beta.3 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.27.0-beta.2 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
 
 ## 1.27.0-beta.1 (2024-09-12)
 
@@ -48,7 +147,7 @@
 
 ### Features Added
 
-- Added `InterceptoprManager.removeSanitizers` to remove sanitizers used by Test Proxy.
+- Added `InterceptorManager.removeSanitizers` to remove sanitizers used by Test Proxy.
 
 ### Other Changes
 
@@ -69,7 +168,7 @@
 - `TestBase` no longer extends `BeforeEachCallback`.
 - `TestBase.setupTest` now takes `TestContextManager` rather than `TestInfo`, which is provided by `TestContextManagerParameterResolver`.
 - `TestBase.teardownTest` no longer takes a parameter.
-- `TestProxyTestBase.setupTestProxy` no lnoger takes a parameter.
+- `TestProxyTestBase.setupTestProxy` no longer takes a parameter.
 - `TestContextManager` no longer validates that a non-PLAYBACK test was ran in PLAYBACK mode, `TestBase` validates that now.
 - `DoNotRecord` deprecated `skipInPlayback`, if a test should be skipped in PLAYBACK and shouldn't be recorded it should
   be annotated with both `DoNotRecord` and `LiveOnly`.

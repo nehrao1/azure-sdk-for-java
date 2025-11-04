@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing core model classes.
+ * Package containing the models used in the ClientCore SDK.
  */
 package io.clientcore.core.models;

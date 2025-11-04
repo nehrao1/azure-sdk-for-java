@@ -6,57 +6,40 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Network;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReplicationNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"fabricType\":\"pgve\",\"subnets\":[{\"name\":\"ujnjgybuxmq\",\"friendlyName\":\"gid\",\"addressList\":[\"njgcp\"]},{\"name\":\"grh\",\"friendlyName\":\"tslgsazuqznghx\",\"addressList\":[\"qzjsdkpvnr\"]},{\"name\":\"wpffxsfybn\",\"friendlyName\":\"vehoh\",\"addressList\":[\"uvbgtzqzqweuy\",\"ybnai\",\"vhpqsvbzeogeatrc\",\"qnvncprfcsjvjn\"]}],\"friendlyName\":\"iznzs\",\"networkType\":\"ibaaugicovjtm\"},\"location\":\"rmjxyvuodnxc\",\"id\":\"bassqfyylwpp\",\"name\":\"ygkbzb\",\"type\":\"o\"}";
+            = "{\"properties\":{\"fabricType\":\"eevffifujgt\",\"subnets\":[{\"name\":\"xmwefcbybpc\",\"friendlyName\":\"tczwjcujyznv\",\"addressList\":[\"qdjlgkuir\",\"xeuwiiircvnfg\",\"dviw\",\"ohktxagfujdbqjny\"]},{\"name\":\"bvxgxqqqasfeooq\",\"friendlyName\":\"pvevtarphklql\",\"addressList\":[\"eanuwg\"]}],\"friendlyName\":\"ofgi\",\"networkType\":\"dgsebjuymtevae\"},\"location\":\"mwywhrjkejva\",\"id\":\"dogzougxbxxgj\",\"name\":\"gcphivfhrmte\",\"type\":\"fdvdoeary\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Network response = manager.replicationNetworks()
-            .getWithResponse("lhihqkn", "vkmnbzkopaiil", "cpu", "khquxsy", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("ywdibugvnrgalvw", "hry", "brbknuubxcwoj", "upqdv", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("pgve", response.properties().fabricType());
-        Assertions.assertEquals("ujnjgybuxmq", response.properties().subnets().get(0).name());
-        Assertions.assertEquals("gid", response.properties().subnets().get(0).friendlyName());
-        Assertions.assertEquals("njgcp", response.properties().subnets().get(0).addressList().get(0));
-        Assertions.assertEquals("iznzs", response.properties().friendlyName());
-        Assertions.assertEquals("ibaaugicovjtm", response.properties().networkType());
-        Assertions.assertEquals("rmjxyvuodnxc", response.location());
+        Assertions.assertEquals("eevffifujgt", response.properties().fabricType());
+        Assertions.assertEquals("xmwefcbybpc", response.properties().subnets().get(0).name());
+        Assertions.assertEquals("tczwjcujyznv", response.properties().subnets().get(0).friendlyName());
+        Assertions.assertEquals("qdjlgkuir", response.properties().subnets().get(0).addressList().get(0));
+        Assertions.assertEquals("ofgi", response.properties().friendlyName());
+        Assertions.assertEquals("dgsebjuymtevae", response.properties().networkType());
+        Assertions.assertEquals("mwywhrjkejva", response.location());
     }
 }

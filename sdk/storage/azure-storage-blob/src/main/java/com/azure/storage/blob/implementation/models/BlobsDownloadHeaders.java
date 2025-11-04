@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeader;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -28,221 +28,277 @@ public final class BlobsDownloadHeaders {
     /*
      * The x-ms-is-current-version property.
      */
+    @Generated
     private Boolean xMsIsCurrentVersion;
 
     /*
      * The x-ms-lease-status property.
      */
+    @Generated
     private LeaseStatusType xMsLeaseStatus;
 
     /*
      * The x-ms-tag-count property.
      */
+    @Generated
     private Long xMsTagCount;
 
     /*
      * The Content-Range property.
      */
+    @Generated
     private String contentRange;
 
     /*
      * The x-ms-lease-state property.
      */
+    @Generated
     private LeaseStateType xMsLeaseState;
 
     /*
      * The x-ms-blob-sealed property.
      */
+    @Generated
     private Boolean xMsBlobSealed;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-version-id property.
      */
+    @Generated
     private String xMsVersionId;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
+    @Generated
     private String xMsEncryptionKeySha256;
+
+    /*
+     * The x-ms-structured-body property.
+     */
+    @Generated
+    private String xMsStructuredBody;
 
     /*
      * The x-ms-blob-type property.
      */
+    @Generated
     private BlobType xMsBlobType;
 
     /*
      * The x-ms-immutability-policy-mode property.
      */
+    @Generated
     private String xMsImmutabilityPolicyMode;
+
+    /*
+     * The x-ms-structured-content-length property.
+     */
+    @Generated
+    private Long xMsStructuredContentLength;
 
     /*
      * The Content-Encoding property.
      */
+    @Generated
     private String contentEncoding;
 
     /*
      * The x-ms-copy-status-description property.
      */
+    @Generated
     private String xMsCopyStatusDescription;
 
     /*
      * The x-ms-creation-time property.
      */
+    @Generated
     private DateTimeRfc1123 xMsCreationTime;
 
     /*
      * The x-ms-lease-duration property.
      */
+    @Generated
     private LeaseDurationType xMsLeaseDuration;
 
     /*
      * The Content-Length property.
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The Content-Type property.
      */
+    @Generated
     private String contentType;
 
     /*
      * The x-ms-last-access-time property.
      */
+    @Generated
     private DateTimeRfc1123 xMsLastAccessTime;
 
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-copy-id property.
      */
+    @Generated
     private String xMsCopyId;
 
     /*
      * The x-ms-copy-source property.
      */
+    @Generated
     private String xMsCopySource;
 
     /*
      * The x-ms-immutability-policy-until-date property.
      */
+    @Generated
     private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
 
     /*
      * The x-ms-content-crc64 property.
      */
+    @Generated
     private byte[] xMsContentCrc64;
 
     /*
      * The x-ms-blob-sequence-number property.
      */
+    @Generated
     private Long xMsBlobSequenceNumber;
 
     /*
      * The x-ms-copy-progress property.
      */
+    @Generated
     private String xMsCopyProgress;
 
     /*
      * The x-ms-blob-committed-block-count property.
      */
+    @Generated
     private Integer xMsBlobCommittedBlockCount;
 
     /*
      * The x-ms-blob-content-md5 property.
      */
+    @Generated
     private byte[] xMsBlobContentMd5;
 
     /*
      * The x-ms-meta- property.
      */
+    @Generated
     private Map<String, String> xMsMeta;
 
     /*
      * The x-ms-legal-hold property.
      */
+    @Generated
     private Boolean xMsLegalHold;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
+    @Generated
     private byte[] contentMD5;
 
     /*
      * The x-ms-copy-completion-time property.
      */
+    @Generated
     private DateTimeRfc1123 xMsCopyCompletionTime;
 
     /*
      * The Accept-Ranges property.
      */
+    @Generated
     private String acceptRanges;
 
     /*
      * The x-ms-server-encrypted property.
      */
+    @Generated
     private Boolean xMsServerEncrypted;
 
     /*
      * The x-ms-or-policy-id property.
      */
+    @Generated
     private String xMsOrPolicyId;
 
     /*
      * The Cache-Control property.
      */
+    @Generated
     private String cacheControl;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
+    @Generated
     private String contentDisposition;
 
     /*
      * The x-ms-copy-status property.
      */
+    @Generated
     private CopyStatusType xMsCopyStatus;
 
     /*
      * The Content-Language property.
      */
+    @Generated
     private String contentLanguage;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The x-ms-or- property.
      */
+    @Generated
     private Map<String, String> xMsOr;
 
     /*
      * The x-ms-encryption-scope property.
      */
+    @Generated
     private String xMsEncryptionScope;
 
     private static final HttpHeaderName X_MS_IS_CURRENT_VERSION = HttpHeaderName.fromString("x-ms-is-current-version");
@@ -260,10 +316,15 @@ public final class BlobsDownloadHeaders {
     private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
         = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_BLOB_TYPE = HttpHeaderName.fromString("x-ms-blob-type");
 
     private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE
         = HttpHeaderName.fromString("x-ms-immutability-policy-mode");
+
+    private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-structured-content-length");
 
     private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION
         = HttpHeaderName.fromString("x-ms-copy-status-description");
@@ -318,54 +379,83 @@ public final class BlobsDownloadHeaders {
         String xMsIsCurrentVersion = rawHeaders.getValue(X_MS_IS_CURRENT_VERSION);
         if (xMsIsCurrentVersion != null) {
             this.xMsIsCurrentVersion = Boolean.parseBoolean(xMsIsCurrentVersion);
+        } else {
+            this.xMsIsCurrentVersion = null;
         }
         String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        } else {
+            this.xMsLeaseStatus = null;
         }
         String xMsTagCount = rawHeaders.getValue(X_MS_TAG_COUNT);
         if (xMsTagCount != null) {
             this.xMsTagCount = Long.parseLong(xMsTagCount);
+        } else {
+            this.xMsTagCount = null;
         }
         this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
+        } else {
+            this.xMsLeaseState = null;
         }
         String xMsBlobSealed = rawHeaders.getValue(X_MS_BLOB_SEALED);
         if (xMsBlobSealed != null) {
             this.xMsBlobSealed = Boolean.parseBoolean(xMsBlobSealed);
+        } else {
+            this.xMsBlobSealed = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         String xMsBlobType = rawHeaders.getValue(X_MS_BLOB_TYPE);
         if (xMsBlobType != null) {
             this.xMsBlobType = BlobType.fromString(xMsBlobType);
+        } else {
+            this.xMsBlobType = null;
         }
         this.xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
+        String xMsStructuredContentLength = rawHeaders.getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
+        if (xMsStructuredContentLength != null) {
+            this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
+        } else {
+            this.xMsStructuredContentLength = null;
+        }
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
         String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
         if (xMsCreationTime != null) {
             this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+        } else {
+            this.xMsCreationTime = null;
         }
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        } else {
+            this.xMsLeaseDuration = null;
         }
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         String xMsLastAccessTime = rawHeaders.getValue(X_MS_LAST_ACCESS_TIME);
         if (xMsLastAccessTime != null) {
             this.xMsLastAccessTime = new DateTimeRfc1123(xMsLastAccessTime);
+        } else {
+            this.xMsLastAccessTime = null;
         }
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
@@ -373,44 +463,64 @@ public final class BlobsDownloadHeaders {
         String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
         if (xMsImmutabilityPolicyUntilDate != null) {
             this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
+        } else {
+            this.xMsImmutabilityPolicyUntilDate = null;
         }
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        } else {
+            this.xMsContentCrc64 = null;
         }
         String xMsBlobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
         if (xMsBlobSequenceNumber != null) {
             this.xMsBlobSequenceNumber = Long.parseLong(xMsBlobSequenceNumber);
+        } else {
+            this.xMsBlobSequenceNumber = null;
         }
         this.xMsCopyProgress = rawHeaders.getValue(X_MS_COPY_PROGRESS);
         String xMsBlobCommittedBlockCount = rawHeaders.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT);
         if (xMsBlobCommittedBlockCount != null) {
             this.xMsBlobCommittedBlockCount = Integer.parseInt(xMsBlobCommittedBlockCount);
+        } else {
+            this.xMsBlobCommittedBlockCount = null;
         }
         String xMsBlobContentMd5 = rawHeaders.getValue(X_MS_BLOB_CONTENT_MD5);
         if (xMsBlobContentMd5 != null) {
             this.xMsBlobContentMd5 = Base64.getDecoder().decode(xMsBlobContentMd5);
+        } else {
+            this.xMsBlobContentMd5 = null;
         }
         String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
+        } else {
+            this.xMsLegalHold = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        } else {
+            this.contentMD5 = null;
         }
         String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
         if (xMsCopyCompletionTime != null) {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
+        } else {
+            this.xMsCopyCompletionTime = null;
         }
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
         String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        } else {
+            this.xMsServerEncrypted = null;
         }
         this.xMsOrPolicyId = rawHeaders.getValue(X_MS_OR_POLICY_ID);
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
@@ -419,24 +529,25 @@ public final class BlobsDownloadHeaders {
         String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
+        } else {
+            this.xMsCopyStatus = null;
         }
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
-        Map<String, String> xMsOrHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
 
-        for (HttpHeader header : rawHeaders) {
+        rawHeaders.stream().forEach(header -> {
             String headerName = header.getName();
             if (headerName.startsWith("x-ms-meta-")) {
                 xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
-                continue;
+                return;
             }
             if (headerName.startsWith("x-ms-or-")) {
                 xMsOrHeaderCollection.put(headerName.substring(8), header.getValue());
             }
-        }
-
+        });
         this.xMsMeta = xMsMetaHeaderCollection;
         this.xMsOr = xMsOrHeaderCollection;
     }
@@ -446,6 +557,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsIsCurrentVersion value.
      */
+    @Generated
     public Boolean isXMsIsCurrentVersion() {
         return this.xMsIsCurrentVersion;
     }
@@ -456,6 +568,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsIsCurrentVersion the xMsIsCurrentVersion value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsIsCurrentVersion(Boolean xMsIsCurrentVersion) {
         this.xMsIsCurrentVersion = xMsIsCurrentVersion;
         return this;
@@ -466,6 +579,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsLeaseStatus value.
      */
+    @Generated
     public LeaseStatusType getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
@@ -476,6 +590,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
@@ -486,6 +601,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsTagCount value.
      */
+    @Generated
     public Long getXMsTagCount() {
         return this.xMsTagCount;
     }
@@ -496,6 +612,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsTagCount the xMsTagCount value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsTagCount(Long xMsTagCount) {
         this.xMsTagCount = xMsTagCount;
         return this;
@@ -506,6 +623,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentRange value.
      */
+    @Generated
     public String getContentRange() {
         return this.contentRange;
     }
@@ -516,6 +634,7 @@ public final class BlobsDownloadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
@@ -526,6 +645,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsLeaseState value.
      */
+    @Generated
     public LeaseStateType getXMsLeaseState() {
         return this.xMsLeaseState;
     }
@@ -536,6 +656,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
@@ -546,6 +667,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsBlobSealed value.
      */
+    @Generated
     public Boolean isXMsBlobSealed() {
         return this.xMsBlobSealed;
     }
@@ -556,6 +678,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsBlobSealed the xMsBlobSealed value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsBlobSealed(Boolean xMsBlobSealed) {
         this.xMsBlobSealed = xMsBlobSealed;
         return this;
@@ -566,6 +689,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -579,6 +703,7 @@ public final class BlobsDownloadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -593,6 +718,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsVersionId value.
      */
+    @Generated
     public String getXMsVersionId() {
         return this.xMsVersionId;
     }
@@ -603,6 +729,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsVersionId(String xMsVersionId) {
         this.xMsVersionId = xMsVersionId;
         return this;
@@ -613,6 +740,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
+    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -623,8 +751,31 @@ public final class BlobsDownloadHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @return the xMsStructuredBody value.
+     */
+    @Generated
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
+    }
+
+    /**
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 
@@ -633,6 +784,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsBlobType value.
      */
+    @Generated
     public BlobType getXMsBlobType() {
         return this.xMsBlobType;
     }
@@ -643,6 +795,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsBlobType the xMsBlobType value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsBlobType(BlobType xMsBlobType) {
         this.xMsBlobType = xMsBlobType;
         return this;
@@ -653,6 +806,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsImmutabilityPolicyMode value.
      */
+    @Generated
     public String getXMsImmutabilityPolicyMode() {
         return this.xMsImmutabilityPolicyMode;
     }
@@ -663,8 +817,31 @@ public final class BlobsDownloadHeaders {
      * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsImmutabilityPolicyMode(String xMsImmutabilityPolicyMode) {
         this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredContentLength property: The x-ms-structured-content-length property.
+     * 
+     * @return the xMsStructuredContentLength value.
+     */
+    @Generated
+    public Long getXMsStructuredContentLength() {
+        return this.xMsStructuredContentLength;
+    }
+
+    /**
+     * Set the xMsStructuredContentLength property: The x-ms-structured-content-length property.
+     * 
+     * @param xMsStructuredContentLength the xMsStructuredContentLength value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
+        this.xMsStructuredContentLength = xMsStructuredContentLength;
         return this;
     }
 
@@ -673,6 +850,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentEncoding value.
      */
+    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -683,6 +861,7 @@ public final class BlobsDownloadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -693,6 +872,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopyStatusDescription value.
      */
+    @Generated
     public String getXMsCopyStatusDescription() {
         return this.xMsCopyStatusDescription;
     }
@@ -703,6 +883,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
         this.xMsCopyStatusDescription = xMsCopyStatusDescription;
         return this;
@@ -713,6 +894,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCreationTime value.
      */
+    @Generated
     public OffsetDateTime getXMsCreationTime() {
         if (this.xMsCreationTime == null) {
             return null;
@@ -726,6 +908,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCreationTime the xMsCreationTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCreationTime(OffsetDateTime xMsCreationTime) {
         if (xMsCreationTime == null) {
             this.xMsCreationTime = null;
@@ -740,6 +923,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsLeaseDuration value.
      */
+    @Generated
     public LeaseDurationType getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
@@ -750,6 +934,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
@@ -760,6 +945,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -770,6 +956,7 @@ public final class BlobsDownloadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -780,6 +967,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -790,6 +978,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -800,6 +989,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -810,6 +1000,7 @@ public final class BlobsDownloadHeaders {
      * @param contentType the contentType value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -820,6 +1011,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsLastAccessTime value.
      */
+    @Generated
     public OffsetDateTime getXMsLastAccessTime() {
         if (this.xMsLastAccessTime == null) {
             return null;
@@ -833,6 +1025,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsLastAccessTime the xMsLastAccessTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsLastAccessTime(OffsetDateTime xMsLastAccessTime) {
         if (xMsLastAccessTime == null) {
             this.xMsLastAccessTime = null;
@@ -847,6 +1040,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -857,6 +1051,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -867,6 +1062,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopyId value.
      */
+    @Generated
     public String getXMsCopyId() {
         return this.xMsCopyId;
     }
@@ -877,6 +1073,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopyId(String xMsCopyId) {
         this.xMsCopyId = xMsCopyId;
         return this;
@@ -887,6 +1084,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopySource value.
      */
+    @Generated
     public String getXMsCopySource() {
         return this.xMsCopySource;
     }
@@ -897,6 +1095,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopySource the xMsCopySource value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopySource(String xMsCopySource) {
         this.xMsCopySource = xMsCopySource;
         return this;
@@ -907,6 +1106,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
+    @Generated
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
         if (this.xMsImmutabilityPolicyUntilDate == null) {
             return null;
@@ -920,6 +1120,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsImmutabilityPolicyUntilDate the xMsImmutabilityPolicyUntilDate value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsImmutabilityPolicyUntilDate(OffsetDateTime xMsImmutabilityPolicyUntilDate) {
         if (xMsImmutabilityPolicyUntilDate == null) {
             this.xMsImmutabilityPolicyUntilDate = null;
@@ -934,6 +1135,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsContentCrc64 value.
      */
+    @Generated
     public byte[] getXMsContentCrc64() {
         return CoreUtils.clone(this.xMsContentCrc64);
     }
@@ -944,6 +1146,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
@@ -954,6 +1157,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsBlobSequenceNumber value.
      */
+    @Generated
     public Long getXMsBlobSequenceNumber() {
         return this.xMsBlobSequenceNumber;
     }
@@ -964,6 +1168,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsBlobSequenceNumber(Long xMsBlobSequenceNumber) {
         this.xMsBlobSequenceNumber = xMsBlobSequenceNumber;
         return this;
@@ -974,6 +1179,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopyProgress value.
      */
+    @Generated
     public String getXMsCopyProgress() {
         return this.xMsCopyProgress;
     }
@@ -984,6 +1190,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopyProgress the xMsCopyProgress value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopyProgress(String xMsCopyProgress) {
         this.xMsCopyProgress = xMsCopyProgress;
         return this;
@@ -994,6 +1201,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsBlobCommittedBlockCount value.
      */
+    @Generated
     public Integer getXMsBlobCommittedBlockCount() {
         return this.xMsBlobCommittedBlockCount;
     }
@@ -1004,6 +1212,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsBlobCommittedBlockCount the xMsBlobCommittedBlockCount value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsBlobCommittedBlockCount(Integer xMsBlobCommittedBlockCount) {
         this.xMsBlobCommittedBlockCount = xMsBlobCommittedBlockCount;
         return this;
@@ -1014,6 +1223,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsBlobContentMd5 value.
      */
+    @Generated
     public byte[] getXMsBlobContentMd5() {
         return CoreUtils.clone(this.xMsBlobContentMd5);
     }
@@ -1024,6 +1234,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsBlobContentMd5 the xMsBlobContentMd5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsBlobContentMd5(byte[] xMsBlobContentMd5) {
         this.xMsBlobContentMd5 = CoreUtils.clone(xMsBlobContentMd5);
         return this;
@@ -1034,6 +1245,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsMeta value.
      */
+    @Generated
     public Map<String, String> getXMsMeta() {
         return this.xMsMeta;
     }
@@ -1044,6 +1256,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsMeta the xMsMeta value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
@@ -1054,6 +1267,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsLegalHold value.
      */
+    @Generated
     public Boolean isXMsLegalHold() {
         return this.xMsLegalHold;
     }
@@ -1064,6 +1278,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsLegalHold(Boolean xMsLegalHold) {
         this.xMsLegalHold = xMsLegalHold;
         return this;
@@ -1074,6 +1289,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -1087,6 +1303,7 @@ public final class BlobsDownloadHeaders {
      * @param date the date value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -1101,6 +1318,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentMD5 value.
      */
+    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -1111,6 +1329,7 @@ public final class BlobsDownloadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
@@ -1121,6 +1340,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopyCompletionTime value.
      */
+    @Generated
     public OffsetDateTime getXMsCopyCompletionTime() {
         if (this.xMsCopyCompletionTime == null) {
             return null;
@@ -1134,6 +1354,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopyCompletionTime(OffsetDateTime xMsCopyCompletionTime) {
         if (xMsCopyCompletionTime == null) {
             this.xMsCopyCompletionTime = null;
@@ -1148,6 +1369,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the acceptRanges value.
      */
+    @Generated
     public String getAcceptRanges() {
         return this.acceptRanges;
     }
@@ -1158,6 +1380,7 @@ public final class BlobsDownloadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
@@ -1168,6 +1391,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsServerEncrypted() {
         return this.xMsServerEncrypted;
     }
@@ -1178,6 +1402,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
         this.xMsServerEncrypted = xMsServerEncrypted;
         return this;
@@ -1188,6 +1413,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsOrPolicyId value.
      */
+    @Generated
     public String getXMsOrPolicyId() {
         return this.xMsOrPolicyId;
     }
@@ -1198,6 +1424,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsOrPolicyId the xMsOrPolicyId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsOrPolicyId(String xMsOrPolicyId) {
         this.xMsOrPolicyId = xMsOrPolicyId;
         return this;
@@ -1208,6 +1435,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the cacheControl value.
      */
+    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -1218,6 +1446,7 @@ public final class BlobsDownloadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -1228,6 +1457,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -1238,6 +1468,7 @@ public final class BlobsDownloadHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -1248,6 +1479,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentDisposition value.
      */
+    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -1258,6 +1490,7 @@ public final class BlobsDownloadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -1268,6 +1501,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsCopyStatus value.
      */
+    @Generated
     public CopyStatusType getXMsCopyStatus() {
         return this.xMsCopyStatus;
     }
@@ -1278,6 +1512,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsCopyStatus(CopyStatusType xMsCopyStatus) {
         this.xMsCopyStatus = xMsCopyStatus;
         return this;
@@ -1288,6 +1523,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the contentLanguage value.
      */
+    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -1298,6 +1534,7 @@ public final class BlobsDownloadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -1308,6 +1545,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -1318,6 +1556,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -1328,6 +1567,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsOr value.
      */
+    @Generated
     public Map<String, String> getXMsOr() {
         return this.xMsOr;
     }
@@ -1338,6 +1578,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsOr the xMsOr value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsOr(Map<String, String> xMsOr) {
         this.xMsOr = xMsOr;
         return this;
@@ -1348,6 +1589,7 @@ public final class BlobsDownloadHeaders {
      * 
      * @return the xMsEncryptionScope value.
      */
+    @Generated
     public String getXMsEncryptionScope() {
         return this.xMsEncryptionScope;
     }
@@ -1358,6 +1600,7 @@ public final class BlobsDownloadHeaders {
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
+    @Generated
     public BlobsDownloadHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
         return this;

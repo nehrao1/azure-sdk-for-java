@@ -102,7 +102,7 @@ jobs:
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
         # during testing if tests failed, and linting reports.
         - output: pipelineArtifact
-          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
           targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
@@ -112,10 +112,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           OS: ${{ parameters.OSName }}
-
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - template: /eng/pipelines/templates/steps/install-graalvm-jdk.yml
         parameters:
@@ -161,7 +157,7 @@ jobs:
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
-            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 

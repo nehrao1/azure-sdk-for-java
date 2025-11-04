@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
@@ -26,33 +26,35 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"pxtxsuwp\",\"properties\":{\"poolId\":\"ujwsawddjibabxvi\",\"size\":2713805626921616669,\"serviceLevel\":\"Standard\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":0.8543253,\"utilizedThroughputMibps\":13.757277,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"gsfjac\",\"tags\":{\"xvodhtnsir\":\"hhxud\",\"gzrcxfailcfxwmdb\":\"dhzmmesckdlp\",\"lnacgcc\":\"xdfgsftufqobr\",\"kizvytn\":\"knh\"},\"id\":\"zvulj\",\"name\":\"aaeranokqgukk\",\"type\":\"qnvb\"}";
+            = "{\"etag\":\"fuojrngif\",\"properties\":{\"poolId\":\"z\",\"size\":8761692939426802425,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":47.9407,\"utilizedThroughputMibps\":9.529722,\"customThroughputMibps\":40.48493,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"lzo\",\"tags\":{\"dgug\":\"ctfnmdxotng\"},\"id\":\"yzihgrkyuizabsn\",\"name\":\"fpphoj\",\"type\":\"evy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapacityPool response = manager.pools()
-            .define("ddyvvjskgfmo")
-            .withRegion("xvxevblbjednljla")
-            .withExistingNetAppAccount("zkgimsid", "asi")
-            .withSize(2036244042463079725L)
-            .withServiceLevel(ServiceLevel.ULTRA)
-            .withTags(mapOf("nsmjbnkppxynen", "aulx", "ffeycx", "svxeizzgwklnsr", "ymerteeammxq", "ktp"))
+            .define("xkjibnxmy")
+            .withRegion("wmqs")
+            .withExistingNetAppAccount("tybbwwpgda", "chzyvlixqnrk")
+            .withSize(8488562628713523190L)
+            .withServiceLevel(ServiceLevel.FLEXIBLE)
+            .withTags(mapOf("ctddun", "dqzh", "pchrqbn", "ndy", "gydcw", "jrcg"))
+            .withCustomThroughputMibps(59.372757F)
             .withQosType(QosType.MANUAL)
             .withCoolAccess(false)
-            .withEncryptionType(EncryptionType.DOUBLE)
+            .withEncryptionType(EncryptionType.SINGLE)
             .create();
 
-        Assertions.assertEquals("gsfjac", response.location());
-        Assertions.assertEquals("hhxud", response.tags().get("xvodhtnsir"));
-        Assertions.assertEquals(2713805626921616669L, response.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, response.serviceLevel());
+        Assertions.assertEquals("lzo", response.location());
+        Assertions.assertEquals("ctfnmdxotng", response.tags().get("dgug"));
+        Assertions.assertEquals(8761692939426802425L, response.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, response.serviceLevel());
+        Assertions.assertEquals(40.48493F, response.customThroughputMibps());
         Assertions.assertEquals(QosType.MANUAL, response.qosType());
-        Assertions.assertEquals(false, response.coolAccess());
+        Assertions.assertFalse(response.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
     }
 

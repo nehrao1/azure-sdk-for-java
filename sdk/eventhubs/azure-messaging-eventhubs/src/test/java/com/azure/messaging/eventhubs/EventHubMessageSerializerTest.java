@@ -25,6 +25,7 @@ import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
+import static com.azure.messaging.eventhubs.TestUtils.OFFSET_STRING;
 import static com.azure.messaging.eventhubs.TestUtils.OTHER_SYSTEM_PROPERTY;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
@@ -77,7 +78,7 @@ public class EventHubMessageSerializerTest {
     public void deserializeEventData() {
         // Arrange
         final Map<String, Object> systemPropertiesMap = new HashMap<>();
-        systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
+        systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET_STRING);
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
 
@@ -91,6 +92,7 @@ public class EventHubMessageSerializerTest {
         // Verifying all our system properties were properly deserialized.
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
         Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(OFFSET_STRING, eventData.getOffsetString());
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
@@ -179,7 +181,7 @@ public class EventHubMessageSerializerTest {
         final String eventHubName = "my-event-hub";
         final Date createdAtAsDate = new Date(1569275540L);
         final Instant createdAt = createdAtAsDate.toInstant();
-        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
+        final String[] partitionIds = new String[] { "1", "foo", "bar", "baz" };
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -209,7 +211,7 @@ public class EventHubMessageSerializerTest {
         // Arrange
         final Long eventHubName = 100L;
         final Date createdAtAsDate = new Date(1569275540L);
-        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
+        final String[] partitionIds = new String[] { "1", "foo", "bar", "baz" };
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -259,8 +261,7 @@ public class EventHubMessageSerializerTest {
     @Test
     public void deserializesNullBinaryDataBody() {
 
-        final Message message = getMessage(null, "messageId", SEQUENCE_NUMBER,
-            OFFSET, Date.from(ENQUEUED_TIME));
+        final Message message = getMessage(null, "messageId", SEQUENCE_NUMBER, OFFSET_STRING, Date.from(ENQUEUED_TIME));
 
         // Act
         final EventData eventData = serializer.deserialize(message, EventData.class);

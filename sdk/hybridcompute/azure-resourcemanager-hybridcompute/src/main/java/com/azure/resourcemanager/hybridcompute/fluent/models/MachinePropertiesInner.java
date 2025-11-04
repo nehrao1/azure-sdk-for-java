@@ -14,11 +14,15 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -45,6 +49,21 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
      * Statuses of dependent services that are reported back to ARM.
      */
     private ServiceStatuses serviceStatuses;
+
+    /*
+     * Information about the machine's hardware
+     */
+    private HardwareProfile hardwareProfile;
+
+    /*
+     * Information about the machine's storage
+     */
+    private StorageProfile storageProfile;
+
+    /*
+     * Information about the machine's firmware
+     */
+    private FirmwareProfile firmwareProfile;
 
     /*
      * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
@@ -112,6 +131,17 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     private String clientPublicKey;
 
     /*
+     * Specifies the identity key store a machine is using.
+     */
+    private IdentityKeyStore identityKeyStore;
+
+    /*
+     * Endorsement Key Certificate of the Trusted Platform Module (TPM) that the client provides to be used during
+     * initial resource onboarding.
+     */
+    private String tpmEkCertificate;
+
+    /*
      * The Operating System running on the hybrid machine.
      */
     private String osName;
@@ -170,6 +200,11 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
      * The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
      */
     private String parentClusterResourceId;
+
+    /*
+     * Specifies the resource ID of the associated hardware device. Only settable by HCI RP.
+     */
+    private String hardwareResourceId;
 
     /*
      * Specifies whether any MS SQL instance is discovered on the machine.
@@ -240,6 +275,33 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     public MachinePropertiesInner withServiceStatuses(ServiceStatuses serviceStatuses) {
         this.serviceStatuses = serviceStatuses;
         return this;
+    }
+
+    /**
+     * Get the hardwareProfile property: Information about the machine's hardware.
+     * 
+     * @return the hardwareProfile value.
+     */
+    public HardwareProfile hardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Get the storageProfile property: Information about the machine's storage.
+     * 
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Get the firmwareProfile property: Information about the machine's firmware.
+     * 
+     * @return the firmwareProfile value.
+     */
+    public FirmwareProfile firmwareProfile() {
+        return this.firmwareProfile;
     }
 
     /**
@@ -428,6 +490,48 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     }
 
     /**
+     * Get the identityKeyStore property: Specifies the identity key store a machine is using.
+     * 
+     * @return the identityKeyStore value.
+     */
+    public IdentityKeyStore identityKeyStore() {
+        return this.identityKeyStore;
+    }
+
+    /**
+     * Set the identityKeyStore property: Specifies the identity key store a machine is using.
+     * 
+     * @param identityKeyStore the identityKeyStore value to set.
+     * @return the MachinePropertiesInner object itself.
+     */
+    public MachinePropertiesInner withIdentityKeyStore(IdentityKeyStore identityKeyStore) {
+        this.identityKeyStore = identityKeyStore;
+        return this;
+    }
+
+    /**
+     * Get the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @return the tpmEkCertificate value.
+     */
+    public String tpmEkCertificate() {
+        return this.tpmEkCertificate;
+    }
+
+    /**
+     * Set the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @param tpmEkCertificate the tpmEkCertificate value to set.
+     * @return the MachinePropertiesInner object itself.
+     */
+    public MachinePropertiesInner withTpmEkCertificate(String tpmEkCertificate) {
+        this.tpmEkCertificate = tpmEkCertificate;
+        return this;
+    }
+
+    /**
      * Get the osName property: The Operating System running on the hybrid machine.
      * 
      * @return the osName value.
@@ -584,6 +688,28 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     }
 
     /**
+     * Get the hardwareResourceId property: Specifies the resource ID of the associated hardware device. Only settable
+     * by HCI RP.
+     * 
+     * @return the hardwareResourceId value.
+     */
+    public String hardwareResourceId() {
+        return this.hardwareResourceId;
+    }
+
+    /**
+     * Set the hardwareResourceId property: Specifies the resource ID of the associated hardware device. Only settable
+     * by HCI RP.
+     * 
+     * @param hardwareResourceId the hardwareResourceId value to set.
+     * @return the MachinePropertiesInner object itself.
+     */
+    public MachinePropertiesInner withHardwareResourceId(String hardwareResourceId) {
+        this.hardwareResourceId = hardwareResourceId;
+        return this;
+    }
+
+    /**
      * Get the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
      * 
      * @return the mssqlDiscovered value.
@@ -636,6 +762,15 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
         if (serviceStatuses() != null) {
             serviceStatuses().validate();
         }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (firmwareProfile() != null) {
+            firmwareProfile().validate();
+        }
         if (cloudMetadata() != null) {
             cloudMetadata().validate();
         }
@@ -670,10 +805,14 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
         jsonWriter.writeJsonField("licenseProfile", this.licenseProfile);
         jsonWriter.writeStringField("vmId", Objects.toString(this.vmId, null));
         jsonWriter.writeStringField("clientPublicKey", this.clientPublicKey);
+        jsonWriter.writeStringField("identityKeyStore",
+            this.identityKeyStore == null ? null : this.identityKeyStore.toString());
+        jsonWriter.writeStringField("tpmEkCertificate", this.tpmEkCertificate);
         jsonWriter.writeStringField("osType", this.osType);
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
         jsonWriter.writeStringField("parentClusterResourceId", this.parentClusterResourceId);
+        jsonWriter.writeStringField("hardwareResourceId", this.hardwareResourceId);
         jsonWriter.writeStringField("mssqlDiscovered", this.mssqlDiscovered);
         return jsonWriter.writeEndObject();
     }
@@ -699,6 +838,12 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
                     deserializedMachinePropertiesInner.agentConfiguration = AgentConfiguration.fromJson(reader);
                 } else if ("serviceStatuses".equals(fieldName)) {
                     deserializedMachinePropertiesInner.serviceStatuses = ServiceStatuses.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("firmwareProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.firmwareProfile = FirmwareProfile.fromJson(reader);
                 } else if ("cloudMetadata".equals(fieldName)) {
                     deserializedMachinePropertiesInner.cloudMetadata = CloudMetadata.fromJson(reader);
                 } else if ("agentUpgrade".equals(fieldName)) {
@@ -729,6 +874,11 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
                     deserializedMachinePropertiesInner.machineFqdn = reader.getString();
                 } else if ("clientPublicKey".equals(fieldName)) {
                     deserializedMachinePropertiesInner.clientPublicKey = reader.getString();
+                } else if ("identityKeyStore".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.identityKeyStore
+                        = IdentityKeyStore.fromString(reader.getString());
+                } else if ("tpmEkCertificate".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.tpmEkCertificate = reader.getString();
                 } else if ("osName".equals(fieldName)) {
                     deserializedMachinePropertiesInner.osName = reader.getString();
                 } else if ("osVersion".equals(fieldName)) {
@@ -756,6 +906,8 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
                     deserializedMachinePropertiesInner.privateLinkScopeResourceId = reader.getString();
                 } else if ("parentClusterResourceId".equals(fieldName)) {
                     deserializedMachinePropertiesInner.parentClusterResourceId = reader.getString();
+                } else if ("hardwareResourceId".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.hardwareResourceId = reader.getString();
                 } else if ("mssqlDiscovered".equals(fieldName)) {
                     deserializedMachinePropertiesInner.mssqlDiscovered = reader.getString();
                 } else if ("detectedProperties".equals(fieldName)) {

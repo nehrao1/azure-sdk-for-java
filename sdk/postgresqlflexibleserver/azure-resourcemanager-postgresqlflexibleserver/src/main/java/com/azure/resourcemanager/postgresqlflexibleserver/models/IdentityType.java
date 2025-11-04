@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * the types of identities associated with this resource; currently restricted to 'None and UserAssigned'.
+ * the types of identities associated with this resource.
  */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /**
@@ -21,6 +20,16 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
      * Static value UserAssigned for IdentityType.
      */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * Static value SystemAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+
+    /**
+     * Static value SystemAssigned,UserAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of IdentityType value.
@@ -37,7 +46,6 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
-    @JsonCreator
     public static IdentityType fromString(String name) {
         return fromString(name, IdentityType.class);
     }

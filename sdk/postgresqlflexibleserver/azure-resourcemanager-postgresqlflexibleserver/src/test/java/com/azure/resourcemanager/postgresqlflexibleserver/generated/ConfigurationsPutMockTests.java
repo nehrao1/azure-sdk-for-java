@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
@@ -21,23 +21,23 @@ public final class ConfigurationsPutMockTests {
     @Test
     public void testPut() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"reljeamur\",\"description\":\"mlovuanashcxl\",\"defaultValue\":\"jerbdkelvidizozs\",\"dataType\":\"Numeric\",\"allowedValues\":\"xjmonf\",\"source\":\"nwncypuuw\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"tzenk\",\"documentationLink\":\"fzzhmkdasv\"},\"id\":\"yhbxcudchxgs\",\"name\":\"boldforobwj\",\"type\":\"vizbfhfo\"}";
+            = "{\"properties\":{\"value\":\"bgkc\",\"description\":\"hpzvuqdflvoniyp\",\"defaultValue\":\"ubcpzgpxti\",\"dataType\":\"Boolean\",\"allowedValues\":\"nidibgqjxg\",\"source\":\"r\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"kqmhhaowjr\",\"documentationLink\":\"vuporqzdfuydzv\"},\"id\":\"vxcnqmxqps\",\"name\":\"okmvkhlggd\",\"type\":\"bemzqkzszuwi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Configuration response = manager.configurations()
-            .define("ybpmzznrtffyaq")
-            .withExistingFlexibleServer("dqmeqwigpibudq", "yxeb")
-            .withValue("hheioqaqhvseuf")
-            .withSource("rnxzh")
+            .define("w")
+            .withExistingFlexibleServer("oiquvrehmrnjhvs", "jztczytqj")
+            .withValue("unfprnjletlxs")
+            .withSource("mzyospspshck")
             .create();
 
-        Assertions.assertEquals("reljeamur", response.value());
-        Assertions.assertEquals("nwncypuuw", response.source());
+        Assertions.assertEquals("bgkc", response.value());
+        Assertions.assertEquals("r", response.source());
     }
 }

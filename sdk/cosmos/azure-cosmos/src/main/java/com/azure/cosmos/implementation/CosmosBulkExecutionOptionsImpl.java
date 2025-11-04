@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
@@ -32,15 +33,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  */
 public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions {
     private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
-    private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
-
+    private int maxMicroBatchConcurrency = Configs.getMaxBulkMicroBatchConcurrency();
+    private int minTargetMicroBatchSize = Configs.getMinTargetBulkMicroBatchSize();
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
     private int maxMicroBatchPayloadSizeInBytes = BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-    private final Duration maxMicroBatchInterval = Duration.ofMillis(
-        BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
+    private final Duration maxMicroBatchInterval = Duration.ofMillis(Configs.getMaxBulkMicroBatchFlushIntervalInMs());
     private final Object legacyBatchScopedContext;
     private final CosmosBulkExecutionThresholdsState thresholds;
     private Integer maxConcurrentCosmosPartitions = null;
@@ -60,6 +60,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         this.initialMicroBatchSize = toBeCloned.initialMicroBatchSize;
         this.maxMicroBatchConcurrency = toBeCloned.maxMicroBatchConcurrency;
         this.maxMicroBatchSize = toBeCloned.maxMicroBatchSize;
+        this.minTargetMicroBatchSize = toBeCloned.minTargetMicroBatchSize;
         this.maxMicroBatchRetryRate = toBeCloned.maxMicroBatchRetryRate;
         this.minMicroBatchRetryRate = toBeCloned.minMicroBatchRetryRate;
         this.maxMicroBatchPayloadSizeInBytes = toBeCloned.maxMicroBatchPayloadSizeInBytes;
@@ -128,6 +129,14 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
     public void setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+    }
+
+    public int getMinTargetMicroBatchSize() {
+        return minTargetMicroBatchSize;
+    }
+
+    public void setMinTargetMicroBatchSize(int minTargetMicroBatchSize) {
+        this.minTargetMicroBatchSize = minTargetMicroBatchSize;
     }
 
     public CosmosItemSerializer getCustomItemSerializer() {
@@ -290,6 +299,11 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
     @Override
     public ConsistencyLevel getConsistencyLevel() {
+        return null;
+    }
+
+    @Override
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return null;
     }
 

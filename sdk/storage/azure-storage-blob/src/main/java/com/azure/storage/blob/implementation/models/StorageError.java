@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,26 +21,31 @@ public final class StorageError implements XmlSerializable<StorageError> {
     /*
      * The Message property.
      */
+    @Generated
     private String message;
 
     /*
      * The CopySourceStatusCode property.
      */
-    private Long copySourceStatusCode;
+    @Generated
+    private Integer copySourceStatusCode;
 
     /*
      * The CopySourceErrorCode property.
      */
+    @Generated
     private String copySourceErrorCode;
 
     /*
      * The CopySourceErrorMessage property.
      */
+    @Generated
     private String copySourceErrorMessage;
 
     /**
      * Creates an instance of StorageError class.
      */
+    @Generated
     public StorageError() {
     }
 
@@ -49,6 +54,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -59,6 +65,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param message the message value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setMessage(String message) {
         this.message = message;
         return this;
@@ -69,7 +76,8 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceStatusCode value.
      */
-    public Long getCopySourceStatusCode() {
+    @Generated
+    public Integer getCopySourceStatusCode() {
         return this.copySourceStatusCode;
     }
 
@@ -79,7 +87,8 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceStatusCode the copySourceStatusCode value to set.
      * @return the StorageError object itself.
      */
-    public StorageError setCopySourceStatusCode(Long copySourceStatusCode) {
+    @Generated
+    public StorageError setCopySourceStatusCode(Integer copySourceStatusCode) {
         this.copySourceStatusCode = copySourceStatusCode;
         return this;
     }
@@ -89,6 +98,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceErrorCode value.
      */
+    @Generated
     public String getCopySourceErrorCode() {
         return this.copySourceErrorCode;
     }
@@ -99,6 +109,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceErrorCode the copySourceErrorCode value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setCopySourceErrorCode(String copySourceErrorCode) {
         this.copySourceErrorCode = copySourceErrorCode;
         return this;
@@ -109,6 +120,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceErrorMessage value.
      */
+    @Generated
     public String getCopySourceErrorMessage() {
         return this.copySourceErrorMessage;
     }
@@ -119,19 +131,22 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceErrorMessage the copySourceErrorMessage value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setCopySourceErrorMessage(String copySourceErrorMessage) {
         this.copySourceErrorMessage = copySourceErrorMessage;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageError" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "StorageError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Message", this.message);
         xmlWriter.writeNumberElement("CopySourceStatusCode", this.copySourceStatusCode);
@@ -148,6 +163,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StorageError.
      */
+    @Generated
     public static StorageError fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -162,8 +178,10 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StorageError.
      */
+    @Generated
     public static StorageError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageError" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "StorageError" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             StorageError deserializedStorageError = new StorageError();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
@@ -172,7 +190,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
                 if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
                 } else if ("CopySourceStatusCode".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Long::parseLong);
+                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Integer::parseInt);
                 } else if ("CopySourceErrorCode".equals(elementName.getLocalPart())) {
                     deserializedStorageError.copySourceErrorCode = reader.getStringElement();
                 } else if ("CopySourceErrorMessage".equals(elementName.getLocalPart())) {

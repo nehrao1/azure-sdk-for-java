@@ -13,27 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class VMHostListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMHostListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"vmResourceId\":\"j\"},{\"vmResourceId\":\"ejctbzaqsqsycb\"}],\"nextLink\":\"fkgukdkexxppof\"}")
-                .toObject(VMHostListResponse.class);
-        Assertions.assertEquals("j", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("fkgukdkexxppof", model.nextLink());
+        VMHostListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"vmResourceId\":\"kuwbcrnwb\"},{\"vmResourceId\":\"hhseyv\"}],\"nextLink\":\"srtslhspkdeem\"}")
+            .toObject(VMHostListResponse.class);
+        Assertions.assertEquals("kuwbcrnwb", model.value().get(0).vmResourceId());
+        Assertions.assertEquals("srtslhspkdeem", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMHostListResponse model =
-            new VMHostListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VMResourcesInner().withVmResourceId("j"),
-                            new VMResourcesInner().withVmResourceId("ejctbzaqsqsycb")))
-                .withNextLink("fkgukdkexxppof");
+        VMHostListResponse model
+            = new VMHostListResponse().withValue(Arrays.asList(new VMResourcesInner().withVmResourceId("kuwbcrnwb"),
+                new VMResourcesInner().withVmResourceId("hhseyv"))).withNextLink("srtslhspkdeem");
         model = BinaryData.fromObject(model).toObject(VMHostListResponse.class);
-        Assertions.assertEquals("j", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("fkgukdkexxppof", model.nextLink());
+        Assertions.assertEquals("kuwbcrnwb", model.value().get(0).vmResourceId());
+        Assertions.assertEquals("srtslhspkdeem", model.nextLink());
     }
 }

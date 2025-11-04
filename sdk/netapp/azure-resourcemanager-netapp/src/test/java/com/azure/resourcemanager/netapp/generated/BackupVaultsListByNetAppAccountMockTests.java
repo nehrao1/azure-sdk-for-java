@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupVault;
@@ -22,19 +22,19 @@ public final class BackupVaultsListByNetAppAccountMockTests {
     @Test
     public void testListByNetAppAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"mflrytswfpfmdgyc\"},\"location\":\"mskwhqjjysl\",\"tags\":{\"mpqvwwsk\":\"pshhkvpedwqslsr\",\"uvqejosovyrrle\":\"ndcbrwi\",\"uqtljqobbpih\":\"esi\",\"bbmpxdlvykfre\":\"hcecybmrqbr\"},\"id\":\"crse\",\"name\":\"wjksghudgzhxo\",\"type\":\"jggsvo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"mjel\"},\"location\":\"acigel\",\"tags\":{\"vqvwzkjopwbe\":\"d\",\"x\":\"nrlkwzdqy\",\"seqchkrt\":\"eakxcptsoqfyi\"},\"id\":\"zrazisgyk\",\"name\":\"uem\",\"type\":\"anbwzohmnrxxbso\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupVault> response
-            = manager.backupVaults().listByNetAppAccount("jcitdigsxcdglj", "lkeuac", com.azure.core.util.Context.NONE);
+            = manager.backupVaults().listByNetAppAccount("bxubmdna", "cbq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mskwhqjjysl", response.iterator().next().location());
-        Assertions.assertEquals("pshhkvpedwqslsr", response.iterator().next().tags().get("mpqvwwsk"));
+        Assertions.assertEquals("acigel", response.iterator().next().location());
+        Assertions.assertEquals("d", response.iterator().next().tags().get("vqvwzkjopwbe"));
     }
 }

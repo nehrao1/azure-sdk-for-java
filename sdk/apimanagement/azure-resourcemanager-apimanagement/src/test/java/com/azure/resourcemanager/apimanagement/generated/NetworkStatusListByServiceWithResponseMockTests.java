@@ -6,84 +6,48 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityStatusType;
 import com.azure.resourcemanager.apimanagement.models.NetworkStatusContractByLocation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkStatusListByServiceWithResponseMockTests {
     @Test
     public void testListByServiceWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "[{\"location\":\"qiqddjynpgomz\",\"networkStatus\":{\"dnsServers\":[\"pajlf\",\"svrljlhejccc\"],\"connectivityStatus\":[{\"name\":\"bnwitafjjevp\",\"status\":\"success\",\"error\":\"tghzqwvk\",\"lastUpdated\":\"2021-08-02T02:15:11Z\",\"lastStatusChange\":\"2021-10-10T05:26:34Z\",\"resourceType\":\"skplqftqcxqm\",\"isOptional\":true},{\"name\":\"udcykgul\",\"status\":\"success\",\"error\":\"fwrm\",\"lastUpdated\":\"2021-12-05T19:56:18Z\",\"lastStatusChange\":\"2021-09-19T18:27:34Z\",\"resourceType\":\"y\",\"isOptional\":false}]}},{\"location\":\"qoubxlpkdsnbqoy\",\"networkStatus\":{\"dnsServers\":[\"lraduhgwa\",\"zyrp\"],\"connectivityStatus\":[{\"name\":\"y\",\"status\":\"initializing\",\"error\":\"ribeskkopbk\",\"lastUpdated\":\"2021-07-24T10:38:36Z\",\"lastStatusChange\":\"2021-05-25T02:27:43Z\",\"resourceType\":\"bmbtmorikcze\",\"isOptional\":true},{\"name\":\"tiqxg\",\"status\":\"initializing\",\"error\":\"rlyvzlljydgmdoq\",\"lastUpdated\":\"2021-09-19T10:13:56Z\",\"lastStatusChange\":\"2021-04-04T15:22:59Z\",\"resourceType\":\"cwz\",\"isOptional\":true},{\"name\":\"judhgw\",\"status\":\"success\",\"error\":\"glym\",\"lastUpdated\":\"2021-03-18T02:23:13Z\",\"lastStatusChange\":\"2021-05-23T20:14:39Z\",\"resourceType\":\"uwsqpiyxkmqmge\",\"isOptional\":false},{\"name\":\"cilfiulgnnyxwdp\",\"status\":\"initializing\",\"error\":\"wqvvzxgbamqrbb\",\"lastUpdated\":\"2021-04-25T13:58:34Z\",\"lastStatusChange\":\"2021-04-07T05:09:35Z\",\"resourceType\":\"tm\",\"isOptional\":false}]}},{\"location\":\"pavcjkbyjuwhizc\",\"networkStatus\":{\"dnsServers\":[\"xmhwdtunpcskd\"],\"connectivityStatus\":[{\"name\":\"fouwkoltjdauuj\",\"status\":\"success\",\"error\":\"yhddzeykudjzrim\",\"lastUpdated\":\"2021-08-15T14:27:28Z\",\"lastStatusChange\":\"2021-12-10T12:48:32Z\",\"resourceType\":\"plmqyo\",\"isOptional\":true},{\"name\":\"ks\",\"status\":\"initializing\",\"error\":\"nqqkqxkd\",\"lastUpdated\":\"2021-07-31T00:27:02Z\",\"lastStatusChange\":\"2021-10-19T02:04:13Z\",\"resourceType\":\"euqkrbyy\",\"isOptional\":true},{\"name\":\"rjgbnwgokr\",\"status\":\"initializing\",\"error\":\"ecannv\",\"lastUpdated\":\"2021-09-23T22:17:17Z\",\"lastStatusChange\":\"2021-09-28T13:43:30Z\",\"resourceType\":\"hdc\",\"isOptional\":false},{\"name\":\"ptfcjapmfwxmcxhw\",\"status\":\"initializing\",\"error\":\"hifoyo\",\"lastUpdated\":\"2021-09-26T13:13:40Z\",\"lastStatusChange\":\"2021-10-26T12:54:24Z\",\"resourceType\":\"adhmqyufpfowwey\",\"isOptional\":true}]}},{\"location\":\"rtngiqcypmonfcor\",\"networkStatus\":{\"dnsServers\":[\"fycigcbmayhdtj\",\"rp\",\"na\",\"zdjqzbrwrf\"],\"connectivityStatus\":[{\"name\":\"houf\",\"status\":\"failure\",\"error\":\"bgvojck\",\"lastUpdated\":\"2021-11-03T10:09:32Z\",\"lastStatusChange\":\"2021-01-25T11:08:50Z\",\"resourceType\":\"snqunnikl\",\"isOptional\":false},{\"name\":\"deggnzadqmvpe\",\"status\":\"initializing\",\"error\":\"s\",\"lastUpdated\":\"2021-04-09T17:02:29Z\",\"lastStatusChange\":\"2021-08-13T17:23:50Z\",\"resourceType\":\"qhrplfqqnwojs\",\"isOptional\":true},{\"name\":\"c\",\"status\":\"failure\",\"error\":\"svbkhhaqsytuecm\",\"lastUpdated\":\"2021-05-03T20:39:56Z\",\"lastStatusChange\":\"2021-01-29T07:45:24Z\",\"resourceType\":\"ywdpuowl\",\"isOptional\":false},{\"name\":\"xkr\",\"status\":\"failure\",\"error\":\"qzq\",\"lastUpdated\":\"2020-12-22T19:11:17Z\",\"lastStatusChange\":\"2021-11-02T19:55:57Z\",\"resourceType\":\"eujcmtci\",\"isOptional\":false}]}}]";
 
-        String responseStr =
-            "[{\"location\":\"gpdqrjyl\",\"networkStatus\":{\"dnsServers\":[\"semjhhxlsu\"],\"connectivityStatus\":[{\"name\":\"hztb\",\"status\":\"initializing\",\"error\":\"dzwyktdpfzwu\",\"lastUpdated\":\"2021-02-10T12:07:01Z\",\"lastStatusChange\":\"2021-09-10T16:13:46Z\",\"resourceType\":\"n\",\"isOptional\":true},{\"name\":\"jhmjkykqflkmcy\",\"status\":\"initializing\",\"error\":\"ysmkbndnrihpja\",\"lastUpdated\":\"2021-08-29T03:40:19Z\",\"lastStatusChange\":\"2021-05-17T19:35:09Z\",\"resourceType\":\"be\",\"isOptional\":false},{\"name\":\"noignydlkrnpsb\",\"status\":\"success\",\"error\":\"mhkipjardv\",\"lastUpdated\":\"2021-05-08T21:22:39Z\",\"lastStatusChange\":\"2021-04-19T08:14:01Z\",\"resourceType\":\"gwdxmiael\",\"isOptional\":false}]}}]";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        List<NetworkStatusContractByLocation> response = manager.networkStatus()
+            .listByServiceWithResponse("tgljop", "zqqihvb", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        List<NetworkStatusContractByLocation> response =
-            manager
-                .networkStatus()
-                .listByServiceWithResponse("onxdwfcuhbgftfvq", "kkmvz", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("gpdqrjyl", response.get(0).location());
-        Assertions.assertEquals("semjhhxlsu", response.get(0).networkStatus().dnsServers().get(0));
-        Assertions.assertEquals("hztb", response.get(0).networkStatus().connectivityStatus().get(0).name());
-        Assertions
-            .assertEquals(
-                ConnectivityStatusType.INITIALIZING,
-                response.get(0).networkStatus().connectivityStatus().get(0).status());
-        Assertions.assertEquals("dzwyktdpfzwu", response.get(0).networkStatus().connectivityStatus().get(0).error());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-10T12:07:01Z"),
-                response.get(0).networkStatus().connectivityStatus().get(0).lastUpdated());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-10T16:13:46Z"),
-                response.get(0).networkStatus().connectivityStatus().get(0).lastStatusChange());
-        Assertions.assertEquals("n", response.get(0).networkStatus().connectivityStatus().get(0).resourceType());
-        Assertions.assertEquals(true, response.get(0).networkStatus().connectivityStatus().get(0).isOptional());
+        Assertions.assertEquals("qiqddjynpgomz", response.get(0).location());
+        Assertions.assertEquals("pajlf", response.get(0).networkStatus().dnsServers().get(0));
+        Assertions.assertEquals("bnwitafjjevp", response.get(0).networkStatus().connectivityStatus().get(0).name());
+        Assertions.assertEquals(ConnectivityStatusType.SUCCESS,
+            response.get(0).networkStatus().connectivityStatus().get(0).status());
+        Assertions.assertEquals("tghzqwvk", response.get(0).networkStatus().connectivityStatus().get(0).error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T02:15:11Z"),
+            response.get(0).networkStatus().connectivityStatus().get(0).lastUpdated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T05:26:34Z"),
+            response.get(0).networkStatus().connectivityStatus().get(0).lastStatusChange());
+        Assertions.assertEquals("skplqftqcxqm",
+            response.get(0).networkStatus().connectivityStatus().get(0).resourceType());
+        Assertions.assertTrue(response.get(0).networkStatus().connectivityStatus().get(0).isOptional());
     }
 }

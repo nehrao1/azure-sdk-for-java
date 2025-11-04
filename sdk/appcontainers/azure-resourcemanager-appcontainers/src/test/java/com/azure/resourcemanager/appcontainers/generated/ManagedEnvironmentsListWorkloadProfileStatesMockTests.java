@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStates;
@@ -22,20 +22,20 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
     @Test
     public void testListWorkloadProfileStates() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"minimumCount\":599005580,\"maximumCount\":1716523833,\"currentCount\":1816194825},\"id\":\"omevtfycn\",\"name\":\"bvgjcodkkgj\",\"type\":\"iytssikizbc\"}]}";
+            = "{\"value\":[{\"properties\":{\"minimumCount\":696818170,\"maximumCount\":2012943532,\"currentCount\":1699476003},\"id\":\"ilrgun\",\"name\":\"anlduwzorxsb\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadProfileStates> response = manager.managedEnvironments()
-            .listWorkloadProfileStates("hjym", "cgqtag", com.azure.core.util.Context.NONE);
+            .listWorkloadProfileStates("oellnkkiiwvmt", "mxpymdjf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(599005580, response.iterator().next().properties().minimumCount());
-        Assertions.assertEquals(1716523833, response.iterator().next().properties().maximumCount());
-        Assertions.assertEquals(1816194825, response.iterator().next().properties().currentCount());
+        Assertions.assertEquals(696818170, response.iterator().next().properties().minimumCount());
+        Assertions.assertEquals(2012943532, response.iterator().next().properties().maximumCount());
+        Assertions.assertEquals(1699476003, response.iterator().next().properties().currentCount());
     }
 }

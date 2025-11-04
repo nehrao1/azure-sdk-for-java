@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -15,17 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse Table.
+ * Microsoft Fabric Lakehouse Table.
  */
 @Fluent
 public final class LakeHouseTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
-    private String type = "LakeHouseTable";
+    private String type = "LakehouseTable";
 
     /*
-     * Microsoft Fabric LakeHouse Table dataset properties.
+     * Microsoft Fabric Lakehouse Table dataset properties.
      */
     private LakeHouseTableDatasetTypeProperties innerTypeProperties;
 
@@ -46,11 +47,11 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Get the innerTypeProperties property: Microsoft Fabric LakeHouse Table dataset properties.
+     * Get the innerTypeProperties property: Microsoft Fabric Lakehouse Table dataset properties.
      * 
      * @return the innerTypeProperties value.
      */
-    private LakeHouseTableDatasetTypeProperties innerTypeProperties() {
+    LakeHouseTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -118,7 +119,7 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Get the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * Get the schema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with
      * resultType string).
      * 
      * @return the schema value.
@@ -128,7 +129,7 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Set the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * Set the schema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with
      * resultType string).
      * 
      * @param schema the schema value to set.
@@ -143,7 +144,7 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Get the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @return the table value.
@@ -153,7 +154,7 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Set the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @param table the table value to set.
@@ -174,11 +175,29 @@ public final class LakeHouseTableDataset extends Dataset {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model LakeHouseTableDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LakeHouseTableDataset.class);
 
     /**
      * {@inheritDoc}
@@ -188,8 +207,12 @@ public final class LakeHouseTableDataset extends Dataset {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
         jsonWriter.writeStringField("description", description());
-        jsonWriter.writeUntypedField("structure", structure());
-        jsonWriter.writeUntypedField("schema", schema());
+        if (structure() != null) {
+            jsonWriter.writeUntypedField("structure", structure());
+        }
+        if (schema() != null) {
+            jsonWriter.writeUntypedField("schema", schema());
+        }
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", folder());

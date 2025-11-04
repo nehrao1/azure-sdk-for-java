@@ -3,9 +3,10 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ExpandableEnum;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.utils.ExpandableEnum;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Represents common header names.
  */
 @SuppressWarnings("unused")
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpHeaderName implements ExpandableEnum<String> {
     private static final Map<String, HttpHeaderName> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
@@ -62,22 +64,7 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
             return null;
         }
 
-        HttpHeaderName httpHeaderName = VALUES.get(name);
-
-        if (httpHeaderName != null) {
-            return httpHeaderName;
-        }
-
         return VALUES.computeIfAbsent(name, HttpHeaderName::new);
-    }
-
-    /**
-     * Gets all known {@link HttpHeaderName} values.
-     *
-     * @return The known {@link HttpHeaderName} values.
-     */
-    public static Collection<HttpHeaderName> values() {
-        return VALUES.values();
     }
 
     @Override
@@ -192,16 +179,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
 
     /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName REQUEST_ID = fromString("Request-Id");
-
-    /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
-
-    /**
      * {@code traceparent}
      */
     public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");
@@ -297,11 +274,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName HOST = fromString("Host");
 
     /**
-     * {@code HTTP2-Settings}/{@code http2-settings}
-     */
-    public static final HttpHeaderName HTTP2_SETTINGS = fromString("HTTP2-Settings");
-
-    /**
      * {@code If-Match}/{@code if-match}
      */
     public static final HttpHeaderName IF_MATCH = fromString("If-Match");
@@ -365,6 +337,16 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
      * {@code Preference-Applied}/{@code preference-applied}
      */
     public static final HttpHeaderName PREFERENCE_APPLIED = fromString("Preference-Applied");
+
+    /**
+     * {@code Proxy-Authenticate}/{@code proxy-authenticate}
+     */
+    public static final HttpHeaderName PROXY_AUTHENTICATE = fromString("Proxy-Authenticate");
+
+    /**
+     * {@code Proxy-Authorization}/{@code proxy-authorization}
+     */
+    public static final HttpHeaderName PROXY_AUTHORIZATION = fromString("Proxy-Authorization");
 
     /**
      * {@code Range}/{@code range}

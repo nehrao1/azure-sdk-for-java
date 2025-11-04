@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,13 +20,14 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
     /*
      * The authorization type for integration runtime sharing.
      */
-    private String authorizationType;
+    @Generated
+    private String authorizationType = "LinkedIntegrationRuntimeType";
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeType class.
      */
+    @Generated
     public LinkedIntegrationRuntimeType() {
-        this.authorizationType = "LinkedIntegrationRuntimeType";
     }
 
     /**
@@ -33,6 +35,7 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
      * 
      * @return the authorizationType value.
      */
+    @Generated
     public String getAuthorizationType() {
         return this.authorizationType;
     }
@@ -40,6 +43,7 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,6 +59,7 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkedIntegrationRuntimeType.
      */
+    @Generated
     public static LinkedIntegrationRuntimeType fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -82,6 +87,7 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
         });
     }
 
+    @Generated
     static LinkedIntegrationRuntimeType fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedIntegrationRuntimeType deserializedLinkedIntegrationRuntimeType = new LinkedIntegrationRuntimeType();

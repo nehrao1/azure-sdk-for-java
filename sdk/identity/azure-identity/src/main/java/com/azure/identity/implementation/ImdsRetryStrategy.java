@@ -23,6 +23,7 @@ public class ImdsRetryStrategy implements RetryStrategy {
     public ImdsRetryStrategy() {
         this(MAX_RETRIES, Duration.ofMillis(800));
     }
+
     public ImdsRetryStrategy(int maxRetries) {
         this(maxRetries, Duration.ofMillis(800));
     }
@@ -57,9 +58,16 @@ public class ImdsRetryStrategy implements RetryStrategy {
                 return false;
             }
             if (statusCode == 403) {
-                return httpResponse.getHeaderValue("ResponseMessage").contains("A socket operation was attempted to an unreachable network");
+                String headerValue = httpResponse.getHeaderValue("ResponseMessage");
+                if (headerValue != null) {
+                    return headerValue.contains("A socket operation was attempted to an unreachable");
+                }
+                return false;
             }
-            if (statusCode == 410 || statusCode == 429 || statusCode == 404 || (statusCode >= 500 && statusCode <= 599)) {
+            if (statusCode == 410
+                || statusCode == 429
+                || statusCode == 404
+                || (statusCode >= 500 && statusCode <= 599)) {
                 return true;
             }
         }

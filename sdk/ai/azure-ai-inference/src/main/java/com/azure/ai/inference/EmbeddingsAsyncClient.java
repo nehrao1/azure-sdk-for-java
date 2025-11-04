@@ -60,8 +60,9 @@ public final class EmbeddingsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     input (Required): [
      *         String (Required)
@@ -71,15 +72,18 @@ public final class EmbeddingsAsyncClient {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -92,9 +96,10 @@ public final class EmbeddingsAsyncClient {
      *     }
      *     model: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
-     * @param embedRequest The embedRequest parameter.
+     * @param body request options to pass to the endpoint using embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -107,22 +112,24 @@ public final class EmbeddingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> embedWithResponse(BinaryData embedRequest, RequestOptions requestOptions) {
-        return this.serviceClient.embedWithResponseAsync(embedRequest, requestOptions);
+    Mono<Response<BinaryData>> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.embedWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -292,9 +299,8 @@ public final class EmbeddingsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents some basic information about the AI model on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ModelInfo> getModelInfo() {
+    public Mono<ModelInfo> getModelInfo() {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).flatMap(FluxUtil::toMono)

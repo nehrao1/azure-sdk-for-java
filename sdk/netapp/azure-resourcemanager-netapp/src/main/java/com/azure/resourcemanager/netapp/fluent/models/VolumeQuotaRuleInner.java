@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.ProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
 import java.io.IOException;
 import java.util.Map;
@@ -31,9 +31,9 @@ public final class VolumeQuotaRuleInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +41,9 @@ public final class VolumeQuotaRuleInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of VolumeQuotaRuleInner class.
@@ -70,13 +70,13 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -90,13 +90,13 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -118,11 +118,11 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
+     * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

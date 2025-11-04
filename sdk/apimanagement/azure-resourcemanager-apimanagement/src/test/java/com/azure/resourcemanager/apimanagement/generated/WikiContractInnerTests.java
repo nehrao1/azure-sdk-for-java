@@ -13,25 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WikiContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WikiContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"documents\":[{\"documentationId\":\"cunnuzdqumoenodn\"},{\"documentationId\":\"enhqhskndnelq\"},{\"documentationId\":\"adlknwfoanni\"}]},\"id\":\"op\",\"name\":\"txiv\",\"type\":\"nrlyxnuc\"}")
-                .toObject(WikiContractInner.class);
-        Assertions.assertEquals("cunnuzdqumoenodn", model.documents().get(0).documentationId());
+        WikiContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"documents\":[{\"documentationId\":\"bpgsnbagnc\"},{\"documentationId\":\"hg\"},{\"documentationId\":\"uowakyw\"}]},\"id\":\"lhjym\",\"name\":\"cgqtag\",\"type\":\"rclsso\"}")
+            .toObject(WikiContractInner.class);
+        Assertions.assertEquals("bpgsnbagnc", model.documents().get(0).documentationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WikiContractInner model =
-            new WikiContractInner()
-                .withDocuments(
-                    Arrays
-                        .asList(
-                            new WikiDocumentationContract().withDocumentationId("cunnuzdqumoenodn"),
-                            new WikiDocumentationContract().withDocumentationId("enhqhskndnelq"),
-                            new WikiDocumentationContract().withDocumentationId("adlknwfoanni")));
+        WikiContractInner model = new WikiContractInner()
+            .withDocuments(Arrays.asList(new WikiDocumentationContract().withDocumentationId("bpgsnbagnc"),
+                new WikiDocumentationContract().withDocumentationId("hg"),
+                new WikiDocumentationContract().withDocumentationId("uowakyw")));
         model = BinaryData.fromObject(model).toObject(WikiContractInner.class);
-        Assertions.assertEquals("cunnuzdqumoenodn", model.documents().get(0).documentationId());
+        Assertions.assertEquals("bpgsnbagnc", model.documents().get(0).documentationId());
     }
 }

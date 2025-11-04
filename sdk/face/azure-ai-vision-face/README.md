@@ -6,6 +6,7 @@ The Azure AI Face service provides AI algorithms that detect, recognize, and ana
 - Liveness detection
 - Face recognition
   - Face verification ("one-to-one" matching)
+  - Face identification ("one-to-many" matching)
 - Find similar faces
 - Group faces
 
@@ -38,7 +39,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-face</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -47,6 +48,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 
 In order to interact with the Face service, you will need to create an instance of a client class,
 [FaceAsyncClient][face_client_async] or [FaceClient][face_client] by using [FaceClientBuilder][face_client_builder].
+[FaceAdministrationAsyncClient][face_administration_client_async] or [FaceAdministrationClient][face_administration_client] by using [FaceAdministrationClientBuilder][face_administration_client_builder].
 [FaceSessionAsyncClient][face_session_client_async] or [FaceSessionClient][face_session_client] by using [FaceSessionClientBuilder][face_session_client_builder].
 
 An **endpoint** and **credential** are necessary to instantiate the client object.
@@ -80,6 +82,12 @@ az cognitiveservices account keys list --name "<resource-name>" --resource-group
 `AzureKeyCredential` authentication is used in the examples in this getting started guide because of its' simplicity, but we recommend to authenticate with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library. Microsoft Entra ID is more secure and reliable.
 Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] name for your resource in order to use this type of authentication.
 
+We recommend authenticating with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library.
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
 To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] type shown below, or other credential types provided with the Azure SDK, please add the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -87,7 +95,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.18.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -288,7 +296,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [face_product_docs]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-identity
 [face_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/samples
 
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_sub]: https://azure.microsoft.com/free/
 [steps_assign_an_azure_role]: https://learn.microsoft.com/azure/role-based-access-control/role-assignments-steps
 [azure_portal_list_face_account]: https://portal.azure.com/#blade/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/Face
@@ -305,15 +313,18 @@ For details on contributing to this repository, see the [contributing guide](htt
 [face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
 [face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
 [face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
+[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationAsyncClient.java
+[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClient.java
+[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClientBuilder.java
 [face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
 [face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
 [face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java
 
 [azure_sdk_java_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [migrate_to_custom_subdomain]: https://learn.microsoft.com/azure/ai-services/cognitive-services-custom-subdomains#how-does-this-impact-existing-resources
 [azure_sdk_java_default_azure_credential]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#defaultazurecredential
-[register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 
 [evaluate_different_detection_models]: https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model#evaluate-different-models
 [recommended_recognition_model]: https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model#recommended-model
@@ -322,3 +333,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

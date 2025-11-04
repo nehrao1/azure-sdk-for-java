@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.devopsinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devopsinfrastructure.models.QuotaName;
 import java.io.IOException;
 
 /**
@@ -17,6 +17,11 @@ import java.io.IOException;
  */
 @Immutable
 public final class QuotaInner implements JsonSerializable<QuotaInner> {
+    /*
+     * The name of the quota.
+     */
+    private QuotaName name;
+
     /*
      * Fully qualified ARM resource id
      */
@@ -41,6 +46,15 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
      * Creates an instance of QuotaInner class.
      */
     private QuotaInner() {
+    }
+
+    /**
+     * Get the name property: The name of the quota.
+     * 
+     * @return the name value.
+     */
+    public QuotaName name() {
+        return this.name;
     }
 
     /**
@@ -80,24 +94,6 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (id() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property id in model QuotaInner"));
-        }
-        if (unit() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property unit in model QuotaInner"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(QuotaInner.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -134,6 +130,8 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
                     deserializedQuotaInner.currentValue = reader.getLong();
                 } else if ("limit".equals(fieldName)) {
                     deserializedQuotaInner.limit = reader.getLong();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaInner.name = QuotaName.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

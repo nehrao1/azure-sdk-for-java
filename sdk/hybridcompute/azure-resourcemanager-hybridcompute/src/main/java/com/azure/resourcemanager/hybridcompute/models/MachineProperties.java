@@ -38,6 +38,27 @@ public interface MachineProperties {
     ServiceStatuses serviceStatuses();
 
     /**
+     * Gets the hardwareProfile property: Information about the machine's hardware.
+     * 
+     * @return the hardwareProfile value.
+     */
+    HardwareProfile hardwareProfile();
+
+    /**
+     * Gets the storageProfile property: Information about the machine's storage.
+     * 
+     * @return the storageProfile value.
+     */
+    StorageProfile storageProfile();
+
+    /**
+     * Gets the firmwareProfile property: Information about the machine's firmware.
+     * 
+     * @return the firmwareProfile value.
+     */
+    FirmwareProfile firmwareProfile();
+
+    /**
      * Gets the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
      * 
      * @return the cloudMetadata value.
@@ -130,6 +151,21 @@ public interface MachineProperties {
     String clientPublicKey();
 
     /**
+     * Gets the identityKeyStore property: Specifies the identity key store a machine is using.
+     * 
+     * @return the identityKeyStore value.
+     */
+    IdentityKeyStore identityKeyStore();
+
+    /**
+     * Gets the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @return the tpmEkCertificate value.
+     */
+    String tpmEkCertificate();
+
+    /**
      * Gets the osName property: The Operating System running on the hybrid machine.
      * 
      * @return the osName value.
@@ -214,6 +250,14 @@ public interface MachineProperties {
      * @return the parentClusterResourceId value.
      */
     String parentClusterResourceId();
+
+    /**
+     * Gets the hardwareResourceId property: Specifies the resource ID of the associated hardware device. Only settable
+     * by HCI RP.
+     * 
+     * @return the hardwareResourceId value.
+     */
+    String hardwareResourceId();
 
     /**
      * Gets the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.

@@ -20,8 +20,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elastic.fluent.AssociateTrafficFiltersClient;
@@ -29,53 +31,61 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AssociateTrafficFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssociateTrafficFiltersClient.
+ */
 public final class AssociateTrafficFiltersClientImpl implements AssociateTrafficFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AssociateTrafficFiltersService service;
 
-    /** The service client containing this operation class. */
-    private final MicrosoftElasticImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final ElasticManagementClientImpl client;
 
     /**
      * Initializes an instance of AssociateTrafficFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    AssociateTrafficFiltersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy
-                .create(AssociateTrafficFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    AssociateTrafficFiltersClientImpl(ElasticManagementClientImpl client) {
+        this.service = RestProxy.create(AssociateTrafficFiltersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftElasticAssociateTrafficFilters to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ElasticManagementClientAssociateTrafficFilters to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftElasticAsso")
+    @ServiceInterface(name = "ElasticManagementClientAssociateTrafficFilters")
     public interface AssociateTrafficFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/associateTrafficFilter")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/associateTrafficFilter")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> associate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("rulesetId") String rulesetId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> associate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("rulesetId") String rulesetId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/associateTrafficFilter")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> associateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("rulesetId") String rulesetId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,19 +94,15 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> associateWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private Mono<Response<Flux<ByteBuffer>>> associateWithResponseAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -107,73 +113,89 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .associate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            rulesetId,
-                            accept,
-                            context))
+            .withContext(context -> service.associate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param rulesetId Ruleset Id of the filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> associateWithResponse(String resourceGroupName, String monitorName, String rulesetId) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.associateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, Context.NONE);
+    }
+
+    /**
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> associateWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    private Response<BinaryData> associateWithResponse(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .associate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                rulesetId,
-                accept,
-                context);
+        return service.associateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, context);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,19 +204,17 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAssociateAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private PollerFlux<PollResult<Void>, Void> beginAssociateAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         Mono<Response<Flux<ByteBuffer>>> mono = associateWithResponseAsync(resourceGroupName, monitorName, rulesetId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -205,39 +225,32 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     private PollerFlux<PollResult<Void>, Void> beginAssociateAsync(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
         Mono<Response<Flux<ByteBuffer>>> mono = associateWithResponseAsync(resourceGroupName, monitorName, rulesetId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAssociateAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            associateWithResponseAsync(resourceGroupName, monitorName, rulesetId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName,
+        String rulesetId) {
+        Response<BinaryData> response = associateWithResponse(resourceGroupName, monitorName, rulesetId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -247,13 +260,14 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        return this.beginAssociateAsync(resourceGroupName, monitorName, rulesetId).getSyncPoller();
+        Response<BinaryData> response = associateWithResponse(resourceGroupName, monitorName, rulesetId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -263,15 +277,16 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAssociate(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        return this.beginAssociateAsync(resourceGroupName, monitorName, rulesetId, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName,
+        String rulesetId, Context context) {
+        Response<BinaryData> response = associateWithResponse(resourceGroupName, monitorName, rulesetId, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,15 +296,14 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> associateAsync(String resourceGroupName, String monitorName, String rulesetId) {
-        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId)
-            .last()
+        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -299,34 +313,14 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> associateAsync(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId)
-            .last()
+        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param rulesetId Ruleset Id of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> associateAsync(String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -335,13 +329,13 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void associate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        associateAsync(resourceGroupName, monitorName, rulesetId).block();
+        beginAssociate(resourceGroupName, monitorName, rulesetId).getFinalResult();
     }
 
     /**
-     * Associate traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -351,6 +345,8 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void associate(String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        associateAsync(resourceGroupName, monitorName, rulesetId, context).block();
+        beginAssociate(resourceGroupName, monitorName, rulesetId, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssociateTrafficFiltersClientImpl.class);
 }

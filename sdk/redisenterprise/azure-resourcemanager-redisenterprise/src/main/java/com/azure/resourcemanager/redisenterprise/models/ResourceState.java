@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -83,6 +82,11 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     public static final ResourceState SCALING_FAILED = fromString("ScalingFailed");
 
     /**
+     * Static value Moving for ResourceState.
+     */
+    public static final ResourceState MOVING = fromString("Moving");
+
+    /**
      * Creates a new instance of ResourceState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -97,7 +101,6 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
      * @param name a name to look for.
      * @return the corresponding ResourceState.
      */
-    @JsonCreator
     public static ResourceState fromString(String name) {
         return fromString(name, ResourceState.class);
     }

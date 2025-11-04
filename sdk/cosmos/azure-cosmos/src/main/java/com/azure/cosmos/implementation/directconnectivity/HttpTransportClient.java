@@ -72,22 +72,18 @@ public class HttpTransportClient extends TransportClient {
     private final Logger logger = LoggerFactory.getLogger(HttpTransportClient.class);
     private final HttpClient httpClient;
     private final Map<String, String> defaultHeaders;
-    private final Configs configs;
     private final GlobalEndpointManager globalEndpointManager;
 
-    HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
-        // TODO: use one instance of SSL context everywhere
-        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
+    HttpClient createHttpClient(Configs configs, ConnectionPolicy connectionPolicy) {
+        HttpClientConfig httpClientConfig = new HttpClientConfig(configs);
         httpClientConfig.withNetworkRequestTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
-
         return HttpClient.createFixed(httpClientConfig);
     }
 
     public HttpTransportClient(Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent,
                                GlobalEndpointManager globalEndpointManager) {
-        this.configs = configs;
-        this.httpClient = createHttpClient(connectionPolicy);
+        this.httpClient = createHttpClient(configs, connectionPolicy);
 
         this.defaultHeaders = new HashMap<>();
 
@@ -141,15 +137,19 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            Duration responseTimeout = null;
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
             } else if (request.isAddressRefresh()) {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient
-                    .send(httpRequest, responseTimeout)
+            Mono<HttpResponse> sendRequest = this.httpClient.send(httpRequest);
+            if (responseTimeout != null) {
+                sendRequest = this.httpClient.send(httpRequest, responseTimeout);
+            }
+
+            Mono<HttpResponse> httpResponseMono = sendRequest
                     .doOnSubscribe(subscription -> {
                         sendTimeUtc.v = Instant.now();
                         this.beforeRequest(
@@ -253,7 +253,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
     }
 
@@ -750,7 +750,7 @@ public class HttpTransportClient extends TransportClient {
         // If the status code is < 300 or 304 NotModified (we treat not modified as success) then it means that it's a success code and shouldn't throw.
         if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY ||
                 response.statusCode() == HttpConstants.StatusCodes.NOT_MODIFIED) {
-            return ResponseUtils.toStoreResponse(response);
+            return ResponseUtils.toStoreResponse(response, resourceAddress);
         }
         else {
             return this.createErrorResponseFromHttpResponse(resourceAddress, activityId, httpRequest, response);

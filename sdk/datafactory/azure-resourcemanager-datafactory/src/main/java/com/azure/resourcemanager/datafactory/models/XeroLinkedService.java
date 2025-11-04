@@ -51,7 +51,7 @@ public final class XeroLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private XeroLinkedServiceTypeProperties innerTypeProperties() {
+    XeroLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -305,13 +305,22 @@ public final class XeroLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model XeroLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

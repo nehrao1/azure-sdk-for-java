@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class SubscriptionUsagesUsagesSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/SubscriptionUsages_Usages.json
+     * x-ms-original-file: 2025-01-21/SubscriptionUsages_Usages.json
      */
     /**
      * Sample code: SubscriptionUsages_Usages.

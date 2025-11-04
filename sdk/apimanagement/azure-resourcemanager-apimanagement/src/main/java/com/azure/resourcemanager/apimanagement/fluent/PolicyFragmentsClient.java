@@ -6,29 +6,44 @@ package com.azure.resourcemanager.apimanagement.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResourceCollectionInner;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in PolicyFragmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyFragmentsClient.
+ */
 public interface PolicyFragmentsClient {
     /**
      * Gets all policy fragments.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyFragmentContractInner> listByService(String resourceGroupName, String serviceName);
+
+    /**
+     * Gets all policy fragments.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy |
-     *     ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param orderby OData order by query option.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -36,34 +51,15 @@ public interface PolicyFragmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments along with {@link Response}.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyFragmentCollectionInner> listByServiceWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context);
-
-    /**
-     * Gets all policy fragments.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentCollectionInner listByService(String resourceGroupName, String serviceName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyFragmentContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -74,12 +70,12 @@ public interface PolicyFragmentsClient {
      * @return the entity state (Etag) version of a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String id, Context context);
+    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String id, Context context);
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -92,7 +88,7 @@ public interface PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -104,12 +100,12 @@ public interface PolicyFragmentsClient {
      * @return a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context);
+    PolicyFragmentsGetResponse getWithResponse(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContentFormat format, Context context);
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -123,7 +119,7 @@ public interface PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -139,7 +135,7 @@ public interface PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -153,16 +149,12 @@ public interface PolicyFragmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch,
         Context context);
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -173,12 +165,12 @@ public interface PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters);
+    PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters);
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -191,22 +183,17 @@ public interface PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
-        Context context);
+    PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters, String ifMatch, Context context);
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,17 +201,17 @@ public interface PolicyFragmentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String id, String ifMatch,
+        Context context);
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -234,7 +221,7 @@ public interface PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -247,12 +234,12 @@ public interface PolicyFragmentsClient {
      * @return a collection of resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceCollectionInner> listReferencesWithResponse(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context);
+    Response<ResourceCollectionInner> listReferencesWithResponse(String resourceGroupName, String serviceName,
+        String id, Integer top, Integer skip, Context context);
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.

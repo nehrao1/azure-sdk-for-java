@@ -4,15 +4,31 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 
-/** Resource collection API of ProductPolicies. */
+/**
+ * Resource collection API of ProductPolicies.
+ */
 public interface ProductPolicies {
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy configuration at the Product level as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<PolicyContract> listByProduct(String resourceGroupName, String serviceName, String productId);
+
+    /**
+     * Get the policy configuration at the Product level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -20,27 +36,14 @@ public interface ProductPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level along with {@link Response}.
+     * @return the policy configuration at the Product level as paginated response with {@link PagedIterable}.
      */
-    Response<PolicyCollection> listByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
-
-    /**
-     * Get the policy configuration at the Product level.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level.
-     */
-    PolicyCollection listByProduct(String resourceGroupName, String serviceName, String productId);
+    PagedIterable<PolicyContract> listByProduct(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -51,12 +54,12 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ETag of the policy configuration at the Product level.
      */
-    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -69,7 +72,7 @@ public interface ProductPolicies {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -81,17 +84,12 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the Product level.
      */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -105,7 +103,7 @@ public interface ProductPolicies {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -118,18 +116,12 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -140,45 +132,36 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
+    PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId,
         PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

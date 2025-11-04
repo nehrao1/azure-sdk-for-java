@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,27 @@ public class WebTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "WebTable";
 
     /*
-     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum: 0.
+     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
+     * minimum: 0.
      */
+    @Generated
     private Object index;
 
     /*
-     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType string).
+     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
+     * string).
      */
+    @Generated
     private Object path;
 
     /**
      * Creates an instance of WebTableDataset class.
      */
+    @Generated
     public WebTableDataset() {
     }
 
@@ -44,6 +51,7 @@ public class WebTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +63,7 @@ public class WebTableDataset extends Dataset {
      * 
      * @return the index value.
      */
+    @Generated
     public Object getIndex() {
         return this.index;
     }
@@ -66,6 +75,7 @@ public class WebTableDataset extends Dataset {
      * @param index the index value to set.
      * @return the WebTableDataset object itself.
      */
+    @Generated
     public WebTableDataset setIndex(Object index) {
         this.index = index;
         return this;
@@ -77,6 +87,7 @@ public class WebTableDataset extends Dataset {
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -88,6 +99,7 @@ public class WebTableDataset extends Dataset {
      * @param path the path value to set.
      * @return the WebTableDataset object itself.
      */
+    @Generated
     public WebTableDataset setPath(Object path) {
         this.path = path;
         return this;
@@ -96,6 +108,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -105,6 +118,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -114,6 +128,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -123,6 +138,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -132,6 +148,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -141,6 +158,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -150,6 +168,7 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -159,13 +178,18 @@ public class WebTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -173,7 +197,9 @@ public class WebTableDataset extends Dataset {
         if (index != null || path != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("index", this.index);
-            jsonWriter.writeUntypedField("path", this.path);
+            if (this.path != null) {
+                jsonWriter.writeUntypedField("path", this.path);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -193,6 +219,7 @@ public class WebTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebTableDataset.
      */
+    @Generated
     public static WebTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebTableDataset deserializedWebTableDataset = new WebTableDataset();

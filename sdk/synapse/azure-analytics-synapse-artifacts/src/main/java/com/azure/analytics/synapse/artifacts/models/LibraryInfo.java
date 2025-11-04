@@ -5,6 +5,8 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,41 +25,49 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
     /*
      * Name of the library.
      */
+    @Generated
     private String name;
 
     /*
      * Storage blob path of library.
      */
+    @Generated
     private String path;
 
     /*
      * Storage blob container name.
      */
+    @Generated
     private String containerName;
 
     /*
      * The last update time of the library.
      */
+    @Generated
     private OffsetDateTime uploadedTimestamp;
 
     /*
      * Type of the library.
      */
+    @Generated
     private String type;
 
     /*
      * Provisioning status of the library/package.
      */
+    @Generated
     private String provisioningStatus;
 
     /*
      * Creator Id of the library/package.
      */
+    @Generated
     private String creatorId;
 
     /**
      * Creates an instance of LibraryInfo class.
      */
+    @Generated
     public LibraryInfo() {
     }
 
@@ -66,6 +76,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -76,6 +87,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * @param name the name value to set.
      * @return the LibraryInfo object itself.
      */
+    @Generated
     public LibraryInfo setName(String name) {
         this.name = name;
         return this;
@@ -86,6 +98,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the path value.
      */
+    @Generated
     public String getPath() {
         return this.path;
     }
@@ -96,6 +109,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * @param path the path value to set.
      * @return the LibraryInfo object itself.
      */
+    @Generated
     public LibraryInfo setPath(String path) {
         this.path = path;
         return this;
@@ -106,6 +120,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the containerName value.
      */
+    @Generated
     public String getContainerName() {
         return this.containerName;
     }
@@ -116,6 +131,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * @param containerName the containerName value to set.
      * @return the LibraryInfo object itself.
      */
+    @Generated
     public LibraryInfo setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
@@ -126,6 +142,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the uploadedTimestamp value.
      */
+    @Generated
     public OffsetDateTime getUploadedTimestamp() {
         return this.uploadedTimestamp;
     }
@@ -136,6 +153,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * @param uploadedTimestamp the uploadedTimestamp value to set.
      * @return the LibraryInfo object itself.
      */
+    @Generated
     public LibraryInfo setUploadedTimestamp(OffsetDateTime uploadedTimestamp) {
         this.uploadedTimestamp = uploadedTimestamp;
         return this;
@@ -146,6 +164,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -156,6 +175,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * @param type the type value to set.
      * @return the LibraryInfo object itself.
      */
+    @Generated
     public LibraryInfo setType(String type) {
         this.type = type;
         return this;
@@ -166,6 +186,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the provisioningStatus value.
      */
+    @Generated
     public String getProvisioningStatus() {
         return this.provisioningStatus;
     }
@@ -175,6 +196,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * 
      * @return the creatorId value.
      */
+    @Generated
     public String getCreatorId() {
         return this.creatorId;
     }
@@ -182,6 +204,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -204,6 +227,7 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LibraryInfo.
      */
+    @Generated
     public static LibraryInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LibraryInfo deserializedLibraryInfo = new LibraryInfo();
@@ -218,8 +242,8 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
                 } else if ("containerName".equals(fieldName)) {
                     deserializedLibraryInfo.containerName = reader.getString();
                 } else if ("uploadedTimestamp".equals(fieldName)) {
-                    deserializedLibraryInfo.uploadedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLibraryInfo.uploadedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedLibraryInfo.type = reader.getString();
                 } else if ("provisioningStatus".equals(fieldName)) {

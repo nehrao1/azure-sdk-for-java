@@ -7,15 +7,13 @@ package com.azure.resourcemanager.computefleet.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.computefleet.ComputeFleetManager;
-import com.azure.resourcemanager.computefleet.models.ActionType;
 import com.azure.resourcemanager.computefleet.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -23,17 +21,16 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"vypomgkopkwho\",\"isDataAction\":true,\"display\":{\"provider\":\"qgxy\",\"resource\":\"ocmbqfqvmkcxoza\",\"operation\":\"helxprglya\",\"description\":\"dckcbc\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"qgxy\",\"isDataAction\":true,\"display\":{\"provider\":\"bq\",\"resource\":\"vmkcx\",\"operation\":\"apvhelxprgly\",\"description\":\"dd\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ComputeFleetManager manager = ComputeFleetManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

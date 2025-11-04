@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,27 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "OrcWriteSettings";
 
     /*
-     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with resultType integer).
+     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
+     * Expression with resultType integer).
      */
+    @Generated
     private Object maxRowsPerFile;
 
     /*
-     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store without partitionOptions. Type: string (or Expression with resultType string).
+     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
+     * without partitionOptions. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileNamePrefix;
 
     /**
      * Creates an instance of OrcWriteSettings class.
      */
+    @Generated
     public OrcWriteSettings() {
     }
 
@@ -43,6 +50,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +62,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * 
      * @return the maxRowsPerFile value.
      */
+    @Generated
     public Object getMaxRowsPerFile() {
         return this.maxRowsPerFile;
     }
@@ -65,6 +74,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * @param maxRowsPerFile the maxRowsPerFile value to set.
      * @return the OrcWriteSettings object itself.
      */
+    @Generated
     public OrcWriteSettings setMaxRowsPerFile(Object maxRowsPerFile) {
         this.maxRowsPerFile = maxRowsPerFile;
         return this;
@@ -77,6 +87,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * 
      * @return the fileNamePrefix value.
      */
+    @Generated
     public Object getFileNamePrefix() {
         return this.fileNamePrefix;
     }
@@ -89,6 +100,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * @param fileNamePrefix the fileNamePrefix value to set.
      * @return the OrcWriteSettings object itself.
      */
+    @Generated
     public OrcWriteSettings setFileNamePrefix(Object fileNamePrefix) {
         this.fileNamePrefix = fileNamePrefix;
         return this;
@@ -97,12 +109,17 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
-        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (this.maxRowsPerFile != null) {
+            jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        }
+        if (this.fileNamePrefix != null) {
+            jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -119,6 +136,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OrcWriteSettings.
      */
+    @Generated
     public static OrcWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OrcWriteSettings deserializedOrcWriteSettings = new OrcWriteSettings();

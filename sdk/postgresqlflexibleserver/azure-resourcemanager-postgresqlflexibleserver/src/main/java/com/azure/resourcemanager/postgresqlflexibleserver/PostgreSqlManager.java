@@ -11,17 +11,18 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdministratorsImpl;
@@ -46,8 +47,11 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.QuotaUs
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerThreatProtectionSettingsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningConfigurationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningIndexesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningOptionsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualEndpointsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
@@ -71,14 +75,18 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsages;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettings;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningConfigurations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningIndexes;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptions;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoints;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -134,6 +142,12 @@ public final class PostgreSqlManager {
     private LogFiles logFiles;
 
     private ServerThreatProtectionSettings serverThreatProtectionSettings;
+
+    private TuningOptions tuningOptions;
+
+    private TuningIndexes tuningIndexes;
+
+    private TuningConfigurations tuningConfigurations;
 
     private VirtualEndpoints virtualEndpoints;
 
@@ -191,6 +205,9 @@ public final class PostgreSqlManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-postgresqlflexibleserver.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -298,12 +315,14 @@ public final class PostgreSqlManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.1.0-beta.3");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -336,7 +355,7 @@ public final class PostgreSqlManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -631,6 +650,42 @@ public final class PostgreSqlManager {
                 = new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
         }
         return serverThreatProtectionSettings;
+    }
+
+    /**
+     * Gets the resource collection API of TuningOptions.
+     * 
+     * @return Resource collection API of TuningOptions.
+     */
+    public TuningOptions tuningOptions() {
+        if (this.tuningOptions == null) {
+            this.tuningOptions = new TuningOptionsImpl(clientObject.getTuningOptions(), this);
+        }
+        return tuningOptions;
+    }
+
+    /**
+     * Gets the resource collection API of TuningIndexes.
+     * 
+     * @return Resource collection API of TuningIndexes.
+     */
+    public TuningIndexes tuningIndexes() {
+        if (this.tuningIndexes == null) {
+            this.tuningIndexes = new TuningIndexesImpl(clientObject.getTuningIndexes(), this);
+        }
+        return tuningIndexes;
+    }
+
+    /**
+     * Gets the resource collection API of TuningConfigurations.
+     * 
+     * @return Resource collection API of TuningConfigurations.
+     */
+    public TuningConfigurations tuningConfigurations() {
+        if (this.tuningConfigurations == null) {
+            this.tuningConfigurations = new TuningConfigurationsImpl(clientObject.getTuningConfigurations(), this);
+        }
+        return tuningConfigurations;
     }
 
     /**

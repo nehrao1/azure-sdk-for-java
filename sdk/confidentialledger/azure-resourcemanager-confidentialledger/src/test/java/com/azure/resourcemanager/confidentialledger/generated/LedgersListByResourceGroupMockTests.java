@@ -7,11 +7,13 @@ package com.azure.resourcemanager.confidentialledger.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
+import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.EnclavePlatform;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
 import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
@@ -26,32 +28,41 @@ public final class LedgersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ledgerName\":\"ctehfiqscjey\",\"ledgerUri\":\"hezrkgq\",\"identityServiceUri\":\"jrefovgmkqsle\",\"ledgerInternalNamespace\":\"vxyqjpkcattpngjc\",\"runningState\":\"Resuming\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"ledgerSku\":\"Standard\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"ajvnysounqe\",\"tenantId\":\"noae\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"yhltrpmopjmcm\",\"tenantId\":\"u\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"iuaod\",\"ledgerRoleName\":\"Administrator\"}]},\"location\":\"kvxod\",\"tags\":{\"axbezyiuo\":\"zmyzydagf\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\"},\"id\":\"fksymddystki\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}]}";
+            = "{\"value\":[{\"properties\":{\"ledgerName\":\"cohslkev\",\"ledgerUri\":\"ggzfbu\",\"identityServiceUri\":\"mvfaxkffeiith\",\"ledgerInternalNamespace\":\"m\",\"runningState\":\"Resuming\",\"ledgerType\":\"Public\",\"provisioningState\":\"Succeeded\",\"ledgerSku\":\"Basic\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"zoggigrxwburvjxx\",\"tenantId\":\"spyd\",\"ledgerRoleName\":\"Reader\"},{\"principalId\":\"enkouknvudw\",\"tenantId\":\"ukbldngkpo\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"xoegukgjnpiucgy\",\"ledgerRoleName\":\"Reader\"}],\"hostLevel\":\"zntypmrb\",\"maxBodySizeInMb\":2033477361,\"subjectName\":\"drqjsdpy\",\"nodeCount\":1342514759,\"writeLBAddressPrefix\":\"hxdeoejz\",\"workerThreads\":170373532,\"enclavePlatform\":\"IntelSgx\",\"applicationType\":\"ConfidentialLedger\"},\"location\":\"tgzfbishcbkh\",\"tags\":{\"p\":\"eyeam\",\"wkgshwa\":\"agalpbuxwgipwhon\",\"bin\":\"kix\",\"iyqzrnk\":\"eputtmrywnuzoqf\"},\"id\":\"qvyxlwhzlsicoho\",\"name\":\"qnwvlrya\",\"type\":\"w\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConfidentialLedger> response
-            = manager.ledgers().listByResourceGroup("evfyexfwhybcib", "yvdcsitynnaa", com.azure.core.util.Context.NONE);
+            = manager.ledgers().listByResourceGroup("xc", "onpc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kvxod", response.iterator().next().location());
-        Assertions.assertEquals("zmyzydagf", response.iterator().next().tags().get("axbezyiuo"));
+        Assertions.assertEquals("tgzfbishcbkh", response.iterator().next().location());
+        Assertions.assertEquals("eyeam", response.iterator().next().tags().get("p"));
         Assertions.assertEquals(RunningState.RESUMING, response.iterator().next().properties().runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, response.iterator().next().properties().ledgerType());
-        Assertions.assertEquals(LedgerSku.STANDARD, response.iterator().next().properties().ledgerSku());
-        Assertions.assertEquals("ajvnysounqe",
+        Assertions.assertEquals(LedgerType.PUBLIC, response.iterator().next().properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.BASIC, response.iterator().next().properties().ledgerSku());
+        Assertions.assertEquals("zoggigrxwburvjxx",
             response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("noae",
+        Assertions.assertEquals("spyd",
             response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
+        Assertions.assertEquals(LedgerRoleName.READER,
             response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("iuaod",
+        Assertions.assertEquals("xoegukgjnpiucgy",
             response.iterator().next().properties().certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
+        Assertions.assertEquals(LedgerRoleName.READER,
             response.iterator().next().properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("zntypmrb", response.iterator().next().properties().hostLevel());
+        Assertions.assertEquals(2033477361, response.iterator().next().properties().maxBodySizeInMb());
+        Assertions.assertEquals("drqjsdpy", response.iterator().next().properties().subjectName());
+        Assertions.assertEquals(1342514759, response.iterator().next().properties().nodeCount());
+        Assertions.assertEquals("hxdeoejz", response.iterator().next().properties().writeLBAddressPrefix());
+        Assertions.assertEquals(170373532, response.iterator().next().properties().workerThreads());
+        Assertions.assertEquals(EnclavePlatform.INTEL_SGX, response.iterator().next().properties().enclavePlatform());
+        Assertions.assertEquals(ApplicationType.CONFIDENTIAL_LEDGER,
+            response.iterator().next().properties().applicationType());
     }
 }

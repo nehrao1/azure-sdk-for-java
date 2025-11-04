@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.CredentialResource;
@@ -22,14 +22,14 @@ public final class CredentialOperationsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"qfzvvtifcqsuem\",\"annotations\":[\"datautovbpnrfu\"],\"\":{\"psdpfwjcw\":\"datamhmzc\",\"ajtbmjokttqgo\":\"databunfymbwinu\"}},\"name\":\"ajuylkfl\",\"type\":\"ofjskndwywbptvym\",\"etag\":\"pdcddbeozhprlxxb\",\"id\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"qfzvvtifcqsuem\",\"annotations\":[\"datautovbpnrfu\"],\"psdpfwjcw\":\"datamhmzc\",\"ajtbmjokttqgo\":\"databunfymbwinu\"},\"name\":\"ajuylkfl\",\"type\":\"ofjskndwywbptvym\",\"etag\":\"pdcddbeozhprlxxb\",\"id\":\"z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CredentialResource> response = manager.credentialOperations()
             .listByFactory("wugpnses", "wkhkcdtofakm", com.azure.core.util.Context.NONE);

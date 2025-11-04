@@ -13,25 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueContractBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueContractBaseProperties model =
-            BinaryData
-                .fromString("{\"createdDate\":\"2021-11-22T10:53:48Z\",\"state\":\"closed\",\"apiId\":\"blhtjq\"}")
-                .toObject(IssueContractBaseProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T10:53:48Z"), model.createdDate());
+        IssueContractBaseProperties model = BinaryData
+            .fromString("{\"createdDate\":\"2021-02-08T19:58:59Z\",\"state\":\"closed\",\"apiId\":\"qsdtcjbctvivuzq\"}")
+            .toObject(IssueContractBaseProperties.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T19:58:59Z"), model.createdDate());
         Assertions.assertEquals(State.CLOSED, model.state());
-        Assertions.assertEquals("blhtjq", model.apiId());
+        Assertions.assertEquals("qsdtcjbctvivuzq", model.apiId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueContractBaseProperties model =
-            new IssueContractBaseProperties()
-                .withCreatedDate(OffsetDateTime.parse("2021-11-22T10:53:48Z"))
+        IssueContractBaseProperties model
+            = new IssueContractBaseProperties().withCreatedDate(OffsetDateTime.parse("2021-02-08T19:58:59Z"))
                 .withState(State.CLOSED)
-                .withApiId("blhtjq");
+                .withApiId("qsdtcjbctvivuzq");
         model = BinaryData.fromObject(model).toObject(IssueContractBaseProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T10:53:48Z"), model.createdDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T19:58:59Z"), model.createdDate());
         Assertions.assertEquals(State.CLOSED, model.state());
-        Assertions.assertEquals("blhtjq", model.apiId());
+        Assertions.assertEquals("qsdtcjbctvivuzq", model.apiId());
     }
 }

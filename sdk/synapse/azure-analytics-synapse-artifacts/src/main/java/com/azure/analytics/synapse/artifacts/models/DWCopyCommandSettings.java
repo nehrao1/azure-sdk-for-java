@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,18 +20,25 @@ import java.util.Map;
 @Fluent
 public final class DWCopyCommandSettings implements JsonSerializable<DWCopyCommandSettings> {
     /*
-     * Specifies the default values for each target column in SQL DW. The default values in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default value. Type: array of objects (or Expression with resultType array of objects).
+     * Specifies the default values for each target column in SQL DW. The default values in the property overwrite the
+     * DEFAULT constraint set in the DB, and identity column cannot have a default value. Type: array of objects (or
+     * Expression with resultType array of objects).
      */
+    @Generated
     private List<DWCopyCommandDefaultValue> defaultValues;
 
     /*
-     * Additional options directly passed to SQL DW in Copy Command. Type: key value pairs (value should be string type) (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT": "'ymd'" }
+     * Additional options directly passed to SQL DW in Copy Command. Type: key value pairs (value should be string type)
+     * (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT":
+     * "'ymd'" }
      */
+    @Generated
     private Map<String, String> additionalOptions;
 
     /**
      * Creates an instance of DWCopyCommandSettings class.
      */
+    @Generated
     public DWCopyCommandSettings() {
     }
 
@@ -41,6 +49,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
      * 
      * @return the defaultValues value.
      */
+    @Generated
     public List<DWCopyCommandDefaultValue> getDefaultValues() {
         return this.defaultValues;
     }
@@ -53,6 +62,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
      * @param defaultValues the defaultValues value to set.
      * @return the DWCopyCommandSettings object itself.
      */
+    @Generated
     public DWCopyCommandSettings setDefaultValues(List<DWCopyCommandDefaultValue> defaultValues) {
         this.defaultValues = defaultValues;
         return this;
@@ -65,6 +75,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
      * 
      * @return the additionalOptions value.
      */
+    @Generated
     public Map<String, String> getAdditionalOptions() {
         return this.additionalOptions;
     }
@@ -77,6 +88,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
      * @param additionalOptions the additionalOptions value to set.
      * @return the DWCopyCommandSettings object itself.
      */
+    @Generated
     public DWCopyCommandSettings setAdditionalOptions(Map<String, String> additionalOptions) {
         this.additionalOptions = additionalOptions;
         return this;
@@ -85,6 +97,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +115,7 @@ public final class DWCopyCommandSettings implements JsonSerializable<DWCopyComma
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DWCopyCommandSettings.
      */
+    @Generated
     public static DWCopyCommandSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DWCopyCommandSettings deserializedDWCopyCommandSettings = new DWCopyCommandSettings();

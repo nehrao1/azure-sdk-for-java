@@ -5,14 +5,21 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
-/** The type of the action. */
+/**
+ * The type of the action.
+ */
 public final class CertificatePolicyAction extends ExpandableStringEnum<CertificatePolicyAction> {
-    /** Static value EmailContacts for CertificatePolicyAction. */
+    /**
+     * Static value EmailContacts for CertificatePolicyAction.
+     */
     public static final CertificatePolicyAction EMAIL_CONTACTS = fromString("EmailContacts");
 
-    /** Static value AutoRenew for CertificatePolicyAction. */
+    /**
+     * Static value AutoRenew for CertificatePolicyAction.
+     */
     public static final CertificatePolicyAction AUTO_RENEW = fromString("AutoRenew");
 
     /**
@@ -21,7 +28,8 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificatePolicyAction() {}
+    public CertificatePolicyAction() {
+    }
 
     /**
      * Creates or finds a CertificatePolicyAction from its string representation.

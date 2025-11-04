@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalRevisionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalRevisionContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"qtrotpvclp\",\"statusDetails\":\"yrlmwkptsk\",\"status\":\"publishing\",\"isCurrent\":true,\"createdDateTime\":\"2021-02-20T04:38:57Z\",\"updatedDateTime\":\"2021-05-01T02:02:22Z\"},\"id\":\"bmk\",\"name\":\"kmkook\",\"type\":\"putmgvmuyakm\"}")
-                .toObject(PortalRevisionContractInner.class);
-        Assertions.assertEquals("qtrotpvclp", model.description());
-        Assertions.assertEquals(true, model.isCurrent());
+        PortalRevisionContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"ytoxuwhttnzq\",\"statusDetails\":\"qmebgszplusdekpd\",\"status\":\"failed\",\"isCurrent\":true,\"createdDateTime\":\"2021-09-30T06:45:50Z\",\"updatedDateTime\":\"2021-09-05T23:40:58Z\",\"provisioningState\":\"kyejidbdq\"},\"id\":\"squnycwztlv\",\"name\":\"wsnmrkkyjt\",\"type\":\"epwpwfk\"}")
+            .toObject(PortalRevisionContractInner.class);
+        Assertions.assertEquals("ytoxuwhttnzq", model.description());
+        Assertions.assertTrue(model.isCurrent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalRevisionContractInner model =
-            new PortalRevisionContractInner().withDescription("qtrotpvclp").withIsCurrent(true);
+        PortalRevisionContractInner model
+            = new PortalRevisionContractInner().withDescription("ytoxuwhttnzq").withIsCurrent(true);
         model = BinaryData.fromObject(model).toObject(PortalRevisionContractInner.class);
-        Assertions.assertEquals("qtrotpvclp", model.description());
-        Assertions.assertEquals(true, model.isCurrent());
+        Assertions.assertEquals("ytoxuwhttnzq", model.description());
+        Assertions.assertTrue(model.isCurrent());
     }
 }

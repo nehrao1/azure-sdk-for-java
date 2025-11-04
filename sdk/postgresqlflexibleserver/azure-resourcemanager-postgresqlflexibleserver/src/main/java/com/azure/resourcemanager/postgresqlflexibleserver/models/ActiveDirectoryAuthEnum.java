@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * If Enabled, Azure Active Directory authentication is enabled.
+ * If Enabled, Microsoft Entra authentication is enabled.
  */
 public final class ActiveDirectoryAuthEnum extends ExpandableStringEnum<ActiveDirectoryAuthEnum> {
     /**
@@ -37,7 +36,6 @@ public final class ActiveDirectoryAuthEnum extends ExpandableStringEnum<ActiveDi
      * @param name a name to look for.
      * @return the corresponding ActiveDirectoryAuthEnum.
      */
-    @JsonCreator
     public static ActiveDirectoryAuthEnum fromString(String name) {
         return fromString(name, ActiveDirectoryAuthEnum.class);
     }

@@ -51,7 +51,7 @@ public final class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMySqlLinkedServiceTypeProperties innerTypeProperties() {
+    AzureMySqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -180,13 +180,22 @@ public final class AzureMySqlLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model AzureMySqlLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

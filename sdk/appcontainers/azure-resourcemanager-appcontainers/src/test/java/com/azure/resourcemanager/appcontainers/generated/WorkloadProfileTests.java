@@ -12,24 +12,24 @@ public final class WorkloadProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProfile model = BinaryData.fromString(
-            "{\"name\":\"u\",\"workloadProfileType\":\"otppnv\",\"minimumCount\":827884246,\"maximumCount\":1931037183}")
+            "{\"name\":\"gy\",\"workloadProfileType\":\"wqfbylyrfgiagt\",\"minimumCount\":1621141865,\"maximumCount\":1650535228}")
             .toObject(WorkloadProfile.class);
-        Assertions.assertEquals("u", model.name());
-        Assertions.assertEquals("otppnv", model.workloadProfileType());
-        Assertions.assertEquals(827884246, model.minimumCount());
-        Assertions.assertEquals(1931037183, model.maximumCount());
+        Assertions.assertEquals("gy", model.name());
+        Assertions.assertEquals("wqfbylyrfgiagt", model.workloadProfileType());
+        Assertions.assertEquals(1621141865, model.minimumCount());
+        Assertions.assertEquals(1650535228, model.maximumCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProfile model = new WorkloadProfile().withName("u")
-            .withWorkloadProfileType("otppnv")
-            .withMinimumCount(827884246)
-            .withMaximumCount(1931037183);
+        WorkloadProfile model = new WorkloadProfile().withName("gy")
+            .withWorkloadProfileType("wqfbylyrfgiagt")
+            .withMinimumCount(1621141865)
+            .withMaximumCount(1650535228);
         model = BinaryData.fromObject(model).toObject(WorkloadProfile.class);
-        Assertions.assertEquals("u", model.name());
-        Assertions.assertEquals("otppnv", model.workloadProfileType());
-        Assertions.assertEquals(827884246, model.minimumCount());
-        Assertions.assertEquals(1931037183, model.maximumCount());
+        Assertions.assertEquals("gy", model.name());
+        Assertions.assertEquals("wqfbylyrfgiagt", model.workloadProfileType());
+        Assertions.assertEquals(1621141865, model.minimumCount());
+        Assertions.assertEquals(1650535228, model.maximumCount());
     }
 }

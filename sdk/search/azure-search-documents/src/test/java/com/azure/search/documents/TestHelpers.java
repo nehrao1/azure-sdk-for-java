@@ -13,11 +13,15 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.*;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -47,7 +51,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,14 +96,13 @@ public final class TestHelpers {
      */
     public static void assertObjectEquals(Object expected, Object actual, boolean ignoreDefaults,
         String... ignoredFields) {
-        Set<String> ignored = (ignoredFields == null)
-            ? Collections.emptySet()
-            : new HashSet<>(Arrays.asList(ignoredFields));
+        Set<String> ignored
+            = (ignoredFields == null) ? Collections.emptySet() : new HashSet<>(Arrays.asList(ignoredFields));
 
         assertObjectEqualsInternal(expected, actual, ignoreDefaults, ignored);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "unchecked", "rawtypes", "UseOfObsoleteDateTimeApi" })
     private static void assertObjectEqualsInternal(Object expected, Object actual, boolean ignoredDefaults,
         Set<String> ignoredFields) {
         if (expected == null) {
@@ -130,7 +133,7 @@ public final class TestHelpers {
             }
 
             try (JsonReader expectedReader = JsonProviders.createReader(expectedJson);
-                 JsonReader actualReader = JsonProviders.createReader(actualJson)) {
+                JsonReader actualReader = JsonProviders.createReader(actualJson)) {
 
                 assertMapEqualsInternal(expectedReader.readMap(JsonReader::readUntyped),
                     actualReader.readMap(JsonReader::readUntyped), ignoredDefaults, ignoredFields);
@@ -188,14 +191,13 @@ public final class TestHelpers {
      */
     public static void assertMapEquals(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, String... ignoredFields) {
-        Set<String> ignored = (ignoredFields == null)
-            ? Collections.emptySet()
-            : new HashSet<>(Arrays.asList(ignoredFields));
+        Set<String> ignored
+            = (ignoredFields == null) ? Collections.emptySet() : new HashSet<>(Arrays.asList(ignoredFields));
 
         assertMapEqualsInternal(expectedMap, actualMap, ignoreDefaults, ignored);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static void assertMapEqualsInternal(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, Set<String> ignoredFields) {
         for (Map.Entry<String, Object> entry : expectedMap.entrySet()) {
@@ -228,8 +230,8 @@ public final class TestHelpers {
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
     private static void assertDateEquals(Date expect, Date actual) {
-        assertEquals(0, expect.toInstant().atOffset(ZoneOffset.UTC)
-            .compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
+        assertEquals(0,
+            expect.toInstant().atOffset(ZoneOffset.UTC).compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
     }
 
     private static void assertListEquals(List<Object> expected, List<Object> actual, boolean ignoreDefaults,
@@ -388,8 +390,7 @@ public final class TestHelpers {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
@@ -413,18 +414,49 @@ public final class TestHelpers {
      * @return The appropriate token credential
      */
     public static TokenCredential getTestTokenCredential() {
-        if (testMode == TestMode.PLAYBACK) {
-            return new MockTokenCredential();
+        if (testMode == TestMode.LIVE) {
+            TokenCredential pipelineCredential = tryGetPipelineCredential();
+            if (pipelineCredential != null) {
+                return pipelineCredential;
+            }
+            return new AzureCliCredentialBuilder().build();
         } else if (testMode == TestMode.RECORD) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
-            return new AzurePowerShellCredentialBuilder().build();
+            return new MockTokenCredential();
         }
     }
 
+    /**
+     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
+     * Azure DevOps. If not, returns null.
+     *
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
+     */
+    @SuppressWarnings("deprecation")
+    private static TokenCredential tryGetPipelineCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
+    }
+
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
-        return new SearchIndex(testIndexName)
-            .setFields(baseIndex.getFields())
+        return new SearchIndex(testIndexName).setFields(baseIndex.getFields())
             .setScoringProfiles(baseIndex.getScoringProfiles())
             .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
             .setCorsOptions(baseIndex.getCorsOptions())
@@ -440,15 +472,13 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((httpRequest, context) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((httpRequest, context) -> false)
             .assertSync()
             .build();
     }
 
     public static SearchIndexClient createSharedSearchIndexClient() {
-        return new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
+        return new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
@@ -467,9 +497,7 @@ public final class TestHelpers {
                 builder.append(',');
             }
 
-            builder.append(coordinates[i])
-                .append(' ')
-                .append(coordinates[i + 1]);
+            builder.append(coordinates[i]).append(' ').append(coordinates[i + 1]);
         }
 
         return builder.append("))'").toString();
@@ -478,9 +506,7 @@ public final class TestHelpers {
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteTests.class.getClassLoader()
-                    .getResource(fileName)
-                    .toURI();
+                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fileName).toURI();
 
                 return Files.readAllBytes(Paths.get(fileUri));
             } catch (Exception ex) {

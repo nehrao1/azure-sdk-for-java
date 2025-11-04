@@ -4,7 +4,9 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,33 +18,42 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of common properties of all chat thread events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData> {
 
     /*
      * The message sender
      */
+    @Generated
     private String from;
 
     /*
      * The message recipient
      */
+    @Generated
     private String to;
 
     /*
      * The time message was received
      */
+    @Generated
     private OffsetDateTime receivedTimestamp;
 
     /*
      * The channel event error
      */
+    @Generated
     private AcsMessageChannelEventError error;
 
     /**
      * Creates an instance of AcsMessageEventData class.
      */
+    @Generated
     public AcsMessageEventData() {
     }
 
@@ -51,6 +62,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the from value.
      */
+    @Generated
     public String getFrom() {
         return this.from;
     }
@@ -61,6 +73,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param from the from value to set.
      * @return the AcsMessageEventData object itself.
      */
+    @Generated
     public AcsMessageEventData setFrom(String from) {
         this.from = from;
         return this;
@@ -71,6 +84,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the to value.
      */
+    @Generated
     public String getTo() {
         return this.to;
     }
@@ -81,6 +95,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param to the to value to set.
      * @return the AcsMessageEventData object itself.
      */
+    @Generated
     public AcsMessageEventData setTo(String to) {
         this.to = to;
         return this;
@@ -91,6 +106,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the receivedTimestamp value.
      */
+    @Generated
     public OffsetDateTime getReceivedTimestamp() {
         return this.receivedTimestamp;
     }
@@ -101,6 +117,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @return the AcsMessageEventData object itself.
      */
+    @Generated
     public AcsMessageEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
@@ -111,6 +128,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @return the error value.
      */
+    @Generated
     public ResponseError getError() {
         return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage());
     }
@@ -120,17 +138,24 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      *
      * @param error The error value to set
      */
+    @Generated
     void setError(AcsMessageChannelEventError error) {
         this.error = error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", this.from);
         jsonWriter.writeStringField("to", this.to);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -141,8 +166,10 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageEventData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageEventData.
      */
+    @Generated
     public static AcsMessageEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageEventData deserializedAcsMessageEventData = new AcsMessageEventData();
@@ -154,8 +181,8 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsMessageEventData.to = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsMessageEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsMessageEventData.receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     deserializedAcsMessageEventData.error = AcsMessageChannelEventError.fromJson(reader);
                 } else {

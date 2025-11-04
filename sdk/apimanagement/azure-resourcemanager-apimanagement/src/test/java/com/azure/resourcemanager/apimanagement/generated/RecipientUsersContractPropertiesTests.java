@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientUsersContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientUsersContractProperties model =
-            BinaryData.fromString("{\"userId\":\"bhbafebzx\"}").toObject(RecipientUsersContractProperties.class);
-        Assertions.assertEquals("bhbafebzx", model.userId());
+        RecipientUsersContractProperties model
+            = BinaryData.fromString("{\"userId\":\"tgz\"}").toObject(RecipientUsersContractProperties.class);
+        Assertions.assertEquals("tgz", model.userId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientUsersContractProperties model = new RecipientUsersContractProperties().withUserId("bhbafebzx");
+        RecipientUsersContractProperties model = new RecipientUsersContractProperties().withUserId("tgz");
         model = BinaryData.fromObject(model).toObject(RecipientUsersContractProperties.class);
-        Assertions.assertEquals("bhbafebzx", model.userId());
+        Assertions.assertEquals("tgz", model.userId());
     }
 }

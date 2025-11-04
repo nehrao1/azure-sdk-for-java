@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticTrafficFilterRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticTrafficFilterRule model =
-            BinaryData
-                .fromString(
-                    "{\"source\":\"qgtz\",\"description\":\"pnqbqqwxrjfe\",\"azureEndpointGuid\":\"lnwsubisn\",\"azureEndpointName\":\"mpmngnzscxaqwoo\",\"id\":\"cbonqvpk\"}")
-                .toObject(ElasticTrafficFilterRule.class);
-        Assertions.assertEquals("qgtz", model.source());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.description());
-        Assertions.assertEquals("lnwsubisn", model.azureEndpointGuid());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.azureEndpointName());
-        Assertions.assertEquals("cbonqvpk", model.id());
+        ElasticTrafficFilterRule model = BinaryData.fromString(
+            "{\"source\":\"hsfxoblytkb\",\"description\":\"pe\",\"azureEndpointGuid\":\"wfbkrvrns\",\"azureEndpointName\":\"hqjohxcrsbfova\",\"id\":\"ruvw\"}")
+            .toObject(ElasticTrafficFilterRule.class);
+        Assertions.assertEquals("hsfxoblytkb", model.source());
+        Assertions.assertEquals("pe", model.description());
+        Assertions.assertEquals("wfbkrvrns", model.azureEndpointGuid());
+        Assertions.assertEquals("hqjohxcrsbfova", model.azureEndpointName());
+        Assertions.assertEquals("ruvw", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticTrafficFilterRule model =
-            new ElasticTrafficFilterRule()
-                .withSource("qgtz")
-                .withDescription("pnqbqqwxrjfe")
-                .withAzureEndpointGuid("lnwsubisn")
-                .withAzureEndpointName("mpmngnzscxaqwoo")
-                .withId("cbonqvpk");
+        ElasticTrafficFilterRule model = new ElasticTrafficFilterRule().withSource("hsfxoblytkb")
+            .withDescription("pe")
+            .withAzureEndpointGuid("wfbkrvrns")
+            .withAzureEndpointName("hqjohxcrsbfova")
+            .withId("ruvw");
         model = BinaryData.fromObject(model).toObject(ElasticTrafficFilterRule.class);
-        Assertions.assertEquals("qgtz", model.source());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.description());
-        Assertions.assertEquals("lnwsubisn", model.azureEndpointGuid());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.azureEndpointName());
-        Assertions.assertEquals("cbonqvpk", model.id());
+        Assertions.assertEquals("hsfxoblytkb", model.source());
+        Assertions.assertEquals("pe", model.description());
+        Assertions.assertEquals("wfbkrvrns", model.azureEndpointGuid());
+        Assertions.assertEquals("hqjohxcrsbfova", model.azureEndpointName());
+        Assertions.assertEquals("ruvw", model.id());
     }
 }

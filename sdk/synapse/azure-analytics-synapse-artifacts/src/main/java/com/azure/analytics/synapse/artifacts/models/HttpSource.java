@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,21 @@ public final class HttpSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "HttpSource";
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to
+     * System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object httpRequestTimeout;
 
     /**
      * Creates an instance of HttpSource class.
      */
+    @Generated
     public HttpSource() {
     }
 
@@ -38,6 +44,7 @@ public final class HttpSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +57,7 @@ public final class HttpSource extends CopySource {
      * 
      * @return the httpRequestTimeout value.
      */
+    @Generated
     public Object getHttpRequestTimeout() {
         return this.httpRequestTimeout;
     }
@@ -62,6 +70,7 @@ public final class HttpSource extends CopySource {
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the HttpSource object itself.
      */
+    @Generated
     public HttpSource setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
@@ -70,6 +79,7 @@ public final class HttpSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -79,6 +89,7 @@ public final class HttpSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -88,6 +99,7 @@ public final class HttpSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -97,14 +109,23 @@ public final class HttpSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -121,6 +142,7 @@ public final class HttpSource extends CopySource {
      * to JSON null.
      * @throws IOException If an error occurs while reading the HttpSource.
      */
+    @Generated
     public static HttpSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HttpSource deserializedHttpSource = new HttpSource();

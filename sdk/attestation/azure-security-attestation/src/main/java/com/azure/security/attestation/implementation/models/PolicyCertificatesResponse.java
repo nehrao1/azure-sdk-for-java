@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,14 +18,16 @@ import java.io.IOException;
 @Fluent
 public final class PolicyCertificatesResponse implements JsonSerializable<PolicyCertificatesResponse> {
     /*
-     * An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which contains the
-     * certificates used to validate policy changes
+     * An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which contains the certificates
+     * used to validate policy changes
      */
+    @Generated
     private String token;
 
     /**
      * Creates an instance of PolicyCertificatesResponse class.
      */
+    @Generated
     public PolicyCertificatesResponse() {
     }
 
@@ -34,6 +37,7 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
      * 
      * @return the token value.
      */
+    @Generated
     public String getToken() {
         return this.token;
     }
@@ -45,6 +49,7 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
      * @param token the token value to set.
      * @return the PolicyCertificatesResponse object itself.
      */
+    @Generated
     public PolicyCertificatesResponse setToken(String token) {
         this.token = token;
         return this;
@@ -58,6 +63,10 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +82,7 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolicyCertificatesResponse.
      */
+    @Generated
     public static PolicyCertificatesResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolicyCertificatesResponse deserializedPolicyCertificatesResponse = new PolicyCertificatesResponse();

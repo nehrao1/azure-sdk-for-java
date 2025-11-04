@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,36 +22,49 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AzureMLExecutePipeline";
 
     /*
      * ID of the published Azure ML pipeline. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object mlPipelineId;
 
     /*
-     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property
+     * of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object experimentName;
 
     /*
-     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
+     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline
+     * parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the
+     * published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
      */
+    @Generated
     private Object mlPipelineParameters;
 
     /*
-     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the
+     * published pipeline execution request. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object mlParentRunId;
 
     /*
-     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression with resultType boolean).
+     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed
+     * in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression
+     * with resultType boolean).
      */
+    @Generated
     private Object continueOnStepFailure;
 
     /**
      * Creates an instance of AzureMLExecutePipelineActivity class.
      */
+    @Generated
     public AzureMLExecutePipelineActivity() {
     }
 
@@ -59,6 +73,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -70,6 +85,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the mlPipelineId value.
      */
+    @Generated
     public Object getMlPipelineId() {
         return this.mlPipelineId;
     }
@@ -81,6 +97,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @param mlPipelineId the mlPipelineId value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
      */
+    @Generated
     public AzureMLExecutePipelineActivity setMlPipelineId(Object mlPipelineId) {
         this.mlPipelineId = mlPipelineId;
         return this;
@@ -93,6 +110,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the experimentName value.
      */
+    @Generated
     public Object getExperimentName() {
         return this.experimentName;
     }
@@ -105,6 +123,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @param experimentName the experimentName value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
      */
+    @Generated
     public AzureMLExecutePipelineActivity setExperimentName(Object experimentName) {
         this.experimentName = experimentName;
         return this;
@@ -118,6 +137,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the mlPipelineParameters value.
      */
+    @Generated
     public Object getMlPipelineParameters() {
         return this.mlPipelineParameters;
     }
@@ -131,6 +151,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @param mlPipelineParameters the mlPipelineParameters value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
      */
+    @Generated
     public AzureMLExecutePipelineActivity setMlPipelineParameters(Object mlPipelineParameters) {
         this.mlPipelineParameters = mlPipelineParameters;
         return this;
@@ -143,6 +164,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the mlParentRunId value.
      */
+    @Generated
     public Object getMlParentRunId() {
         return this.mlParentRunId;
     }
@@ -155,6 +177,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @param mlParentRunId the mlParentRunId value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
      */
+    @Generated
     public AzureMLExecutePipelineActivity setMlParentRunId(Object mlParentRunId) {
         this.mlParentRunId = mlParentRunId;
         return this;
@@ -167,6 +190,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the continueOnStepFailure value.
      */
+    @Generated
     public Object getContinueOnStepFailure() {
         return this.continueOnStepFailure;
     }
@@ -179,6 +203,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @param continueOnStepFailure the continueOnStepFailure value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
      */
+    @Generated
     public AzureMLExecutePipelineActivity setContinueOnStepFailure(Object continueOnStepFailure) {
         this.continueOnStepFailure = continueOnStepFailure;
         return this;
@@ -187,6 +212,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -196,6 +222,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -205,6 +232,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setName(String name) {
         super.setName(name);
@@ -214,6 +242,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setDescription(String description) {
         super.setDescription(description);
@@ -223,6 +252,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setState(ActivityState state) {
         super.setState(state);
@@ -232,6 +262,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -241,6 +272,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -250,6 +282,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -259,6 +292,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -280,10 +314,18 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
             || continueOnStepFailure != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("mlPipelineId", this.mlPipelineId);
-            jsonWriter.writeUntypedField("experimentName", this.experimentName);
-            jsonWriter.writeUntypedField("mlPipelineParameters", this.mlPipelineParameters);
-            jsonWriter.writeUntypedField("mlParentRunId", this.mlParentRunId);
-            jsonWriter.writeUntypedField("continueOnStepFailure", this.continueOnStepFailure);
+            if (this.experimentName != null) {
+                jsonWriter.writeUntypedField("experimentName", this.experimentName);
+            }
+            if (this.mlPipelineParameters != null) {
+                jsonWriter.writeUntypedField("mlPipelineParameters", this.mlPipelineParameters);
+            }
+            if (this.mlParentRunId != null) {
+                jsonWriter.writeUntypedField("mlParentRunId", this.mlParentRunId);
+            }
+            if (this.continueOnStepFailure != null) {
+                jsonWriter.writeUntypedField("continueOnStepFailure", this.continueOnStepFailure);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -303,6 +345,7 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMLExecutePipelineActivity.
      */
+    @Generated
     public static AzureMLExecutePipelineActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMLExecutePipelineActivity deserializedAzureMLExecutePipelineActivity

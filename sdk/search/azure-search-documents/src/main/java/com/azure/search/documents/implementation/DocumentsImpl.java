@@ -70,7 +70,7 @@ public final class DocumentsImpl {
      * REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
-    @ServiceInterface(name = "SearchIndexClientDoc")
+    @ServiceInterface(name = "SearchIndexClientDocuments")
     public interface DocumentsService {
 
         @Get("/docs/$count")
@@ -88,20 +88,24 @@ public final class DocumentsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchRequest searchRequest, Context context);
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchRequest searchRequest,
+            Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchDocumentsResult> searchPostSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchRequest searchRequest, Context context);
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchRequest searchRequest,
+            Context context);
 
         @Get("/docs('{key}')")
         @ExpectedResponses({ 200 })
@@ -109,8 +113,9 @@ public final class DocumentsImpl {
         Mono<Response<Map<String, Object>>> get(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @PathParam("key") String key,
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/docs('{key}')")
         @ExpectedResponses({ 200 })
@@ -118,8 +123,9 @@ public final class DocumentsImpl {
         Response<Map<String, Object>> getSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @PathParam("key") String key,
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
@@ -181,14 +187,7 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.count(this.client.getEndpoint(), this.client.getIndexName(),
-            xMsClientRequestId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> countWithResponseAsync(requestOptions, context));
     }
 
     /**
@@ -282,6 +281,8 @@ public final class DocumentsImpl {
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -291,21 +292,17 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
-        RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.searchPost(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context));
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization,
+            requestOptions, context));
     }
 
     /**
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +313,7 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
-        RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -324,13 +321,15 @@ public final class DocumentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
-            xMsClientRequestId, accept, searchRequest, context);
+            xMsClientRequestId, xMsQuerySourceAuthorization, accept, searchRequest, context);
     }
 
     /**
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -338,8 +337,9 @@ public final class DocumentsImpl {
      * @return response containing search results from an index on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, RequestOptions requestOptions) {
-        return searchPostWithResponseAsync(searchRequest, requestOptions)
+    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
+        RequestOptions requestOptions) {
+        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -347,6 +347,8 @@ public final class DocumentsImpl {
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,9 +357,9 @@ public final class DocumentsImpl {
      * @return response containing search results from an index on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, RequestOptions requestOptions,
-        Context context) {
-        return searchPostWithResponseAsync(searchRequest, requestOptions, context)
+    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
+        RequestOptions requestOptions, Context context) {
+        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -365,6 +367,8 @@ public final class DocumentsImpl {
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -374,7 +378,7 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchDocumentsResult> searchPostWithResponse(SearchRequest searchRequest,
-        RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -382,13 +386,16 @@ public final class DocumentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.searchPostSync(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, searchRequest,
+            context);
     }
 
     /**
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -396,8 +403,10 @@ public final class DocumentsImpl {
      * @return response containing search results from an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchDocumentsResult searchPost(SearchRequest searchRequest, RequestOptions requestOptions) {
-        return searchPostWithResponse(searchRequest, requestOptions, Context.NONE).getValue();
+    public SearchDocumentsResult searchPost(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
+        RequestOptions requestOptions) {
+        return searchPostWithResponse(searchRequest, xMsQuerySourceAuthorization, requestOptions, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -406,6 +415,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -415,20 +426,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
-        RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null)
-            ? null
-            : selectedFields.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getIndexName(), key,
-            selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, accept, context));
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+            context -> getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, context));
     }
 
     /**
@@ -437,6 +437,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -447,7 +449,7 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
-        RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -460,7 +462,7 @@ public final class DocumentsImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         return service.get(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
-            this.client.getApiVersion(), xMsClientRequestId, accept, context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, context);
     }
 
     /**
@@ -469,6 +471,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -476,8 +480,9 @@ public final class DocumentsImpl {
      * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
-        return getWithResponseAsync(key, selectedFields, requestOptions)
+    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields,
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
+        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -487,6 +492,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,9 +502,9 @@ public final class DocumentsImpl {
      * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions,
-        Context context) {
-        return getWithResponseAsync(key, selectedFields, requestOptions, context)
+    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields,
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
+        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -507,6 +514,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -516,7 +525,7 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Map<String, Object>> getWithResponse(String key, List<String> selectedFields,
-        RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -529,7 +538,7 @@ public final class DocumentsImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         return service.getSync(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
-            this.client.getApiVersion(), xMsClientRequestId, accept, context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, context);
     }
 
     /**
@@ -538,6 +547,8 @@ public final class DocumentsImpl {
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
      * from the returned document.
+     * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
+     * is used to enforce security restrictions on documents.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -545,8 +556,10 @@ public final class DocumentsImpl {
      * @return a document retrieved via a document lookup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> get(String key, List<String> selectedFields, RequestOptions requestOptions) {
-        return getWithResponse(key, selectedFields, requestOptions, Context.NONE).getValue();
+    public Map<String, Object> get(String key, List<String> selectedFields, String xMsQuerySourceAuthorization,
+        RequestOptions requestOptions) {
+        return getWithResponse(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -563,15 +576,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(SuggestRequest suggestRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil
-            .withContext(context -> service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(),
-                this.client.getApiVersion(), xMsClientRequestId, accept, suggestRequest, context));
+        return FluxUtil.withContext(context -> suggestPostWithResponseAsync(suggestRequest, requestOptions, context));
     }
 
     /**
@@ -686,14 +691,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(IndexBatch batch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.index(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, accept, batch, context));
+        return FluxUtil.withContext(context -> indexWithResponseAsync(batch, requestOptions, context));
     }
 
     /**
@@ -807,15 +805,8 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(AutocompleteRequest autocompleteRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return FluxUtil
-            .withContext(context -> service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(),
-                xMsClientRequestId, this.client.getApiVersion(), accept, autocompleteRequest, context));
+            .withContext(context -> autocompletePostWithResponseAsync(autocompleteRequest, requestOptions, context));
     }
 
     /**

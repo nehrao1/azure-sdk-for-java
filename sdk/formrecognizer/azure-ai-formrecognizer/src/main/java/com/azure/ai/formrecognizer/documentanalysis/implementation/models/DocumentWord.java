@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,29 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as
- * Chinese, Japanese, and Korean, each character is represented as its own word.
+ * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
+ * Japanese, and Korean, each character is represented as its own word.
  */
 @Fluent
 public final class DocumentWord implements JsonSerializable<DocumentWord> {
     /*
      * Text content of the word.
      */
+    @Generated
     private final String content;
 
     /*
      * Bounding polygon of the word.
      */
+    @Generated
     private List<Float> polygon;
 
     /*
      * Location of the word in the reading order concatenated content.
      */
+    @Generated
     private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the word.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -46,6 +51,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentWord(String content, DocumentSpan span, float confidence) {
         this.content = content;
         this.span = span;
@@ -57,6 +63,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -66,6 +73,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * 
      * @return the polygon value.
      */
+    @Generated
     public List<Float> getPolygon() {
         return this.polygon;
     }
@@ -76,6 +84,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * @param polygon the polygon value to set.
      * @return the DocumentWord object itself.
      */
+    @Generated
     public DocumentWord setPolygon(List<Float> polygon) {
         this.polygon = polygon;
         return this;
@@ -86,6 +95,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * 
      * @return the span value.
      */
+    @Generated
     public DocumentSpan getSpan() {
         return this.span;
     }
@@ -95,10 +105,15 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +133,7 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentWord.
      */
+    @Generated
     public static DocumentWord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean contentFound = false;

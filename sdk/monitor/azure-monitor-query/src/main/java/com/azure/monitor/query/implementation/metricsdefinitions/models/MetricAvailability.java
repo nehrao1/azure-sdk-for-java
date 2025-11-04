@@ -5,11 +5,12 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.monitor.query.implementation.metricsdefinitions.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -23,16 +24,19 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * The time grain specifies a supported aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D',
      * etc.
      */
+    @Generated
     private Duration timeGrain;
 
     /*
      * The retention period for the metric at the specified timegrain. Expressed as a duration 'PT1M', 'P1D', etc.
      */
+    @Generated
     private Duration retention;
 
     /**
      * Creates an instance of MetricAvailability class.
      */
+    @Generated
     public MetricAvailability() {
     }
 
@@ -42,6 +46,7 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * 
      * @return the timeGrain value.
      */
+    @Generated
     public Duration getTimeGrain() {
         return this.timeGrain;
     }
@@ -53,6 +58,7 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * @param timeGrain the timeGrain value to set.
      * @return the MetricAvailability object itself.
      */
+    @Generated
     public MetricAvailability setTimeGrain(Duration timeGrain) {
         this.timeGrain = timeGrain;
         return this;
@@ -64,6 +70,7 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * 
      * @return the retention value.
      */
+    @Generated
     public Duration getRetention() {
         return this.retention;
     }
@@ -75,16 +82,21 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * @param retention the retention value to set.
      * @return the MetricAvailability object itself.
      */
+    @Generated
     public MetricAvailability setRetention(Duration retention) {
         this.retention = retention;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timeGrain", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeGrain));
-        jsonWriter.writeStringField("retention", CoreToCodegenBridgeUtils.durationToStringWithDays(this.retention));
+        jsonWriter.writeStringField("timeGrain", CoreUtils.durationToStringWithDays(this.timeGrain));
+        jsonWriter.writeStringField("retention", CoreUtils.durationToStringWithDays(this.retention));
         return jsonWriter.writeEndObject();
     }
 
@@ -96,6 +108,7 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricAvailability.
      */
+    @Generated
     public static MetricAvailability fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricAvailability deserializedMetricAvailability = new MetricAvailability();

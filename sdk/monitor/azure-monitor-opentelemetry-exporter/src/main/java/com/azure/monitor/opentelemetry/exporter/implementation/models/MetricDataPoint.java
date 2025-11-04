@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,64 +20,75 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
     /*
      * Namespace of the metric.
      */
+    @Generated
     private String namespace;
 
     /*
      * Name of the metric.
      */
+    @Generated
     private String name;
 
     /*
      * Metric type. Single measurement or the aggregated value.
      */
+    @Generated
     private DataPointType dataPointType;
 
     /*
      * Single value for measurement. Sum of individual measurements for the aggregation.
      */
+    @Generated
     private double value;
 
     /*
      * Metric weight of the aggregated metric. Should not be set for a measurement.
      */
+    @Generated
     private Integer count;
 
     /*
      * Minimum value of the aggregated metric. Should not be set for a measurement.
      */
+    @Generated
     private Double min;
 
     /*
      * Maximum value of the aggregated metric. Should not be set for a measurement.
      */
+    @Generated
     private Double max;
 
     /*
      * Standard deviation of the aggregated metric. Should not be set for a measurement.
      */
+    @Generated
     private Double stdDev;
 
     /**
      * Creates an instance of MetricDataPoint class.
      */
+    @Generated
     public MetricDataPoint() {
     }
 
     /**
      * Get the namespace property: Namespace of the metric.
-     *
+     * 
      * @return the namespace value.
      */
+    @Generated
     public String getNamespace() {
         return this.namespace;
     }
 
     /**
      * Set the namespace property: Namespace of the metric.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
@@ -84,19 +96,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the name property: Name of the metric.
-     *
+     * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
 
     /**
      * Set the name property: Name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setName(String name) {
         this.name = name;
         return this;
@@ -104,19 +118,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the dataPointType property: Metric type. Single measurement or the aggregated value.
-     *
+     * 
      * @return the dataPointType value.
      */
+    @Generated
     public DataPointType getDataPointType() {
         return this.dataPointType;
     }
 
     /**
      * Set the dataPointType property: Metric type. Single measurement or the aggregated value.
-     *
+     * 
      * @param dataPointType the dataPointType value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setDataPointType(DataPointType dataPointType) {
         this.dataPointType = dataPointType;
         return this;
@@ -124,19 +140,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the value property: Single value for measurement. Sum of individual measurements for the aggregation.
-     *
+     * 
      * @return the value value.
      */
+    @Generated
     public double getValue() {
         return this.value;
     }
 
     /**
      * Set the value property: Single value for measurement. Sum of individual measurements for the aggregation.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setValue(double value) {
         this.value = value;
         return this;
@@ -144,19 +162,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the count property: Metric weight of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the count value.
      */
+    @Generated
     public Integer getCount() {
         return this.count;
     }
 
     /**
      * Set the count property: Metric weight of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param count the count value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setCount(Integer count) {
         this.count = count;
         return this;
@@ -164,19 +184,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the min property: Minimum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the min value.
      */
+    @Generated
     public Double getMin() {
         return this.min;
     }
 
     /**
      * Set the min property: Minimum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param min the min value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setMin(Double min) {
         this.min = min;
         return this;
@@ -184,19 +206,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the max property: Maximum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the max value.
      */
+    @Generated
     public Double getMax() {
         return this.max;
     }
 
     /**
      * Set the max property: Maximum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param max the max value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setMax(Double max) {
         this.max = max;
         return this;
@@ -204,19 +228,21 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the stdDev property: Standard deviation of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the stdDev value.
      */
+    @Generated
     public Double getStdDev() {
         return this.stdDev;
     }
 
     /**
      * Set the stdDev property: Standard deviation of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param stdDev the stdDev value to set.
      * @return the MetricDataPoint object itself.
      */
+    @Generated
     public MetricDataPoint setStdDev(Double stdDev) {
         this.stdDev = stdDev;
         return this;
@@ -225,6 +251,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -241,13 +268,14 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Reads an instance of MetricDataPoint from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MetricDataPoint if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricDataPoint.
      */
+    @Generated
     public static MetricDataPoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricDataPoint deserializedMetricDataPoint = new MetricDataPoint();

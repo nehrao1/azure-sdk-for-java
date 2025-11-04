@@ -6,77 +6,40 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GatewayHostnameConfigurationsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"hostname\":\"zsabcylzzietumze\",\"certificateId\":\"rdruesxexa\",\"negotiateClientCertificate\":true,\"tls10Enabled\":false,\"tls11Enabled\":true,\"http2Enabled\":true},\"id\":\"wfeb\",\"name\":\"qqeetsqac\",\"type\":\"czfro\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"hostname\":\"fqeaxd\",\"certificateId\":\"luvmsaqhviawg\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"znfgpbcbkcpy\",\"name\":\"pdjieask\",\"type\":\"kqclnfusr\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<GatewayHostnameConfigurationContract> response = manager.gatewayHostnameConfigurations()
+            .listByService("lixa", "phkgminhecjgdj", "jmsngmluyr", "kpismmrmrj", 888016227, 1396443147,
+                com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<GatewayHostnameConfigurationContract> response =
-            manager
-                .gatewayHostnameConfigurations()
-                .listByService(
-                    "apg",
-                    "dhzbjecdsysxnk",
-                    "hvhnlsevzcrr",
-                    "nkkgdw",
-                    1559375332,
-                    695983885,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("fqeaxd", response.iterator().next().hostname());
-        Assertions.assertEquals("luvmsaqhviawg", response.iterator().next().certificateId());
-        Assertions.assertEquals(false, response.iterator().next().negotiateClientCertificate());
-        Assertions.assertEquals(true, response.iterator().next().tls10Enabled());
-        Assertions.assertEquals(true, response.iterator().next().tls11Enabled());
-        Assertions.assertEquals(false, response.iterator().next().http2Enabled());
+        Assertions.assertEquals("zsabcylzzietumze", response.iterator().next().hostname());
+        Assertions.assertEquals("rdruesxexa", response.iterator().next().certificateId());
+        Assertions.assertTrue(response.iterator().next().negotiateClientCertificate());
+        Assertions.assertFalse(response.iterator().next().tls10Enabled());
+        Assertions.assertTrue(response.iterator().next().tls11Enabled());
+        Assertions.assertTrue(response.iterator().next().http2Enabled());
     }
 }

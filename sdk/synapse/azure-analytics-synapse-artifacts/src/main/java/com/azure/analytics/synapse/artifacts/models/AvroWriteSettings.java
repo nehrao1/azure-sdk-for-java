@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,31 +21,39 @@ public final class AvroWriteSettings extends FormatWriteSettings {
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "AvroWriteSettings";
 
     /*
      * Top level record name in write result, which is required in AVRO spec.
      */
+    @Generated
     private String recordName;
 
     /*
      * Record namespace in the write result.
      */
+    @Generated
     private String recordNamespace;
 
     /*
-     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with resultType integer).
+     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
+     * Expression with resultType integer).
      */
+    @Generated
     private Object maxRowsPerFile;
 
     /*
-     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store without partitionOptions. Type: string (or Expression with resultType string).
+     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
+     * without partitionOptions. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileNamePrefix;
 
     /**
      * Creates an instance of AvroWriteSettings class.
      */
+    @Generated
     public AvroWriteSettings() {
     }
 
@@ -53,6 +62,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -63,6 +73,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * 
      * @return the recordName value.
      */
+    @Generated
     public String getRecordName() {
         return this.recordName;
     }
@@ -73,6 +84,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * @param recordName the recordName value to set.
      * @return the AvroWriteSettings object itself.
      */
+    @Generated
     public AvroWriteSettings setRecordName(String recordName) {
         this.recordName = recordName;
         return this;
@@ -83,6 +95,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * 
      * @return the recordNamespace value.
      */
+    @Generated
     public String getRecordNamespace() {
         return this.recordNamespace;
     }
@@ -93,6 +106,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * @param recordNamespace the recordNamespace value to set.
      * @return the AvroWriteSettings object itself.
      */
+    @Generated
     public AvroWriteSettings setRecordNamespace(String recordNamespace) {
         this.recordNamespace = recordNamespace;
         return this;
@@ -104,6 +118,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * 
      * @return the maxRowsPerFile value.
      */
+    @Generated
     public Object getMaxRowsPerFile() {
         return this.maxRowsPerFile;
     }
@@ -115,6 +130,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * @param maxRowsPerFile the maxRowsPerFile value to set.
      * @return the AvroWriteSettings object itself.
      */
+    @Generated
     public AvroWriteSettings setMaxRowsPerFile(Object maxRowsPerFile) {
         this.maxRowsPerFile = maxRowsPerFile;
         return this;
@@ -127,6 +143,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * 
      * @return the fileNamePrefix value.
      */
+    @Generated
     public Object getFileNamePrefix() {
         return this.fileNamePrefix;
     }
@@ -139,6 +156,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * @param fileNamePrefix the fileNamePrefix value to set.
      * @return the AvroWriteSettings object itself.
      */
+    @Generated
     public AvroWriteSettings setFileNamePrefix(Object fileNamePrefix) {
         this.fileNamePrefix = fileNamePrefix;
         return this;
@@ -147,14 +165,19 @@ public final class AvroWriteSettings extends FormatWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("recordName", this.recordName);
         jsonWriter.writeStringField("recordNamespace", this.recordNamespace);
-        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
-        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (this.maxRowsPerFile != null) {
+            jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        }
+        if (this.fileNamePrefix != null) {
+            jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -171,6 +194,7 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AvroWriteSettings.
      */
+    @Generated
     public static AvroWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AvroWriteSettings deserializedAvroWriteSettings = new AvroWriteSettings();

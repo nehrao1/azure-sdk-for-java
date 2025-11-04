@@ -3,12 +3,12 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /**
  * The TranscriptionStopped model.
@@ -17,39 +17,24 @@ import java.io.IOException;
 public final class TranscriptionStopped extends CallAutomationEventBase {
 
     /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
+     * Defines the result for TranscriptionUpdateResult with the current status and the details about the status
      */
-    private ResultInformation resultInformation;
-
-    /*
-     * Defines the result for TranscriptionUpdate with the current status and the details about the status
-     */
-    private TranscriptionUpdate transcriptionUpdateResult;
+    private TranscriptionUpdateResult transcriptionUpdateResult;
 
     /**
      * Creates an instance of TranscriptionStopped class.
      */
     public TranscriptionStopped() {
-        resultInformation = null;
         transcriptionUpdateResult = null;
     }
 
     /**
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
-     * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdate with the current status
+     * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdateResult with the current status
      * and the details about the status.
      *
      * @return the transcriptionUpdateResult value.
      */
-    public TranscriptionUpdate getTranscriptionUpdateResult() {
+    public TranscriptionUpdateResult getTranscriptionUpdateResult() {
         return this.transcriptionUpdateResult;
     }
 
@@ -59,7 +44,6 @@ public final class TranscriptionStopped extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         jsonWriter.writeJsonField("transcriptionUpdate", transcriptionUpdateResult);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
@@ -79,10 +63,8 @@ public final class TranscriptionStopped extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("transcriptionUpdate".equals(fieldName)) {
-                    event.transcriptionUpdateResult = TranscriptionUpdate.fromJson(reader);
+                if ("transcriptionUpdate".equals(fieldName)) {
+                    event.transcriptionUpdateResult = TranscriptionUpdateResult.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

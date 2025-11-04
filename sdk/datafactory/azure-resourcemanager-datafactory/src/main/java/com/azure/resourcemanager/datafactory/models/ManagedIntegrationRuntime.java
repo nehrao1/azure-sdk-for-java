@@ -69,7 +69,7 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the innerTypeProperties value.
      */
-    private ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
+    ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -181,7 +181,6 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

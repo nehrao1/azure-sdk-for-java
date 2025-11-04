@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,6 +37,15 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * This property cannot be updated.
      */
     private Integer platformFaultDomainCount;
+
+    /*
+     * Specifies VMSS and VM API entity models support two additional capabilities as of today: ultraSSDEnabled and
+     * hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
+     */
+    private AdditionalCapabilities additionalVirtualMachineCapabilities;
 
     /**
      * Creates an instance of ComputeProfile class.
@@ -122,21 +130,33 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
     }
 
     /**
-     * Validates the instance.
+     * Get the additionalVirtualMachineCapabilities property: Specifies VMSS and VM API entity models support two
+     * additional capabilities as of today: ultraSSDEnabled and hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the additionalVirtualMachineCapabilities value.
      */
-    public void validate() {
-        if (baseVirtualMachineProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property baseVirtualMachineProfile in model ComputeProfile"));
-        } else {
-            baseVirtualMachineProfile().validate();
-        }
+    public AdditionalCapabilities additionalVirtualMachineCapabilities() {
+        return this.additionalVirtualMachineCapabilities;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ComputeProfile.class);
+    /**
+     * Set the additionalVirtualMachineCapabilities property: Specifies VMSS and VM API entity models support two
+     * additional capabilities as of today: ultraSSDEnabled and hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
+     * 
+     * @param additionalVirtualMachineCapabilities the additionalVirtualMachineCapabilities value to set.
+     * @return the ComputeProfile object itself.
+     */
+    public ComputeProfile
+        withAdditionalVirtualMachineCapabilities(AdditionalCapabilities additionalVirtualMachineCapabilities) {
+        this.additionalVirtualMachineCapabilities = additionalVirtualMachineCapabilities;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -147,6 +167,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
         jsonWriter.writeJsonField("baseVirtualMachineProfile", this.baseVirtualMachineProfile);
         jsonWriter.writeStringField("computeApiVersion", this.computeApiVersion);
         jsonWriter.writeNumberField("platformFaultDomainCount", this.platformFaultDomainCount);
+        jsonWriter.writeJsonField("additionalVirtualMachineCapabilities", this.additionalVirtualMachineCapabilities);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,6 +193,9 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
                     deserializedComputeProfile.computeApiVersion = reader.getString();
                 } else if ("platformFaultDomainCount".equals(fieldName)) {
                     deserializedComputeProfile.platformFaultDomainCount = reader.getNullable(JsonReader::getInt);
+                } else if ("additionalVirtualMachineCapabilities".equals(fieldName)) {
+                    deserializedComputeProfile.additionalVirtualMachineCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

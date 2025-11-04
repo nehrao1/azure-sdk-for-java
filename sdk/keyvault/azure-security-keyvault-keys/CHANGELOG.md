@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,139 @@
 
 ### Bugs Fixed
 
+## 4.10.3 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 4.10.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 4.10.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+## 4.10.0 (2025-06-13)
+
+### Features Added
+
+> Compared to the last stable release - `4.9.4`
+- Added support for service version `7.6`.
+- Added new key wrapping algorithms: `CKM_AES_KEY_WRAP` and `CKM_AES_KEY_WRAP_PAD`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added new signing algorithms: `HS256`, `HS384`, and `HS512`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added support for getting a key's attestation material on Azure Managed HSM. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+
+### Breaking Changes
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Removed support for service version `7.6-preview.2`.
+- Moved algorithms `CKM_AES_KEY_WRAP` and `CKM_AES_KEY_WRAP_PAD` from `EncryptionAlgorithm` to `KeyWrappingAlgorithm` to better reflect their purpose.
+- Removed `EXPORT` from `KeyOperation`.
+
+### Other Changes
+
+> Compared to the last stable release - `4.9.4`
+- Deprecated `AESKW128`, `AESKW192`, and `AESKW256` in `EncryptionAlgorithm`. For key wrapping, use `AESKW128`, `AESKW192`, and `AESKW256` in `KeyWrappingAlgorithm` instead.
+
+#### Dependency Updates
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+
+## 4.10.0-beta.1 (2025-04-10)
+
+### Features Added
+- Added new key wrapping algorithms: `CKM_AES_KEY_WRAP` and `CKM_AES_KEY_WRAP_PAD`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added new signing algorithms: `HS256`, `HS384`, and `HS512`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added support for getting a key's attestation material on Azure Managed HSM. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 4.9.4 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 4.9.3 (2025-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+
+## 4.9.2 (2025-01-14)
+
+### Bugs Fixed
+- Fixed issue where certain `toString()` calls could cause a `NullPointerException`. ([#43776](https://github.com/Azure/azure-sdk-for-java/pull/43776))
+
+## 4.9.1 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+## 4.9.0 (2024-10-15)
+- Added a new configuration flag to cryptography clients that allows deferring all cryptographic operations to the Key Vault service. ([#40384](https://github.com/Azure/azure-sdk-for-java/pull/40384))
+- Added support for Continuous Access Evaluation (CAE). ([#41814](https://github.com/Azure/azure-sdk-for-java/pull/41814))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
+## 4.8.8 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.8.7 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
 ## 4.9.0-beta.1 (2024-07-29)
 
@@ -76,7 +208,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
@@ -162,7 +293,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 4.6.3 (2023-06-20)
 
@@ -759,7 +889,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 - Added `Import` operation to `KeyOperation`.
 - Added support for `7.1-Preview` service version
 
-
 ## 4.2.0-beta.1
 - `KeyVaultKey` model can be instantiated using `fromKeyId(String keyId, JsonWebKey jsonWebKey)` and `fromName(String name, JsonWebKey jsonWebKey)` methods on the `KeyVaultKey` model.
 - Allows `KeyEncryptionKeyClientBuilder` to consume `KeyVaultKey` model and build `KeyEncryptionKey` and `AsyncKeyEncryptionKey` via`buildKeyEncryptionKey(KeyVaultKey key) ` and `buildAsyncKeyEncryptionKey(KeyVaultKey key)` methods respectively.
@@ -773,7 +902,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 ### Major changes
 - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey` and `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey`supports consumption of a secret id representing the symmetric key stored in the Key Vault as a secret.
 - Dropped third party dependency on apache commons codec library.
-
 
 ### Breaking changes
 - Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.
@@ -840,7 +968,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/src/samples/java)
 demonstrate the new API.
-
 
 ### Major changes from `azure-keyvault`
 - Packages scoped by functionality

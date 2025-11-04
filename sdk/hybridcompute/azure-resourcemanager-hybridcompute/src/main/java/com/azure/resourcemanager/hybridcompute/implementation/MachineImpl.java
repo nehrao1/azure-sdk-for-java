@@ -14,7 +14,10 @@ import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
+import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
@@ -24,6 +27,7 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -101,6 +105,18 @@ public final class MachineImpl implements Machine {
         return this.innerModel().serviceStatuses();
     }
 
+    public HardwareProfile hardwareProfile() {
+        return this.innerModel().hardwareProfile();
+    }
+
+    public StorageProfile storageProfile() {
+        return this.innerModel().storageProfile();
+    }
+
+    public FirmwareProfile firmwareProfile() {
+        return this.innerModel().firmwareProfile();
+    }
+
     public CloudMetadata cloudMetadata() {
         return this.innerModel().cloudMetadata();
     }
@@ -163,6 +179,14 @@ public final class MachineImpl implements Machine {
         return this.innerModel().clientPublicKey();
     }
 
+    public IdentityKeyStore identityKeyStore() {
+        return this.innerModel().identityKeyStore();
+    }
+
+    public String tpmEkCertificate() {
+        return this.innerModel().tpmEkCertificate();
+    }
+
     public String osName() {
         return this.innerModel().osName();
     }
@@ -214,6 +238,10 @@ public final class MachineImpl implements Machine {
 
     public String parentClusterResourceId() {
         return this.innerModel().parentClusterResourceId();
+    }
+
+    public String hardwareResourceId() {
+        return this.innerModel().hardwareResourceId();
     }
 
     public String mssqlDiscovered() {

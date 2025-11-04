@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":1238250615620573437,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"nk\"}")
+            "{\"provisioningState\":\"Updating\",\"quotaSizeInKiBs\":9200667924935240148,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"rryuzhlhkjo\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(1238250615620573437L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(9200667924935240148L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("nk", model.quotaTarget());
+        Assertions.assertEquals("rryuzhlhkjo", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(1238250615620573437L)
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(9200667924935240148L)
             .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("nk");
+            .withQuotaTarget("rryuzhlhkjo");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(1238250615620573437L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(9200667924935240148L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("nk", model.quotaTarget());
+        Assertions.assertEquals("rryuzhlhkjo", model.quotaTarget());
     }
 }

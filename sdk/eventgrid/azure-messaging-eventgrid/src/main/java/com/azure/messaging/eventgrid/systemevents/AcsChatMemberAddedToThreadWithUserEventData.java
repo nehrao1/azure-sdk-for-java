@@ -13,7 +13,12 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** The AcsChatMemberAddedToThreadWithUserEventData model. */
+/**
+ * * The AcsChatMemberAddedToThreadWithUserEventData model.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
+ */
+@Deprecated
 @Fluent
 public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*
@@ -143,13 +148,13 @@ public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatTh
                 } else if ("version".equals(fieldName)) {
                     acsChatMemberAddedToThreadWithUserEventData.setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("time".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    acsChatMemberAddedToThreadWithUserEventData
+                        .setTime(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("addedBy".equals(fieldName)) {
                     acsChatMemberAddedToThreadWithUserEventData.setAddedBy(reader.getString());
                 } else if ("memberAdded".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setMemberAdded(
-                        AcsChatThreadMemberProperties.fromJson(reader));
+                    acsChatMemberAddedToThreadWithUserEventData
+                        .setMemberAdded(AcsChatThreadMemberProperties.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

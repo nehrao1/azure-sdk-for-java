@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class CompanyInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CompanyInfo model =
-            BinaryData
-                .fromString(
-                    "{\"domain\":\"ndv\",\"business\":\"ozwyiftyhxhuro\",\"employeesNumber\":\"tyxolniwpwc\",\"state\":\"jfkgiawxk\",\"country\":\"ypl\"}")
-                .toObject(CompanyInfo.class);
-        Assertions.assertEquals("ndv", model.domain());
-        Assertions.assertEquals("ozwyiftyhxhuro", model.business());
-        Assertions.assertEquals("tyxolniwpwc", model.employeesNumber());
-        Assertions.assertEquals("jfkgiawxk", model.state());
-        Assertions.assertEquals("ypl", model.country());
+        CompanyInfo model = BinaryData.fromString(
+            "{\"domain\":\"npime\",\"business\":\"stxgc\",\"employeesNumber\":\"dg\",\"state\":\"ajrmvdjwzrlovmc\",\"country\":\"hijco\"}")
+            .toObject(CompanyInfo.class);
+        Assertions.assertEquals("npime", model.domain());
+        Assertions.assertEquals("stxgc", model.business());
+        Assertions.assertEquals("dg", model.employeesNumber());
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.state());
+        Assertions.assertEquals("hijco", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CompanyInfo model =
-            new CompanyInfo()
-                .withDomain("ndv")
-                .withBusiness("ozwyiftyhxhuro")
-                .withEmployeesNumber("tyxolniwpwc")
-                .withState("jfkgiawxk")
-                .withCountry("ypl");
+        CompanyInfo model = new CompanyInfo().withDomain("npime")
+            .withBusiness("stxgc")
+            .withEmployeesNumber("dg")
+            .withState("ajrmvdjwzrlovmc")
+            .withCountry("hijco");
         model = BinaryData.fromObject(model).toObject(CompanyInfo.class);
-        Assertions.assertEquals("ndv", model.domain());
-        Assertions.assertEquals("ozwyiftyhxhuro", model.business());
-        Assertions.assertEquals("tyxolniwpwc", model.employeesNumber());
-        Assertions.assertEquals("jfkgiawxk", model.state());
-        Assertions.assertEquals("ypl", model.country());
+        Assertions.assertEquals("npime", model.domain());
+        Assertions.assertEquals("stxgc", model.business());
+        Assertions.assertEquals("dg", model.employeesNumber());
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.state());
+        Assertions.assertEquals("hijco", model.country());
     }
 }

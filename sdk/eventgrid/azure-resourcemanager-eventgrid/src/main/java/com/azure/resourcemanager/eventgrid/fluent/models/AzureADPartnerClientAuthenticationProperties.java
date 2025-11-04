@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Properties of an Azure Active Directory Partner Client Authentication.
+ * Properties of a Microsoft Entra ID Partner Client Authentication.
  */
 @Fluent
-public final class AzureADPartnerClientAuthenticationProperties {
+public final class AzureADPartnerClientAuthenticationProperties
+    implements JsonSerializable<AzureADPartnerClientAuthenticationProperties> {
     /*
-     * The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+     * The Microsoft Entra ID Tenant ID to get the access token that will be included as the bearer token in delivery
+     * requests.
      */
-    @JsonProperty(value = "azureActiveDirectoryTenantId")
     private String azureActiveDirectoryTenantId;
 
     /*
-     * The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
+     * The Microsoft Entra ID Application ID or URI to get the access token that will be included as the bearer token in
+     * delivery requests.
      */
-    @JsonProperty(value = "azureActiveDirectoryApplicationIdOrUri")
     private String azureActiveDirectoryApplicationIdOrUri;
 
     /**
@@ -31,8 +36,8 @@ public final class AzureADPartnerClientAuthenticationProperties {
     }
 
     /**
-     * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryTenantId value.
      */
@@ -41,8 +46,8 @@ public final class AzureADPartnerClientAuthenticationProperties {
     }
 
     /**
-     * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the AzureADPartnerClientAuthenticationProperties object itself.
@@ -54,8 +59,8 @@ public final class AzureADPartnerClientAuthenticationProperties {
     }
 
     /**
-     * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
@@ -64,8 +69,8 @@ public final class AzureADPartnerClientAuthenticationProperties {
     }
 
     /**
-     * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the AzureADPartnerClientAuthenticationProperties object itself.
@@ -82,5 +87,48 @@ public final class AzureADPartnerClientAuthenticationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureActiveDirectoryTenantId", this.azureActiveDirectoryTenantId);
+        jsonWriter.writeStringField("azureActiveDirectoryApplicationIdOrUri",
+            this.azureActiveDirectoryApplicationIdOrUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureADPartnerClientAuthenticationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureADPartnerClientAuthenticationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureADPartnerClientAuthenticationProperties.
+     */
+    public static AzureADPartnerClientAuthenticationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureADPartnerClientAuthenticationProperties deserializedAzureADPartnerClientAuthenticationProperties
+                = new AzureADPartnerClientAuthenticationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureActiveDirectoryTenantId".equals(fieldName)) {
+                    deserializedAzureADPartnerClientAuthenticationProperties.azureActiveDirectoryTenantId
+                        = reader.getString();
+                } else if ("azureActiveDirectoryApplicationIdOrUri".equals(fieldName)) {
+                    deserializedAzureADPartnerClientAuthenticationProperties.azureActiveDirectoryApplicationIdOrUri
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureADPartnerClientAuthenticationProperties;
+        });
     }
 }

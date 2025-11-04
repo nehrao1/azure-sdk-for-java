@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,6 +47,21 @@ public final class ServerState extends ExpandableStringEnum<ServerState> {
     public static final ServerState UPDATING = fromString("Updating");
 
     /**
+     * Static value Restarting for ServerState.
+     */
+    public static final ServerState RESTARTING = fromString("Restarting");
+
+    /**
+     * Static value Inaccessible for ServerState.
+     */
+    public static final ServerState INACCESSIBLE = fromString("Inaccessible");
+
+    /**
+     * Static value Provisioning for ServerState.
+     */
+    public static final ServerState PROVISIONING = fromString("Provisioning");
+
+    /**
      * Creates a new instance of ServerState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -62,7 +76,6 @@ public final class ServerState extends ExpandableStringEnum<ServerState> {
      * @param name a name to look for.
      * @return the corresponding ServerState.
      */
-    @JsonCreator
     public static ServerState fromString(String name) {
         return fromString(name, ServerState.class);
     }

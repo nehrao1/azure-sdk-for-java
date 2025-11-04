@@ -9,20 +9,23 @@ import com.azure.resourcemanager.apimanagement.models.OAuth2GrantType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Authorization CreateOrUpdate. */
+/**
+ * Samples for Authorization CreateOrUpdate.
+ */
 public final class AuthorizationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationAADAuthCode.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateAuthorizationAADAuthCode.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationAADAuthCode.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationAADAuthCode(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizations()
+        manager.authorizations()
             .define("authz2")
             .withExistingAuthorizationProvider("rg1", "apimService1", "aadwithauthcode")
             .withAuthorizationType(AuthorizationType.OAUTH2)
@@ -31,23 +34,23 @@ public final class AuthorizationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationAADClientCred.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateAuthorizationAADClientCred.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationAADClientCred.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationAADClientCred(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizations()
+        manager.authorizations()
             .define("authz1")
             .withExistingAuthorizationProvider("rg1", "apimService1", "aadwithclientcred")
             .withAuthorizationType(AuthorizationType.OAUTH2)
             .withOAuth2GrantType(OAuth2GrantType.AUTHORIZATION_CODE)
-            .withParameters(
-                mapOf("clientId", "53790925-fdd3-4b80-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder"))
+            .withParameters(mapOf("clientId", "clientsecretid", "clientSecret", "fakeTokenPlaceholder"))
             .create();
     }
 

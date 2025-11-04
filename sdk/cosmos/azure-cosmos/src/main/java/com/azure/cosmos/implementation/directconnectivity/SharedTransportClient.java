@@ -82,7 +82,7 @@ public class SharedTransportClient extends TransportClient {
             this.transportClient =
                 new RntbdTransportClient(
                     rntbdOptions,
-                    configs.getSslContext(),
+                    configs.getSslContext(connectionPolicy.isServerCertValidationDisabled(), false),
                     addressResolver,
                     clientTelemetry,
                     globalEndpointManager);
@@ -123,7 +123,7 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.transportClient.getGlobalEndpointManager();
     }
 

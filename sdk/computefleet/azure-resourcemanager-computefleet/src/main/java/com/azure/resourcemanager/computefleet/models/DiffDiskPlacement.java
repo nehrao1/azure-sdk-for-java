@@ -13,24 +13,24 @@ import java.util.Collection;
  * resource disk space for Ephemeral OS disk provisioning. For more information on
  * Ephemeral OS disk size requirements, please refer Ephemeral OS disk size
  * requirements for Windows VM at
- * https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
+ * https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
  * and Linux VM at
- * https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
+ * https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
  * Minimum api-version for NvmeDisk: 2024-03-01.
  */
 public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacement> {
     /**
-     * Static value CacheDisk for DiffDiskPlacement.
+     * CacheDisk option.
      */
     public static final DiffDiskPlacement CACHE_DISK = fromString("CacheDisk");
 
     /**
-     * Static value ResourceDisk for DiffDiskPlacement.
+     * Resource Disk option.
      */
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
-     * Static value NvmeDisk for DiffDiskPlacement.
+     * NvmeDisk option.
      */
     public static final DiffDiskPlacement NVME_DISK = fromString("NvmeDisk");
 

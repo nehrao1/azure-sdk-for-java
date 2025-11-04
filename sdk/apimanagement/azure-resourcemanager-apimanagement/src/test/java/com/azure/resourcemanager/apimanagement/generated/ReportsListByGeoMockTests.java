@@ -6,86 +6,57 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ReportRecordContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReportsListByGeoMockTests {
     @Test
     public void testListByGeo() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"bbfgmeqhtngrxfq\",\"timestamp\":\"2021-07-11T08:14:14Z\",\"interval\":\"wfbllegezv\",\"country\":\"wii\",\"region\":\"sggjacmazilqgv\",\"zip\":\"proqp\",\"userId\":\"zykmdklwbqkmtwua\",\"productId\":\"qtmpgrzciltw\",\"apiId\":\"llp\",\"operationId\":\"ebolhyiohcjugd\",\"apiRegion\":\"ggxszmyxguyk\",\"subscriptionId\":\"zpmwzplcrzdwe\",\"callCountSuccess\":1684235761,\"callCountBlocked\":472430177,\"callCountFailed\":17110724,\"callCountOther\":558680846,\"callCountTotal\":1504464393,\"bandwidth\":5088683445144491086,\"cacheHitCount\":2114560142,\"cacheMissCount\":565176326,\"apiTimeAvg\":2.95593633544623,\"apiTimeMin\":66.67033980278863,\"apiTimeMax\":70.61867838950481,\"serviceTimeAvg\":92.40173475677146,\"serviceTimeMin\":60.32064888719908,\"serviceTimeMax\":30.20913859853134}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"bzfhu\",\"timestamp\":\"2021-01-20T05:04:37Z\",\"interval\":\"cwwitzmx\",\"country\":\"glehylbnay\",\"region\":\"sxyhoemsdnm\",\"zip\":\"vopvfgu\",\"userId\":\"xumwdqw\",\"productId\":\"nawzeleqpnkqxk\",\"apiId\":\"m\",\"operationId\":\"eqboigwj\",\"apiRegion\":\"twxiyarfhivs\",\"subscriptionId\":\"i\",\"callCountSuccess\":1071154318,\"callCountBlocked\":2025699954,\"callCountFailed\":403503106,\"callCountOther\":224854898,\"callCountTotal\":1299917382,\"bandwidth\":1193679270655570927,\"cacheHitCount\":969024512,\"cacheMissCount\":312800166,\"apiTimeAvg\":8.448745001334446,\"apiTimeMin\":70.1416266521297,\"apiTimeMax\":69.29684874814046,\"serviceTimeAvg\":25.129030590541525,\"serviceTimeMin\":46.26141000870224,\"serviceTimeMax\":9.24441937740389}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ReportRecordContract> response = manager.reports()
+            .listByGeo("ftcjw", "fhdfo", "scwlcfcpz", 372158540, 477919150, com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ReportRecordContract> response =
-            manager.reports().listByGeo("dwirglqib", "g", "mka", 42265672, 375117512, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("bzfhu", response.iterator().next().name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T05:04:37Z"), response.iterator().next().timestamp());
-        Assertions.assertEquals("cwwitzmx", response.iterator().next().interval());
-        Assertions.assertEquals("glehylbnay", response.iterator().next().country());
-        Assertions.assertEquals("sxyhoemsdnm", response.iterator().next().region());
-        Assertions.assertEquals("vopvfgu", response.iterator().next().zip());
-        Assertions.assertEquals("m", response.iterator().next().apiId());
-        Assertions.assertEquals("eqboigwj", response.iterator().next().operationId());
-        Assertions.assertEquals("twxiyarfhivs", response.iterator().next().apiRegion());
-        Assertions.assertEquals("i", response.iterator().next().subscriptionId());
-        Assertions.assertEquals(1071154318, response.iterator().next().callCountSuccess());
-        Assertions.assertEquals(2025699954, response.iterator().next().callCountBlocked());
-        Assertions.assertEquals(403503106, response.iterator().next().callCountFailed());
-        Assertions.assertEquals(224854898, response.iterator().next().callCountOther());
-        Assertions.assertEquals(1299917382, response.iterator().next().callCountTotal());
-        Assertions.assertEquals(1193679270655570927L, response.iterator().next().bandwidth());
-        Assertions.assertEquals(969024512, response.iterator().next().cacheHitCount());
-        Assertions.assertEquals(312800166, response.iterator().next().cacheMissCount());
-        Assertions.assertEquals(8.448745001334446D, response.iterator().next().apiTimeAvg());
-        Assertions.assertEquals(70.1416266521297D, response.iterator().next().apiTimeMin());
-        Assertions.assertEquals(69.29684874814046D, response.iterator().next().apiTimeMax());
-        Assertions.assertEquals(25.129030590541525D, response.iterator().next().serviceTimeAvg());
-        Assertions.assertEquals(46.26141000870224D, response.iterator().next().serviceTimeMin());
-        Assertions.assertEquals(9.24441937740389D, response.iterator().next().serviceTimeMax());
+        Assertions.assertEquals("bbfgmeqhtngrxfq", response.iterator().next().name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T08:14:14Z"), response.iterator().next().timestamp());
+        Assertions.assertEquals("wfbllegezv", response.iterator().next().interval());
+        Assertions.assertEquals("wii", response.iterator().next().country());
+        Assertions.assertEquals("sggjacmazilqgv", response.iterator().next().region());
+        Assertions.assertEquals("proqp", response.iterator().next().zip());
+        Assertions.assertEquals("llp", response.iterator().next().apiId());
+        Assertions.assertEquals("ebolhyiohcjugd", response.iterator().next().operationId());
+        Assertions.assertEquals("ggxszmyxguyk", response.iterator().next().apiRegion());
+        Assertions.assertEquals("zpmwzplcrzdwe", response.iterator().next().subscriptionId());
+        Assertions.assertEquals(1684235761, response.iterator().next().callCountSuccess());
+        Assertions.assertEquals(472430177, response.iterator().next().callCountBlocked());
+        Assertions.assertEquals(17110724, response.iterator().next().callCountFailed());
+        Assertions.assertEquals(558680846, response.iterator().next().callCountOther());
+        Assertions.assertEquals(1504464393, response.iterator().next().callCountTotal());
+        Assertions.assertEquals(5088683445144491086L, response.iterator().next().bandwidth());
+        Assertions.assertEquals(2114560142, response.iterator().next().cacheHitCount());
+        Assertions.assertEquals(565176326, response.iterator().next().cacheMissCount());
+        Assertions.assertEquals(2.95593633544623D, response.iterator().next().apiTimeAvg());
+        Assertions.assertEquals(66.67033980278863D, response.iterator().next().apiTimeMin());
+        Assertions.assertEquals(70.61867838950481D, response.iterator().next().apiTimeMax());
+        Assertions.assertEquals(92.40173475677146D, response.iterator().next().serviceTimeAvg());
+        Assertions.assertEquals(60.32064888719908D, response.iterator().next().serviceTimeMin());
+        Assertions.assertEquals(30.20913859853134D, response.iterator().next().serviceTimeMax());
     }
 }

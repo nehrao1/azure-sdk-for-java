@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The principal type used to represent the type of Active Directory Administrator.
+ * The principal type used to represent the type of Microsoft Entra Administrator.
  */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /**
@@ -47,7 +46,6 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
      * @param name a name to look for.
      * @return the corresponding PrincipalType.
      */
-    @JsonCreator
     public static PrincipalType fromString(String name) {
         return fromString(name, PrincipalType.class);
     }

@@ -52,7 +52,7 @@ public final class WorkspacesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientWorks")
+    @ServiceInterface(name = "ArtifactsClientWorkspaces")
     public interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({ 200 })
@@ -70,9 +70,7 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync() {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), apiVersion, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**

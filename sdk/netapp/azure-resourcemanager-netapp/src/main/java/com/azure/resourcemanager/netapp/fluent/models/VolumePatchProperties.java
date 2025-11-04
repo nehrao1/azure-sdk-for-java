@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
@@ -100,6 +101,14 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Never - No client-driven data is pulled from cool tier to standard storage.
      */
     private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
+
+    /*
+     * coolAccessTieringPolicy determines which cold data blocks are moved to cool tier. The possible values for this
+     * field are: Auto - Moves cold user data blocks in both the Snapshot copies and the active file system to the cool
+     * tier tier. This policy is the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that
+     * are not associated with the active file system to the cool tier.
+     */
+    private CoolAccessTieringPolicy coolAccessTieringPolicy;
 
     /*
      * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
@@ -420,6 +429,32 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
     }
 
     /**
+     * Get the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.coolAccessTieringPolicy;
+    }
+
+    /**
+     * Set the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @param coolAccessTieringPolicy the coolAccessTieringPolicy value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        this.coolAccessTieringPolicy = coolAccessTieringPolicy;
+        return this;
+    }
+
+    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots.
      * 
@@ -520,6 +555,8 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
         jsonWriter.writeStringField("coolAccessRetrievalPolicy",
             this.coolAccessRetrievalPolicy == null ? null : this.coolAccessRetrievalPolicy.toString());
+        jsonWriter.writeStringField("coolAccessTieringPolicy",
+            this.coolAccessTieringPolicy == null ? null : this.coolAccessTieringPolicy.toString());
         jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
         jsonWriter.writeStringField("smbAccessBasedEnumeration",
             this.smbAccessBasedEnumeration == null ? null : this.smbAccessBasedEnumeration.toString());
@@ -573,6 +610,9 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                 } else if ("coolAccessRetrievalPolicy".equals(fieldName)) {
                     deserializedVolumePatchProperties.coolAccessRetrievalPolicy
                         = CoolAccessRetrievalPolicy.fromString(reader.getString());
+                } else if ("coolAccessTieringPolicy".equals(fieldName)) {
+                    deserializedVolumePatchProperties.coolAccessTieringPolicy
+                        = CoolAccessTieringPolicy.fromString(reader.getString());
                 } else if ("snapshotDirectoryVisible".equals(fieldName)) {
                     deserializedVolumePatchProperties.snapshotDirectoryVisible
                         = reader.getNullable(JsonReader::getBoolean);

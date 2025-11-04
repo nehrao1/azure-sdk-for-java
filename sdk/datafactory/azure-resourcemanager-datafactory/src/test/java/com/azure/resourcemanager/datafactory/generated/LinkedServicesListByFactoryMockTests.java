@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceResource;
@@ -23,23 +23,23 @@ public final class LinkedServicesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"version\":\"ubsidwgya\",\"connectVia\":{\"referenceName\":\"pefs\",\"parameters\":{\"fhsckecume\":\"datadcmjfieydtnpqtwo\",\"koaxstqqjqliyxze\":\"datagoaxtwtkkmuir\",\"oiaotaaxluovzm\":\"dataiiudnmojjmimy\",\"ltblm\":\"datajirp\"}},\"description\":\"bafcmsotudnkr\",\"parameters\":{\"eel\":{\"type\":\"Int\",\"defaultValue\":\"dataqeiguxix\"}},\"annotations\":[\"datavinumd\"],\"\":{\"rn\":\"datayvz\",\"obagaigtpjjz\":\"datakany\",\"wd\":\"dataqolmoifxli\"}},\"name\":\"qxqjvjubjqjxobm\",\"type\":\"jtzatr\",\"etag\":\"rneugbupkjyosq\",\"id\":\"xedkkdk\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"version\":\"jdwdaocwqkxwo\",\"connectVia\":{\"referenceName\":\"ffnojiqtpbfc\",\"parameters\":{\"tsdgnhlp\":\"datarencxo\",\"iafgbfkmqhzjsh\":\"datacctuxxytmxjpku\"}},\"description\":\"jnrjr\",\"parameters\":{\"jxc\":{\"type\":\"String\",\"defaultValue\":\"dataeurjynezpe\"},\"ugi\":{\"type\":\"Float\",\"defaultValue\":\"datanptmriqe\"},\"gvwhjfuoipstv\":{\"type\":\"Object\",\"defaultValue\":\"datagstqsrt\"},\"jrqhpzlvmxibp\":{\"type\":\"Object\",\"defaultValue\":\"datazejbrokhlopygrsv\"}},\"annotations\":[\"datapsyzkaentip\",\"datari\",\"datawftrjdyi\",\"datagrcjoycqndgbxtz\"],\"wgyazppefsdoodc\":\"dataszohntchigubsi\",\"iey\":\"dataj\"},\"name\":\"npqtwohfhscke\",\"type\":\"m\",\"etag\":\"goaxtwtkkmuir\",\"id\":\"oaxstqqjq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LinkedServiceResource> response
-            = manager.linkedServices().listByFactory("grcjoycqndgbxtz", "teszohntch", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByFactory("imnfvbfj", "vspxxbfqlfkwjiui", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xedkkdk", response.iterator().next().id());
-        Assertions.assertEquals("ubsidwgya", response.iterator().next().properties().version());
-        Assertions.assertEquals("pefs", response.iterator().next().properties().connectVia().referenceName());
-        Assertions.assertEquals("bafcmsotudnkr", response.iterator().next().properties().description());
-        Assertions.assertEquals(ParameterType.INT,
-            response.iterator().next().properties().parameters().get("eel").type());
+        Assertions.assertEquals("oaxstqqjq", response.iterator().next().id());
+        Assertions.assertEquals("jdwdaocwqkxwo", response.iterator().next().properties().version());
+        Assertions.assertEquals("ffnojiqtpbfc", response.iterator().next().properties().connectVia().referenceName());
+        Assertions.assertEquals("jnrjr", response.iterator().next().properties().description());
+        Assertions.assertEquals(ParameterType.STRING,
+            response.iterator().next().properties().parameters().get("jxc").type());
     }
 }

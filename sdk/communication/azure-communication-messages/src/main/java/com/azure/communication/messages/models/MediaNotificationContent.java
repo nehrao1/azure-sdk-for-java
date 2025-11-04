@@ -12,16 +12,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A request to send a media notification.
+ * @deprecated A request to send an image notification.
  */
 @Fluent
+@Deprecated
 public final class MediaNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a notification type.
+     * The type discriminator describing a message type.
      */
     @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
+    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
 
     /*
      * Optional text content.
@@ -49,7 +50,7 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the kind property: The type discriminator describing a notification type.
+     * Get the kind property: The type discriminator describing a message type.
      *
      * @return the kind value.
      */
@@ -122,7 +123,7 @@ public final class MediaNotificationContent extends NotificationContent {
             String channelRegistrationId = null;
             List<String> to = null;
             String mediaUrl = null;
-            CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
+            CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
             String content = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

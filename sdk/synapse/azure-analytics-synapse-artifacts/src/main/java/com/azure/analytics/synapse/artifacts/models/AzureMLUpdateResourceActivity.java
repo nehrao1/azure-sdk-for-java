@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,33 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AzureMLUpdateResource";
 
     /*
-     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
+     * resultType string).
      */
+    @Generated
     private Object trainedModelName;
 
     /*
      * Name of Azure Storage linked service holding the .ilearner file that will be uploaded by the update operation.
      */
+    @Generated
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the update operation.  Type: string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
+     * update operation. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object trainedModelFilePath;
 
     /**
      * Creates an instance of AzureMLUpdateResourceActivity class.
      */
+    @Generated
     public AzureMLUpdateResourceActivity() {
     }
 
@@ -49,6 +57,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +69,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * 
      * @return the trainedModelName value.
      */
+    @Generated
     public Object getTrainedModelName() {
         return this.trainedModelName;
     }
@@ -71,6 +81,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * @param trainedModelName the trainedModelName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
+    @Generated
     public AzureMLUpdateResourceActivity setTrainedModelName(Object trainedModelName) {
         this.trainedModelName = trainedModelName;
         return this;
@@ -82,6 +93,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * 
      * @return the trainedModelLinkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getTrainedModelLinkedServiceName() {
         return this.trainedModelLinkedServiceName;
     }
@@ -93,6 +105,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * @param trainedModelLinkedServiceName the trainedModelLinkedServiceName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
+    @Generated
     public AzureMLUpdateResourceActivity
         setTrainedModelLinkedServiceName(LinkedServiceReference trainedModelLinkedServiceName) {
         this.trainedModelLinkedServiceName = trainedModelLinkedServiceName;
@@ -106,6 +119,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * 
      * @return the trainedModelFilePath value.
      */
+    @Generated
     public Object getTrainedModelFilePath() {
         return this.trainedModelFilePath;
     }
@@ -118,6 +132,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * @param trainedModelFilePath the trainedModelFilePath value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
+    @Generated
     public AzureMLUpdateResourceActivity setTrainedModelFilePath(Object trainedModelFilePath) {
         this.trainedModelFilePath = trainedModelFilePath;
         return this;
@@ -126,6 +141,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -135,6 +151,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -144,6 +161,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setName(String name) {
         super.setName(name);
@@ -153,6 +171,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setDescription(String description) {
         super.setDescription(description);
@@ -162,6 +181,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setState(ActivityState state) {
         super.setState(state);
@@ -171,6 +191,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -180,6 +201,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -189,6 +211,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLUpdateResourceActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -198,6 +221,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -236,6 +260,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMLUpdateResourceActivity.
      */
+    @Generated
     public static AzureMLUpdateResourceActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMLUpdateResourceActivity deserializedAzureMLUpdateResourceActivity

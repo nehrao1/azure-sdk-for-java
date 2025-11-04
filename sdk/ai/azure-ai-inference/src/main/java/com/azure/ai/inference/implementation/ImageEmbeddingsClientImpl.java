@@ -145,7 +145,7 @@ public final class ImageEmbeddingsClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ImageEmbeddingsClien")
+    @ServiceInterface(name = "ImageEmbeddingsClient")
     public interface ImageEmbeddingsClientService {
         @Post("/images/embeddings")
         @ExpectedResponses({ 200 })
@@ -155,7 +155,7 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> embed(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData embedRequest1,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/images/embeddings")
@@ -166,7 +166,7 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> embedSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData embedRequest1,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/info")
@@ -205,7 +205,8 @@ public final class ImageEmbeddingsClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input (Required): [
      *          (Required){
@@ -218,15 +219,18 @@ public final class ImageEmbeddingsClientImpl {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -239,9 +243,10 @@ public final class ImageEmbeddingsClientImpl {
      *     }
      *     model: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param embedRequest1 The embedRequest1 parameter.
+     * @param body request options to pass to the endpoint using images embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -253,11 +258,11 @@ public final class ImageEmbeddingsClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> embedWithResponseAsync(BinaryData embedRequest1, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> embedWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.embed(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, embedRequest1, requestOptions, context));
+            contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -275,7 +280,8 @@ public final class ImageEmbeddingsClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input (Required): [
      *          (Required){
@@ -288,15 +294,18 @@ public final class ImageEmbeddingsClientImpl {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -309,9 +318,10 @@ public final class ImageEmbeddingsClientImpl {
      *     }
      *     model: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param embedRequest1 The embedRequest1 parameter.
+     * @param body request options to pass to the endpoint using images embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -322,11 +332,11 @@ public final class ImageEmbeddingsClientImpl {
      * recommendations, and other similar scenarios along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> embedWithResponse(BinaryData embedRequest1, RequestOptions requestOptions) {
+    public Response<BinaryData> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.embedSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            embedRequest1, requestOptions, Context.NONE);
+        return service.embedSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -334,13 +344,15 @@ public final class ImageEmbeddingsClientImpl {
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -362,13 +374,15 @@ public final class ImageEmbeddingsClientImpl {
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

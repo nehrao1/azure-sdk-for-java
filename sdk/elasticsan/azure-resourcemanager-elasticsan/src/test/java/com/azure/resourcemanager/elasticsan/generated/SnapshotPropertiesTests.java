@@ -13,16 +13,16 @@ public final class SnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotProperties model = BinaryData.fromString(
-            "{\"creationData\":{\"sourceId\":\"t\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":3754440623270645775,\"volumeName\":\"exilzznfqqnvwpmq\"}")
+            "{\"creationData\":{\"sourceId\":\"moizpos\"},\"provisioningState\":\"Pending\",\"sourceVolumeSizeGiB\":3950569909154715156,\"volumeName\":\"unrmfqjhhkxb\"}")
             .toObject(SnapshotProperties.class);
-        Assertions.assertEquals("t", model.creationData().sourceId());
+        Assertions.assertEquals("moizpos", model.creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotProperties model
-            = new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("t"));
+            = new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("moizpos"));
         model = BinaryData.fromObject(model).toObject(SnapshotProperties.class);
-        Assertions.assertEquals("t", model.creationData().sourceId());
+        Assertions.assertEquals("moizpos", model.creationData().sourceId());
     }
 }

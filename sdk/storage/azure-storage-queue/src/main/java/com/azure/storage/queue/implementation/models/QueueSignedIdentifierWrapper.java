@@ -4,15 +4,14 @@
 
 package com.azure.storage.queue.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import java.util.List;
-
-import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
@@ -40,14 +39,16 @@ public final class QueueSignedIdentifierWrapper implements XmlSerializable<Queue
         return signedIdentifiers;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifiers" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (signedIdentifiers != null) {
             for (QueueSignedIdentifier element : signedIdentifiers) {
@@ -57,13 +58,15 @@ public final class QueueSignedIdentifierWrapper implements XmlSerializable<Queue
         return xmlWriter.writeEndElement();
     }
 
+    @Generated
     public static QueueSignedIdentifierWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
+    @Generated
     public static QueueSignedIdentifierWrapper fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifiers" : rootElementName;
         return xmlReader.readObject(rootElementName, reader -> {
             List<QueueSignedIdentifier> items = null;
 

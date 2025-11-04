@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import java.util.List;
@@ -33,6 +34,13 @@ public interface Database {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
@@ -65,7 +73,9 @@ public interface Database {
     ResourceState resourceState();
 
     /**
-     * Gets the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
+     * Gets the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @return the clusteringPolicy value.
      */
@@ -116,6 +126,14 @@ public interface Database {
     DeferUpgradeSetting deferUpgrade();
 
     /**
+     * Gets the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny access with
+     * the current access keys. Can be updated even after database is created.
+     * 
+     * @return the accessKeysAuthentication value.
+     */
+    AccessKeysAuthentication accessKeysAuthentication();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -154,7 +172,8 @@ public interface Database {
              * Specifies resourceGroupName, clusterName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param clusterName The name of the Redis Enterprise cluster.
+             * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+             * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
              * @return the next definition stage.
              */
             WithCreate withExistingRedisEnterprise(String resourceGroupName, String clusterName);
@@ -167,7 +186,7 @@ public interface Database {
         interface WithCreate extends DefinitionStages.WithClientProtocol, DefinitionStages.WithPort,
             DefinitionStages.WithClusteringPolicy, DefinitionStages.WithEvictionPolicy,
             DefinitionStages.WithPersistence, DefinitionStages.WithModules, DefinitionStages.WithGeoReplication,
-            DefinitionStages.WithDeferUpgrade {
+            DefinitionStages.WithDeferUpgrade, DefinitionStages.WithAccessKeysAuthentication {
             /**
              * Executes the create request.
              * 
@@ -218,10 +237,13 @@ public interface Database {
          */
         interface WithClusteringPolicy {
             /**
-             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create
-             * time..
+             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be
+             * updated only if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it
+             * cannot be updated without deleting the database..
              * 
-             * @param clusteringPolicy Clustering policy - default is OSSCluster. Specified at create time.
+             * @param clusteringPolicy Clustering policy - default is OSSCluster. This property can be updated only if
+             * the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated
+             * without deleting the database.
              * @return the next definition stage.
              */
             WithCreate withClusteringPolicy(ClusteringPolicy clusteringPolicy);
@@ -296,6 +318,21 @@ public interface Database {
              */
             WithCreate withDeferUpgrade(DeferUpgradeSetting deferUpgrade);
         }
+
+        /**
+         * The stage of the Database definition allowing to specify accessKeysAuthentication.
+         */
+        interface WithAccessKeysAuthentication {
+            /**
+             * Specifies the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny
+             * access with the current access keys. Can be updated even after database is created..
+             * 
+             * @param accessKeysAuthentication This property can be Enabled/Disabled to allow or deny access with the
+             * current access keys. Can be updated even after database is created.
+             * @return the next definition stage.
+             */
+            WithCreate withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication);
+        }
     }
 
     /**
@@ -308,8 +345,9 @@ public interface Database {
     /**
      * The template for Database update.
      */
-    interface Update extends UpdateStages.WithClientProtocol, UpdateStages.WithEvictionPolicy,
-        UpdateStages.WithPersistence, UpdateStages.WithDeferUpgrade {
+    interface Update
+        extends UpdateStages.WithClientProtocol, UpdateStages.WithClusteringPolicy, UpdateStages.WithEvictionPolicy,
+        UpdateStages.WithPersistence, UpdateStages.WithDeferUpgrade, UpdateStages.WithAccessKeysAuthentication {
         /**
          * Executes the update request.
          * 
@@ -343,6 +381,23 @@ public interface Database {
              * @return the next definition stage.
              */
             Update withClientProtocol(Protocol clientProtocol);
+        }
+
+        /**
+         * The stage of the Database update allowing to specify clusteringPolicy.
+         */
+        interface WithClusteringPolicy {
+            /**
+             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be
+             * updated only if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it
+             * cannot be updated without deleting the database..
+             * 
+             * @param clusteringPolicy Clustering policy - default is OSSCluster. This property can be updated only if
+             * the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated
+             * without deleting the database.
+             * @return the next definition stage.
+             */
+            Update withClusteringPolicy(ClusteringPolicy clusteringPolicy);
         }
 
         /**
@@ -385,6 +440,21 @@ public interface Database {
              */
             Update withDeferUpgrade(DeferUpgradeSetting deferUpgrade);
         }
+
+        /**
+         * The stage of the Database update allowing to specify accessKeysAuthentication.
+         */
+        interface WithAccessKeysAuthentication {
+            /**
+             * Specifies the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny
+             * access with the current access keys. Can be updated even after database is created..
+             * 
+             * @param accessKeysAuthentication This property can be Enabled/Disabled to allow or deny access with the
+             * current access keys. Can be updated even after database is created.
+             * @return the next definition stage.
+             */
+            Update withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication);
+        }
     }
 
     /**
@@ -403,7 +473,7 @@ public interface Database {
     Database refresh(Context context);
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +484,7 @@ public interface Database {
     Response<AccessKeys> listKeysWithResponse(Context context);
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,7 +493,7 @@ public interface Database {
     AccessKeys listKeys();
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +504,7 @@ public interface Database {
     AccessKeys regenerateKey(RegenerateKeyParameters parameters);
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
@@ -536,12 +606,10 @@ public interface Database {
     /**
      * Flushes all the keys in this database and also from its linked databases.
      * 
-     * @param parameters Information identifying the databases to be flushed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void flush(FlushParameters parameters);
+    void flush();
 
     /**
      * Flushes all the keys in this database and also from its linked databases.

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpoint;
@@ -25,30 +25,29 @@ public final class PrivateEndpointConnectionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"hwlrsf\",\"rzpwvlqdqgbiq\",\"lihkaetcktvfc\",\"vf\"],\"privateEndpoint\":{\"id\":\"ymuctqhjfbebrj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"fuwutttxf\",\"actionsRequired\":\"rbirphxe\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ahfn\",\"name\":\"jky\",\"type\":\"xjvuujqgidokg\"}";
+            = "{\"properties\":{\"groupIds\":[\"nwbmeh\"],\"privateEndpoint\":{\"id\":\"yvjusrtslhsp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"maofmxagkv\",\"actionsRequired\":\"elmqk\"},\"provisioningState\":\"Succeeded\"},\"id\":\"vljua\",\"name\":\"aquhcdhm\",\"type\":\"ualaexqpvfadmw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionResource response
             = manager.privateEndpointConnections()
-                .define("bin")
-                .withExistingMongoCluster("wkgshwa", "kix")
+                .define("tazqugxywpmueefj")
+                .withExistingMongoCluster("plpho", "uscrpabgyepsb")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("gyxzk")
-                        .withActionsRequired("ocukoklyax")))
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("dw")
+                        .withActionsRequired("ntxhdzhlrqjbhck")))
                 .create();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fuwutttxf", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("rbirphxe",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("maofmxagkv", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("elmqk", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

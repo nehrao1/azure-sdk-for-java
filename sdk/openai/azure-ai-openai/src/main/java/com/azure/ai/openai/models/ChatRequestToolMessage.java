@@ -5,10 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A request chat message representing requested output from a configured tool.
@@ -20,7 +24,11 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
+
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * The ID of the tool call resolved by the provided content.
@@ -29,25 +37,45 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     private final String toolCallId;
 
     /**
-     * Creates an instance of ChatRequestToolMessage class.
-     *
-     * @param content the content value to set.
-     * @param toolCallId the toolCallId value to set.
-     */
-    @Generated
-    public ChatRequestToolMessage(String content, String toolCallId) {
-        this.content = content;
-        this.toolCallId = toolCallId;
-    }
-
-    /**
      * Get the content property: The content of the message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
+    }
+
+    /**
+     * Get the stringContent property: The content of the message.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value when it's a string.
+     */
+    public String getStringContent() {
+        return this.stringContent;
+    }
+
+    /**
+     * Get the chatMessageContentItem property: The content of the message.
+     * If the result of this method is `null`, it means that the content could be a string or null altogether.
+     *
+     * @return the content value when it's a list.
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
     }
 
     /**
@@ -80,11 +108,16 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
+        }
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
@@ -99,17 +132,28 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatRequestToolMessage.
      */
-    @Generated
     public static ChatRequestToolMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItem = null;
             String toolCallId = null;
             ChatRole role = ChatRole.TOOL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        stringContent = reader.getString();
+                    } else if (reader.currentToken() == JsonToken.START_ARRAY) {
+                        chatMessageContentItem
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
+                    } else {
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestToolMessage JSON object: " + reader.currentToken());
+                    }
                 } else if ("tool_call_id".equals(fieldName)) {
                     toolCallId = reader.getString();
                 } else if ("role".equals(fieldName)) {
@@ -118,9 +162,68 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            ChatRequestToolMessage deserializedChatRequestToolMessage;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItem == null) {
+                deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            } else {
+                deserializedChatRequestToolMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestToolMessage(chatMessageContentItem, toolCallId)
+                    : new ChatRequestToolMessage(stringContent, toolCallId);
+            }
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the BinaryData content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    private ChatRequestToolMessage(BinaryData content, String toolCallId) {
+        this.content = content;
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItems = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the String content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(String content, String toolCallId) {
+        this.content = BinaryData.fromString(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = content;
+        this.chatMessageContentItems = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(List<ChatMessageContentItem> content, String toolCallId) {
+        this.content = BinaryData.fromObject(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItems = content;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(ChatMessageContentItem[] content, String toolCallId) {
+        this.content = BinaryData.fromObject(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItems = Arrays.asList(content);
     }
 }

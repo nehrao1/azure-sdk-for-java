@@ -4,51 +4,58 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
-/** Defines values for ExtendedLocationType. */
-public enum ExtendedLocationType {
-    /** Enum value NotSpecified. */
-    NOT_SPECIFIED("NotSpecified"),
+/**
+ * The extended location type.
+ */
+public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLocationType> {
+    /**
+     * Static value NotSpecified for ExtendedLocationType.
+     */
+    public static final ExtendedLocationType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Enum value EdgeZone. */
-    EDGE_ZONE("EdgeZone"),
+    /**
+     * Static value CustomLocation for ExtendedLocationType.
+     */
+    public static final ExtendedLocationType CUSTOM_LOCATION = fromString("CustomLocation");
 
-    /** Enum value ArcZone. */
-    ARC_ZONE("ArcZone");
+    /**
+     * Static value EdgeZone for ExtendedLocationType.
+     */
+    public static final ExtendedLocationType EDGE_ZONE = fromString("EdgeZone");
 
-    /** The actual serialized value for a ExtendedLocationType instance. */
-    private final String value;
+    /**
+     * Static value ArcZone for ExtendedLocationType.
+     */
+    public static final ExtendedLocationType ARC_ZONE = fromString("ArcZone");
 
-    ExtendedLocationType(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of ExtendedLocationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtendedLocationType() {
     }
 
     /**
-     * Parses a serialized value to a ExtendedLocationType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ExtendedLocationType object, or null if unable to parse.
+     * Creates or finds a ExtendedLocationType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ExtendedLocationType.
      */
-    @JsonCreator
-    public static ExtendedLocationType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ExtendedLocationType[] items = ExtendedLocationType.values();
-        for (ExtendedLocationType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ExtendedLocationType fromString(String name) {
+        return fromString(name, ExtendedLocationType.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known ExtendedLocationType values.
+     * 
+     * @return known ExtendedLocationType values.
+     */
+    public static Collection<ExtendedLocationType> values() {
+        return values(ExtendedLocationType.class);
     }
 }

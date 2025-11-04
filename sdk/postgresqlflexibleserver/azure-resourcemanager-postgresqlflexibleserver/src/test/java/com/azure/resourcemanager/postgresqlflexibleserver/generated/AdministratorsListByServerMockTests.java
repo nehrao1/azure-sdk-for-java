@@ -7,8 +7,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAdministrator;
@@ -23,21 +23,21 @@ public final class AdministratorsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalType\":\"User\",\"principalName\":\"nrwrbiork\",\"objectId\":\"lywjhh\",\"tenantId\":\"nhxmsi\"},\"id\":\"omi\",\"name\":\"ox\",\"type\":\"gdufiqnd\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"jkv\",\"objectId\":\"ljeamu\",\"tenantId\":\"zmlovuanash\"},\"id\":\"lpmjerb\",\"name\":\"kelvidizozsdb\",\"type\":\"cxjmonfdgnwncyp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ActiveDirectoryAdministrator> response
-            = manager.administrators().listByServer("epzl", "phwzsoldweyuqdu", com.azure.core.util.Context.NONE);
+            = manager.administrators().listByServer("zlrpiqywncvj", "szcofizeht", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrincipalType.USER, response.iterator().next().principalType());
-        Assertions.assertEquals("nrwrbiork", response.iterator().next().principalName());
-        Assertions.assertEquals("lywjhh", response.iterator().next().objectId());
-        Assertions.assertEquals("nhxmsi", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, response.iterator().next().principalType());
+        Assertions.assertEquals("jkv", response.iterator().next().principalName());
+        Assertions.assertEquals("ljeamu", response.iterator().next().objectId());
+        Assertions.assertEquals("zmlovuanash", response.iterator().next().tenantId());
     }
 }

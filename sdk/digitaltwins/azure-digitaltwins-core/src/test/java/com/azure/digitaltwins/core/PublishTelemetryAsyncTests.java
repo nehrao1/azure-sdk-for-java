@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,8 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void publishTelemetryLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void publishTelemetryLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
         String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client,
@@ -42,7 +44,8 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             createModelsAndTwins(client, wifiModelId, roomWithWifiModelId, roomWithWifiTwinId);
 
             // Act
-            StepVerifier.create(client.publishTelemetryWithResponse(roomWithWifiTwinId, testResourceNamer.randomUuid(),
+            StepVerifier
+                .create(client.publishTelemetryWithResponse(roomWithWifiTwinId, testResourceNamer.randomUuid(),
                     "{\"Telemetry1\": 5}", null, Context.NONE))
                 .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.getStatusCode()))
                 .verifyComplete();
@@ -50,9 +53,10 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
 
-            StepVerifier.create(
-                    client.publishComponentTelemetryWithResponse(roomWithWifiTwinId, TestAssetDefaults.WIFI_COMPONENT_NAME,
-                        testResourceNamer.randomUuid(), telemetryPayload, null, Context.NONE))
+            StepVerifier
+                .create(client.publishComponentTelemetryWithResponse(roomWithWifiTwinId,
+                    TestAssetDefaults.WIFI_COMPONENT_NAME, testResourceNamer.randomUuid(), telemetryPayload, null,
+                    Context.NONE))
                 .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.getStatusCode()))
                 .verifyComplete();
         } finally {
@@ -69,21 +73,23 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
     }
 
     private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String wifiModelId,
-        String roomWithWifiModelId, String roomWithWifiTwinId) {
+        String roomWithWifiModelId, String roomWithWifiTwinId) throws IOException {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId,
             TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        StepVerifier.create(
+        StepVerifier
+            .create(
                 asyncClient.createModels(new ArrayList<>(Arrays.asList(wifiModelPayload, roomWithWifiModelPayload))))
             .assertNext(createResponseList -> logger.info("Created models successfully"))
             .verifyComplete();
 
-        String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId,
-            TestAssetDefaults.WIFI_COMPONENT_NAME);
+        String roomWithWifiTwinPayload
+            = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        StepVerifier.create(
-                asyncClient.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class))
+        StepVerifier
+            .create(asyncClient.createOrReplaceDigitalTwin(roomWithWifiTwinId,
+                deserializeJsonString(roomWithWifiTwinPayload, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
             .assertNext(createResponse -> logger.info("Created {} digitalTwin successfully", createResponse))
             .verifyComplete();
     }

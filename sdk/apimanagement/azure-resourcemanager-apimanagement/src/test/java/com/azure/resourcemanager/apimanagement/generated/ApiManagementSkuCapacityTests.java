@@ -10,11 +10,10 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCapacity;
 public final class ApiManagementSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementSkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":198753524,\"maximum\":1828172579,\"default\":994702538,\"scaleType\":\"None\"}")
-                .toObject(ApiManagementSkuCapacity.class);
+        ApiManagementSkuCapacity model = BinaryData
+            .fromString(
+                "{\"minimum\":1452093999,\"maximum\":953634796,\"default\":175685872,\"scaleType\":\"Automatic\"}")
+            .toObject(ApiManagementSkuCapacity.class);
     }
 
     @org.junit.jupiter.api.Test

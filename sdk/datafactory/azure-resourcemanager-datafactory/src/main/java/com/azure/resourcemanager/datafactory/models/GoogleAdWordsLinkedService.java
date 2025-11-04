@@ -52,7 +52,7 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties() {
+    GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -518,13 +518,22 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

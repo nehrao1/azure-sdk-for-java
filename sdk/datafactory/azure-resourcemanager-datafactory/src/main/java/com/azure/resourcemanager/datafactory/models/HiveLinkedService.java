@@ -51,7 +51,7 @@ public final class HiveLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HiveLinkedServiceTypeProperties innerTypeProperties() {
+    HiveLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -383,6 +383,33 @@ public final class HiveLinkedService extends LinkedService {
     }
 
     /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the HiveLinkedService object itself.
+     */
+    public HiveLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HiveLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
+        return this;
+    }
+
+    /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
      * value is the cacerts.pem file installed with the IR.
@@ -516,13 +543,22 @@ public final class HiveLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model HiveLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

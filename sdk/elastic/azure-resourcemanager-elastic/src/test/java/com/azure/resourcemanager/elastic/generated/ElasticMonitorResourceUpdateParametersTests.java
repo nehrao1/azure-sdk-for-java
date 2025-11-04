@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticMonitorResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticMonitorResourceUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"pspwgcuertu\":\"duqkt\",\"bmdg\":\"kdosvqw\",\"dgmb\":\"bjf\",\"tq\":\"bexppb\"}}")
-                .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
+        ElasticMonitorResourceUpdateParameters model = BinaryData.fromString("{\"tags\":{\"uhrzayvvt\":\"m\"}}")
+            .toObject(ElasticMonitorResourceUpdateParameters.class);
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticMonitorResourceUpdateParameters model =
-            new ElasticMonitorResourceUpdateParameters()
-                .withTags(mapOf("pspwgcuertu", "duqkt", "bmdg", "kdosvqw", "dgmb", "bjf", "tq", "bexppb"));
+        ElasticMonitorResourceUpdateParameters model
+            = new ElasticMonitorResourceUpdateParameters().withTags(mapOf("uhrzayvvt", "m"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

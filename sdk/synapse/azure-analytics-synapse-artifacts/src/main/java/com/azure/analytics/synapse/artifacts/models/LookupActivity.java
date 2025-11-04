@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,32 @@ public class LookupActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Lookup";
 
     /*
      * Dataset-specific source properties, same as copy activity source.
      */
+    @Generated
     private CopySource source;
 
     /*
      * Lookup activity dataset reference.
      */
+    @Generated
     private DatasetReference dataset;
 
     /*
-     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
+     * boolean).
      */
+    @Generated
     private Object firstRowOnly;
 
     /**
      * Creates an instance of LookupActivity class.
      */
+    @Generated
     public LookupActivity() {
     }
 
@@ -49,6 +56,7 @@ public class LookupActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +67,7 @@ public class LookupActivity extends ExecutionActivity {
      * 
      * @return the source value.
      */
+    @Generated
     public CopySource getSource() {
         return this.source;
     }
@@ -69,6 +78,7 @@ public class LookupActivity extends ExecutionActivity {
      * @param source the source value to set.
      * @return the LookupActivity object itself.
      */
+    @Generated
     public LookupActivity setSource(CopySource source) {
         this.source = source;
         return this;
@@ -79,6 +89,7 @@ public class LookupActivity extends ExecutionActivity {
      * 
      * @return the dataset value.
      */
+    @Generated
     public DatasetReference getDataset() {
         return this.dataset;
     }
@@ -89,6 +100,7 @@ public class LookupActivity extends ExecutionActivity {
      * @param dataset the dataset value to set.
      * @return the LookupActivity object itself.
      */
+    @Generated
     public LookupActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
         return this;
@@ -100,6 +112,7 @@ public class LookupActivity extends ExecutionActivity {
      * 
      * @return the firstRowOnly value.
      */
+    @Generated
     public Object getFirstRowOnly() {
         return this.firstRowOnly;
     }
@@ -111,6 +124,7 @@ public class LookupActivity extends ExecutionActivity {
      * @param firstRowOnly the firstRowOnly value to set.
      * @return the LookupActivity object itself.
      */
+    @Generated
     public LookupActivity setFirstRowOnly(Object firstRowOnly) {
         this.firstRowOnly = firstRowOnly;
         return this;
@@ -119,6 +133,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -128,6 +143,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -137,6 +153,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setName(String name) {
         super.setName(name);
@@ -146,6 +163,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setDescription(String description) {
         super.setDescription(description);
@@ -155,6 +173,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setState(ActivityState state) {
         super.setState(state);
@@ -164,6 +183,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -173,6 +193,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -182,6 +203,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LookupActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -191,6 +213,7 @@ public class LookupActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -209,7 +232,9 @@ public class LookupActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("source", this.source);
             jsonWriter.writeJsonField("dataset", this.dataset);
-            jsonWriter.writeUntypedField("firstRowOnly", this.firstRowOnly);
+            if (this.firstRowOnly != null) {
+                jsonWriter.writeUntypedField("firstRowOnly", this.firstRowOnly);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -229,6 +254,7 @@ public class LookupActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LookupActivity.
      */
+    @Generated
     public static LookupActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LookupActivity deserializedLookupActivity = new LookupActivity();

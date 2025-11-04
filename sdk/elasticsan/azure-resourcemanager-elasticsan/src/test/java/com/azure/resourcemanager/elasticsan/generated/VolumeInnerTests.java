@@ -15,24 +15,25 @@ public final class VolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeInner model = BinaryData.fromString(
-            "{\"properties\":{\"volumeId\":\"hfnljkyq\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"j\"},\"sizeGiB\":8463316449918745617,\"storageTarget\":{\"targetIqn\":\"kgj\",\"targetPortalHostname\":\"yoxgvcltbgsnc\",\"targetPortalPort\":1435851366,\"provisioningState\":\"Succeeded\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"bijhtxfvgxbf\"},\"provisioningState\":\"Pending\"},\"id\":\"eh\",\"name\":\"pvecxgodeb\",\"type\":\"qkkrb\"}")
+            "{\"properties\":{\"volumeId\":\"mpukgriw\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"bxzpuzycisp\"},\"sizeGiB\":1357175486164499901,\"storageTarget\":{\"targetIqn\":\"mgkbrpyydhibn\",\"targetPortalHostname\":\"qkpikadrgvtqagnb\",\"targetPortalPort\":855671205,\"provisioningState\":\"Restoring\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"ebf\"},\"provisioningState\":\"Deleting\"},\"id\":\"butr\",\"name\":\"vpnazzm\",\"type\":\"jrunmpxtt\"}")
             .toObject(VolumeInner.class);
-        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.creationData().createSource());
-        Assertions.assertEquals("j", model.creationData().sourceId());
-        Assertions.assertEquals(8463316449918745617L, model.sizeGiB());
-        Assertions.assertEquals("bijhtxfvgxbf", model.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
+        Assertions.assertEquals("bxzpuzycisp", model.creationData().sourceId());
+        Assertions.assertEquals(1357175486164499901L, model.sizeGiB());
+        Assertions.assertEquals("ebf", model.managedBy().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeInner model = new VolumeInner()
             .withCreationData(
-                new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("j"))
-            .withSizeGiB(8463316449918745617L).withManagedBy(new ManagedByInfo().withResourceId("bijhtxfvgxbf"));
+                new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("bxzpuzycisp"))
+            .withSizeGiB(1357175486164499901L)
+            .withManagedBy(new ManagedByInfo().withResourceId("ebf"));
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
-        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.creationData().createSource());
-        Assertions.assertEquals("j", model.creationData().sourceId());
-        Assertions.assertEquals(8463316449918745617L, model.sizeGiB());
-        Assertions.assertEquals("bijhtxfvgxbf", model.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
+        Assertions.assertEquals("bxzpuzycisp", model.creationData().sourceId());
+        Assertions.assertEquals(1357175486164499901L, model.sizeGiB());
+        Assertions.assertEquals("ebf", model.managedBy().resourceId());
     }
 }

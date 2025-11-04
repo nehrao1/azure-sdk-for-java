@@ -6,72 +6,41 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueCommentContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApiIssueCommentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"text\":\"irtahtu\",\"createdDate\":\"2021-02-23T08:34:34Z\",\"userId\":\"m\"},\"id\":\"caumviudzpsjqr\",\"name\":\"lujm\",\"type\":\"unlofwuzebfq\"}";
 
-        String responseStr =
-            "{\"properties\":{\"text\":\"tmsgkwedwl\",\"createdDate\":\"2021-05-25T09:49:35Z\",\"userId\":\"hgbgbhudh\"},\"id\":\"pjimvrrqfibpkwm\",\"name\":\"mrlfizjuddndi\",\"type\":\"upngyhy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IssueCommentContract response = manager.apiIssueComments()
+            .define("tujydeatwxpxbxed")
+            .withExistingIssue("rzwvwetqff", "xvfhuqhn", "qqxjbsot", "clmr")
+            .withText("bboceksram")
+            .withCreatedDate(OffsetDateTime.parse("2021-12-04T02:33:26Z"))
+            .withUserId("l")
+            .withIfMatch("dqkzstzpzecdl")
+            .create();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IssueCommentContract response =
-            manager
-                .apiIssueComments()
-                .define("bzsspmjvail")
-                .withExistingIssue("yfhxohzbzhhav", "fuxnvkdslcofuvtf", "ehoui", "aklhjfddxqfuss")
-                .withText("uyvxpqwlkqdgwbzt")
-                .withCreatedDate(OffsetDateTime.parse("2021-10-09T22:45:13Z"))
-                .withUserId("ldwvog")
-                .withIfMatch("nkyg")
-                .create();
-
-        Assertions.assertEquals("tmsgkwedwl", response.text());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T09:49:35Z"), response.createdDate());
-        Assertions.assertEquals("hgbgbhudh", response.userId());
+        Assertions.assertEquals("irtahtu", response.text());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T08:34:34Z"), response.createdDate());
+        Assertions.assertEquals("m", response.userId());
     }
 }

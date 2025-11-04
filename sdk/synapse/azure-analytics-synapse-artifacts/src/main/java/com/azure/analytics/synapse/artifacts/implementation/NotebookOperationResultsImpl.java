@@ -52,7 +52,7 @@ public final class NotebookOperationResultsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientNoteb")
+    @ServiceInterface(name = "ArtifactsClientNotebookOperationResults")
     public interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
         @ExpectedResponses({ 200, 201, 202, 204 })
@@ -72,10 +72,7 @@ public final class NotebookOperationResultsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String operationId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, operationId, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(operationId, context));
     }
 
     /**

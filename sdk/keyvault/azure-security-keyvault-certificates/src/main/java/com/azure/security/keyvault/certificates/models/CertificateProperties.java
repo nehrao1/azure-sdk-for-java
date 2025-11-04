@@ -14,6 +14,8 @@ import com.azure.security.keyvault.certificates.implementation.IdMetadata;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -30,7 +32,17 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     private static final ClientLogger LOGGER = new ClientLogger(CertificateProperties.class);
 
     static {
-        CertificatePropertiesHelper.setAccessor(CertificateProperties::new);
+        CertificatePropertiesHelper.setAccessor(new CertificatePropertiesHelper.CertificatePropertiesAccessor() {
+            @Override
+            public CertificateProperties createCertificateProperties(CertificateItem item) {
+                return new CertificateProperties(item);
+            }
+
+            @Override
+            public CertificateProperties createCertificateProperties(DeletedCertificateItem item) {
+                return new CertificateProperties(item);
+            }
+        });
     }
 
     /**
@@ -101,22 +113,39 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
      */
     private final Integer recoverableDays;
 
+    /**
+     * The flag indicating whether the order of the certificate chain is to be preserved in the vault. The default value
+     * is {@code false}, which sets the leaf certificate at index 0.
+     */
+    private final Boolean certificateOrderPreserved;
+
     CertificateProperties() {
-        this(null, new CertificateAttributes(), null, null, null);
+        this(null, new CertificateAttributes(), null, null, null, false);
     }
 
     CertificateProperties(CertificateItem item) {
         this(item.getId(), item.getAttributes(), item.getTags(), item.getX509Thumbprint(),
-            item.getAttributes().getRecoverableDays());
+            item.getAttributes().getRecoverableDays(), false);
     }
 
     CertificateProperties(CertificateBundle bundle) {
         this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
-            bundle.getAttributes().getRecoverableDays());
+            bundle.getAttributes().getRecoverableDays(), bundle.isPreserveCertOrder());
     }
 
-    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
-                          byte[] wireThumbprint, Integer recoverableDays) {
+    CertificateProperties(DeletedCertificateItem item) {
+        this(item.getId(), item.getAttributes(), item.getTags(), item.getX509Thumbprint(),
+            item.getAttributes().getRecoverableDays(), false);
+    }
+
+    CertificateProperties(DeletedCertificateBundle bundle) {
+        this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
+            bundle.getAttributes().getRecoverableDays(), bundle.isPreserveCertOrder());
+    }
+
+    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags, byte[] wireThumbprint,
+        Integer recoverableDays, Boolean certificateOrderPreserved) {
+
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
         this.id = idMetadata.getId();
         this.vaultUrl = idMetadata.getVaultUrl();
@@ -129,7 +158,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             this.expiresOn = attributes.getExpires();
             this.createdOn = attributes.getCreated();
             this.updatedOn = attributes.getUpdated();
-            this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
+            this.recoveryLevel = Objects.toString(attributes.getAdminContacts(), null);
         } else {
             this.enabled = null;
             this.notBefore = null;
@@ -140,9 +169,10 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         }
 
         this.tags = tags;
-        this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
-            ? null : Base64Url.encode(wireThumbprint);
+        this.x509Thumbprint
+            = (wireThumbprint == null || wireThumbprint.length == 0) ? null : Base64Url.encode(wireThumbprint);
         this.recoverableDays = recoverableDays;
+        this.certificateOrderPreserved = certificateOrderPreserved;
     }
 
     void setName(String name) {
@@ -203,7 +233,6 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         return updatedOn;
     }
 
-
     /**
      * Get the tags associated with the certificate.
      *
@@ -255,7 +284,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Get the recovery level of the certificate.
-
+    
      * @return The recovery level of the certificate.
      */
     public String getRecoveryLevel() {
@@ -302,11 +331,19 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         return bytesToHexString(getX509Thumbprint());
     }
 
+    /**
+     * Get a value indicating whether the order of certificate chain is to be preserved in the vault. The default value
+     * is {@code false}, which sets the leaf certificate at index 0.
+     *
+     * @return The preserve certificate order status.
+     */
+    public Boolean isCertificateOrderPreserved() {
+        return this.certificateOrderPreserved;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeMapField("tags", tags, JsonWriter::writeString)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeMapField("tags", tags, JsonWriter::writeString).writeEndObject();
     }
 
     /**
@@ -325,6 +362,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             Map<String, String> tags = null;
             byte[] wireThumbprint = null;
             Integer recoverableDays = null;
+            boolean certificateOrderPreserved = false;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -341,13 +379,15 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
                     wireThumbprint = reader.getBinary();
                 } else if ("recoverableDays".equals(fieldName)) {
                     recoverableDays = reader.getInt();
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    certificateOrderPreserved = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
 
             return new CertificateProperties(id, attributes == null ? new CertificateAttributes() : attributes, tags,
-                wireThumbprint, recoverableDays);
+                wireThumbprint, recoverableDays, certificateOrderPreserved);
         });
     }
 }

@@ -208,6 +208,27 @@ public interface PostgreSqlManagementClient {
     ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
 
     /**
+     * Gets the TuningOptionsClient object to access its operations.
+     * 
+     * @return the TuningOptionsClient object.
+     */
+    TuningOptionsClient getTuningOptions();
+
+    /**
+     * Gets the TuningIndexesClient object to access its operations.
+     * 
+     * @return the TuningIndexesClient object.
+     */
+    TuningIndexesClient getTuningIndexes();
+
+    /**
+     * Gets the TuningConfigurationsClient object to access its operations.
+     * 
+     * @return the TuningConfigurationsClient object.
+     */
+    TuningConfigurationsClient getTuningConfigurations();
+
+    /**
      * Gets the VirtualEndpointsClient object to access its operations.
      * 
      * @return the VirtualEndpointsClient object.

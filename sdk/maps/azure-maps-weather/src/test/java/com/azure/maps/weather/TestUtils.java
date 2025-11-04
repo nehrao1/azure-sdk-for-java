@@ -4,7 +4,7 @@
 package com.azure.maps.weather;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.ReadValueCallback;
@@ -37,13 +37,14 @@ public class TestUtils {
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * Returns a stream of arguments that includes all combinations of eligible
+     * {@link HttpClient HttpClients} and
      * service versions that should be tested.
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestBase.getHttpClients()
+        return TestProxyTestBase.getHttpClients()
             .flatMap(httpClient -> Arrays.stream(WeatherServiceVersion.values())
                 .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
@@ -100,12 +101,12 @@ public class TestUtils {
         return deserialize("getcurrentairquality.json", AirQualityResult::fromJson);
     }
 
-    static DailyAirQualityForecastResult getExpectedAirQualityDailyForecasts() {
-        return deserialize("getairqualitydailyforecasts.json", DailyAirQualityForecastResult::fromJson);
+    static DailyAirQualityForecastResult getExpectedDailyAirQualityForecast() {
+        return deserialize("getdailyairqualityforecast.json", DailyAirQualityForecastResult::fromJson);
     }
 
-    static AirQualityResult getExpectedAirQualityHourlyForecasts() {
-        return deserialize("getairqualityhourlyforecasts.json", AirQualityResult::fromJson);
+    static AirQualityResult getExpectedHourlyAirQualityForecast() {
+        return deserialize("gethourlyairqualityforecast.json", AirQualityResult::fromJson);
     }
 
     static DailyHistoricalRecordsResult getExpectedDailyHistoricalRecords() {

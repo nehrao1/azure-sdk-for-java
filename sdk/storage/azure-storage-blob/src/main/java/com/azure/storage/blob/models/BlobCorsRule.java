@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -22,33 +22,43 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
     /*
-     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains to make requests via CORS.
+     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+     * is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
+     * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
+     * origin domains to make requests via CORS.
      */
+    @Generated
     private String allowedOrigins;
 
     /*
      * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
      */
+    @Generated
     private String allowedMethods;
 
     /*
      * the request headers that the origin domain may specify on the CORS request.
      */
+    @Generated
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer
      */
+    @Generated
     private String exposedHeaders;
 
     /*
      * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
+    @Generated
     private int maxAgeInSeconds;
 
     /**
      * Creates an instance of BlobCorsRule class.
      */
+    @Generated
     public BlobCorsRule() {
     }
 
@@ -60,6 +70,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * 
      * @return the allowedOrigins value.
      */
+    @Generated
     public String getAllowedOrigins() {
         return this.allowedOrigins;
     }
@@ -73,6 +84,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the BlobCorsRule object itself.
      */
+    @Generated
     public BlobCorsRule setAllowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
@@ -84,6 +96,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * 
      * @return the allowedMethods value.
      */
+    @Generated
     public String getAllowedMethods() {
         return this.allowedMethods;
     }
@@ -95,6 +108,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param allowedMethods the allowedMethods value to set.
      * @return the BlobCorsRule object itself.
      */
+    @Generated
     public BlobCorsRule setAllowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
@@ -105,6 +119,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * 
      * @return the allowedHeaders value.
      */
+    @Generated
     public String getAllowedHeaders() {
         return this.allowedHeaders;
     }
@@ -115,6 +130,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the BlobCorsRule object itself.
      */
+    @Generated
     public BlobCorsRule setAllowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
@@ -126,6 +142,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * 
      * @return the exposedHeaders value.
      */
+    @Generated
     public String getExposedHeaders() {
         return this.exposedHeaders;
     }
@@ -137,6 +154,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the BlobCorsRule object itself.
      */
+    @Generated
     public BlobCorsRule setExposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
@@ -148,6 +166,7 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * 
      * @return the maxAgeInSeconds value.
      */
+    @Generated
     public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
@@ -159,19 +178,22 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the BlobCorsRule object itself.
      */
+    @Generated
     public BlobCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("AllowedOrigins", this.allowedOrigins);
         xmlWriter.writeStringElement("AllowedMethods", this.allowedMethods);
@@ -187,9 +209,9 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobCorsRule if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobCorsRule.
      */
+    @Generated
     public static BlobCorsRule fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -202,11 +224,12 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobCorsRule if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobCorsRule.
      */
+    @Generated
     public static BlobCorsRule fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobCorsRule deserializedBlobCorsRule = new BlobCorsRule();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

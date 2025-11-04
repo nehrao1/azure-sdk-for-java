@@ -6,70 +6,39 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
 import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApiVersionSetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"wfvkywzrq\",\"versioningScheme\":\"Segment\",\"description\":\"ddpkhu\",\"versionQueryName\":\"lmdcnutiexmizu\",\"versionHeaderName\":\"bqvioyn\"},\"id\":\"tfqhhvvwzprjaaai\",\"name\":\"ibtvavl\",\"type\":\"aqtlocnwmefzvzuz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"l\",\"versioningScheme\":\"Query\",\"description\":\"bnlyoifgdfzj\",\"versionQueryName\":\"hykcvoevcwf\",\"versionHeaderName\":\"tkxxlwwo\"},\"id\":\"xgbsdzcgcvypj\",\"name\":\"ubdmg\",\"type\":\"bxehujcqgzwvx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ApiVersionSetContract response = manager.apiVersionSets()
+            .getWithResponse("ynhitrnwqgq", "bthb", "piqnrjoc", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ApiVersionSetContract response =
-            manager
-                .apiVersionSets()
-                .getWithResponse("b", "tweobptscruykkie", "ayynoyj", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("l", response.displayName());
-        Assertions.assertEquals(VersioningScheme.QUERY, response.versioningScheme());
-        Assertions.assertEquals("bnlyoifgdfzj", response.description());
-        Assertions.assertEquals("hykcvoevcwf", response.versionQueryName());
-        Assertions.assertEquals("tkxxlwwo", response.versionHeaderName());
+        Assertions.assertEquals("wfvkywzrq", response.displayName());
+        Assertions.assertEquals(VersioningScheme.SEGMENT, response.versioningScheme());
+        Assertions.assertEquals("ddpkhu", response.description());
+        Assertions.assertEquals("lmdcnutiexmizu", response.versionQueryName());
+        Assertions.assertEquals("bqvioyn", response.versionHeaderName());
     }
 }

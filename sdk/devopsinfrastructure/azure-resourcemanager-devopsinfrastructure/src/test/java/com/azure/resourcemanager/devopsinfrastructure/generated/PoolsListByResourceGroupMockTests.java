@@ -7,8 +7,8 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager;
 import com.azure.resourcemanager.devopsinfrastructure.models.ManagedServiceIdentityType;
@@ -24,25 +24,24 @@ public final class PoolsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"maximumConcurrency\":613432064,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ibzyhwitsmyp\"},\"identity\":{\"principalId\":\"pcdpumnz\",\"tenantId\":\"wznm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"lkdmtncvokotllxd\":{\"principalId\":\"sorgj\",\"clientId\":\"bldtlww\"}}},\"location\":\"gsyocogj\",\"tags\":{\"oocrkvcikhnv\":\"tbnnha\",\"gxk\":\"amqgxqquezikyw\"},\"id\":\"lla\",\"name\":\"melwuipiccjz\",\"type\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":1025445351,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"aanozjosphyoulpj\"},\"identity\":{\"principalId\":\"ag\",\"tenantId\":\"vimjwos\",\"type\":\"None\",\"userAssignedIdentities\":{\"fjhdg\":{\"principalId\":\"cskfcktqumiekk\",\"clientId\":\"zikhl\"}}},\"location\":\"gebdunygaeq\",\"tags\":{\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\"},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevOpsInfrastructureManager manager = DevOpsInfrastructureManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Pool> response
-            = manager.pools().listByResourceGroup("ysuiizynkedya", com.azure.core.util.Context.NONE);
+        PagedIterable<Pool> response = manager.pools().listByResourceGroup("fatkld", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gsyocogj", response.iterator().next().location());
-        Assertions.assertEquals("tbnnha", response.iterator().next().tags().get("oocrkvcikhnv"));
-        Assertions.assertEquals(ProvisioningState.UPDATING,
+        Assertions.assertEquals("gebdunygaeq", response.iterator().next().location());
+        Assertions.assertEquals("qfatpxllrxcyjm", response.iterator().next().tags().get("a"));
+        Assertions.assertEquals(ProvisioningState.CANCELED,
             response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(613432064, response.iterator().next().properties().maximumConcurrency());
-        Assertions.assertEquals("ibzyhwitsmyp", response.iterator().next().properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals(1025445351, response.iterator().next().properties().maximumConcurrency());
+        Assertions.assertEquals("aanozjosphyoulpj",
+            response.iterator().next().properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

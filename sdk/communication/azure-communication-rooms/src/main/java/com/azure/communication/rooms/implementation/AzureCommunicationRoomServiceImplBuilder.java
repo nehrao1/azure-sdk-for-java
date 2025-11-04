@@ -12,7 +12,6 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -33,6 +32,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -70,22 +70,6 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationRoomServiceImplBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     @Generated
@@ -98,6 +82,25 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
     @Override
     public AzureCommunicationRoomServiceImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public AzureCommunicationRoomServiceImplBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -269,13 +272,21 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
      */
     @Generated
     public AzureCommunicationRoomServiceImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-15";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-03-13";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationRoomServiceImpl client = new AzureCommunicationRoomServiceImpl(localPipeline,
             localSerializerAdapter, this.endpoint, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -291,13 +302,12 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -305,12 +315,17 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureCommunicationRoomServiceImplBuilder.class);
 }

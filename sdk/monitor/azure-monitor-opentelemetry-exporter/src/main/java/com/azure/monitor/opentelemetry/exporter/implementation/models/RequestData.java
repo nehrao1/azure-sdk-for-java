@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,60 +22,73 @@ public final class RequestData extends MonitorDomain {
     /*
      * Identifier of a request call instance. Used for correlation between request and other telemetry items.
      */
+    @Generated
     private String id;
 
     /*
-     * Name of the request. Represents code path taken to process request. Low cardinality value to allow better grouping of requests. For HTTP requests it represents the HTTP method and URL path template like 'GET /values/{id}'.
+     * Name of the request. Represents code path taken to process request. Low cardinality value to allow better
+     * grouping of requests. For HTTP requests it represents the HTTP method and URL path template like 'GET
+     * /values/{id}'.
      */
+    @Generated
     private String name;
 
     /*
      * Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
      */
+    @Generated
     private String duration;
 
     /*
      * Indication of successful or unsuccessful call.
      */
+    @Generated
     private boolean success;
 
     /*
      * Result of a request execution. HTTP status code for HTTP requests.
      */
+    @Generated
     private String responseCode;
 
     /*
      * Source of the request. Examples are the instrumentation key of the caller or the ip address of the caller.
      */
+    @Generated
     private String source;
 
     /*
      * Request URL with all query string parameters.
      */
+    @Generated
     private String url;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of RequestData class.
      */
+    @Generated
     public RequestData() {
     }
 
     /**
      * Get the id property: Identifier of a request call instance. Used for correlation between request and other
      * telemetry items.
-     *
+     * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -82,10 +96,11 @@ public final class RequestData extends MonitorDomain {
     /**
      * Set the id property: Identifier of a request call instance. Used for correlation between request and other
      * telemetry items.
-     *
+     * 
      * @param id the id value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setId(String id) {
         this.id = id;
         return this;
@@ -95,9 +110,10 @@ public final class RequestData extends MonitorDomain {
      * Get the name property: Name of the request. Represents code path taken to process request. Low cardinality value
      * to allow better grouping of requests. For HTTP requests it represents the HTTP method and URL path template like
      * 'GET /values/{id}'.
-     *
+     * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -106,10 +122,11 @@ public final class RequestData extends MonitorDomain {
      * Set the name property: Name of the request. Represents code path taken to process request. Low cardinality value
      * to allow better grouping of requests. For HTTP requests it represents the HTTP method and URL path template like
      * 'GET /values/{id}'.
-     *
+     * 
      * @param name the name value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setName(String name) {
         this.name = name;
         return this;
@@ -117,19 +134,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
-     *
+     * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
 
     /**
      * Set the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -137,19 +156,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the success property: Indication of successful or unsuccessful call.
-     *
+     * 
      * @return the success value.
      */
+    @Generated
     public boolean isSuccess() {
         return this.success;
     }
 
     /**
      * Set the success property: Indication of successful or unsuccessful call.
-     *
+     * 
      * @param success the success value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setSuccess(boolean success) {
         this.success = success;
         return this;
@@ -157,19 +178,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the responseCode property: Result of a request execution. HTTP status code for HTTP requests.
-     *
+     * 
      * @return the responseCode value.
      */
+    @Generated
     public String getResponseCode() {
         return this.responseCode;
     }
 
     /**
      * Set the responseCode property: Result of a request execution. HTTP status code for HTTP requests.
-     *
+     * 
      * @param responseCode the responseCode value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setResponseCode(String responseCode) {
         this.responseCode = responseCode;
         return this;
@@ -178,9 +201,10 @@ public final class RequestData extends MonitorDomain {
     /**
      * Get the source property: Source of the request. Examples are the instrumentation key of the caller or the ip
      * address of the caller.
-     *
+     * 
      * @return the source value.
      */
+    @Generated
     public String getSource() {
         return this.source;
     }
@@ -188,10 +212,11 @@ public final class RequestData extends MonitorDomain {
     /**
      * Set the source property: Source of the request. Examples are the instrumentation key of the caller or the ip
      * address of the caller.
-     *
+     * 
      * @param source the source value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setSource(String source) {
         this.source = source;
         return this;
@@ -199,19 +224,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the url property: Request URL with all query string parameters.
-     *
+     * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
 
     /**
      * Set the url property: Request URL with all query string parameters.
-     *
+     * 
      * @param url the url value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setUrl(String url) {
         this.url = url;
         return this;
@@ -219,19 +246,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -239,19 +268,21 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -260,6 +291,7 @@ public final class RequestData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RequestData setVersion(int version) {
         super.setVersion(version);
@@ -269,6 +301,7 @@ public final class RequestData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -280,8 +313,8 @@ public final class RequestData extends MonitorDomain {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -292,13 +325,14 @@ public final class RequestData extends MonitorDomain {
 
     /**
      * Reads an instance of RequestData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequestData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequestData.
      */
+    @Generated
     public static RequestData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RequestData deserializedRequestData = new RequestData();
@@ -324,9 +358,11 @@ public final class RequestData extends MonitorDomain {
                 } else if ("url".equals(fieldName)) {
                     deserializedRequestData.url = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedRequestData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRequestData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedRequestData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedRequestData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

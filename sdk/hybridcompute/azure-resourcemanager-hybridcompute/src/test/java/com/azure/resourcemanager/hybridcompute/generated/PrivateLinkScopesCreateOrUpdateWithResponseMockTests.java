@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
@@ -25,27 +25,29 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"nbnxwcdomm\",\"privateLinkScopeId\":\"fqawzfgbrttui\",\"privateEndpointConnections\":[{\"id\":\"iexhajl\",\"name\":\"t\",\"type\":\"qfyuttd\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"pvn\",\"description\":\"swmtxk\"},\"provisioningState\":\"twwgzwx\",\"groupIds\":[\"ecvo\",\"ygzyvneezaifght\",\"oqqtl\",\"fhzbkr\"]}},{\"id\":\"jjavfq\",\"name\":\"hnqoewdo\",\"type\":\"yetesy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bztjhqtfbovnynkb\",\"description\":\"etnjuhpsprkz\"},\"provisioningState\":\"upia\",\"groupIds\":[\"n\",\"fbwqrooht\"]}},{\"id\":\"vmaonurjt\",\"name\":\"ghihpvecms\",\"type\":\"lbl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tbsjuscvsf\",\"description\":\"igctmgxuupbezq\"},\"provisioningState\":\"ydrtc\",\"groupIds\":[\"d\",\"kkyihzt\",\"eq\"]}},{\"id\":\"qzgwldoychil\",\"name\":\"ecfehuwa\",\"type\":\"guh\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"lizst\",\"description\":\"csjvhrwef\"},\"provisioningState\":\"wqejpmvsse\",\"groupIds\":[\"pwamcxtczhupeuk\",\"ijdu\",\"yespydjfbocyv\"]}}]},\"location\":\"ulrtywikdmh\",\"tags\":{\"ufr\":\"uflgbhgauacdixm\",\"ozo\":\"ryjqgdkf\"},\"id\":\"oqbvjhvefgwbmqj\",\"name\":\"hntasfaymx\",\"type\":\"ulpzealb\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"gpxvkqmaupxvpi\",\"privateLinkScopeId\":\"f\",\"privateEndpointConnections\":[{\"id\":\"zyzeyuubeidsz\",\"name\":\"ytoithgygvfl\",\"type\":\"vdihoynkrx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"kdrcyrucp\",\"description\":\"unnuzdqumoenodn\"},\"provisioningState\":\"enhqhskndnelq\",\"groupIds\":[\"dlknwfoanniyop\",\"txiv\",\"nrlyxnuc\"]}},{\"id\":\"p\",\"name\":\"lkwq\",\"type\":\"tv\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tcjb\",\"description\":\"tvivuzqym\"},\"provisioningState\":\"owog\",\"groupIds\":[\"tsqhzvbrzcdban\"]}},{\"id\":\"ndscxmxeatk\",\"name\":\"mwnrdj\",\"type\":\"bqbnaomhjrmkuh\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jalfihcjmobcanc\",\"description\":\"exxqcwg\"},\"provisioningState\":\"fgvaknokzwj\",\"groupIds\":[\"ltixldzyyfytpq\"]}}]},\"location\":\"x\",\"tags\":{\"vyqlkjuvsmbmslzo\":\"puj\"},\"id\":\"ovwzdbpqvybefg\",\"name\":\"mx\",\"type\":\"okcvtlubses\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .define("pli")
-            .withRegion("nrmvvfkoxmlghk")
-            .withExistingResourceGroup("gnzxojpslsvj")
-            .withTags(mapOf("wex", "dvrmazlpd", "wvqsgny", "mzvlazipbh"))
+            .define("zmwntopagt")
+            .withRegion("fdsajred")
+            .withExistingResourceGroup("bdweade")
+            .withTags(mapOf("afpwzyifrkgwl", "yshtuwgmev", "zdyi", "xeqipx", "abnsmj", "sfayorpravkjoges",
+                "qpkevmyltjc", "wynqxaekqsykvwj"))
             .withProperties(
                 new HybridComputePrivateLinkScopeProperties().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED))
             .create();
 
-        Assertions.assertEquals("ulrtywikdmh", response.location());
-        Assertions.assertEquals("uflgbhgauacdixm", response.tags().get("ufr"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("x", response.location());
+        Assertions.assertEquals("puj", response.tags().get("vyqlkjuvsmbmslzo"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
+            response.properties().publicNetworkAccess());
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,71 +22,94 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureBlobFS";
 
     /*
      * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * Account key for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object accountKey;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string (or Expression with resultType string).
+     * The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against the Azure Data Lake Storage Gen2 account.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
+    @Generated
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object azureCloudType;
 
     /*
-     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
+     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * AzureKeyVaultSecretReference.
      */
+    @Generated
     private SecretBase servicePrincipalCredential;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
+    @Generated
     private SecretBase sasToken;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureBlobFSLinkedService class.
      */
+    @Generated
     public AzureBlobFSLinkedService() {
     }
 
@@ -94,6 +118,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -105,6 +130,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -116,6 +142,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -127,6 +154,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the accountKey value.
      */
+    @Generated
     public Object getAccountKey() {
         return this.accountKey;
     }
@@ -138,6 +166,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setAccountKey(Object accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -149,6 +178,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -160,6 +190,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -171,6 +202,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -182,6 +214,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -193,6 +226,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -204,6 +238,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -216,6 +251,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the azureCloudType value.
      */
+    @Generated
     public Object getAzureCloudType() {
         return this.azureCloudType;
     }
@@ -228,6 +264,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
         return this;
@@ -240,6 +277,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredentialType value.
      */
+    @Generated
     public Object getServicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
@@ -252,6 +290,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
@@ -265,6 +304,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredential value.
      */
+    @Generated
     public SecretBase getServicePrincipalCredential() {
         return this.servicePrincipalCredential;
     }
@@ -278,6 +318,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setServicePrincipalCredential(SecretBase servicePrincipalCredential) {
         this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
@@ -289,6 +330,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -300,6 +342,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -311,6 +354,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the sasUri value.
      */
+    @Generated
     public Object getSasUri() {
         return this.sasUri;
     }
@@ -322,6 +366,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param sasUri the sasUri value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setSasUri(Object sasUri) {
         this.sasUri = sasUri;
         return this;
@@ -332,6 +377,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the sasToken value.
      */
+    @Generated
     public SecretBase getSasToken() {
         return this.sasToken;
     }
@@ -342,6 +388,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param sasToken the sasToken value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setSasToken(SecretBase sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -352,6 +399,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -362,6 +410,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
+    @Generated
     public AzureBlobFSLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -370,6 +419,17 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureBlobFSLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureBlobFSLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -379,6 +439,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -388,6 +449,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -397,6 +459,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -406,9 +469,11 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -427,16 +492,32 @@ public class AzureBlobFSLinkedService extends LinkedService {
             || sasToken != null
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("accountKey", this.accountKey);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.url != null) {
+                jsonWriter.writeUntypedField("url", this.url);
+            }
+            if (this.accountKey != null) {
+                jsonWriter.writeUntypedField("accountKey", this.accountKey);
+            }
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.azureCloudType != null) {
+                jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            }
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.sasUri != null) {
+                jsonWriter.writeUntypedField("sasUri", this.sasUri);
+            }
             jsonWriter.writeJsonField("sasToken", this.sasToken);
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
@@ -457,6 +538,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureBlobFSLinkedService.
      */
+    @Generated
     public static AzureBlobFSLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobFSLinkedService deserializedAzureBlobFSLinkedService = new AzureBlobFSLinkedService();
@@ -465,7 +547,9 @@ public class AzureBlobFSLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureBlobFSLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAzureBlobFSLinkedService.setDescription(reader.getString());

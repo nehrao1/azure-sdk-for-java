@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Snapshot;
@@ -21,20 +21,20 @@ public final class SnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"dhohsdtmcdzsuf\",\"properties\":{\"snapshotId\":\"dxbzlmcmuap\",\"created\":\"2021-08-04T10:09:35Z\",\"provisioningState\":\"bevwqqxeys\"},\"id\":\"nqzi\",\"name\":\"kfkbgbzbowxeqocl\",\"type\":\"mygvkzqkj\"}";
+            = "{\"location\":\"jxgrytfmp\",\"properties\":{\"snapshotId\":\"ilrmcaykggnox\",\"created\":\"2021-09-05T21:02:51Z\",\"provisioningState\":\"ksxwpnd\"},\"id\":\"pfnznthjtwkj\",\"name\":\"osrxuzvoa\",\"type\":\"ktcqio\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.snapshots()
-            .getWithResponse("fjltfvnzcyjtotp", "opv", "bdb", "qgqqihedsvqwthmk", "ibcysihsgqc",
+            .getWithResponse("tsxoatftgz", "npbs", "vefloccsrmozihmi", "g", "wtxxpkyjcx",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dhohsdtmcdzsuf", response.location());
+        Assertions.assertEquals("jxgrytfmp", response.location());
     }
 }

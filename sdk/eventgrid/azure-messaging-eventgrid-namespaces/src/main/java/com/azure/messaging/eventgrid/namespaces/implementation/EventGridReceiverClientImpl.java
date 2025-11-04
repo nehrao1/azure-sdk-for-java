@@ -146,7 +146,7 @@ public final class EventGridReceiverClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "EventGridReceiverCli")
+    @ServiceInterface(name = "EventGridReceiverClient")
     public interface EventGridReceiverClientService {
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
         @ExpectedResponses({ 200 })
@@ -287,7 +287,8 @@ public final class EventGridReceiverClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -298,7 +299,7 @@ public final class EventGridReceiverClientImpl {
      *             event (Required): {
      *                 id: String (Required)
      *                 source: String (Required)
-     *                 data: Object (Optional)
+     *                 data: BinaryData (Optional)
      *                 data_base64: byte[] (Optional)
      *                 type: String (Required)
      *                 time: OffsetDateTime (Optional)
@@ -310,7 +311,8 @@ public final class EventGridReceiverClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -346,7 +348,8 @@ public final class EventGridReceiverClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -357,7 +360,7 @@ public final class EventGridReceiverClientImpl {
      *             event (Required): {
      *                 id: String (Required)
      *                 source: String (Required)
-     *                 data: Object (Optional)
+     *                 data: BinaryData (Optional)
      *                 data_base64: byte[] (Optional)
      *                 type: String (Required)
      *                 time: OffsetDateTime (Optional)
@@ -369,7 +372,8 @@ public final class EventGridReceiverClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -394,32 +398,26 @@ public final class EventGridReceiverClientImpl {
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -427,7 +425,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -456,32 +455,26 @@ public final class EventGridReceiverClientImpl {
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -489,7 +482,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -524,32 +518,26 @@ public final class EventGridReceiverClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -557,7 +545,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -593,32 +582,26 @@ public final class EventGridReceiverClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -626,7 +609,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -653,32 +637,26 @@ public final class EventGridReceiverClientImpl {
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -686,7 +664,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -713,32 +692,26 @@ public final class EventGridReceiverClientImpl {
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -746,7 +719,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -773,32 +747,26 @@ public final class EventGridReceiverClientImpl {
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -806,7 +774,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -835,32 +804,26 @@ public final class EventGridReceiverClientImpl {
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -868,7 +831,8 @@ public final class EventGridReceiverClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.

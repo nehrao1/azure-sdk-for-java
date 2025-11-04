@@ -5,27 +5,41 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Options regarding follow up recommendation inferences and finding inferences.
  */
 @Fluent
-public final class RadiologyInsightsInferenceOptions {
+public final class RadiologyInsightsInferenceOptions implements JsonSerializable<RadiologyInsightsInferenceOptions> {
 
     /*
      * Follow-up recommendation options.
      */
     @Generated
-    @JsonProperty(value = "followupRecommendationOptions")
     private FollowupRecommendationOptions followupRecommendationOptions;
 
     /*
      * Finding options.
      */
     @Generated
-    @JsonProperty(value = "findingOptions")
     private FindingOptions findingOptions;
+
+    /*
+     * Guidance options.
+     */
+    @Generated
+    private GuidanceOptions guidanceOptions;
+
+    /*
+     * QualityMeasureOptions.
+     */
+    @Generated
+    private QualityMeasureOptions qualityMeasureOptions;
 
     /**
      * Creates an instance of RadiologyInsightsInferenceOptions class.
@@ -77,5 +91,97 @@ public final class RadiologyInsightsInferenceOptions {
     public RadiologyInsightsInferenceOptions setFindingOptions(FindingOptions findingOptions) {
         this.findingOptions = findingOptions;
         return this;
+    }
+
+    /**
+     * Get the guidanceOptions property: Guidance options.
+     *
+     * @return the guidanceOptions value.
+     */
+    @Generated
+    public GuidanceOptions getGuidanceOptions() {
+        return this.guidanceOptions;
+    }
+
+    /**
+     * Set the guidanceOptions property: Guidance options.
+     *
+     * @param guidanceOptions the guidanceOptions value to set.
+     * @return the RadiologyInsightsInferenceOptions object itself.
+     */
+    @Generated
+    public RadiologyInsightsInferenceOptions setGuidanceOptions(GuidanceOptions guidanceOptions) {
+        this.guidanceOptions = guidanceOptions;
+        return this;
+    }
+
+    /**
+     * Get the qualityMeasureOptions property: QualityMeasureOptions.
+     *
+     * @return the qualityMeasureOptions value.
+     */
+    @Generated
+    public QualityMeasureOptions getQualityMeasureOptions() {
+        return this.qualityMeasureOptions;
+    }
+
+    /**
+     * Set the qualityMeasureOptions property: QualityMeasureOptions.
+     *
+     * @param qualityMeasureOptions the qualityMeasureOptions value to set.
+     * @return the RadiologyInsightsInferenceOptions object itself.
+     */
+    @Generated
+    public RadiologyInsightsInferenceOptions setQualityMeasureOptions(QualityMeasureOptions qualityMeasureOptions) {
+        this.qualityMeasureOptions = qualityMeasureOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("followupRecommendationOptions", this.followupRecommendationOptions);
+        jsonWriter.writeJsonField("findingOptions", this.findingOptions);
+        jsonWriter.writeJsonField("guidanceOptions", this.guidanceOptions);
+        jsonWriter.writeJsonField("qualityMeasureOptions", this.qualityMeasureOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyInsightsInferenceOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyInsightsInferenceOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RadiologyInsightsInferenceOptions.
+     */
+    @Generated
+    public static RadiologyInsightsInferenceOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceOptions deserializedRadiologyInsightsInferenceOptions
+                = new RadiologyInsightsInferenceOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("followupRecommendationOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.followupRecommendationOptions
+                        = FollowupRecommendationOptions.fromJson(reader);
+                } else if ("findingOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.findingOptions = FindingOptions.fromJson(reader);
+                } else if ("guidanceOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.guidanceOptions = GuidanceOptions.fromJson(reader);
+                } else if ("qualityMeasureOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.qualityMeasureOptions
+                        = QualityMeasureOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedRadiologyInsightsInferenceOptions;
+        });
     }
 }

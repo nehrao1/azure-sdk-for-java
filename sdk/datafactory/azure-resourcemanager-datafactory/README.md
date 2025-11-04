@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datafactory</artifactId>
-    <version>1.0.0-beta.30</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ DataFactoryManager manager = DataFactoryManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -72,30 +72,33 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ```java
 // storage account
-StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+StorageAccount storageAccount = storageManager.storageAccounts()
+    .define(storageAccountName)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
     .create();
 final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
-final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
+final String connectionString
+    = getStorageConnectionString(storageAccountName, storageAccountKey, storageManager.environment());
 
 // container
 final String containerName = "adf";
-storageManager.blobContainers().defineContainer(containerName)
-    .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
+storageManager.blobContainers()
+    .defineContainer(containerName)
+    .withExistingStorageAccount(resourceGroup, storageAccountName)
     .withPublicAccess(PublicAccess.NONE)
     .create();
 
 // blob as input
-BlobClient blobClient = new BlobClientBuilder()
-    .connectionString(connectionString)
+BlobClient blobClient = new BlobClientBuilder().connectionString(connectionString)
     .containerName(containerName)
     .blobName("input/data.txt")
     .buildClient();
 blobClient.upload(BinaryData.fromString("data"));
 
 // data factory
-Factory dataFactory = manager.factories().define(DATA_FACTORY)
+Factory dataFactory = manager.factories()
+    .define(DATA_FACTORY)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
     .create();
@@ -106,15 +109,16 @@ connectionStringProperty.put("type", "SecureString");
 connectionStringProperty.put("value", connectionString);
 
 final String linkedServiceName = "LinkedService";
-manager.linkedServices().define(linkedServiceName)
+manager.linkedServices()
+    .define(linkedServiceName)
     .withExistingFactory(resourceGroup, DATA_FACTORY)
-    .withProperties(new AzureStorageLinkedService()
-        .withConnectionString(connectionStringProperty))
+    .withProperties(new AzureStorageLinkedService().withConnectionString(connectionStringProperty))
     .create();
 
 // input dataset
 final String inputDatasetName = "InputDataset";
-manager.datasets().define(inputDatasetName)
+manager.datasets()
+    .define(inputDatasetName)
     .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withProperties(new AzureBlobDataset()
         .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -125,7 +129,8 @@ manager.datasets().define(inputDatasetName)
 
 // output dataset
 final String outputDatasetName = "OutputDataset";
-manager.datasets().define(outputDatasetName)
+manager.datasets()
+    .define(outputDatasetName)
     .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withProperties(new AzureBlobDataset()
         .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -135,14 +140,15 @@ manager.datasets().define(outputDatasetName)
     .create();
 
 // pipeline
-PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
+PipelineResource pipeline = manager.pipelines()
+    .define("CopyBlobPipeline")
     .withExistingFactory(resourceGroup, DATA_FACTORY)
-    .withActivities(Collections.singletonList(new CopyActivity()
-        .withName("CopyBlob")
+    .withActivities(Collections.singletonList(new CopyActivity().withName("CopyBlob")
         .withSource(new BlobSource())
         .withSink(new BlobSink())
         .withInputs(Collections.singletonList(new DatasetReference().withReferenceName(inputDatasetName)))
-        .withOutputs(Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
+        .withOutputs(
+            Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
     .create();
 
 // run pipeline
@@ -187,5 +193,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdatafactory%2Fazure-resourcemanager-datafactory%2FREADME.png)

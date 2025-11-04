@@ -8,7 +8,7 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
+import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchResults;
@@ -30,7 +30,10 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * Creates an instance of {@link SearchPagedIterable}.
      *
      * @param pagedFlux The {@link SearchPagedFlux} that will be consumed as an iterable.
+     * @deprecated Use {@link SearchPagedIterable#SearchPagedIterable(Supplier)} or
+     * {@link SearchPagedIterable#SearchPagedIterable(Supplier, Function)}.
      */
+    @Deprecated
     public SearchPagedIterable(SearchPagedFlux pagedFlux) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
@@ -56,12 +59,10 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public SearchPagedIterable(Supplier<SearchPagedResponse> firstPageRetriever,
-                               Function<String, SearchPagedResponse> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) ->
-            continuationToken == null
-                ? firstPageRetriever.get()
-                : nextPageRetriever.apply(continuationToken), true,
-            () -> {
+        Function<String, SearchPagedResponse> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get()
+            : nextPageRetriever.apply(continuationToken), true, () -> {
                 SearchPagedResponse response = firstPageRetriever.get();
                 return new SearchFirstPageResponseWrapper().setFirstPageResponse(response);
             });
@@ -73,7 +74,8 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * @param provider the Page Retrieval Provider
      * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
      */
-    private SearchPagedIterable(Supplier<PageRetrieverSync<String, SearchPagedResponse>> provider, boolean ignored, Supplier<SearchFirstPageResponseWrapper> metadataSupplier) {
+    private SearchPagedIterable(Supplier<PageRetrieverSync<String, SearchPagedResponse>> provider, boolean ignored,
+        Supplier<SearchFirstPageResponseWrapper> metadataSupplier) {
         super(provider);
         this.pagedFlux = null;
         this.metadataSupplier = metadataSupplier;
@@ -86,9 +88,13 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      *
      * @return The percentage of the index covered in the search request if {@code minimumCoverage} was set in the
      * request, otherwise {@code null}.
+     * @deprecated Use {@link SearchPagedResponse#getCoverage()} when consuming {@link #streamByPage()} or
+     * {@link #iterableByPage()}.
      */
+    @Deprecated
     public Double getCoverage() {
-        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getCoverage()
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getCoverage()
             : pagedFlux.getCoverage().block();
     }
 
@@ -98,9 +104,13 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * If {@code facets} weren't supplied in the request this will be {@code null}.
      *
      * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
+     * @deprecated Use {@link SearchPagedResponse#getFacets()} when consuming {@link #streamByPage()} or
+     * {@link #iterableByPage()}.
      */
+    @Deprecated
     public Map<String, List<FacetResult>> getFacets() {
-        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getFacets()
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getFacets()
             : pagedFlux.getFacets().block();
     }
 
@@ -111,9 +121,13 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      *
      * @return The approximate number of documents that match the request if {@code count} is {@code true}, otherwise
      * {@code null}.
+     * @deprecated Use {@link SearchPagedResponse#getCount()} when consuming {@link #streamByPage()} or
+     * {@link #iterableByPage()}.
      */
+    @Deprecated
     public Long getTotalCount() {
-        return metadataSupplier != null ? metadataSupplier.get().getFirstPageResponse().getCount()
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getCount()
             : pagedFlux.getTotalCount().block();
     }
 
@@ -124,10 +138,27 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      *
      * @return The semantic search results if semantic search was requested, otherwise an empty
      * {@link SemanticSearchResults}.
+     * @deprecated Use {@link SearchPagedResponse#getSemanticResults()} when consuming {@link #streamByPage()} or
+     * {@link #iterableByPage()}.
      */
+    @Deprecated
     public SemanticSearchResults getSemanticResults() {
         return metadataSupplier != null
-            ? SemanticSearchResultsAccessHelper.create(metadataSupplier.get().getFirstPageResponse())
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticResults()
             : pagedFlux.getSemanticResults().block();
+    }
+
+    /**
+     * The debug information that can be used to further explore your search results.
+     *
+     * @return The debug information that can be used to further explore your search results.
+     * @deprecated Use {@link SearchPagedResponse#getDebugInfo()} when consuming {@link #streamByPage()} or
+     * {@link #iterableByPage()}.
+     */
+    @Deprecated
+    public DebugInfo getDebugInfo() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getDebugInfo()
+            : pagedFlux.getDebugInfo().block();
     }
 }

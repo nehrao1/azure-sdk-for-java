@@ -5,9 +5,13 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.GeoJsonFeature;
+import com.azure.maps.search.models.GeoJsonObject;
+import com.azure.maps.search.models.GeoJsonObjectType;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,18 +22,22 @@ import java.util.List;
 @Fluent
 public final class GeoJsonFeatureCollection extends GeoJsonObject {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_FEATURE_COLLECTION;
 
     /*
      * Contains a list of valid `GeoJSON Feature` objects.
      */
+    @Generated
     private List<GeoJsonFeature> features;
 
     /**
      * Creates an instance of GeoJsonFeatureCollection class.
      */
+    @Generated
     public GeoJsonFeatureCollection() {
     }
 
@@ -40,6 +48,7 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -50,6 +59,7 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
      * 
      * @return the features value.
      */
+    @Generated
     public List<GeoJsonFeature> getFeatures() {
         return this.features;
     }
@@ -60,6 +70,7 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
      * @param features the features value to set.
      * @return the GeoJsonFeatureCollection object itself.
      */
+    @Generated
     public GeoJsonFeatureCollection setFeatures(List<GeoJsonFeature> features) {
         this.features = features;
         return this;
@@ -68,9 +79,21 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public GeoJsonFeatureCollection setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -85,6 +108,7 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonFeatureCollection.
      */
+    @Generated
     public static GeoJsonFeatureCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonFeatureCollection deserializedGeoJsonFeatureCollection = new GeoJsonFeatureCollection();
@@ -92,7 +116,10 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("features".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonFeatureCollection.setBbox(bbox);
+                } else if ("features".equals(fieldName)) {
                     List<GeoJsonFeature> features = reader.readArray(reader1 -> GeoJsonFeature.fromJson(reader1));
                     deserializedGeoJsonFeatureCollection.features = features;
                 } else if ("type".equals(fieldName)) {

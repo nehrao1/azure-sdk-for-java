@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
@@ -23,20 +23,20 @@ public final class PrivateLinkScopesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"bebjfu\",\"privateLinkScopeId\":\"moichdlpnfpubntn\",\"privateEndpointConnections\":[{\"id\":\"viqsowsaaelcattc\",\"name\":\"hplrvkmjcwmjvlg\",\"type\":\"gcvkyyli\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jpsfxsfu\",\"description\":\"tl\"},\"provisioningState\":\"mvagbwidqlvhuko\",\"groupIds\":[\"fizr\",\"jfnmjmvlwyz\",\"iblkujr\",\"lfojuidjp\"]}},{\"id\":\"yjucejikzoeo\",\"name\":\"tzejetjklnt\",\"type\":\"yjuzkdb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xrzvhqjwtrhtgvgz\",\"description\":\"c\"},\"provisioningState\":\"kolawjmjsmwrokc\",\"groupIds\":[\"zzzwy\",\"afitlhguynuchlg\",\"ltxdwhmozu\",\"gzvlnsnn\"]}},{\"id\":\"fpafolpymwamxq\",\"name\":\"agpgdph\",\"type\":\"dulajvlejchcs\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"nmzlanru\",\"description\":\"dwv\"},\"provisioningState\":\"hcnzqt\",\"groupIds\":[\"mqrhvthl\",\"iwdcxsmlzzhzd\",\"xetlgydlhqv\",\"n\"]}},{\"id\":\"xybafiqgea\",\"name\":\"bgj\",\"type\":\"glklb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"dw\",\"description\":\"wvmzegjonfhjir\"},\"provisioningState\":\"dnqzbrfkspzhzmt\",\"groupIds\":[\"cit\",\"igsxcdgljplk\",\"ua\",\"htomflrytswfp\"]}}]},\"location\":\"dgycxnmskwhqjjy\",\"tags\":{\"edwqslsrh\":\"rlpshhkv\",\"wwsko\":\"pq\"},\"id\":\"dcbrwimuvq\",\"name\":\"josovyrrl\",\"type\":\"a\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"ytehqpuvjmvqmt\",\"privateLinkScopeId\":\"ckygroejnndljdju\",\"privateEndpointConnections\":[{\"id\":\"req\",\"name\":\"kceysfaqegplw\",\"type\":\"shwddkvbxgk\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bwptdacarvvlf\",\"description\":\"tymtpoiwenazer\"},\"provisioningState\":\"zrsq\",\"groupIds\":[\"xkdnwqapf\",\"sdpcvess\",\"zhhkuuipldqqc\",\"ekvalblhtjq\"]}}]},\"location\":\"yvwehtaemxh\",\"tags\":{\"usxivzrrryvei\":\"se\"},\"id\":\"ipsk\",\"name\":\"yzatvfuzkaft\",\"type\":\"vvruxwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HybridComputePrivateLinkScope> response
             = manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dgycxnmskwhqjjy", response.iterator().next().location());
-        Assertions.assertEquals("rlpshhkv", response.iterator().next().tags().get("edwqslsrh"));
+        Assertions.assertEquals("yvwehtaemxh", response.iterator().next().location());
+        Assertions.assertEquals("se", response.iterator().next().tags().get("usxivzrrryvei"));
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }

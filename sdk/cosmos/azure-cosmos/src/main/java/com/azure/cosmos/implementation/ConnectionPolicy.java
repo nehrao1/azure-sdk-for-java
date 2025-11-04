@@ -9,12 +9,16 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -23,6 +27,9 @@ public final class ConnectionPolicy {
 
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
+
+    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor =
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
 
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
@@ -38,6 +45,7 @@ public final class ConnectionPolicy {
     private Duration httpNetworkRequestTimeout;
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -53,6 +61,9 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
+    private boolean serverCertValidationDisabled = false;
+
+    private Integer pendingAcquireMaxCount;
 
     /**
      * Constructor.
@@ -99,6 +110,7 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+        this.http2ConnectionConfig = gatewayConnectionConfig.getHttp2ConnectionConfig();
 
         // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
         // read during client initialization before connections are created for the container
@@ -107,6 +119,8 @@ public final class ConnectionPolicy {
                     .DirectConnectionConfigHelper
                     .getDirectConnectionConfigAccessor()
                     .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
+
+        this.pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
     }
 
     private ConnectionPolicy() {
@@ -121,6 +135,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
+        this.pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
     }
 
     /**
@@ -612,8 +627,52 @@ public final class ConnectionPolicy {
         return "[]";
     }
 
+    /***
+     * Flag to indicate whether disable server cert validation.
+     * Should only be used in local develop or test environment against emulator.
+     *
+     * @param serverCertValidationDisabled flag to indicate whether disable server cert verification.
+     * @return the ConnectionPolicy.
+     */
+    public ConnectionPolicy setServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
+    /**
+     * Get the value to indicate whether disable server cert verification.
+     * Should only be used in local develop or test environment.
+     *
+     * @return {@code true} if server cert verification is disabled; {@code false} otherwise.
+     */
+    public boolean isServerCertValidationDisabled() {
+        return this.serverCertValidationDisabled;
+    }
+
+    /***
+     * Get the Http2ConnectionConfig for gateway request.
+     * @return the configured {@link Http2ConnectionConfig}.
+     */
+    public Http2ConnectionConfig getHttp2ConnectionConfig() {
+        return http2ConnectionConfig;
+    }
+
+    /***
+     * Set the Http2ConnectionConfig for gateway request.
+     *
+     * @param http2ConnectionConfig the configured http2ConnectionConfig.
+     * @return the current {@link ConnectionPolicy}.
+     */
+    public ConnectionPolicy setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
+        checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
+
+        this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
     @Override
     public String toString() {
+
         return "ConnectionPolicy{" +
             "httpNetworkRequestTimeout=" + httpNetworkRequestTimeout +
             ", tcpNetworkRequestTimeout=" + tcpNetworkRequestTimeout +
@@ -640,6 +699,8 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
+            ", http2ConnectionConfig=" + httpCfgAccessor.toDiagnosticsString(this.http2ConnectionConfig) +
+            ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
             '}';
     }
 }

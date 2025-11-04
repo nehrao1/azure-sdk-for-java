@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.EndpointType;
@@ -24,21 +24,21 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"replicationId\":\"cu\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"srboldforobw\",\"remoteVolumeRegion\":\"vizbfhfo\"}]}";
+            = "{\"value\":[{\"replicationId\":\"amwabzxrvxcushsp\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"xyasflvgsgzw\",\"remoteVolumeRegion\":\"akoi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("uqj", "tzenk", "if", "zhmkdasvflyh", com.azure.core.util.Context.NONE);
+            .listReplications("opmx", "lnwcltyjed", "xxmlfmkqscazua", "xtzx", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
         Assertions.assertEquals(ReplicationSchedule.DAILY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("srboldforobw", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("vizbfhfo", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals("xyasflvgsgzw", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("akoi", response.iterator().next().remoteVolumeRegion());
     }
 }

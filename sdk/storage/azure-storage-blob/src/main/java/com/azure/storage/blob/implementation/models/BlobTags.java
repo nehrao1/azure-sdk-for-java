@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,11 +23,13 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
     /*
      * The BlobTagSet property.
      */
+    @Generated
     private List<BlobTag> blobTagSet;
 
     /**
      * Creates an instance of BlobTags class.
      */
+    @Generated
     public BlobTags() {
     }
 
@@ -36,6 +38,7 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
      * 
      * @return the blobTagSet value.
      */
+    @Generated
     public List<BlobTag> getBlobTagSet() {
         if (this.blobTagSet == null) {
             this.blobTagSet = new ArrayList<>();
@@ -49,19 +52,22 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
      * @param blobTagSet the blobTagSet value to set.
      * @return the BlobTags object itself.
      */
+    @Generated
     public BlobTags setBlobTagSet(List<BlobTag> blobTagSet) {
         this.blobTagSet = blobTagSet;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tags" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Tags" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobTagSet != null) {
             xmlWriter.writeStartElement("TagSet");
@@ -79,9 +85,9 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobTags if the XmlReader was pointing to an instance of it, or null if it was pointing to
      * XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobTags.
      */
+    @Generated
     public static BlobTags fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -94,11 +100,11 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobTags if the XmlReader was pointing to an instance of it, or null if it was pointing to
      * XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobTags.
      */
+    @Generated
     public static BlobTags fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tags" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Tags" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobTags deserializedBlobTags = new BlobTags();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

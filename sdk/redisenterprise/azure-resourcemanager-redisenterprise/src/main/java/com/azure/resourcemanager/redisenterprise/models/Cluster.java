@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.redisenterprise.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
@@ -50,6 +51,13 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the kind property: Distinguishes the kind of cluster. Read-only.
+     * 
+     * @return the kind value.
+     */
+    Kind kind();
+
+    /**
      * Gets the sku property: The SKU to create, which affects price, performance, and features.
      * 
      * @return the sku value.
@@ -71,7 +79,26 @@ public interface Cluster {
     ManagedServiceIdentity identity();
 
     /**
-     * Gets the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     * Gets the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
+     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * 
+     * @return the highAvailability value.
+     */
+    HighAvailability highAvailability();
+
+    /**
+     * Gets the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
+     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+     * them. They are mentioned only for the sake of consistency with old API versions.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -99,6 +126,14 @@ public interface Cluster {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the redundancyMode property: Explains the current redundancy strategy of the cluster, which affects the
+     * expected SLA.
+     * 
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
+
+    /**
      * Gets the resourceState property: Current resource status of the cluster.
      * 
      * @return the resourceState value.
@@ -114,7 +149,7 @@ public interface Cluster {
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections associated with the specified
-     * RedisEnterprise cluster.
+     * Redis Enterprise cluster.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -216,8 +251,10 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones,
-            DefinitionStages.WithIdentity, DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithIdentity,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithHighAvailability,
+            DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              * 
@@ -274,13 +311,49 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network traffic can access the Redis
+             * cluster. Only 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old
+             * API version which do not have this property and cannot be set..
+             * 
+             * @param publicNetworkAccess Whether or not public network traffic can access the Redis cluster. Only
+             * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version
+             * which do not have this property and cannot be set.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify highAvailability.
+         */
+        interface WithHighAvailability {
+            /**
+             * Specifies the highAvailability property: Enabled by default. If highAvailability is disabled, the data
+             * set is not replicated. This affects the availability SLA, and increases the risk of data loss..
+             * 
+             * @param highAvailability Enabled by default. If highAvailability is disabled, the data set is not
+             * replicated. This affects the availability SLA, and increases the risk of data loss.
+             * @return the next definition stage.
+             */
+            WithCreate withHighAvailability(HighAvailability highAvailability);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify minimumTlsVersion.
          */
         interface WithMinimumTlsVersion {
             /**
              * Specifies the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Newer versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete --
+             * you cannot use them. They are mentioned only for the sake of consistency with old API versions..
              * 
-             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions
+             * can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+             * them. They are mentioned only for the sake of consistency with old API versions.
              * @return the next definition stage.
              */
             WithCreate withMinimumTlsVersion(TlsVersion minimumTlsVersion);
@@ -311,7 +384,8 @@ public interface Cluster {
      * The template for Cluster update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
-        UpdateStages.WithMinimumTlsVersion, UpdateStages.WithEncryption {
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithHighAvailability, UpdateStages.WithMinimumTlsVersion,
+        UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          * 
@@ -372,13 +446,49 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network traffic can access the Redis
+             * cluster. Only 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old
+             * API version which do not have this property and cannot be set..
+             * 
+             * @param publicNetworkAccess Whether or not public network traffic can access the Redis cluster. Only
+             * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version
+             * which do not have this property and cannot be set.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify highAvailability.
+         */
+        interface WithHighAvailability {
+            /**
+             * Specifies the highAvailability property: Enabled by default. If highAvailability is disabled, the data
+             * set is not replicated. This affects the availability SLA, and increases the risk of data loss..
+             * 
+             * @param highAvailability Enabled by default. If highAvailability is disabled, the data set is not
+             * replicated. This affects the availability SLA, and increases the risk of data loss.
+             * @return the next definition stage.
+             */
+            Update withHighAvailability(HighAvailability highAvailability);
+        }
+
+        /**
          * The stage of the Cluster update allowing to specify minimumTlsVersion.
          */
         interface WithMinimumTlsVersion {
             /**
              * Specifies the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Newer versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete --
+             * you cannot use them. They are mentioned only for the sake of consistency with old API versions..
              * 
-             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions
+             * can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+             * them. They are mentioned only for the sake of consistency with old API versions.
              * @return the next definition stage.
              */
             Update withMinimumTlsVersion(TlsVersion minimumTlsVersion);
@@ -412,4 +522,24 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation along with {@link Response}.
+     */
+    Response<SkuDetailsList> listSkusForScalingWithResponse(Context context);
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation.
+     */
+    SkuDetailsList listSkusForScaling();
 }

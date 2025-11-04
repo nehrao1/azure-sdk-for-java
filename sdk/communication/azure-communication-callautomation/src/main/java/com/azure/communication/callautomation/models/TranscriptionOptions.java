@@ -4,25 +4,14 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
-/** The TranscriptionConfigurationInternal model. */
+/** The TranscriptionOptions model. */
 @Fluent
-public final class TranscriptionOptions implements JsonSerializable<TranscriptionOptions> {
-    /*
-     * Transport URL for live transcription
-     */
-    private final String transportUrl;
-
+public final class TranscriptionOptions {
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    private final TranscriptionTransportType transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -32,20 +21,40 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    private final boolean startTranscription;
+    private boolean startTranscription;
+
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    private String speechRecognitionModelEndpointId;
+
+    /*
+     * Enables intermediate results for the transcribed speech.
+     */
+    private Boolean enableIntermediateResults;
+
+    /*
+     * Transport URL for live transcription
+     */
+    private String transportUrl;
 
     /**
-     * Creates a new instance of MediaStreamingConfiguration
-     * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
+     * Creates a new instance of TranscriptionOptions
      * @param locale - Locale
-     * @param startTranscription - Start Transcription
+     * @param transportType - The type of transport to be used for live transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransportType transportType, String locale, boolean startTranscription) {
-        this.transportUrl = transportUrl;
+    public TranscriptionOptions(String locale, StreamingTransport transportType) {
         this.transportType = transportType;
         this.locale = locale;
-        this.startTranscription = startTranscription;
+        this.startTranscription = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
+     * @param locale - Locale
+     */
+    public TranscriptionOptions(String locale) {
+        this(locale, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -58,11 +67,22 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
+     * Set the transportUrl property: Transport URL for live transcription.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
+    }
+
+    /**
      * Get the transportType property: The type of transport to be used for live transcription, eg. Websocket.
      *
      * @return the transportType value.
      */
-    public TranscriptionTransportType getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -76,54 +96,64 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
-     * Get the startTranscription property: Which determines if the transcription should be started immediately after call is answered or not.
+     * Get the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
      *
      * @return the startTranscription value.
      */
-    public boolean getStartTranscription() {
+    public Boolean isStartTranscription() {
         return this.startTranscription;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", transportUrl);
-        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
-        jsonWriter.writeStringField("locale", locale);
-        jsonWriter.writeBooleanField("startTranscription", startTranscription);
-        return jsonWriter.writeEndObject();
+    /**
+     * Set the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
+     *
+     * @param startTranscription the startTranscription value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setStartTranscription(Boolean startTranscription) {
+        this.startTranscription = startTranscription;
+        return this;
     }
 
     /**
-     * Reads an instance of TranscriptionOptions from the JsonReader.
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TranscriptionOptions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TranscriptionOptions.
+     * @return the speechRecognitionModelEndpointId value.
      */
-    public static TranscriptionOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String transportUrl = null;
-            TranscriptionTransportType transportType = null;
-            String locale = null;
-            boolean startTranscription = false;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("transportUrl".equals(fieldName)) {
-                    transportUrl = reader.getString();
-                } else if ("transportType".equals(fieldName)) {
-                    transportType = TranscriptionTransportType.fromString(reader.getString());
-                } else if ("locale".equals(fieldName)) {
-                    locale = reader.getString();
-                } else if ("startTranscription".equals(fieldName)) {
-                    startTranscription = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new TranscriptionOptions(transportUrl, transportType, locale, startTranscription);
-        });
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     *
+     * @return the enableIntermediateResults value.
+     */
+    public Boolean isIntermediateResultsEnabled() {
+        return this.enableIntermediateResults;
+    }
+
+    /**
+     * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     *
+     * @param enableIntermediateResults the enableIntermediateResults value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setEnableIntermediateResults(Boolean enableIntermediateResults) {
+        this.enableIntermediateResults = enableIntermediateResults;
+        return this;
     }
 }

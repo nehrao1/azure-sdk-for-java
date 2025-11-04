@@ -71,7 +71,7 @@ public final class GlossariesImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientGlossar")
+    @ServiceInterface(name = "DataMapClientGlossaries")
     public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({ 200 })
@@ -202,8 +202,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
@@ -212,8 +211,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}/partial")
         @ExpectedResponses({ 200 })
@@ -346,7 +344,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTerm(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
@@ -355,7 +353,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermSync(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
@@ -429,8 +427,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> assignTermToEntities(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -440,8 +437,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> assignTermToEntitiesSync(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -451,8 +447,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTermAssignmentFromEntities(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -462,8 +457,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermAssignmentFromEntitiesSync(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
@@ -533,7 +527,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
@@ -542,7 +536,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories")
         @ExpectedResponses({ 200 })
@@ -684,14 +678,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -740,7 +735,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -773,14 +769,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -829,7 +826,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -849,13 +847,14 @@ public final class GlossariesImpl {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -903,17 +902,19 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -961,7 +962,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -983,13 +985,14 @@ public final class GlossariesImpl {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1037,17 +1040,19 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1095,7 +1100,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1116,14 +1122,15 @@ public final class GlossariesImpl {
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1176,18 +1183,20 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1240,7 +1249,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1263,14 +1273,15 @@ public final class GlossariesImpl {
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1323,18 +1334,20 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1387,7 +1400,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1409,13 +1423,14 @@ public final class GlossariesImpl {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1467,17 +1482,19 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1529,7 +1546,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1551,13 +1569,14 @@ public final class GlossariesImpl {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1609,17 +1628,19 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1671,7 +1692,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1693,13 +1715,14 @@ public final class GlossariesImpl {
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1751,7 +1774,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1773,13 +1797,14 @@ public final class GlossariesImpl {
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1831,7 +1856,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1851,13 +1877,14 @@ public final class GlossariesImpl {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1909,17 +1936,19 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1971,7 +2000,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -1995,13 +2025,14 @@ public final class GlossariesImpl {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2053,17 +2084,19 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2115,7 +2148,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -2148,9 +2182,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCategoryWithResponseAsync(String categoryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteCategory(this.client.getEndpoint(), categoryId, accept, requestOptions, context));
+            context -> service.deleteCategory(this.client.getEndpoint(), categoryId, requestOptions, context));
     }
 
     /**
@@ -2166,8 +2199,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteCategorySync(this.client.getEndpoint(), categoryId, accept, requestOptions, Context.NONE);
+        return service.deleteCategorySync(this.client.getEndpoint(), categoryId, requestOptions, Context.NONE);
     }
 
     /**
@@ -2175,21 +2207,24 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2241,7 +2276,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2267,21 +2303,24 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2333,7 +2372,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2368,7 +2408,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2380,7 +2421,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2413,7 +2455,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2425,7 +2468,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2455,7 +2499,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2467,7 +2512,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2499,7 +2545,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2511,7 +2558,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2539,13 +2587,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2572,7 +2621,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -2597,14 +2646,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -2624,7 +2673,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2632,14 +2681,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2698,17 +2747,19 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2735,7 +2786,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -2760,14 +2811,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -2787,7 +2838,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2795,14 +2846,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2861,7 +2912,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2890,13 +2942,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2923,7 +2976,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -2948,14 +3001,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -2975,7 +3028,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2983,14 +3036,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3049,17 +3102,19 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3086,7 +3141,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -3111,14 +3166,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -3138,7 +3193,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3146,14 +3201,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3212,7 +3267,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3234,13 +3290,14 @@ public final class GlossariesImpl {
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3267,7 +3324,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -3292,14 +3349,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -3319,7 +3376,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3327,14 +3384,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3393,7 +3450,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3415,13 +3473,14 @@ public final class GlossariesImpl {
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3448,7 +3507,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -3473,14 +3532,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -3500,7 +3559,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3508,14 +3567,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3574,7 +3633,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3602,13 +3662,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3635,7 +3696,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -3660,14 +3721,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -3687,7 +3748,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3695,14 +3756,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3761,17 +3822,19 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3798,7 +3861,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -3823,14 +3886,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -3850,7 +3913,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3858,14 +3921,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3924,7 +3987,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -3955,13 +4019,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3988,7 +4053,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -4013,14 +4078,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -4040,7 +4105,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4048,14 +4113,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4114,17 +4179,19 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4151,7 +4218,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -4176,14 +4243,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -4203,7 +4270,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4211,14 +4278,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4277,7 +4344,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -4309,9 +4377,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermWithResponseAsync(String termId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteTerm(this.client.getEndpoint(), termId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.deleteTerm(this.client.getEndpoint(), termId, requestOptions, context));
     }
 
     /**
@@ -4327,8 +4394,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermWithResponse(String termId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTermSync(this.client.getEndpoint(), termId, accept, requestOptions, Context.NONE);
+        return service.deleteTermSync(this.client.getEndpoint(), termId, requestOptions, Context.NONE);
     }
 
     /**
@@ -4343,21 +4409,24 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4384,7 +4453,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -4409,14 +4478,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -4436,7 +4505,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4444,14 +4513,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4510,7 +4579,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4543,21 +4613,24 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4584,7 +4657,7 @@ public final class GlossariesImpl {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -4609,14 +4682,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -4636,7 +4709,7 @@ public final class GlossariesImpl {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4644,14 +4717,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4710,7 +4783,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4742,14 +4816,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4776,7 +4851,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -4801,14 +4876,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -4828,7 +4903,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -4836,14 +4911,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4903,18 +4978,20 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4941,7 +5018,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -4966,14 +5043,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -4993,7 +5070,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5001,14 +5078,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5068,7 +5145,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5097,14 +5175,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5131,7 +5210,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -5156,14 +5235,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -5183,7 +5262,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5191,14 +5270,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5258,18 +5337,20 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5296,7 +5377,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -5321,14 +5402,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -5348,7 +5429,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5356,14 +5437,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5423,7 +5504,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5455,20 +5537,21 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5477,7 +5560,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5509,20 +5593,21 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5531,7 +5616,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5557,20 +5643,21 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5579,7 +5666,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5594,9 +5682,8 @@ public final class GlossariesImpl {
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(), termId,
-            contentType, accept, body, requestOptions, context));
+            contentType, body, requestOptions, context));
     }
 
     /**
@@ -5608,20 +5695,21 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5630,7 +5718,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5645,29 +5734,29 @@ public final class GlossariesImpl {
     public Response<Void> assignTermToEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, contentType, body, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5676,7 +5765,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5691,29 +5781,29 @@ public final class GlossariesImpl {
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTermAssignmentFromEntities(this.client.getEndpoint(),
-            termId, contentType, accept, body, requestOptions, context));
+            termId, contentType, body, requestOptions, context));
     }
 
     /**
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5722,7 +5812,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5737,9 +5828,8 @@ public final class GlossariesImpl {
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, contentType, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -5756,7 +5846,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5770,7 +5861,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5802,7 +5894,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5816,7 +5909,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5837,13 +5931,14 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5891,7 +5986,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5912,13 +6008,14 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5966,7 +6063,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5993,13 +6091,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6047,17 +6146,19 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6105,7 +6206,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6137,13 +6239,14 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6191,17 +6294,19 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6249,7 +6354,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6282,9 +6388,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), glossaryId, requestOptions, context));
     }
 
     /**
@@ -6301,8 +6406,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String glossaryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), glossaryId, requestOptions, Context.NONE);
     }
 
     /**
@@ -6319,14 +6423,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -6379,7 +6484,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6411,14 +6517,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -6471,7 +6578,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6501,7 +6609,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6511,7 +6620,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6544,7 +6654,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6554,7 +6665,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6582,13 +6694,14 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6681,7 +6794,7 @@ public final class GlossariesImpl {
      *             updatedBy: String (Optional)
      *             abbreviation: String (Optional)
      *             templateName (Optional): [
-     *                 Object (Optional)
+     *                 BinaryData (Optional)
      *             ]
      *             anchor (Optional): (recursive schema, see anchor above)
      *             antonyms (Optional): [
@@ -6694,14 +6807,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             ]
@@ -6721,7 +6834,7 @@ public final class GlossariesImpl {
      *             }
      *             attributes (Optional): {
      *                 String (Required): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -6729,14 +6842,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -6797,7 +6910,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6826,13 +6940,14 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6925,7 +7040,7 @@ public final class GlossariesImpl {
      *             updatedBy: String (Optional)
      *             abbreviation: String (Optional)
      *             templateName (Optional): [
-     *                 Object (Optional)
+     *                 BinaryData (Optional)
      *             ]
      *             anchor (Optional): (recursive schema, see anchor above)
      *             antonyms (Optional): [
@@ -6938,14 +7053,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             ]
@@ -6965,7 +7080,7 @@ public final class GlossariesImpl {
      *             }
      *             attributes (Optional): {
      *                 String (Required): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -6973,14 +7088,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -7041,7 +7156,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7076,21 +7192,24 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7138,7 +7257,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7178,21 +7298,24 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7240,7 +7363,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7275,14 +7399,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -7309,7 +7434,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -7334,14 +7459,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -7361,7 +7486,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -7369,14 +7494,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -7436,7 +7561,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7468,14 +7594,15 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -7502,7 +7629,7 @@ public final class GlossariesImpl {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -7527,14 +7654,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -7554,7 +7681,7 @@ public final class GlossariesImpl {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -7562,14 +7689,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -7629,7 +7756,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7660,7 +7788,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7672,7 +7801,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7705,7 +7835,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7717,7 +7848,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

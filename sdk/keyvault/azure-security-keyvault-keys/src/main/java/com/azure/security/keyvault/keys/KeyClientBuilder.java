@@ -90,9 +90,7 @@ import java.util.Map;
  * @see KeyClient
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
-public final class KeyClientBuilder implements
-    TokenCredentialTrait<KeyClientBuilder>,
-    HttpTrait<KeyClientBuilder>,
+public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBuilder>, HttpTrait<KeyClientBuilder>,
     ConfigurationTrait<KeyClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
 
@@ -100,7 +98,7 @@ public final class KeyClientBuilder implements
     private static final String CLIENT_VERSION;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
@@ -152,7 +150,7 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildInnerClient(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyClient(buildImplClient(), vaultUrl, version);
     }
 
     /**
@@ -173,24 +171,25 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildInnerClient(), vaultUrl,
-            version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyAsyncClient(buildImplClient(), vaultUrl, version);
     }
 
-    private KeyClientImpl buildInnerClient() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+    private KeyClientImpl buildImplClient() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
+        if (version == null) {
+            version = KeyServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
-            return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+            return new KeyClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -230,14 +229,13 @@ public final class KeyClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+        return new KeyClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**
@@ -263,8 +261,7 @@ public final class KeyClientBuilder implements
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault url is malformed.", ex));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault url is malformed.", ex));
         }
         return this;
     }
@@ -506,7 +503,7 @@ public final class KeyClientBuilder implements
         }
 
         try {
-            URL url =  new URL(configEndpoint);
+            URL url = new URL(configEndpoint);
             return url.toString();
         } catch (MalformedURLException ex) {
             return null;

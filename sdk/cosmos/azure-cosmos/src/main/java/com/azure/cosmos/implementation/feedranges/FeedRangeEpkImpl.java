@@ -4,15 +4,14 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -170,21 +169,21 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         null)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
-                            return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s'.",
-                                    containerRid)));
+                            return Mono.error(new InvalidPartitionException(
+                                String.format("Stale cache for collection rid '%s'.", containerRid)
+                            ));
                         }
 
                         final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
                         if (pkRanges == null) {
-                            return Mono.error(new NotFoundException(
+                            return Mono.error(new InvalidPartitionException(
                                 String.format(
                                         "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are null",
                                         containerRid,
                                         this.range)));
                         }
                         if (pkRanges.size() == 0) {
-                            return Mono.error(new NotFoundException(
+                            return Mono.error(new InvalidPartitionException(
                                     String.format(
                                             "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are empty",
                                             containerRid,
@@ -203,8 +202,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                             "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
                                             pkRanges.size(),
-                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
-                                    this.range));
+                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList())));
                             BridgeInternal.setSubStatusCode(
                                 goneException,
                                 HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
@@ -260,7 +258,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
         if (this.range != null) {
             ModelBridgeInternal.populatePropertyBag(this.range);
-            serializable.set(Constants.Properties.RANGE, this.range, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            serializable.set(Constants.Properties.RANGE, this.range);
         }
     }
 

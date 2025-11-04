@@ -6,76 +6,42 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateContract;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EmailTemplatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"subject\":\"fz\",\"body\":\"qmbinpxmiwt\",\"title\":\"ifpvrdukcdnzo\",\"description\":\"abux\",\"isDefault\":false,\"parameters\":[{\"name\":\"shramqsug\",\"title\":\"glmadfzto\",\"description\":\"vqlauuag\"},{\"name\":\"yfmcerfxfeiq\",\"title\":\"s\",\"description\":\"zwjipssvnon\"},{\"name\":\"cqcjozzjku\",\"title\":\"dqqbt\",\"description\":\"vocu\"},{\"name\":\"llbpwarhwettohgp\",\"title\":\"xyvtkzbhizxp\",\"description\":\"dd\"}]},\"id\":\"wnfhmjusuqnku\",\"name\":\"hvlxudheka\",\"type\":\"nirmidtvhjc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"subject\":\"tocjzfppexuvatz\",\"body\":\"nkjwgiitvjcmimb\",\"title\":\"wskbbbjoypplodaq\",\"description\":\"kp\",\"isDefault\":false,\"parameters\":[{\"name\":\"bg\",\"title\":\"alcr\",\"description\":\"xlmbrtvtgolmlp\"},{\"name\":\"tlayyxhxj\",\"title\":\"ys\",\"description\":\"qqjhdfhfaob\"}]},\"id\":\"njc\",\"name\":\"bozvc\",\"type\":\"qwssyd\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        EmailTemplateContract response = manager.emailTemplates()
+            .getWithResponse("xzjkpifpucvbd", "zwbsk", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        EmailTemplateContract response =
-            manager
-                .emailTemplates()
-                .getWithResponse(
-                    "tickzovguzprpxh",
-                    "boigzxkopql",
-                    TemplateName.CONFIRM_SIGN_UP_IDENTITY_DEFAULT,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("tocjzfppexuvatz", response.subject());
-        Assertions.assertEquals("nkjwgiitvjcmimb", response.body());
-        Assertions.assertEquals("wskbbbjoypplodaq", response.title());
-        Assertions.assertEquals("kp", response.description());
-        Assertions.assertEquals("bg", response.parameters().get(0).name());
-        Assertions.assertEquals("alcr", response.parameters().get(0).title());
-        Assertions.assertEquals("xlmbrtvtgolmlp", response.parameters().get(0).description());
+        Assertions.assertEquals("fz", response.subject());
+        Assertions.assertEquals("qmbinpxmiwt", response.body());
+        Assertions.assertEquals("ifpvrdukcdnzo", response.title());
+        Assertions.assertEquals("abux", response.description());
+        Assertions.assertEquals("shramqsug", response.parameters().get(0).name());
+        Assertions.assertEquals("glmadfzto", response.parameters().get(0).title());
+        Assertions.assertEquals("vqlauuag", response.parameters().get(0).description());
     }
 }

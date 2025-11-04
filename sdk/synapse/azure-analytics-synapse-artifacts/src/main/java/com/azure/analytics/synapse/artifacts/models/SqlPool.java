@@ -5,6 +5,8 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,45 +23,51 @@ import java.util.Map;
 @Fluent
 public class SqlPool extends TrackedResource {
     /*
-     * Sku
-     * 
      * SQL pool SKU
      */
+    @Generated
     private Sku sku;
 
     /*
      * Maximum size in bytes
      */
+    @Generated
     private Long maxSizeBytes;
 
     /*
      * Collation mode
      */
+    @Generated
     private String collation;
 
     /*
      * Source database to create from
      */
+    @Generated
     private String sourceDatabaseId;
 
     /*
      * Backup database to restore from
      */
+    @Generated
     private String recoverableDatabaseId;
 
     /*
      * Resource state
      */
+    @Generated
     private String provisioningState;
 
     /*
      * Resource status
      */
+    @Generated
     private String status;
 
     /*
      * Snapshot time to restore
      */
+    @Generated
     private String restorePointInTime;
 
     /*
@@ -67,44 +75,69 @@ public class SqlPool extends TrackedResource {
      * 
      * Default: regular sql pool creation.
      * 
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
      * 
-     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
      * 
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
+    @Generated
     private CreateMode createMode;
 
     /*
      * Date the SQL pool was created
      */
+    @Generated
     private OffsetDateTime creationDate;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    @Generated
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    @Generated
+    private String id;
 
     /**
      * Creates an instance of SqlPool class.
      */
+    @Generated
     public SqlPool() {
     }
 
     /**
-     * Get the sku property: Sku
-     * 
-     * SQL pool SKU.
+     * Get the sku property: SQL pool SKU.
      * 
      * @return the sku value.
      */
+    @Generated
     public Sku getSku() {
         return this.sku;
     }
 
     /**
-     * Set the sku property: Sku
-     * 
-     * SQL pool SKU.
+     * Set the sku property: SQL pool SKU.
      * 
      * @param sku the sku value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setSku(Sku sku) {
         this.sku = sku;
         return this;
@@ -115,6 +148,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the maxSizeBytes value.
      */
+    @Generated
     public Long getMaxSizeBytes() {
         return this.maxSizeBytes;
     }
@@ -125,6 +159,7 @@ public class SqlPool extends TrackedResource {
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setMaxSizeBytes(Long maxSizeBytes) {
         this.maxSizeBytes = maxSizeBytes;
         return this;
@@ -135,6 +170,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the collation value.
      */
+    @Generated
     public String getCollation() {
         return this.collation;
     }
@@ -145,6 +181,7 @@ public class SqlPool extends TrackedResource {
      * @param collation the collation value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setCollation(String collation) {
         this.collation = collation;
         return this;
@@ -155,6 +192,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the sourceDatabaseId value.
      */
+    @Generated
     public String getSourceDatabaseId() {
         return this.sourceDatabaseId;
     }
@@ -165,6 +203,7 @@ public class SqlPool extends TrackedResource {
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setSourceDatabaseId(String sourceDatabaseId) {
         this.sourceDatabaseId = sourceDatabaseId;
         return this;
@@ -175,6 +214,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the recoverableDatabaseId value.
      */
+    @Generated
     public String getRecoverableDatabaseId() {
         return this.recoverableDatabaseId;
     }
@@ -185,6 +225,7 @@ public class SqlPool extends TrackedResource {
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setRecoverableDatabaseId(String recoverableDatabaseId) {
         this.recoverableDatabaseId = recoverableDatabaseId;
         return this;
@@ -195,6 +236,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String getProvisioningState() {
         return this.provisioningState;
     }
@@ -205,6 +247,7 @@ public class SqlPool extends TrackedResource {
      * @param provisioningState the provisioningState value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
@@ -215,6 +258,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -225,6 +269,7 @@ public class SqlPool extends TrackedResource {
      * @param status the status value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setStatus(String status) {
         this.status = status;
         return this;
@@ -235,6 +280,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the restorePointInTime value.
      */
+    @Generated
     public String getRestorePointInTime() {
         return this.restorePointInTime;
     }
@@ -245,6 +291,7 @@ public class SqlPool extends TrackedResource {
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setRestorePointInTime(String restorePointInTime) {
         this.restorePointInTime = restorePointInTime;
         return this;
@@ -267,6 +314,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the createMode value.
      */
+    @Generated
     public CreateMode getCreateMode() {
         return this.createMode;
     }
@@ -289,6 +337,7 @@ public class SqlPool extends TrackedResource {
      * @param createMode the createMode value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setCreateMode(CreateMode createMode) {
         this.createMode = createMode;
         return this;
@@ -299,6 +348,7 @@ public class SqlPool extends TrackedResource {
      * 
      * @return the creationDate value.
      */
+    @Generated
     public OffsetDateTime getCreationDate() {
         return this.creationDate;
     }
@@ -309,14 +359,51 @@ public class SqlPool extends TrackedResource {
      * @param creationDate the creationDate value to set.
      * @return the SqlPool object itself.
      */
+    @Generated
     public SqlPool setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
         return this;
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Generated
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlPool setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -326,6 +413,7 @@ public class SqlPool extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlPool setLocation(String location) {
         super.setLocation(location);
@@ -335,6 +423,7 @@ public class SqlPool extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -375,6 +464,7 @@ public class SqlPool extends TrackedResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlPool.
      */
+    @Generated
     public static SqlPool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlPool deserializedSqlPool = new SqlPool();
@@ -385,11 +475,11 @@ public class SqlPool extends TrackedResource {
                 if ("location".equals(fieldName)) {
                     deserializedSqlPool.setLocation(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedSqlPool.setId(reader.getString());
+                    deserializedSqlPool.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedSqlPool.setName(reader.getString());
+                    deserializedSqlPool.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedSqlPool.setType(reader.getString());
+                    deserializedSqlPool.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlPool.setTags(tags);
@@ -417,8 +507,8 @@ public class SqlPool extends TrackedResource {
                         } else if ("createMode".equals(fieldName)) {
                             deserializedSqlPool.createMode = CreateMode.fromString(reader.getString());
                         } else if ("creationDate".equals(fieldName)) {
-                            deserializedSqlPool.creationDate
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedSqlPool.creationDate = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else {
                             reader.skipChildren();
                         }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
@@ -22,17 +22,17 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
     @Test
     public void testGetValidationDetailsForMachineWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"xihspnxwq\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"waklsbsbqq\",\"privateIpAddress\":\"gwwrxaomzis\",\"linkIdentifier\":\"rrczezkhhltnj\",\"groupId\":\"hqo\",\"memberName\":\"jqoyueayfbpcm\"},{\"id\":\"lbyrru\",\"privateIpAddress\":\"thwmgnmbsc\",\"linkIdentifier\":\"xigdhxiidlope\",\"groupId\":\"wdpyq\",\"memberName\":\"bxubmdna\"},{\"id\":\"bqwremjela\",\"privateIpAddress\":\"cigeleohdbvqvw\",\"linkIdentifier\":\"jopwbeonrlkwz\",\"groupId\":\"ybxc\",\"memberName\":\"kxcpt\"},{\"id\":\"qfyiaseqchkr\",\"privateIpAddress\":\"zrazisgyk\",\"linkIdentifier\":\"emv\",\"groupId\":\"bwzohmnrxxbs\",\"memberName\":\"klinhmdptysprq\"}]}";
+            = "{\"id\":\"iilialwc\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"cccg\",\"privateIpAddress\":\"raoxnyuff\",\"linkIdentifier\":\"sgftipwc\",\"groupId\":\"yubhiqdx\",\"memberName\":\"rnpnuhzafccnuh\"},{\"id\":\"gbylbuig\",\"privateIpAddress\":\"vatvcrkd\",\"linkIdentifier\":\"nbqxvhcsyhzlwxae\",\"groupId\":\"vurex\",\"memberName\":\"d\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsForMachineWithResponse("vctafsrb", "rblmli", com.azure.core.util.Context.NONE)
+            .getValidationDetailsForMachineWithResponse("pjfe", "qerpptcbgqnzm", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.publicNetworkAccess());

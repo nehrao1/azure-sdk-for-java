@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,26 +15,32 @@ public final class QueryOptions {
     /*
      * Specifies the media type for the response.
      */
+    @Generated
     private OdataMetadataFormat format;
 
     /*
      * Maximum number of records to return.
      */
+    @Generated
     private Integer top;
 
     /*
-     * Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * Select expression using OData notation. Limits the columns on each record to just those requested, e.g.
+     * "$select=PolicyAssignmentId, ResourceId".
      */
+    @Generated
     private String select;
 
     /*
      * OData filter expression.
      */
+    @Generated
     private String filter;
 
     /**
      * Creates an instance of QueryOptions class.
      */
+    @Generated
     public QueryOptions() {
     }
 
@@ -42,6 +49,7 @@ public final class QueryOptions {
      * 
      * @return the format value.
      */
+    @Generated
     public OdataMetadataFormat getFormat() {
         return this.format;
     }
@@ -52,6 +60,7 @@ public final class QueryOptions {
      * @param format the format value to set.
      * @return the QueryOptions object itself.
      */
+    @Generated
     public QueryOptions setFormat(OdataMetadataFormat format) {
         this.format = format;
         return this;
@@ -62,6 +71,7 @@ public final class QueryOptions {
      * 
      * @return the top value.
      */
+    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -72,6 +82,7 @@ public final class QueryOptions {
      * @param top the top value to set.
      * @return the QueryOptions object itself.
      */
+    @Generated
     public QueryOptions setTop(Integer top) {
         this.top = top;
         return this;
@@ -83,6 +94,7 @@ public final class QueryOptions {
      * 
      * @return the select value.
      */
+    @Generated
     public String getSelect() {
         return this.select;
     }
@@ -94,6 +106,7 @@ public final class QueryOptions {
      * @param select the select value to set.
      * @return the QueryOptions object itself.
      */
+    @Generated
     public QueryOptions setSelect(String select) {
         this.select = select;
         return this;
@@ -104,6 +117,7 @@ public final class QueryOptions {
      * 
      * @return the filter value.
      */
+    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -114,6 +128,7 @@ public final class QueryOptions {
      * @param filter the filter value to set.
      * @return the QueryOptions object itself.
      */
+    @Generated
     public QueryOptions setFilter(String filter) {
         this.filter = filter;
         return this;

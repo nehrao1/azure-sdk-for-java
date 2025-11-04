@@ -51,7 +51,7 @@ public final class AzureDataExplorerTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataExplorerDatasetTypeProperties innerTypeProperties() {
+    AzureDataExplorerDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -150,13 +150,29 @@ public final class AzureDataExplorerTableDataset extends Dataset {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model AzureDataExplorerTableDataset"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model AzureDataExplorerTableDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 
@@ -170,8 +186,12 @@ public final class AzureDataExplorerTableDataset extends Dataset {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
         jsonWriter.writeStringField("description", description());
-        jsonWriter.writeUntypedField("structure", structure());
-        jsonWriter.writeUntypedField("schema", schema());
+        if (structure() != null) {
+            jsonWriter.writeUntypedField("structure", structure());
+        }
+        if (schema() != null) {
+            jsonWriter.writeUntypedField("schema", schema());
+        }
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", folder());

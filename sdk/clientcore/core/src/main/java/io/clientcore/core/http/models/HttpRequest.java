@@ -3,22 +3,22 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.annotation.Metadata;
+import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 
 /**
- * The outgoing HTTP request. This class provides ways to construct it with an {@link HttpMethod}, {@link URL},
+ * The outgoing HTTP request. This class provides ways to construct it with an {@link HttpMethod}, {@link URI},
  * {@link HttpHeader} and request body.
  */
-@Metadata(conditions = FLUENT)
+@Metadata(properties = FLUENT)
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
@@ -26,56 +26,31 @@ public class HttpRequest {
     static {
         HttpRequestAccessHelper.setAccessor(new HttpRequestAccessHelper.HttpRequestAccessor() {
             @Override
-            public int getRetryCount(HttpRequest httpRequest) {
-                return httpRequest.getRetryCount();
+            public int getTryCount(HttpRequest httpRequest) {
+                return httpRequest.getTryCount();
             }
 
             @Override
-            public HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount) {
-                return httpRequest.setRetryCount(retryCount);
+            public HttpRequest setTryCount(HttpRequest httpRequest, int tryCount) {
+                return httpRequest.setTryCount(tryCount);
             }
         });
     }
 
     private HttpMethod httpMethod;
-    private URL url;
+    private URI uri;
     private HttpHeaders headers;
     private BinaryData body;
     private ServerSentEventListener serverSentEventListener;
-    private RequestOptions requestOptions;
-    private int retryCount;
+    private RequestContext requestContext;
+    private int tryCount;
 
     /**
      * Create a new {@link HttpRequest} instance.
-     *
-     * @param httpMethod The request {@link HttpMethod}.
-     * @param url The target address to send the request to as a {@link URL}.
-     *
-     * @throws NullPointerException if {@code url} is {@code null}.
      */
-    public HttpRequest(HttpMethod httpMethod, URL url) {
-        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-        this.url = Objects.requireNonNull(url, "'url' cannot be null");
+    public HttpRequest() {
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.none();
-    }
-
-    /**
-     * Create a new {@link HttpRequest} instance.
-     *
-     * @param httpMethod The request {@link HttpMethod}.
-     * @param url The target address to send the request to.
-     *
-     * @throws NullPointerException if {@code url} is {@code null}.
-     * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
-     */
-    public HttpRequest(HttpMethod httpMethod, String url) {
-        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
-        setUrl(url);
-
-        this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.none();
+        this.requestContext = RequestContext.none();
     }
 
     /**
@@ -91,57 +66,48 @@ public class HttpRequest {
      * Set the request {@link HttpMethod}.
      *
      * @param httpMethod The request {@link HttpMethod}.
-     *
      * @return The updated {@link HttpRequest}.
-     *
      * @throws NullPointerException if {@code httpMethod} is {@code null}.
      */
-    public HttpRequest setHttpMethod(HttpMethod httpMethod) {
+    public HttpRequest setMethod(HttpMethod httpMethod) {
         this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
         return this;
     }
 
     /**
-     * Get the target address as a {@link URL}.
+     * Get the target address as a {@link URI}.
      *
-     * @return The target address as a {@link URL}.
+     * @return The target address as a {@link URI}.
      */
-    public URL getUrl() {
-        return url;
+    public URI getUri() {
+        return uri;
     }
 
     /**
      * Set the target address to send the request to.
      *
-     * @param url The target address as a {@link URL}.
-     *
+     * @param uri The target address as a {@link URI}.
      * @return The updated {@link HttpRequest}.
-     *
-     * @throws NullPointerException if {@code url} is {@code null}.
+     * @throws NullPointerException if {@code uri} is null.
      */
-    public HttpRequest setUrl(URL url) {
-        this.url = Objects.requireNonNull(url, "'url' cannot be null");
-
+    public HttpRequest setUri(URI uri) {
+        this.uri = Objects.requireNonNull(uri, "'uri' cannot be null");
         return this;
     }
 
     /**
      * Set the target address to send the request to.
      *
-     * @param url The target address as a {@link URL}.
-     *
+     * @param uri The target address as a {@link URI}.
      * @return The updated {@link HttpRequest}.
-     *
-     * @throws NullPointerException if {@code url} is {@code null}.
-     * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
+     * @throws NullPointerException if {@code uri} is {@code null}.
+     * @throws IllegalArgumentException If {@code uri} cannot be parsed into a valid {@link URI}.
      */
-    @SuppressWarnings("deprecation")
-    public HttpRequest setUrl(String url) {
+    public HttpRequest setUri(String uri) {
         try {
-            this.url = new URL(Objects.requireNonNull(url, "'url' cannot be null"));
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            this.uri = new URI(Objects.requireNonNull(uri, "'uri' cannot be null"));
+        } catch (URISyntaxException ex) {
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
 
         return this;
@@ -160,12 +126,10 @@ public class HttpRequest {
      * Set the request {@link HttpHeaders headers}.
      *
      * @param headers The {@link HttpHeaders headers} to set.
-     *
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setHeaders(HttpHeaders headers) {
         this.headers = headers;
-
         return this;
     }
 
@@ -187,7 +151,6 @@ public class HttpRequest {
      * to indicate the length of the content, or use {@code Transfer-Encoding: chunked}.</p>
      *
      * @param content The request content.
-     *
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setBody(BinaryData content) {
@@ -202,24 +165,22 @@ public class HttpRequest {
     }
 
     /**
-     * Get the request {@link RequestOptions options}.
+     * Get the request context. If no context was provided, {@link RequestContext#none()} is returned.
      *
-     * @return The request {@link RequestOptions options}.
+     * @return The {@link RequestContext}.
      */
-    public RequestOptions getRequestOptions() {
-        return requestOptions;
+    public RequestContext getContext() {
+        return requestContext;
     }
 
     /**
-     * Set the request {@link RequestOptions options}.
+     * Set the request context.
      *
-     * @param requestOptions The request {@link RequestOptions options}.
-     *
+     * @param requestContext The {@link RequestContext}.
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setRequestOptions(RequestOptions requestOptions) {
-        this.requestOptions = requestOptions;
-
+    public HttpRequest setContext(RequestContext requestContext) {
+        this.requestContext = requestContext == null ? RequestContext.none() : requestContext;
         return this;
     }
 
@@ -236,34 +197,32 @@ public class HttpRequest {
      * Set an event stream {@link ServerSentEventListener listener} for this request.
      *
      * @param serverSentEventListener The {@link ServerSentEventListener listener} to set for this request.
-     *
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
         this.serverSentEventListener = serverSentEventListener;
-
         return this;
     }
 
     /**
-     * Gets the number of times the request has been retried.
+     * Gets the number of times the request has been attempted. It's 0 during the first attempt
+     * and increments after attempt is made.
      *
-     * @return The number of times the request has been retried.
+     * @return The number of times the request has been attempted.
      */
-    private int getRetryCount() {
-        return retryCount;
+    private int getTryCount() {
+        return tryCount;
     }
 
     /**
-     * Sets the number of times the request has been retried.
+     * Sets the number of times the request has been attempted. It's 0 during the first attempt
+     * and increments after attempt is made.
      *
-     * @param retryCount The number of times the request has been retried.
-     *
+     * @param tryCount The number of times the request has been attempted.
      * @return The updated {@link HttpRequest} object.
      */
-    private HttpRequest setRetryCount(int retryCount) {
-        this.retryCount = retryCount;
-
+    private HttpRequest setTryCount(int tryCount) {
+        this.tryCount = tryCount;
         return this;
     }
 }

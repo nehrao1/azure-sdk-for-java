@@ -152,6 +152,13 @@ public interface ContainerAppsApiClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the JavaComponentsClient object to access its operations.
+     * 
+     * @return the JavaComponentsClient object.
+     */
+    JavaComponentsClient getJavaComponents();
+
+    /**
      * Gets the JobsExecutionsClient object to access its operations.
      * 
      * @return the JobsExecutionsClient object.
@@ -194,6 +201,20 @@ public interface ContainerAppsApiClient {
     NamespacesClient getNamespaces();
 
     /**
+     * Gets the ManagedEnvironmentPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateEndpointConnectionsClient object.
+     */
+    ManagedEnvironmentPrivateEndpointConnectionsClient getManagedEnvironmentPrivateEndpointConnections();
+
+    /**
+     * Gets the ManagedEnvironmentPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateLinkResourcesClient object.
+     */
+    ManagedEnvironmentPrivateLinkResourcesClient getManagedEnvironmentPrivateLinkResources();
+
+    /**
      * Gets the DaprComponentsClient object to access its operations.
      * 
      * @return the DaprComponentsClient object.
@@ -201,11 +222,32 @@ public interface ContainerAppsApiClient {
     DaprComponentsClient getDaprComponents();
 
     /**
+     * Gets the HttpRouteConfigsClient object to access its operations.
+     * 
+     * @return the HttpRouteConfigsClient object.
+     */
+    HttpRouteConfigsClient getHttpRouteConfigs();
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     * 
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    MaintenanceConfigurationsClient getMaintenanceConfigurations();
+
+    /**
      * Gets the ManagedEnvironmentsStoragesClient object to access its operations.
      * 
      * @return the ManagedEnvironmentsStoragesClient object.
      */
     ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
+
+    /**
+     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
+     * 
+     * @return the ContainerAppsSessionPoolsClient object.
+     */
+    ContainerAppsSessionPoolsClient getContainerAppsSessionPools();
 
     /**
      * Gets the ContainerAppsSourceControlsClient object to access its operations.
@@ -227,4 +269,11 @@ public interface ContainerAppsApiClient {
      * @return the ManagedEnvironmentUsagesClient object.
      */
     ManagedEnvironmentUsagesClient getManagedEnvironmentUsages();
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    LogicAppsClient getLogicApps();
 }

@@ -13,21 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"tcubiipuipwoqonm\",\"cje\"],\"restoreFilePath\":\"izsh\",\"destinationVolumeId\":\"vcimpev\"}")
+            "{\"fileList\":[\"tcyohpfkyrk\",\"bdgiogsjk\",\"nwqjnoba\",\"yhddvia\"],\"restoreFilePath\":\"gfnmntfpmvmemfnc\",\"destinationVolumeId\":\"dwvvba\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("tcubiipuipwoqonm", model.fileList().get(0));
-        Assertions.assertEquals("izsh", model.restoreFilePath());
-        Assertions.assertEquals("vcimpev", model.destinationVolumeId());
+        Assertions.assertEquals("tcyohpfkyrk", model.fileList().get(0));
+        Assertions.assertEquals("gfnmntfpmvmemfnc", model.restoreFilePath());
+        Assertions.assertEquals("dwvvba", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("tcubiipuipwoqonm", "cje"))
-            .withRestoreFilePath("izsh")
-            .withDestinationVolumeId("vcimpev");
+        BackupRestoreFiles model
+            = new BackupRestoreFiles().withFileList(Arrays.asList("tcyohpfkyrk", "bdgiogsjk", "nwqjnoba", "yhddvia"))
+                .withRestoreFilePath("gfnmntfpmvmemfnc")
+                .withDestinationVolumeId("dwvvba");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("tcubiipuipwoqonm", model.fileList().get(0));
-        Assertions.assertEquals("izsh", model.restoreFilePath());
-        Assertions.assertEquals("vcimpev", model.destinationVolumeId());
+        Assertions.assertEquals("tcyohpfkyrk", model.fileList().get(0));
+        Assertions.assertEquals("gfnmntfpmvmemfnc", model.restoreFilePath());
+        Assertions.assertEquals("dwvvba", model.destinationVolumeId());
     }
 }

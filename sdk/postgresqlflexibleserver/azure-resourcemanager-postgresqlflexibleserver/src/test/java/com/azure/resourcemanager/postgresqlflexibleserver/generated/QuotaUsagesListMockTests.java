@@ -7,8 +7,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsage;
@@ -22,22 +22,22 @@ public final class QuotaUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"iqxf\",\"localizedValue\":\"j\"},\"limit\":3974939603346143154,\"unit\":\"kpqhjpenuygbq\",\"currentValue\":3439448263345992300,\"id\":\"ewvnqvcdlgu\"}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"rgmsplzga\",\"localizedValue\":\"cshhv\"},\"limit\":5821657988601371961,\"unit\":\"xkym\",\"currentValue\":5759368920772451636,\"id\":\"rjkixtw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<QuotaUsage> response = manager.quotaUsages().list("haru", com.azure.core.util.Context.NONE);
+        PagedIterable<QuotaUsage> response = manager.quotaUsages().list("mguaml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iqxf", response.iterator().next().name().value());
-        Assertions.assertEquals("j", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals(3974939603346143154L, response.iterator().next().limit());
-        Assertions.assertEquals("kpqhjpenuygbq", response.iterator().next().unit());
-        Assertions.assertEquals(3439448263345992300L, response.iterator().next().currentValue());
-        Assertions.assertEquals("ewvnqvcdlgu", response.iterator().next().id());
+        Assertions.assertEquals("rgmsplzga", response.iterator().next().name().value());
+        Assertions.assertEquals("cshhv", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(5821657988601371961L, response.iterator().next().limit());
+        Assertions.assertEquals("xkym", response.iterator().next().unit());
+        Assertions.assertEquals(5759368920772451636L, response.iterator().next().currentValue());
+        Assertions.assertEquals("rjkixtw", response.iterator().next().id());
     }
 }

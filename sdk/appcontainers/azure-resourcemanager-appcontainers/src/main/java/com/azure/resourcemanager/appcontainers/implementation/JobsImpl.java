@@ -20,8 +20,8 @@ import com.azure.resourcemanager.appcontainers.models.Diagnostics;
 import com.azure.resourcemanager.appcontainers.models.Job;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionBase;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
-import com.azure.resourcemanager.appcontainers.models.Jobs;
 import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
+import com.azure.resourcemanager.appcontainers.models.Jobs;
 
 public final class JobsImpl implements Jobs {
     private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);

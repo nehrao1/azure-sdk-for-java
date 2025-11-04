@@ -1,6 +1,6 @@
 # Azure Identity client library for Java
 
-The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/entra/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
+The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) token-based authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
 
 [Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entraid_doc]
 
@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.18.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,8 +63,6 @@ To take dependency on a particular version of the library that isn't present in 
 When debugging and executing code locally, it's typical for a developer to use their own account for authenticating calls to Azure services. There are several developer tools that can be used to perform this authentication in your development environment:
 
 - [Azure Toolkit for IntelliJ](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential)
-- [Visual Studio Code Azure Account Extension](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential)
-  - It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider authenticating via the Azure CLI (below).
 - [Azure CLI](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
 
 Select each item above to learn about how to configure them for Azure Identity authentication.
@@ -81,31 +79,13 @@ See [Credential classes](#credential-classes) for a complete list of available c
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in Azure. This is because `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
-
-> Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
-
-`DefaultAzureCredential` attempts to authenticate via the following mechanisms in order:
-
-![DefaultAzureCredential authentication flow](images/mermaidjs/DefaultAzureCredentialAuthFlow.svg)
-
-1. **Environment** - `DefaultAzureCredential` reads account information specified via [environment variables](#environment-variables) and uses it to authenticate.
-2. **Workload Identity** - If the app is deployed on Kubernetes with environment variables set by the workload identity webhook, `DefaultAzureCredential` authenticates the configured identity.
-3. **Managed Identity** - If the app is deployed to an Azure host with Managed Identity enabled, `DefaultAzureCredential` authenticates with that account.
-4. **Azure Developer CLI** - If the developer authenticated an account via the Azure Developer CLI `azd auth login` command, `DefaultAzureCredential` authenticates with that account.
-5. **IntelliJ** - If the developer authenticated via Azure Toolkit for IntelliJ, `DefaultAzureCredential` authenticates with that account.
-6. **Azure CLI** - If the developer authenticated an account via the Azure CLI `az login` command, `DefaultAzureCredential` authenticates with that account.
-7. **Azure PowerShell** - If the developer authenticated an account via the Azure PowerShell `Connect-AzAccount` command, `DefaultAzureCredential` authenticates with that account.
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
 
 #### Continuation policy
 
 As of v1.10.0, `DefaultAzureCredential` attempts to authenticate with all developer credentials until one succeeds, regardless of any errors previous developer credentials experienced. For example, a developer credential may attempt to get a token and fail, so `DefaultAzureCredential` continues to the next credential in the flow. Deployed service credentials stop the flow with a thrown exception if they're able to attempt token retrieval, but don't receive one.
 
 This allows for trying all of the developer credentials on your machine while having predictable deployed behavior.
-
-#### Note about `VisualStudioCodeCredential`
-
-Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364), `VisualStudioCodeCredential` has been removed from the `DefaultAzureCredential` token chain. When the issue is resolved in a future release, this change will be reverted.
 
 ## Examples
 
@@ -130,8 +110,6 @@ public void createDefaultAzureCredential() {
         .buildClient();
 }
 ```
-
-For more information on configuring `DefaultAzureCredential` for your workstation or Azure, see [Configure DefaultAzureCredential](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#default-azure-credential).
 
 ### Authenticate a user-assigned managed identity with `DefaultAzureCredential`
 
@@ -170,12 +148,10 @@ See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for
 
 ```java
 /**
- * DefaultAzureCredential uses the KeePass database path to find the user account in IntelliJ on Windows.
+ * DefaultAzureCredential uses the signed-in user from Azure Toolkit for Java.
  */
 public void createDefaultAzureCredentialForIntelliJ() {
     DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-        // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
-        .intelliJKeePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
         .build();
 
     // Azure SDK client builders accept the credential as a parameter
@@ -184,6 +160,37 @@ public void createDefaultAzureCredentialForIntelliJ() {
         .credential(defaultCredential)
         .buildClient();
 }
+```
+
+### Authenticate Using Visual Studio Code with `DefaultAzureCredential`
+
+To authenticate using Visual Studio Code, ensure you have signed in through the **Azure Resources** extension. The signed-in user is then picked up automatically by `DefaultAzureCredential` in the Azure SDK for Java.
+
+#### Prerequisites
+
+- [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
+- You are signed in using the `Azure: Sign In` command in VS Code.
+- Your project includes the [`azure-identity-broker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
+
+#### Example: Use `DefaultAzureCredential` with Key Vault
+
+The following example demonstrates authenticating the `SecretClient` from the [`azure-security-keyvault-secrets`](https://learn.microsoft.com/java/api/overview/azure/security-keyvault-secrets-readme?view=azure-java-stable) client library using `DefaultAzureCredential`:
+
+```java
+/**
+ * DefaultAzureCredential uses the signed-in user from Visual Studio Code
+ * via the Azure Resources extension.
+ */
+public void createDefaultAzureCredentialForVSCode() {
+    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(defaultCredential)
+        .buildClient();
+    }
 ```
 
 ## Managed Identity support
@@ -226,6 +233,34 @@ public void createManagedIdentityCredential() {
 ```
 
 ```java
+public void createUserAssignedManagedIdentityCredentialWithResourceId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
+public void createUserAssignedManagedIdentityCredentialWithObjectId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
 /**
  * Authenticate with a system-assigned managed identity.
  */
@@ -243,32 +278,9 @@ public void createManagedIdentityCredential() {
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
-While `DefaultAzureCredential` is generally the quickest way to get started developing apps for Azure, more advanced users may want to customize the credentials considered when authenticating. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential`, which will:
+While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
-- Attempt to authenticate using managed identity.
-- Fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment.
-
-```java
-// Authenticate using managed identity if it's available; otherwise use the Azure CLI to authenticate.
-
-ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-    .build();
-AzureCliCredential cliCredential = new AzureCliCredentialBuilder()
-    .build();
-
-ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
-    .addLast(managedIdentityCredential)
-    .addLast(cliCredential)
-    .build();
-
-// Azure SDK client builders accept the credential as a parameter
-SecretClient client = new SecretClientBuilder()
-    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-    .credential(credential)
-    .buildClient();
-```
-
-## Sovereign cloud configuration
+## Cloud / Sovereign configuration
 
 By default, credentials authenticate to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure US Government or a private cloud, use one of the following solutions:
 
@@ -284,7 +296,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 2. Set the `AZURE_AUTHORITY_HOST` environment variable to the appropriate authority host URL. For example, `https://login.microsoftonline.us/`. Note that this setting affects all credentials in the environment. Use the previous solution to set the authority host on a specific credential.
 
-Not all credentials honor this configuration. Credentials that authenticate through a development tool, such as `AzureCliCredential`, use that tool's configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority` argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
+Not all credentials honor this configuration. Credentials that authenticate through a development tool, such as `AzureCliCredential`, use that tool's configuration.
 
 ## Credential classes
 
@@ -314,13 +326,12 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 
 ### Authenticate users
 
-|Credential|Usage|Example|Reference|
-|-|-|-|-|
-|[AuthorizationCodeCredential][cred_acc]|Authenticates a user with a previously obtained authorization code as part of an OAuth 2.0 auth code flow||[OAuth 2.0 auth code][cred_acc_ref]|
-|[DeviceCodeCredential][cred_dcc]|Interactively authenticates a user on devices with limited UI|[example][cred_dcc_example]|[device code authentication][cred_dcc_ref]|
-|[InteractiveBrowserCredential][cred_ibc]|Interactively authenticates a user with the default system browser|[example][cred_ibc_example]|[OAuth 2.0 auth code][cred_acc_ref]|
-|[OnBehalfOfCredential][cred_obo]|Propagates the delegated user identity and permissions through the request chain||[On-behalf-of authentication][cred_obo_ref]|
-|[UsernamePasswordCredential][cred_upc]|Authenticates a user with a username and password without multi-factor auth|[example][cred_upc_example]|[Username + password authentication][cred_upc_ref]|
+|Credential| Usage                                                                                                     |Example|Reference|
+|-|-----------------------------------------------------------------------------------------------------------|-|-|
+|[AuthorizationCodeCredential][cred_acc]| Authenticates a user with a previously obtained authorization code as part of an OAuth 2.0 auth code flow ||[OAuth 2.0 auth code][cred_acc_ref]|
+|[DeviceCodeCredential][cred_dcc]| Interactively authenticates a user on devices with limited UI                                             |[example][cred_dcc_example]|[device code authentication][cred_dcc_ref]|
+|[InteractiveBrowserCredential][cred_ibc]| Interactively authenticates a user with the default system browser                                        |[example][cred_ibc_example]|[OAuth 2.0 auth code][cred_acc_ref]|
+|[OnBehalfOfCredential][cred_obo]| Propagates the delegated user identity and permissions through the request chain                          ||[On-behalf-of authentication][cred_obo_ref]|
 
 ### Authenticate via development tools
 
@@ -330,7 +341,7 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |[AzureDeveloperCliCredential][cred_azd]|Authenticates in a development environment with the enabled user or service principal in Azure Developer CLI||[Azure Developer CLI authentication][cred_azd_ref]|
 |[AzurePowerShellCredential][cred_azpwsh]|Authenticates in a development environment with the enabled user or service principal in Azure PowerShell|[example][cred_azpwsh_example]|[Azure PowerShell authentication][cred_azpwsh_ref]|
 |[IntelliJCredential][cred_ij]|Authenticates in a development environment with the account in Azure Toolkit for IntelliJ|[example][cred_ij_example]|[IntelliJ authentication][cred_ij_ref]|
-|[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code's Azure Account extension.|[example][cred_vsc_example]|[VS Code Azure Account extension][cred_vsc_ref]|
+|[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|||
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
@@ -357,15 +368,6 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PFX or PEM-encoded certificate file including private key|
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
 
-### Username and password
-
-|Variable name|Value|
-|-|-|
-|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application|
-|`AZURE_TENANT_ID`|(optional) ID of the application's Microsoft Entra tenant|
-|`AZURE_USERNAME`|a username (usually an email address)|
-|`AZURE_PASSWORD`|that user's password|
-
 ### Managed identity (`DefaultAzureCredential`)
 
 |Variable name|Value|
@@ -391,6 +393,7 @@ The Azure Identity library offers both in-memory and persistent disk caching. Fo
 ## Brokered authentication
 
 An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
+
 
 ## Troubleshooting
 
@@ -454,21 +457,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_mic_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity
 [cred_obo]: https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable
 [cred_obo_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow
-[cred_upc]: https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?view=azure-java-stable
-[cred_upc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password
-[cred_upc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth-ropc
 [cred_vsc]: https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable
-[cred_vsc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code
-[cred_vsc_ref]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+[ctc_overview]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
+[dac_overview]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [sp]: https://learn.microsoft.com/entra/identity-platform/app-objects-and-service-principals
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackup;
@@ -20,18 +20,18 @@ import reactor.core.publisher.Mono;
 public final class LedgersBackupMockTests {
     @Test
     public void testBackup() throws Exception {
-        String responseStr = "{\"message\":\"qjsdpydnfyhxdeo\"}";
+        String responseStr = "{\"message\":\"kcxywnyt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfidentialLedgerBackupResponse response = manager.ledgers()
-            .backup("yxoegukgjnp", "ucgygevqz",
-                new ConfidentialLedgerBackup().withRestoreRegion("yp").withUri("rbpizc"),
+            .backup("rcvpnazzmhjrunmp", "ttdbhrbnl",
+                new ConfidentialLedgerBackup().withRestoreRegion("kx").withUri("yskpbhen"),
                 com.azure.core.util.Context.NONE);
 
     }

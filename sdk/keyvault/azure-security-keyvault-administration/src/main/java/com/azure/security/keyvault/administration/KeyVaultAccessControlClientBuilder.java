@@ -34,7 +34,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -91,21 +90,25 @@ import java.util.Map;
  * @see KeyVaultAccessControlAsyncClient
  * @see KeyVaultAccessControlClient
  */
-@ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
-public final class KeyVaultAccessControlClientBuilder implements
-    TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
-    HttpTrait<KeyVaultAccessControlClientBuilder>,
+@ServiceClientBuilder(serviceClients = { KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class })
+public final class KeyVaultAccessControlClientBuilder
+    implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder>, HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
+
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-administration.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
-    private final Map<String, String> properties;
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -131,7 +134,6 @@ public final class KeyVaultAccessControlClientBuilder implements
         httpLogOptions = new HttpLogOptions();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
-        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
     }
 
     /**
@@ -151,11 +153,14 @@ public final class KeyVaultAccessControlClientBuilder implements
     public KeyVaultAccessControlClient buildClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
+
         if (pipeline != null) {
             return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
         }
-        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
-        return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
+
+        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
+
+        return new KeyVaultAccessControlClient(vaultUrl, builtPipeline, serviceVersion);
     }
 
     /**
@@ -175,25 +180,26 @@ public final class KeyVaultAccessControlClientBuilder implements
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
+
         if (pipeline != null) {
             return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
-        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
-        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+
+        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
+
+        return new KeyVaultAccessControlAsyncClient(vaultUrl, builtPipeline, serviceVersion);
     }
 
-
     private Configuration validateEndpointAndGetConfiguration() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
-
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
+
         return buildConfiguration;
     }
 
@@ -201,24 +207,20 @@ public final class KeyVaultAccessControlClientBuilder implements
         return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
     }
 
-
     private HttpPipeline getPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
-            clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -238,10 +240,9 @@ public final class KeyVaultAccessControlClientBuilder implements
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
@@ -268,8 +269,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;
@@ -444,6 +444,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+
         return this;
     }
 

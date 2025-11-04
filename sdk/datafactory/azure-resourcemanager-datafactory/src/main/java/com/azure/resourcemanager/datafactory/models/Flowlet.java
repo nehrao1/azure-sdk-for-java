@@ -48,7 +48,7 @@ public final class Flowlet extends DataFlow {
      * 
      * @return the innerTypeProperties value.
      */
-    private FlowletTypeProperties innerTypeProperties() {
+    FlowletTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -201,9 +201,11 @@ public final class Flowlet extends DataFlow {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 

@@ -5,6 +5,8 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,71 +24,85 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
     /*
      * Identifier of a run.
      */
+    @Generated
     private String runId;
 
     /*
      * Identifier that correlates all the recovery runs of a pipeline run.
      */
+    @Generated
     private String runGroupId;
 
     /*
      * Indicates if the recovered pipeline run is the latest in its group.
      */
+    @Generated
     private Boolean isLatest;
 
     /*
      * The pipeline name.
      */
+    @Generated
     private String pipelineName;
 
     /*
      * The full or partial list of parameter name, value pair used in the pipeline run.
      */
+    @Generated
     private Map<String, String> parameters;
 
     /*
      * Entity that started the pipeline run.
      */
+    @Generated
     private PipelineRunInvokedBy invokedBy;
 
     /*
      * The last updated timestamp for the pipeline run event in ISO8601 format.
      */
+    @Generated
     private OffsetDateTime lastUpdated;
 
     /*
      * The start time of a pipeline run in ISO8601 format.
      */
+    @Generated
     private OffsetDateTime runStart;
 
     /*
      * The end time of a pipeline run in ISO8601 format.
      */
+    @Generated
     private OffsetDateTime runEnd;
 
     /*
      * The duration of a pipeline run.
      */
+    @Generated
     private Integer durationInMs;
 
     /*
      * The status of a pipeline run.
      */
+    @Generated
     private String status;
 
     /*
      * The message from a pipeline run.
      */
+    @Generated
     private String message;
 
     /*
      * Information about a pipeline run.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of PipelineRun class.
      */
+    @Generated
     public PipelineRun() {
     }
 
@@ -95,6 +111,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the runId value.
      */
+    @Generated
     public String getRunId() {
         return this.runId;
     }
@@ -104,6 +121,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the runGroupId value.
      */
+    @Generated
     public String getRunGroupId() {
         return this.runGroupId;
     }
@@ -113,6 +131,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the isLatest value.
      */
+    @Generated
     public Boolean isLatest() {
         return this.isLatest;
     }
@@ -122,6 +141,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the pipelineName value.
      */
+    @Generated
     public String getPipelineName() {
         return this.pipelineName;
     }
@@ -131,6 +151,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, String> getParameters() {
         return this.parameters;
     }
@@ -140,6 +161,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the invokedBy value.
      */
+    @Generated
     public PipelineRunInvokedBy getInvokedBy() {
         return this.invokedBy;
     }
@@ -149,6 +171,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the lastUpdated value.
      */
+    @Generated
     public OffsetDateTime getLastUpdated() {
         return this.lastUpdated;
     }
@@ -158,6 +181,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the runStart value.
      */
+    @Generated
     public OffsetDateTime getRunStart() {
         return this.runStart;
     }
@@ -167,6 +191,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the runEnd value.
      */
+    @Generated
     public OffsetDateTime getRunEnd() {
         return this.runEnd;
     }
@@ -176,6 +201,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the durationInMs value.
      */
+    @Generated
     public Integer getDurationInMs() {
         return this.durationInMs;
     }
@@ -185,6 +211,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -194,6 +221,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -203,6 +231,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -213,6 +242,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineRun object itself.
      */
+    @Generated
     public PipelineRun setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -221,6 +251,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -240,6 +271,7 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PipelineRun.
      */
+    @Generated
     public static PipelineRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineRun deserializedPipelineRun = new PipelineRun();
@@ -262,14 +294,14 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
                 } else if ("invokedBy".equals(fieldName)) {
                     deserializedPipelineRun.invokedBy = PipelineRunInvokedBy.fromJson(reader);
                 } else if ("lastUpdated".equals(fieldName)) {
-                    deserializedPipelineRun.lastUpdated
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.lastUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("runStart".equals(fieldName)) {
-                    deserializedPipelineRun.runStart
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.runStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("runEnd".equals(fieldName)) {
-                    deserializedPipelineRun.runEnd
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.runEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("durationInMs".equals(fieldName)) {
                     deserializedPipelineRun.durationInMs = reader.getNullable(JsonReader::getInt);
                 } else if ("status".equals(fieldName)) {

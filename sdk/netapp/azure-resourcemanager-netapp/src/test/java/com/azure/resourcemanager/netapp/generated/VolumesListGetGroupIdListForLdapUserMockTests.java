@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
@@ -21,20 +21,19 @@ import reactor.core.publisher.Mono;
 public final class VolumesListGetGroupIdListForLdapUserMockTests {
     @Test
     public void testListGetGroupIdListForLdapUser() throws Exception {
-        String responseStr = "{\"groupIdsForLdapUser\":[\"hcz\",\"xrxzbujrtr\",\"qvwre\",\"khgn\"]}";
+        String responseStr = "{\"groupIdsForLdapUser\":[\"ap\",\"qtferrqwexjkmf\",\"apjwogqqnobpudcd\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetGroupIdListForLdapUserResponse response = manager.volumes()
-            .listGetGroupIdListForLdapUser("rtffyaqitmh", "eioqaqhvse", "fuqyrxpdlcgqlsi", "mjqfrddgamquhio",
-                new GetGroupIdListForLdapUserRequest().withUsername("rsjuivfcdisyir"),
-                com.azure.core.util.Context.NONE);
+            .listGetGroupIdListForLdapUser("ochpprpr", "nmokayzejnhlbk", "bzpcpiljhahzvec", "ndbnwieh",
+                new GetGroupIdListForLdapUserRequest().withUsername("lewjwiuubwef"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hcz", response.groupIdsForLdapUser().get(0));
+        Assertions.assertEquals("ap", response.groupIdsForLdapUser().get(0));
     }
 }

@@ -15,35 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SystemAssigned\",\"principalId\":\"208f6187-b145-48d7-8864-011b1f19d199\",\"tenantId\":\"87c391a7-17ad-49fb-b6da-847d0523748e\",\"userAssignedIdentities\":{\"uoswkjmdih\":{\"principalId\":\"qseusrfjbdxzfxnx\",\"clientId\":\"b\"},\"gmdq\":{\"principalId\":\"yyyzlwhbw\",\"clientId\":\"nufzr\"},\"jvavdpwwo\":{\"principalId\":\"nbzrtfte\",\"clientId\":\"uubjtvgjsxmty\"},\"ofw\":{\"principalId\":\"d\",\"clientId\":\"titsf\"}}}")
-                .toObject(ApiManagementServiceIdentity.class);
-        Assertions.assertEquals(ApimIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("qseusrfjbdxzfxnx", model.userAssignedIdentities().get("uoswkjmdih").principalId());
-        Assertions.assertEquals("b", model.userAssignedIdentities().get("uoswkjmdih").clientId());
+        ApiManagementServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"None\",\"principalId\":\"8f66eb84-b305-4965-8beb-6a5ec02683c8\",\"tenantId\":\"a51beec1-25c5-4d43-939b-dd8fe8bba1c8\",\"userAssignedIdentities\":{\"alahf\":{\"principalId\":\"uroolkolirhhm\",\"clientId\":\"usuzgfjzcvaaxo\"},\"hoqeqshavljqk\":{\"principalId\":\"ccokd\",\"clientId\":\"ukmkczynu\"},\"r\":{\"principalId\":\"rqolnthbb\",\"clientId\":\"gzukw\"},\"bpfiddhlrufz\":{\"principalId\":\"kjthfce\",\"clientId\":\"ncjmlfuyf\"}}}")
+            .toObject(ApiManagementServiceIdentity.class);
+        Assertions.assertEquals(ApimIdentityType.NONE, model.type());
+        Assertions.assertEquals("uroolkolirhhm", model.userAssignedIdentities().get("alahf").principalId());
+        Assertions.assertEquals("usuzgfjzcvaaxo", model.userAssignedIdentities().get("alahf").clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiManagementServiceIdentity model =
-            new ApiManagementServiceIdentity()
-                .withType(ApimIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "uoswkjmdih",
-                        new UserIdentityProperties().withPrincipalId("qseusrfjbdxzfxnx").withClientId("b"),
-                        "gmdq",
-                        new UserIdentityProperties().withPrincipalId("yyyzlwhbw").withClientId("nufzr"),
-                        "jvavdpwwo",
-                        new UserIdentityProperties().withPrincipalId("nbzrtfte").withClientId("uubjtvgjsxmty"),
-                        "ofw",
-                        new UserIdentityProperties().withPrincipalId("d").withClientId("titsf")));
+        ApiManagementServiceIdentity model = new ApiManagementServiceIdentity().withType(ApimIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("alahf",
+                new UserIdentityProperties().withPrincipalId("uroolkolirhhm").withClientId("usuzgfjzcvaaxo"),
+                "hoqeqshavljqk", new UserIdentityProperties().withPrincipalId("ccokd").withClientId("ukmkczynu"), "r",
+                new UserIdentityProperties().withPrincipalId("rqolnthbb").withClientId("gzukw"), "bpfiddhlrufz",
+                new UserIdentityProperties().withPrincipalId("kjthfce").withClientId("ncjmlfuyf")));
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceIdentity.class);
-        Assertions.assertEquals(ApimIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("qseusrfjbdxzfxnx", model.userAssignedIdentities().get("uoswkjmdih").principalId());
-        Assertions.assertEquals("b", model.userAssignedIdentities().get("uoswkjmdih").clientId());
+        Assertions.assertEquals(ApimIdentityType.NONE, model.type());
+        Assertions.assertEquals("uroolkolirhhm", model.userAssignedIdentities().get("alahf").principalId());
+        Assertions.assertEquals("usuzgfjzcvaaxo", model.userAssignedIdentities().get("alahf").clientId());
     }
 
     // Use "Map.of" if available

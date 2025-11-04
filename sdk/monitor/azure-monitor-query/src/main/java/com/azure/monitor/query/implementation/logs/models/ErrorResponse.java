@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,10 +20,9 @@ import java.io.IOException;
 @Immutable
 public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
-     * The code and message for an error.
-     * 
      * The error details.
      */
+    @Generated
     private final ErrorInfo error;
 
     /**
@@ -30,21 +30,25 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * 
      * @param error the error value to set.
      */
+    @Generated
     public ErrorResponse(ErrorInfo error) {
         this.error = error;
     }
 
     /**
-     * Get the error property: The code and message for an error.
-     * 
-     * The error details.
+     * Get the error property: The error details.
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorInfo getError() {
         return this.error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,6 +65,7 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ErrorResponse.
      */
+    @Generated
     public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean errorFound = false;

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.CheckAvailabilityResponse;
@@ -23,25 +23,26 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"uzzptjazysdz\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"eqsx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkQuotaAvailabilityWithResponse("khyawfvjlboxqv",
-                new QuotaAvailabilityRequest().withName("jlmxhomdynhd")
-                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS)
-                    .withResourceGroup("igu"),
+            .checkQuotaAvailabilityWithResponse("pmvekdxukuqg",
+                new QuotaAvailabilityRequest().withName("jjxundxgke")
+                    .withType(
+                        CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
+                    .withResourceGroup("zhhzjhfjmhvvmu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.isAvailable());
+        Assertions.assertFalse(response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("uzzptjazysdz", response.message());
+        Assertions.assertEquals("eqsx", response.message());
     }
 }

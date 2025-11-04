@@ -101,6 +101,28 @@ public interface NetAppAccount {
     Boolean disableShowmount();
 
     /**
+     * Gets the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    String nfsV4IdDomain();
+
+    /**
+     * Gets the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @return the multiAdStatus value.
+     */
+    MultiAdStatus multiAdStatus();
+
+    /**
+     * Gets the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    LdapConfiguration ldapConfiguration();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -184,7 +206,8 @@ public interface NetAppAccount {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain,
+            DefinitionStages.WithLdapConfiguration {
             /**
              * Executes the create request.
              * 
@@ -252,6 +275,34 @@ public interface NetAppAccount {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            WithCreate withNfsV4IdDomain(String nfsV4IdDomain);
+        }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapConfiguration(LdapConfiguration ldapConfiguration);
+        }
     }
 
     /**
@@ -265,7 +316,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -337,6 +388,34 @@ public interface NetAppAccount {
              */
             Update withEncryption(AccountEncryption encryption);
         }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            Update withNfsV4IdDomain(String nfsV4IdDomain);
+        }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            Update withLdapConfiguration(LdapConfiguration ldapConfiguration);
+        }
     }
 
     /**
@@ -377,4 +456,82 @@ public interface NetAppAccount {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void renewCredentials(Context context);
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void transitionToCmk();
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void transitionToCmk(EncryptionTransitionRequest body, Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
+     */
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation();
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
+     */
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault();
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault(ChangeKeyVault body, Context context);
 }

@@ -5,9 +5,12 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.GeoJsonGeometry;
+import com.azure.maps.search.models.GeoJsonObjectType;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,18 +21,23 @@ import java.util.List;
 @Fluent
 public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_MULTI_POLYGON;
 
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
+    @Generated
     private List<List<List<List<Double>>>> coordinates;
 
     /**
      * Creates an instance of GeoJsonMultiPolygon class.
      */
+    @Generated
     public GeoJsonMultiPolygon() {
     }
 
@@ -40,6 +48,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -51,6 +60,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<List<List<Double>>>> getCoordinates() {
         return this.coordinates;
     }
@@ -62,6 +72,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonMultiPolygon object itself.
      */
+    @Generated
     public GeoJsonMultiPolygon setCoordinates(List<List<List<List<Double>>>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -70,9 +81,21 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public GeoJsonMultiPolygon setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("coordinates", this.coordinates,
             (writer, element) -> writer.writeArray(element,
                 (writer1, element1) -> writer1.writeArray(element1, (writer2, element2) -> writer2.writeArray(element2,
@@ -90,6 +113,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonMultiPolygon.
      */
+    @Generated
     public static GeoJsonMultiPolygon fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonMultiPolygon deserializedGeoJsonMultiPolygon = new GeoJsonMultiPolygon();
@@ -97,7 +121,10 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("coordinates".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonMultiPolygon.setBbox(bbox);
+                } else if ("coordinates".equals(fieldName)) {
                     List<List<List<List<Double>>>> coordinates = reader.readArray(reader1 -> reader1.readArray(
                         reader2 -> reader2.readArray(reader3 -> reader3.readArray(reader4 -> reader4.getDouble()))));
                     deserializedGeoJsonMultiPolygon.coordinates = coordinates;

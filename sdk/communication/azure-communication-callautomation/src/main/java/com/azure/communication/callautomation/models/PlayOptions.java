@@ -3,11 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /** The PlayOptions model. */
 @Fluent
@@ -38,7 +38,7 @@ public final class PlayOptions {
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUrl;
-  
+
     /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.

@@ -51,7 +51,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
+    SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -389,6 +389,79 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the role value.
+     */
+    public Object role() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().role();
+    }
+
+    /**
+     * Set the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param role the role value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService withRole(Object role) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
+        }
+        this.innerTypeProperties().withRole(role);
+        return this;
+    }
+
+    /**
+     * Get the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
+     * 
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
+     * 
+     * @param host the host value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService withSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
      * 
@@ -420,13 +493,22 @@ public final class SnowflakeV2LinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model SnowflakeV2LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

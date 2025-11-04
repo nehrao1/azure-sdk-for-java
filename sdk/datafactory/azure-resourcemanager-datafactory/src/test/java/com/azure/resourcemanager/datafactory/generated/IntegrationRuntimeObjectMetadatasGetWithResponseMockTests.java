@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest;
@@ -22,23 +22,23 @@ public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":3507907459177532864,\"name\":\"nfxwkjhzgmvzfpvi\",\"description\":\"fvzeihlubdjdiq\"},{\"type\":\"SsisObjectMetadata\",\"id\":7604167649090701701,\"name\":\"vrzlupygnlfyddyy\",\"description\":\"dlhytckp\"},{\"type\":\"SsisObjectMetadata\",\"id\":6201066221404190674,\"name\":\"dgnlsnmzlsgal\",\"description\":\"xyovwuhvpipaa\"},{\"type\":\"SsisObjectMetadata\",\"id\":8014468031949571426,\"name\":\"zordp\",\"description\":\"wip\"}],\"nextLink\":\"oxpeyi\"}";
+            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":480630311899746586,\"name\":\"tkdeyuowdpnaohhe\",\"description\":\"yrkbsrpruoyjbzyl\"},{\"type\":\"SsisObjectMetadata\",\"id\":2934330761316839097,\"name\":\"euhssrdugaxkyge\",\"description\":\"biupjzkyghsjcqq\"},{\"type\":\"SsisObjectMetadata\",\"id\":64843246385165570,\"name\":\"aeckzcbrxsqode\",\"description\":\"djpeeqywngc\"}],\"nextLink\":\"hvbczcsspn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SsisObjectMetadataListResponse response = manager.integrationRuntimeObjectMetadatas()
-            .getWithResponse("rxsqodesd", "jpeeqy", "ngcv", new GetSsisObjectMetadataRequest().withMetadataPath("v"),
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("nzxikvjevjaps", "pjh", "quxquypcn",
+                new GetSsisObjectMetadataRequest().withMetadataPath("cusyq"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(3507907459177532864L, response.value().get(0).id());
-        Assertions.assertEquals("nfxwkjhzgmvzfpvi", response.value().get(0).name());
-        Assertions.assertEquals("fvzeihlubdjdiq", response.value().get(0).description());
-        Assertions.assertEquals("oxpeyi", response.nextLink());
+        Assertions.assertEquals(480630311899746586L, response.value().get(0).id());
+        Assertions.assertEquals("tkdeyuowdpnaohhe", response.value().get(0).name());
+        Assertions.assertEquals("yrkbsrpruoyjbzyl", response.value().get(0).description());
+        Assertions.assertEquals("hvbczcsspn", response.nextLink());
     }
 }

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.redisenterprise.models.PrivateLinkServiceConnec
  */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterprisePutPrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
+     * RedisEnterprisePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterprisePutPrivateEndpointConnection.

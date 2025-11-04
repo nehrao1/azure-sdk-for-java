@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Volumes. */
+/**
+ * Resource collection API of Volumes.
+ */
 public interface Volumes {
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided subscription as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface Volumes {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,9 +38,9 @@ public interface Volumes {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,9 +51,9 @@ public interface Volumes {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,9 +65,9 @@ public interface Volumes {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
@@ -78,9 +80,9 @@ public interface Volumes {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,36 +94,43 @@ public interface Volumes {
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByResourceGroup(String resourceGroupName, String volumeName);
+    OperationStatusResult deleteByResourceGroup(String resourceGroupName, String volumeName);
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String volumeName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String volumeName, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -132,9 +141,9 @@ public interface Volumes {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,32 +155,38 @@ public interface Volumes {
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param id the resource ID.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Begins definition for a new Volume resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Volume definition.
      */

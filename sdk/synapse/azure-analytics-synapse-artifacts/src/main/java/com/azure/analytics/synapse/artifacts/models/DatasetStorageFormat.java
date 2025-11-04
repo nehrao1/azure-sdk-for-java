@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,28 +22,32 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
     /*
      * Type of dataset storage format.
      */
-    private String type;
+    @Generated
+    private String type = "DatasetStorageFormat";
 
     /*
      * Serializer. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object serializer;
 
     /*
      * Deserializer. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object deserializer;
 
     /*
      * The format definition of a storage.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DatasetStorageFormat class.
      */
+    @Generated
     public DatasetStorageFormat() {
-        this.type = "DatasetStorageFormat";
     }
 
     /**
@@ -50,6 +55,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -59,6 +65,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * 
      * @return the serializer value.
      */
+    @Generated
     public Object getSerializer() {
         return this.serializer;
     }
@@ -69,6 +76,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * @param serializer the serializer value to set.
      * @return the DatasetStorageFormat object itself.
      */
+    @Generated
     public DatasetStorageFormat setSerializer(Object serializer) {
         this.serializer = serializer;
         return this;
@@ -79,6 +87,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * 
      * @return the deserializer value.
      */
+    @Generated
     public Object getDeserializer() {
         return this.deserializer;
     }
@@ -89,6 +98,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * @param deserializer the deserializer value to set.
      * @return the DatasetStorageFormat object itself.
      */
+    @Generated
     public DatasetStorageFormat setDeserializer(Object deserializer) {
         this.deserializer = deserializer;
         return this;
@@ -99,6 +109,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -109,6 +120,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetStorageFormat object itself.
      */
+    @Generated
     public DatasetStorageFormat setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -117,12 +129,17 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("serializer", this.serializer);
-        jsonWriter.writeUntypedField("deserializer", this.deserializer);
+        if (this.serializer != null) {
+            jsonWriter.writeUntypedField("serializer", this.serializer);
+        }
+        if (this.deserializer != null) {
+            jsonWriter.writeUntypedField("deserializer", this.deserializer);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -139,6 +156,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DatasetStorageFormat.
      */
+    @Generated
     public static DatasetStorageFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -172,6 +190,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
         });
     }
 
+    @Generated
     static DatasetStorageFormat fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetStorageFormat deserializedDatasetStorageFormat = new DatasetStorageFormat();

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.fromString("VectorSearchVectorizer");
 
     /*
      * The name to associate with this particular vectorization method.
      */
+    @Generated
     private final String vectorizerName;
 
     /**
@@ -33,6 +36,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
      * 
      * @param vectorizerName the vectorizerName value to set.
      */
+    @Generated
     public VectorSearchVectorizer(String vectorizerName) {
         this.vectorizerName = vectorizerName;
     }
@@ -42,6 +46,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
      * 
      * @return the kind value.
      */
+    @Generated
     public VectorSearchVectorizerKind getKind() {
         return this.kind;
     }
@@ -51,6 +56,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
      * 
      * @return the vectorizerName value.
      */
+    @Generated
     public String getVectorizerName() {
         return this.vectorizerName;
     }
@@ -58,6 +64,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchVectorizer.
      */
+    @Generated
     public static VectorSearchVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -95,6 +103,10 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
                     return AzureOpenAIVectorizer.fromJson(readerToUse.reset());
                 } else if ("customWebApi".equals(discriminatorValue)) {
                     return WebApiVectorizer.fromJson(readerToUse.reset());
+                } else if ("aiServicesVision".equals(discriminatorValue)) {
+                    return AIServicesVisionVectorizer.fromJson(readerToUse.reset());
+                } else if ("aml".equals(discriminatorValue)) {
+                    return AzureMachineLearningVectorizer.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -102,6 +114,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
         });
     }
 
+    @Generated
     static VectorSearchVectorizer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean vectorizerNameFound = false;

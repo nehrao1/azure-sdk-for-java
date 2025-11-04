@@ -12,7 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +45,9 @@ public final class NetAppAccountInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -53,9 +55,9 @@ public final class NetAppAccountInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of NetAppAccountInner class.
@@ -111,13 +113,13 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -131,13 +133,13 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -221,6 +223,63 @@ public final class NetAppAccountInner extends Resource {
      */
     public Boolean disableShowmount() {
         return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
+    }
+
+    /**
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    public String nfsV4IdDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
+    }
+
+    /**
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
+        return this;
+    }
+
+    /**
+     * Get the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @return the multiAdStatus value.
+     */
+    public MultiAdStatus multiAdStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().multiAdStatus();
+    }
+
+    /**
+     * Get the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    public LdapConfiguration ldapConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ldapConfiguration();
+    }
+
+    /**
+     * Set the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @param ldapConfiguration the ldapConfiguration value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withLdapConfiguration(ldapConfiguration);
+        return this;
     }
 
     /**

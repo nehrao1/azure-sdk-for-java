@@ -4,8 +4,6 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.shared.LocalTestServer;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
 import java.util.Base64;
@@ -15,7 +13,6 @@ import java.util.Objects;
  * A simple HTTP proxy server that enforce basic proxy authentication, once authenticated any request matching
  * {@code serviceEndpoints} will be responded with an empty HTTP 200.
  */
-@Execution(ExecutionMode.SAME_THREAD)
 public final class SimpleBasicAuthHttpProxyServer {
     private final String userName;
     private final String password;
@@ -36,10 +33,10 @@ public final class SimpleBasicAuthHttpProxyServer {
     }
 
     public ProxyEndpoint start() {
-        this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getServletPath();
+        this.proxyServer = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
+            String requestUri = req.getServletPath();
 
-            if (!Objects.equals(requestUrl, serviceEndpoint)) {
+            if (!Objects.equals(requestUri, serviceEndpoint)) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 
@@ -48,13 +45,11 @@ public final class SimpleBasicAuthHttpProxyServer {
             if (proxyAuthorization == null) {
                 resp.setStatus(407);
                 resp.setHeader("Proxy-Authenticate", "Basic");
-
                 return;
             }
 
             if (!proxyAuthorization.startsWith("Basic")) {
                 resp.setStatus(401);
-
                 return;
             }
 
@@ -70,7 +65,7 @@ public final class SimpleBasicAuthHttpProxyServer {
 
         this.proxyServer.start();
 
-        return new ProxyEndpoint("localhost", this.proxyServer.getHttpPort());
+        return new ProxyEndpoint("localhost", this.proxyServer.getPort());
     }
 
     public void shutdown() {

@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,57 +21,68 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     /*
      * The targets of the call.
      */
+    @Generated
     private List<CommunicationIdentifierModel> targets;
 
     /*
      * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when calling a PSTN callee.
      */
+    @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
      * Display name of the call if dialing out to a pstn number
      */
+    @Generated
     private String sourceDisplayName;
 
     /*
      * The identifier of the source of the call
      */
+    @Generated
     private CommunicationUserIdentifierModel source;
 
     /*
      * A customer set value used to track the answering of a call.
      */
+    @Generated
     private String operationContext;
 
     /*
      * The callback URI.
      */
+    @Generated
     private String callbackUri;
-
-    /*
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /*
      * AI options for the call.
      */
+    @Generated
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * Used by customer to send custom calling context to targets
+     * Media Streaming Options.
      */
-    private CustomCallingContext customCallingContext;
+    @Generated
+    private MediaStreamingOptionsInternal mediaStreamingOptions;
+
+    /*
+     * Transcription Options.
+     */
+    @Generated
+    private TranscriptionOptionsInternal transcriptionOptions;
+
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
+     */
+    @Generated
+    private MicrosoftTeamsAppIdentifierModel teamsAppSource;
 
     /**
      * Creates an instance of CreateCallRequestInternal class.
      */
+    @Generated
     public CreateCallRequestInternal() {
     }
 
@@ -79,6 +91,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the targets value.
      */
+    @Generated
     public List<CommunicationIdentifierModel> getTargets() {
         return this.targets;
     }
@@ -89,6 +102,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param targets the targets value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
@@ -101,6 +115,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the sourceCallerIdNumber value.
      */
+    @Generated
     public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
         return this.sourceCallerIdNumber;
     }
@@ -113,6 +128,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
         this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
@@ -123,6 +139,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the sourceDisplayName value.
      */
+    @Generated
     public String getSourceDisplayName() {
         return this.sourceDisplayName;
     }
@@ -133,6 +150,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param sourceDisplayName the sourceDisplayName value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setSourceDisplayName(String sourceDisplayName) {
         this.sourceDisplayName = sourceDisplayName;
         return this;
@@ -143,6 +161,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the source value.
      */
+    @Generated
     public CommunicationUserIdentifierModel getSource() {
         return this.source;
     }
@@ -153,6 +172,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setSource(CommunicationUserIdentifierModel source) {
         this.source = source;
         return this;
@@ -163,6 +183,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -173,6 +194,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param operationContext the operationContext value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -183,6 +205,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the callbackUri value.
      */
+    @Generated
     public String getCallbackUri() {
         return this.callbackUri;
     }
@@ -193,50 +216,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param callbackUri the callbackUri value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal
-        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal
-        setTranscriptionConfiguration(TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 
@@ -245,6 +227,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * 
      * @return the callIntelligenceOptions value.
      */
+    @Generated
     public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
         return this.callIntelligenceOptions;
     }
@@ -255,6 +238,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the CreateCallRequestInternal object itself.
      */
+    @Generated
     public CreateCallRequestInternal
         setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
@@ -262,28 +246,75 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     * Get the mediaStreamingOptions property: Media Streaming Options.
      * 
-     * @return the customCallingContext value.
+     * @return the mediaStreamingOptions value.
      */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
+    @Generated
+    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
+        return this.mediaStreamingOptions;
     }
 
     /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     * Set the mediaStreamingOptions property: Media Streaming Options.
      * 
-     * @param customCallingContext the customCallingContext value to set.
+     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
+    @Generated
+    public CreateCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Get the transcriptionOptions property: Transcription Options.
+     * 
+     * @return the transcriptionOptions value.
+     */
+    @Generated
+    public TranscriptionOptionsInternal getTranscriptionOptions() {
+        return this.transcriptionOptions;
+    }
+
+    /**
+     * Set the transcriptionOptions property: Transcription Options.
+     * 
+     * @param transcriptionOptions the transcriptionOptions value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    @Generated
+    public CreateCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+    /**
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * 
+     * @return the teamsAppSource value.
+     */
+    @Generated
+    public MicrosoftTeamsAppIdentifierModel getTeamsAppSource() {
+        return this.teamsAppSource;
+    }
+
+    /**
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * 
+     * @param teamsAppSource the teamsAppSource value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    @Generated
+    public CreateCallRequestInternal setTeamsAppSource(MicrosoftTeamsAppIdentifierModel teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
         return this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -293,10 +324,10 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("mediaStreamingConfiguration", this.mediaStreamingConfiguration);
-        jsonWriter.writeJsonField("transcriptionConfiguration", this.transcriptionConfiguration);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
+        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
+        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
+        jsonWriter.writeJsonField("teamsAppSource", this.teamsAppSource);
         return jsonWriter.writeEndObject();
     }
 
@@ -309,6 +340,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateCallRequestInternal.
      */
+    @Generated
     public static CreateCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CreateCallRequestInternal deserializedCreateCallRequestInternal = new CreateCallRequestInternal();
@@ -331,17 +363,18 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                     deserializedCreateCallRequestInternal.source = CommunicationUserIdentifierModel.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.operationContext = reader.getString();
-                } else if ("mediaStreamingConfiguration".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.mediaStreamingConfiguration
-                        = MediaStreamingConfigurationInternal.fromJson(reader);
-                } else if ("transcriptionConfiguration".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.transcriptionConfiguration
-                        = TranscriptionConfigurationInternal.fromJson(reader);
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.callIntelligenceOptions
                         = CallIntelligenceOptionsInternal.fromJson(reader);
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.customCallingContext = CustomCallingContext.fromJson(reader);
+                } else if ("mediaStreamingOptions".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.mediaStreamingOptions
+                        = MediaStreamingOptionsInternal.fromJson(reader);
+                } else if ("transcriptionOptions".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.transcriptionOptions
+                        = TranscriptionOptionsInternal.fromJson(reader);
+                } else if ("teamsAppSource".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.teamsAppSource
+                        = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

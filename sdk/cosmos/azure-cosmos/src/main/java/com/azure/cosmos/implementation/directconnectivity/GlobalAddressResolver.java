@@ -4,18 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -25,6 +14,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
@@ -61,6 +53,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -73,7 +66,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         UserAgentContainer userAgentContainer,
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
-        ApiType apiType) {
+        ApiType apiType,
+        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -85,17 +79,18 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.serviceConfigReader = serviceConfigReader;
         this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
         this.connectionPolicy = connectionPolicy;
+        this.httpRequestInterceptor = httpRequestInterceptor;
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
 
-        for (URI endpoint : endpointManager.getWriteEndpoints()) {
-            this.getOrAddEndpoint(endpoint);
+        for (RegionalRoutingContext endpoint : endpointManager.getWriteEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint());
         }
-        for (URI endpoint : endpointManager.getReadEndpoints()) {
-            this.getOrAddEndpoint(endpoint);
+        for (RegionalRoutingContext endpoint : endpointManager.getReadEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint());
         }
     }
 
@@ -136,7 +131,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .getCosmosContainerIdentityAccessor()
                                     .getContainerLink(cosmosContainerIdentity);
 
-                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.isEmpty()) {
                                     logger.warn(
                                         "There is no pkRanges found for collection {}, no connections will be opened",
                                         collection.getResourceId());
@@ -154,8 +149,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
                                     return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
-                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint);
+                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayRegionalEndpoint())) {
+                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayRegionalEndpoint());
                                                 return this.resolveAddressesPerCollection(
                                                         endpointCache,
                                                         containerLinkToPkrs.left,
@@ -272,8 +267,8 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
-        URI endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
-        return this.getOrAddEndpoint(endpoint).addressResolver;
+        RegionalRoutingContext endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+        return this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint()).addressResolver;
     }
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
@@ -290,6 +285,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
                 this.gatewayServerErrorInjector);
+            gatewayAddressCache.httpRequestInterceptor = this.httpRequestInterceptor;
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
@@ -299,15 +295,15 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<URI> allEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
-            allEndpoints.addAll(this.endpointManager.getReadEndpoints());
-            Collections.reverse(allEndpoints);
-            LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
+            List<RegionalRoutingContext> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
+            allConsolidatedEndpoints.addAll(this.endpointManager.getReadEndpoints());
+            Collections.reverse(allConsolidatedEndpoints);
+            LinkedList<RegionalRoutingContext> endpoints = new LinkedList<>(allConsolidatedEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-                if (endpoints.size() > 0) {
-                    URI dequeueEndpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEndpoint) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEndpoint);
+                if (!endpoints.isEmpty()) {
+                    RegionalRoutingContext dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint.getGatewayRegionalEndpoint()) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint.getGatewayRegionalEndpoint());
                     }
                 } else {
                     break;

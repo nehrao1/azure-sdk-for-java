@@ -164,7 +164,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeploymentEnvironmen")
+    @ServiceInterface(name = "DeploymentEnvironmentsClient")
     public interface DeploymentEnvironmentsClientService {
         @Get("/projects/{projectName}/environments")
         @ExpectedResponses({ 200 })
@@ -527,7 +527,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -540,19 +541,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -578,7 +571,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -591,19 +585,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -626,7 +612,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -639,19 +626,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -674,7 +653,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -687,19 +667,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -722,7 +694,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -735,19 +708,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -775,7 +740,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -788,19 +754,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -826,7 +784,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -839,19 +798,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -877,7 +828,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -890,19 +842,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -928,7 +872,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Gets an environment.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -941,19 +886,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -979,7 +916,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Gets an environment.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -992,19 +930,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1029,7 +959,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1042,23 +973,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1071,19 +995,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1111,7 +1027,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1124,23 +1041,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1153,19 +1063,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1192,7 +1094,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1205,23 +1108,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1234,193 +1130,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param environmentName The name of the environment.
-     * @param body Represents an environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of properties of an environment.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateEnvironmentAsync(String projectName, String userId,
-        String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createOrUpdateEnvironmentWithResponseAsync(projectName, userId, environmentName, body,
-                requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates or updates an environment.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     parameters (Optional): {
-     *         String: Object (Required)
-     *     }
-     *     name: String (Required)
-     *     environmentType: String (Required)
-     *     user: String (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
-     *     resourceGroupId: String (Optional)
-     *     catalogName: String (Required)
-     *     environmentDefinitionName: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     parameters (Optional): {
-     *         String: Object (Required)
-     *     }
-     *     name: String (Required)
-     *     environmentType: String (Required)
-     *     user: String (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
-     *     resourceGroupId: String (Optional)
-     *     catalogName: String (Required)
-     *     environmentDefinitionName: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param environmentName The name of the environment.
-     * @param body Represents an environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of properties of an environment.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(String projectName, String userId,
-        String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createOrUpdateEnvironmentWithResponse(projectName, userId, environmentName, body,
-                requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates or updates an environment.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     parameters (Optional): {
-     *         String: Object (Required)
-     *     }
-     *     name: String (Required)
-     *     environmentType: String (Required)
-     *     user: String (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
-     *     resourceGroupId: String (Optional)
-     *     catalogName: String (Required)
-     *     environmentDefinitionName: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     parameters (Optional): {
-     *         String: Object (Required)
-     *     }
-     *     name: String (Required)
-     *     environmentType: String (Required)
-     *     user: String (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
-     *     resourceGroupId: String (Optional)
-     *     catalogName: String (Required)
-     *     environmentDefinitionName: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1454,7 +1168,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1467,23 +1182,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -1496,19 +1204,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1539,10 +1239,157 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Creates or updates an environment.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param body Represents an environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of properties of an environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateEnvironmentAsync(String projectName, String userId,
+        String environmentName, BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createOrUpdateEnvironmentWithResponseAsync(projectName, userId, environmentName, body,
+                requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Creates or updates an environment.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param body Represents an environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of properties of an environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(String projectName, String userId,
+        String environmentName, BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createOrUpdateEnvironmentWithResponse(projectName, userId, environmentName, body,
+                requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -1553,19 +1400,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1592,7 +1431,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -1603,19 +1443,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1640,7 +1472,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -1651,127 +1484,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param environmentName The name of the environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteEnvironmentAsync(String projectName, String userId,
-        String environmentName, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Deletes an environment and all its associated resources.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param environmentName The name of the environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteEnvironment(String projectName, String userId,
-        String environmentName, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Deletes an environment and all its associated resources.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1802,7 +1519,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -1813,19 +1531,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1853,14 +1563,110 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Deletes an environment and all its associated resources.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, Void> beginDeleteEnvironmentAsync(String projectName, String userId,
+        String environmentName, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes an environment and all its associated resources.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, Void> beginDeleteEnvironment(String projectName, String userId,
+        String environmentName, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
      * Lists all of the catalogs available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1886,11 +1692,13 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1913,11 +1721,13 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1940,11 +1750,13 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1967,11 +1779,13 @@ public final class DeploymentEnvironmentsClientImpl {
      * Gets the specified catalog within the project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -1995,11 +1809,13 @@ public final class DeploymentEnvironmentsClientImpl {
      * Gets the specified catalog within the project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -2022,7 +1838,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2045,7 +1862,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2071,7 +1889,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2094,7 +1913,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2117,7 +1937,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2140,7 +1961,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2164,7 +1986,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2187,7 +2010,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2210,7 +2034,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2233,7 +2058,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2260,7 +2086,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2283,7 +2110,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2309,7 +2137,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2332,7 +2161,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2357,7 +2187,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2380,7 +2211,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2406,7 +2238,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Get an environment definition from a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2429,7 +2262,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -2455,7 +2289,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * Get an environment definition from a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2478,7 +2313,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -2502,13 +2338,15 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2534,13 +2372,15 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2563,13 +2403,15 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2593,13 +2435,15 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2619,12 +2463,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists the environments for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -2637,19 +2480,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2671,12 +2506,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists the environments for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -2689,19 +2523,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2722,12 +2548,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists the environments for a project and user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -2740,19 +2565,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2775,12 +2592,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists the environments for a project and user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -2793,19 +2609,11 @@ public final class DeploymentEnvironmentsClientImpl {
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2825,16 +2633,16 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all of the catalogs available for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2857,16 +2665,16 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all of the catalogs available for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2886,12 +2694,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment definitions available for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2914,7 +2721,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2937,12 +2745,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment definitions available for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2965,7 +2772,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2986,12 +2794,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment definitions available within a catalog.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3014,7 +2821,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3037,12 +2845,11 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment definitions available within a catalog.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3065,7 +2872,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3086,18 +2894,18 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment types configured for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3119,18 +2927,18 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * Lists all environment types configured for a project.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

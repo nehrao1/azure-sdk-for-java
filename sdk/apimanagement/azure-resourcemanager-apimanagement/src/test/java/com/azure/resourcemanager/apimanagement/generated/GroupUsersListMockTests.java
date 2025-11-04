@@ -6,81 +6,43 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GroupUsersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"firstName\":\"ceg\",\"lastName\":\"tgxkxtcxb\",\"email\":\"beyqohvi\",\"registrationDate\":\"2021-03-06T15:33:16Z\",\"groups\":[{\"displayName\":\"krare\",\"description\":\"lgbvtpxowgoww\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"uamegjkfis\"},{\"displayName\":\"hexu\",\"description\":\"avwesloblit\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"c\"}],\"state\":\"pending\",\"note\":\"js\",\"identities\":[{\"provider\":\"zto\",\"id\":\"jgb\"},{\"provider\":\"lxhwkzfggsuzk\",\"id\":\"antpzuiwazoabth\"},{\"provider\":\"ctcabcpwab\",\"id\":\"ihszfk\"}]},\"id\":\"oidfzwegvuojuwgw\",\"name\":\"ccvufjqv\",\"type\":\"cfsssmyaemkrh\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"firstName\":\"ie\",\"lastName\":\"xhju\",\"email\":\"dalnjjhrgkjjpcpi\",\"registrationDate\":\"2021-10-08T09:05:05Z\",\"groups\":[{\"displayName\":\"vtajfj\",\"description\":\"oidneku\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"anaqvengnp\"},{\"displayName\":\"elr\",\"description\":\"nb\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"xfbagegjtjltcki\"},{\"displayName\":\"xggfagijx\",\"description\":\"boefnhxh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"nvzsodmokrqd\"}],\"state\":\"pending\",\"note\":\"qyjkotyp\",\"identities\":[{\"provider\":\"yzzl\",\"id\":\"jhzppdb\"},{\"provider\":\"mcxbofprsm\",\"id\":\"apesbfz\"},{\"provider\":\"ejrwwsfvt\",\"id\":\"qxtmbl\"},{\"provider\":\"cleuovel\",\"id\":\"prbxjtezujtou\"}]},\"id\":\"odexwmvssrjciexu\",\"name\":\"emt\",\"type\":\"tgebym\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<UserContract> response = manager.groupUsers()
+            .list("pqr", "cz", "tniwfcu", "whxm", 2070192641, 1036414748, com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<UserContract> response =
-            manager
-                .groupUsers()
-                .list(
-                    "izmpnxghamrpla",
-                    "chqotmmxlmxejwyv",
-                    "z",
-                    "jwvtuekbbypqsm",
-                    639032115,
-                    996756501,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ie", response.iterator().next().firstName());
-        Assertions.assertEquals("xhju", response.iterator().next().lastName());
-        Assertions.assertEquals("dalnjjhrgkjjpcpi", response.iterator().next().email());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-08T09:05:05Z"), response.iterator().next().registrationDate());
+        Assertions.assertEquals("ceg", response.iterator().next().firstName());
+        Assertions.assertEquals("tgxkxtcxb", response.iterator().next().lastName());
+        Assertions.assertEquals("beyqohvi", response.iterator().next().email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T15:33:16Z"),
+            response.iterator().next().registrationDate());
         Assertions.assertEquals(UserState.PENDING, response.iterator().next().state());
-        Assertions.assertEquals("qyjkotyp", response.iterator().next().note());
-        Assertions.assertEquals("yzzl", response.iterator().next().identities().get(0).provider());
-        Assertions.assertEquals("jhzppdb", response.iterator().next().identities().get(0).id());
+        Assertions.assertEquals("js", response.iterator().next().note());
+        Assertions.assertEquals("zto", response.iterator().next().identities().get(0).provider());
+        Assertions.assertEquals("jgb", response.iterator().next().identities().get(0).id());
     }
 }

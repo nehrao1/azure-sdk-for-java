@@ -5,16 +5,14 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.WindowedSubscriber;
 import com.azure.core.amqp.implementation.WindowedSubscriber.WindowedSubscriberOptions;
-import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,9 +23,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * A type that channels synchronous receive requests to a backing asynchronous receiver client.
  */
 final class SynchronousPartitionReceiver {
-    private static final String TERMINAL_MESSAGE = "The receiver client is terminated. Re-create the client to continue receive attempt.";
-    private static final String SYNC_RECEIVE_SPAN_NAME = "EventHubs.receiveFromPartition";
-    private final EventHubsTracer tracer;
+    private static final String TERMINAL_MESSAGE
+        = "The receiver client is terminated. Re-create the client to continue receive attempt.";
+    private final EventHubsConsumerInstrumentation instrumentation;
     private final AtomicReference<Receiver> receiver = new AtomicReference<>(null);
 
     /**
@@ -38,7 +36,7 @@ final class SynchronousPartitionReceiver {
     SynchronousPartitionReceiver(EventHubConsumerAsyncClient client) {
         Objects.requireNonNull(client, "'client' cannot be null.");
         this.receiver.set(new DelegatingReceiver(client));
-        this.tracer = client.getInstrumentation().getTracer();
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -88,14 +86,15 @@ final class SynchronousPartitionReceiver {
         final WindowedSubscriberOptions<PartitionEvent> options = new WindowedSubscriberOptions<>();
         options.setWindowDecorator(toDecorate -> {
             // Decorates the provided 'toDecorate' flux for tracing the signals (events, termination) it produces.
-            final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-            return tracer.reportSyncReceiveSpan(SYNC_RECEIVE_SPAN_NAME, startTime, toDecorate, Context.NONE);
+            return instrumentation.syncReceive(toDecorate, partitionId);
         });
-        return new WindowedSubscriber<>(Collections.singletonMap(PARTITION_ID_KEY, partitionId), TERMINAL_MESSAGE, options);
+        return new WindowedSubscriber<>(Collections.singletonMap(PARTITION_ID_KEY, partitionId), TERMINAL_MESSAGE,
+            options);
     }
 
     private interface Receiver {
-        Receiver DISPOSED = (partitionId, startingPosition, receiveOptions) -> Flux.error(new RuntimeException(TERMINAL_MESSAGE));
+        Receiver DISPOSED
+            = (partitionId, startingPosition, receiveOptions) -> Flux.error(new RuntimeException(TERMINAL_MESSAGE));
 
         Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition, ReceiveOptions receiveOptions);
     }
@@ -108,7 +107,8 @@ final class SynchronousPartitionReceiver {
         }
 
         @Override
-        public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition, ReceiveOptions receiveOptions) {
+        public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition,
+            ReceiveOptions receiveOptions) {
             assert client.isV2();
             return client.receiveFromPartition(partitionId, startingPosition, receiveOptions);
         }

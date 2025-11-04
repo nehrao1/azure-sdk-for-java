@@ -8,11 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Monitors. */
+/**
+ * Resource collection API of Monitors.
+ */
 public interface Monitors {
     /**
-     * List all monitors under the specified subscription.
-     *
+     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
+     * setup.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
@@ -20,8 +23,9 @@ public interface Monitors {
     PagedIterable<ElasticMonitorResource> list();
 
     /**
-     * List all monitors under the specified subscription.
-     *
+     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
+     * setup.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,9 +35,10 @@ public interface Monitors {
     PagedIterable<ElasticMonitorResource> list(Context context);
 
     /**
-     * List all monitors under the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
+     * manage your monitoring setup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,9 +47,10 @@ public interface Monitors {
     PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all monitors under the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
+     * manage your monitoring setup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,35 +60,38 @@ public interface Monitors {
     PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource along with {@link Response}.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance along with {@link Response}.
      */
-    Response<ElasticMonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<ElasticMonitorResource> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance.
      */
     ElasticMonitorResource getByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -91,9 +100,10 @@ public interface Monitors {
     void deleteByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,31 +113,34 @@ public interface Monitors {
     void delete(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource along with {@link Response}.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance along with {@link Response}.
      */
     ElasticMonitorResource getById(String id);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource along with {@link Response}.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance along with {@link Response}.
      */
     Response<ElasticMonitorResource> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a monitor resource.
-     *
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,8 +149,9 @@ public interface Monitors {
     void deleteById(String id);
 
     /**
-     * Delete a monitor resource.
-     *
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +162,7 @@ public interface Monitors {
 
     /**
      * Begins definition for a new ElasticMonitorResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ElasticMonitorResource definition.
      */

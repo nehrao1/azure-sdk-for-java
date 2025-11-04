@@ -54,7 +54,7 @@ public final class FailActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private FailActivityTypeProperties innerTypeProperties() {
+    FailActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -171,13 +171,22 @@ public final class FailActivity extends ControlActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model FailActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model FailActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 

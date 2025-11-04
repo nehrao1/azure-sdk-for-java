@@ -12,24 +12,24 @@ public final class VolumeBackupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeBackups model = BinaryData.fromString(
-            "{\"volumeName\":\"bzkdvn\",\"volumeResourceId\":\"abudurgk\",\"backupsCount\":289225140,\"policyEnabled\":false}")
+            "{\"volumeName\":\"ajpjo\",\"volumeResourceId\":\"kqnyh\",\"backupsCount\":506694346,\"policyEnabled\":true}")
             .toObject(VolumeBackups.class);
-        Assertions.assertEquals("bzkdvn", model.volumeName());
-        Assertions.assertEquals("abudurgk", model.volumeResourceId());
-        Assertions.assertEquals(289225140, model.backupsCount());
-        Assertions.assertEquals(false, model.policyEnabled());
+        Assertions.assertEquals("ajpjo", model.volumeName());
+        Assertions.assertEquals("kqnyh", model.volumeResourceId());
+        Assertions.assertEquals(506694346, model.backupsCount());
+        Assertions.assertTrue(model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeBackups model = new VolumeBackups().withVolumeName("bzkdvn")
-            .withVolumeResourceId("abudurgk")
-            .withBackupsCount(289225140)
-            .withPolicyEnabled(false);
+        VolumeBackups model = new VolumeBackups().withVolumeName("ajpjo")
+            .withVolumeResourceId("kqnyh")
+            .withBackupsCount(506694346)
+            .withPolicyEnabled(true);
         model = BinaryData.fromObject(model).toObject(VolumeBackups.class);
-        Assertions.assertEquals("bzkdvn", model.volumeName());
-        Assertions.assertEquals("abudurgk", model.volumeResourceId());
-        Assertions.assertEquals(289225140, model.backupsCount());
-        Assertions.assertEquals(false, model.policyEnabled());
+        Assertions.assertEquals("ajpjo", model.volumeName());
+        Assertions.assertEquals("kqnyh", model.volumeResourceId());
+        Assertions.assertEquals(506694346, model.backupsCount());
+        Assertions.assertTrue(model.policyEnabled());
     }
 }

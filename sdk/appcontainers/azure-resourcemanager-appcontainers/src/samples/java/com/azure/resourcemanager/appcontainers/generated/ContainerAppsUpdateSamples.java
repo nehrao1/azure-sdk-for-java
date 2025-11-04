@@ -18,11 +18,14 @@ import com.azure.resourcemanager.appcontainers.models.ContainerResources;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import com.azure.resourcemanager.appcontainers.models.CustomScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
+import com.azure.resourcemanager.appcontainers.models.DaprAppHealth;
 import com.azure.resourcemanager.appcontainers.models.Ingress;
 import com.azure.resourcemanager.appcontainers.models.IngressStickySessions;
 import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
+import com.azure.resourcemanager.appcontainers.models.Runtime;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
 import com.azure.resourcemanager.appcontainers.models.Scale;
 import com.azure.resourcemanager.appcontainers.models.ScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Service;
@@ -40,7 +43,8 @@ import java.util.Map;
 public final class ContainerAppsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Patch.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ContainerApps_Patch.
+     * json
      */
     /**
      * Sample code: Patch Container App.
@@ -90,7 +94,14 @@ public final class ContainerAppsUpdateSamples {
                         .withHttpReadBufferSize(30)
                         .withHttpMaxRequestSize(10)
                         .withLogLevel(LogLevel.DEBUG)
-                        .withEnableApiLogging(true))
+                        .withEnableApiLogging(true)
+                        .withAppHealth(new DaprAppHealth().withEnabled(true)
+                            .withPath("/health")
+                            .withProbeIntervalSeconds(3)
+                            .withProbeTimeoutMilliseconds(1000)
+                            .withThreshold(3))
+                        .withMaxConcurrency(10))
+                    .withRuntime(new Runtime().withJava(new RuntimeJava().withEnableMetrics(true)))
                     .withMaxInactiveRevisions(10)
                     .withService(new Service().withType("redis")))
             .withTemplate(new Template()
@@ -110,6 +121,8 @@ public final class ContainerAppsUpdateSamples {
                 .withScale(
                     new Scale().withMinReplicas(1)
                         .withMaxReplicas(5)
+                        .withCooldownPeriod(350)
+                        .withPollingInterval(35)
                         .withRules(
                             Arrays.asList(new ScaleRule().withName("httpscalingrule")
                                 .withCustom(new CustomScaleRule().withType("http")

@@ -48,7 +48,7 @@ public final class WranglingDataFlow extends DataFlow {
      * 
      * @return the innerTypeProperties value.
      */
-    private PowerQueryTypeProperties innerTypeProperties() {
+    PowerQueryTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -155,9 +155,11 @@ public final class WranglingDataFlow extends DataFlow {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 

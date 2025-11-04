@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
@@ -120,7 +121,7 @@ class AadResourceServerConfigurationTests {
                 TestAadResourceServerConfiguration.class,
                 AadAutoConfiguration.class)
             .withPropertyValues(withResourceServerPropertyValues())
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .run(context -> {
                 SecurityFilterChain filterChain = context.getBean(SecurityFilterChain.class);
                 assertThat(filterChain).isNotNull();
@@ -170,7 +171,7 @@ class AadResourceServerConfigurationTests {
                 TestAadResourceServerConfiguration.class,
                 AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
@@ -186,12 +187,13 @@ class AadResourceServerConfigurationTests {
 
         private HttpSecurity savedResourceServerHttpSecurity;
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
                                                              TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
-            http.apply(aadResourceServer()
-                    .jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
+
+            http.with(aadResourceServer(), customizer ->
+                customizer.jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter)
+            );
             savedResourceServerHttpSecurity = http;
             return http.build();
         }

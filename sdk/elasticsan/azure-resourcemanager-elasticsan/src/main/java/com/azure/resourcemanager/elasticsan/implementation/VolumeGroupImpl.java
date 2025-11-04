@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
@@ -70,10 +71,19 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public Boolean enforceDataIntegrityCheckForIscsi() {
+        return this.innerModel().enforceDataIntegrityCheckForIscsi();
+    }
+
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerModel().deleteRetentionPolicy();
     }
 
     public String resourceGroupName() {
@@ -103,14 +113,16 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup create() {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups().create(resourceGroupName, elasticSanName,
-            volumeGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .create(resourceGroupName, elasticSanName, volumeGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VolumeGroup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups().create(resourceGroupName, elasticSanName,
-            volumeGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .create(resourceGroupName, elasticSanName, volumeGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -126,14 +138,16 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup apply() {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups().update(resourceGroupName, elasticSanName,
-            volumeGroupName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .update(resourceGroupName, elasticSanName, volumeGroupName, updateParameters, Context.NONE);
         return this;
     }
 
     public VolumeGroup apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups().update(resourceGroupName, elasticSanName,
-            volumeGroupName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .update(resourceGroupName, elasticSanName, volumeGroupName, updateParameters, context);
         return this;
     }
 
@@ -147,14 +161,18 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup refresh() {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VolumeGroup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeGroups()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeGroups()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context)
+            .getValue();
         return this;
     }
 
@@ -204,6 +222,26 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
             return this;
         } else {
             this.updateParameters.withNetworkAcls(networkAcls);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi) {
+        if (isInCreateMode()) {
+            this.innerModel().withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+            return this;
+        } else {
+            this.updateParameters.withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeleteRetentionPolicy(deleteRetentionPolicy);
+            return this;
+        } else {
+            this.updateParameters.withDeleteRetentionPolicy(deleteRetentionPolicy);
             return this;
         }
     }

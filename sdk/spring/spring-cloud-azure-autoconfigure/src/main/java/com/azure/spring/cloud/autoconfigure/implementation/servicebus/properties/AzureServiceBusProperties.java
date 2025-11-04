@@ -255,7 +255,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
      */
     public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
         /**
-         * Max concurrent messages to process.
+         * Max concurrent messages to process. When session enabled, it applies to each session.
          */
         private Integer maxConcurrentCalls;
         /**
@@ -267,6 +267,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          * Whether to automatically start the processor after initialization.
          */
         private boolean autoStartup = true;
+
+        /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         */
+        private Duration sessionIdleTimeout;
 
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
@@ -290,6 +295,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setAutoStartup(boolean autoStartup) {
             this.autoStartup = autoStartup;
+        }
+
+        public Duration getSessionIdleTimeout() {
+            return sessionIdleTimeout;
+        }
+
+        public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
+            this.sessionIdleTimeout = sessionIdleTimeout;
         }
     }
 

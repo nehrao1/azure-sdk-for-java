@@ -12,41 +12,38 @@ import org.junit.jupiter.api.Assertions;
 public final class TenantConfigurationSyncStateContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantConfigurationSyncStateContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"branch\":\"unsbfjhhlw\",\"commitId\":\"kvegeattbzkgtzq\",\"isExport\":true,\"isSynced\":true,\"isGitEnabled\":true,\"syncDate\":\"2021-12-03T01:55:12Z\",\"configurationChangeDate\":\"2021-05-18T12:42:31Z\",\"lastOperationId\":\"sjeufjxflpd\"}")
-                .toObject(TenantConfigurationSyncStateContractProperties.class);
-        Assertions.assertEquals("unsbfjhhlw", model.branch());
-        Assertions.assertEquals("kvegeattbzkgtzq", model.commitId());
-        Assertions.assertEquals(true, model.isExport());
-        Assertions.assertEquals(true, model.isSynced());
-        Assertions.assertEquals(true, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:55:12Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T12:42:31Z"), model.configurationChangeDate());
-        Assertions.assertEquals("sjeufjxflpd", model.lastOperationId());
+        TenantConfigurationSyncStateContractProperties model = BinaryData.fromString(
+            "{\"branch\":\"evfiyymotu\",\"commitId\":\"ybwjmtftc\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":false,\"syncDate\":\"2021-06-22T09:02:33Z\",\"configurationChangeDate\":\"2021-01-12T10:32:48Z\",\"lastOperationId\":\"tpaqpibjgb\"}")
+            .toObject(TenantConfigurationSyncStateContractProperties.class);
+        Assertions.assertEquals("evfiyymotu", model.branch());
+        Assertions.assertEquals("ybwjmtftc", model.commitId());
+        Assertions.assertFalse(model.isExport());
+        Assertions.assertTrue(model.isSynced());
+        Assertions.assertFalse(model.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T09:02:33Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T10:32:48Z"), model.configurationChangeDate());
+        Assertions.assertEquals("tpaqpibjgb", model.lastOperationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TenantConfigurationSyncStateContractProperties model =
-            new TenantConfigurationSyncStateContractProperties()
-                .withBranch("unsbfjhhlw")
-                .withCommitId("kvegeattbzkgtzq")
-                .withIsExport(true)
+        TenantConfigurationSyncStateContractProperties model
+            = new TenantConfigurationSyncStateContractProperties().withBranch("evfiyymotu")
+                .withCommitId("ybwjmtftc")
+                .withIsExport(false)
                 .withIsSynced(true)
-                .withIsGitEnabled(true)
-                .withSyncDate(OffsetDateTime.parse("2021-12-03T01:55:12Z"))
-                .withConfigurationChangeDate(OffsetDateTime.parse("2021-05-18T12:42:31Z"))
-                .withLastOperationId("sjeufjxflpd");
+                .withIsGitEnabled(false)
+                .withSyncDate(OffsetDateTime.parse("2021-06-22T09:02:33Z"))
+                .withConfigurationChangeDate(OffsetDateTime.parse("2021-01-12T10:32:48Z"))
+                .withLastOperationId("tpaqpibjgb");
         model = BinaryData.fromObject(model).toObject(TenantConfigurationSyncStateContractProperties.class);
-        Assertions.assertEquals("unsbfjhhlw", model.branch());
-        Assertions.assertEquals("kvegeattbzkgtzq", model.commitId());
-        Assertions.assertEquals(true, model.isExport());
-        Assertions.assertEquals(true, model.isSynced());
-        Assertions.assertEquals(true, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:55:12Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T12:42:31Z"), model.configurationChangeDate());
-        Assertions.assertEquals("sjeufjxflpd", model.lastOperationId());
+        Assertions.assertEquals("evfiyymotu", model.branch());
+        Assertions.assertEquals("ybwjmtftc", model.commitId());
+        Assertions.assertFalse(model.isExport());
+        Assertions.assertTrue(model.isSynced());
+        Assertions.assertFalse(model.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T09:02:33Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T10:32:48Z"), model.configurationChangeDate());
+        Assertions.assertEquals("tpaqpibjgb", model.lastOperationId());
     }
 }

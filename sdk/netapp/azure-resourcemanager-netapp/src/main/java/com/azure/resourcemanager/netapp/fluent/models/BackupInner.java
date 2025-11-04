@@ -31,9 +31,9 @@ public final class BackupInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +41,9 @@ public final class BackupInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of BackupInner class.
@@ -70,13 +70,13 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -90,13 +90,13 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -115,6 +115,24 @@ public final class BackupInner extends ProxyResource {
      */
     public OffsetDateTime creationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().creationDate();
+    }
+
+    /**
+     * Get the snapshotCreationDate property: The snapshot creation date of the backup.
+     * 
+     * @return the snapshotCreationDate value.
+     */
+    public OffsetDateTime snapshotCreationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotCreationDate();
+    }
+
+    /**
+     * Get the completionDate property: The completion date of the backup.
+     * 
+     * @return the completionDate value.
+     */
+    public OffsetDateTime completionDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().completionDate();
     }
 
     /**
@@ -254,6 +272,15 @@ public final class BackupInner extends ProxyResource {
      */
     public String backupPolicyResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().backupPolicyResourceId();
+    }
+
+    /**
+     * Get the isLargeVolume property: Specifies if the backup is for a large volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLargeVolume();
     }
 
     /**

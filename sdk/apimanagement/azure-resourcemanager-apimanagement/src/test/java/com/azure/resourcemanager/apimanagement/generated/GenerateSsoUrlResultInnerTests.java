@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateSsoUrlResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateSsoUrlResultInner model =
-            BinaryData.fromString("{\"value\":\"dlhzwhcu\"}").toObject(GenerateSsoUrlResultInner.class);
-        Assertions.assertEquals("dlhzwhcu", model.value());
+        GenerateSsoUrlResultInner model
+            = BinaryData.fromString("{\"value\":\"q\"}").toObject(GenerateSsoUrlResultInner.class);
+        Assertions.assertEquals("q", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateSsoUrlResultInner model = new GenerateSsoUrlResultInner().withValue("dlhzwhcu");
+        GenerateSsoUrlResultInner model = new GenerateSsoUrlResultInner().withValue("q");
         model = BinaryData.fromObject(model).toObject(GenerateSsoUrlResultInner.class);
-        Assertions.assertEquals("dlhzwhcu", model.value());
+        Assertions.assertEquals("q", model.value());
     }
 }

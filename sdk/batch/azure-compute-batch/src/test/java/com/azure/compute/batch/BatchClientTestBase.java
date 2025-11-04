@@ -6,20 +6,18 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
-import com.azure.compute.batch.models.ImageReference;
-import com.azure.compute.batch.models.LinuxUserConfiguration;
-import com.azure.compute.batch.models.ListBatchTasksOptions;
+import com.azure.compute.batch.models.BatchTasksListOptions;
+import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -50,15 +48,15 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 class BatchClientTestBase extends TestProxyTestBase {
     protected BatchClientBuilder batchClientBuilder;
 
     protected BatchClient batchClient;
+
+    protected BatchAsyncClient batchAsyncClient;
 
     static final int MAX_LEN_ID = 64;
 
@@ -71,14 +69,13 @@ class BatchClientTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        batchClientBuilder =
-            new BatchClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        batchClientBuilder = new BatchClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration()
+                .get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            batchClientBuilder
-                .httpClient(interceptorManager.getPlaybackClient())
+            batchClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
 
             addTestRulesOnPlayback(interceptorManager);
@@ -94,6 +91,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         authenticateClient(AuthMode.AAD);
 
         batchClient = batchClientBuilder.buildClient();
+        batchAsyncClient = batchClientBuilder.buildAsyncClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
@@ -106,7 +104,8 @@ class BatchClientTestBase extends TestProxyTestBase {
     public void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
         List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
         testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
-        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers
+            .add(new TestProxySanitizer("$..containerUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(testProxySanitizers);
     }
 
@@ -158,20 +157,20 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                .setSku("18.04-LTS").setVersion("latest");
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
+                .setOffer("windowsserver")
+                .setSku("2022-datacenter-smalldisk");
 
-            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+            VirtualMachineConfiguration configuration
+                = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
 
             List<UserAccount> userList = new ArrayList<>();
-            userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA")
-                .setLinuxUserConfiguration(new LinuxUserConfiguration().setUid(5).setGid(5))
-                .setElevationLevel(ElevationLevel.ADMIN));
+            userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA").setElevationLevel(ElevationLevel.ADMIN));
 
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setVirtualMachineConfiguration(configuration)
                 .setUserAccounts(userList)
@@ -182,7 +181,6 @@ class BatchClientTestBase extends TestProxyTestBase {
             System.out.printf("The %s already exists.%n", poolId);
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
-
 
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
@@ -201,7 +199,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 30 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 
@@ -223,8 +221,7 @@ class BatchClientTestBase extends TestProxyTestBase {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            NetworkManager manager = NetworkManager
-                .authenticate(credential, profile);
+            NetworkManager manager = NetworkManager.authenticate(credential, profile);
 
             PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
             boolean networksFound = false;
@@ -235,7 +232,8 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
 
             if (!networksFound) {
-                Network network = manager.networks().define(vnetName)
+                Network network = manager.networks()
+                    .define(vnetName)
                     .withRegion(localConfig.get("AZURE_BATCH_REGION"))
                     .withExistingResourceGroup(vnetResourceGroup)
                     .withAddressSpace(localConfig.get("AZURE_VNET_ADDRESS_SPACE"))
@@ -245,11 +243,8 @@ class BatchClientTestBase extends TestProxyTestBase {
         }
 
         String vNetResourceId = String.format(
-            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
-            subId,
-            vnetResourceGroup,
-            vnetName,
-            subnetName);
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s", subId,
+            vnetResourceGroup, vnetName, subnetName);
 
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
@@ -258,13 +253,20 @@ class BatchClientTestBase extends TestProxyTestBase {
         return batchClient.poolExists(poolId);
     }
 
+    static Mono<Boolean> poolExists(BatchAsyncClient batchAsyncClient, String poolId) {
+        return batchAsyncClient.poolExists(poolId);
+    }
+
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
-                                                   String containerName) throws BlobStorageException {
+        String containerName) throws BlobStorageException {
         // Create storage credential from name and key
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
         StorageSharedKeyCredential credentials = new StorageSharedKeyCredential(storageAccountName, storageAccountKey);
 
-        return new BlobContainerClientBuilder().credential(credentials).containerName(containerName).endpoint(endPoint).buildClient();
+        return new BlobContainerClientBuilder().credential(credentials)
+            .containerName(containerName)
+            .endpoint(endPoint)
+            .buildClient();
     }
 
     /**
@@ -286,8 +288,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         blobClient.uploadFromFile(source.getPath());
 
         // Create policy with 1 day read permission
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true);
+        BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -301,9 +302,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         container.createIfNotExists();
 
         // Create policy with 1 day read permission
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true);
+        BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true).setWritePermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -319,7 +318,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         while (elapsedTime < expiryTimeInSeconds * 1000L) {
 
-            ListBatchTasksOptions options = new ListBatchTasksOptions();
+            BatchTasksListOptions options = new BatchTasksListOptions();
             options.setSelect(Arrays.asList("id", "state"));
             PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, options);
 
@@ -341,11 +340,44 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 10 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 
         // Timeout, return false
+        return false;
+    }
+
+    boolean waitForTasksToComplete(BatchAsyncClient batchAsyncClient, String jobId, int expiryTimeInSeconds) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
+        while (elapsedTime < expiryTimeInSeconds * 1000L) {
+            BatchTasksListOptions options = new BatchTasksListOptions();
+            options.setSelect(Arrays.asList("id", "state"));
+
+            Iterable<BatchTask> taskIterator = batchAsyncClient.listTasks(jobId, options).toIterable();
+
+            boolean allComplete = true;
+            for (BatchTask task : taskIterator) {
+                if (task.getState() != BatchTaskState.COMPLETED) {
+                    allComplete = false;
+                    break;
+                }
+            }
+
+            if (allComplete) {
+                return true;
+            }
+
+            sleepIfRunningAgainstService(10 * 1000);
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 10 * 1000;
+            } else {
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
+        }
+
         return false;
     }
 
@@ -370,11 +402,44 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 30 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 
-        Assertions.assertTrue(allocationStateReached, "The pool did not reach a allocationStateReached state in the allotted time");
+        Assertions.assertTrue(allocationStateReached,
+            "The pool did not reach a allocationStateReached state in the allotted time");
+        return pool;
+    }
+
+    BatchPool waitForPoolStateAsync(String poolId, AllocationState targetState,
+        long poolAllocationTimeoutInMilliseconds) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+        boolean allocationStateReached = false;
+        BatchPool pool = null;
+
+        // Wait for the pool to reach the desired allocation state
+        while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
+            pool = batchAsyncClient.getPool(poolId).block();  // <-- updated to async client
+            Assertions.assertNotNull(pool);
+
+            if (pool.getAllocationState() == targetState) {
+                allocationStateReached = true;
+                break;
+            }
+
+            System.out.println("wait 30 seconds for pool allocationStateReached...");
+            sleepIfRunningAgainstService(30 * 1000);
+
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 30 * 1000;
+            } else {
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
+        }
+
+        Assertions.assertTrue(allocationStateReached,
+            "The pool did not reach the allocationStateReached state in the allotted time");
         return pool;
     }
 

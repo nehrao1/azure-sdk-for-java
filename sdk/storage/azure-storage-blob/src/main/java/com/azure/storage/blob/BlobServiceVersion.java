@@ -127,7 +127,27 @@ public enum BlobServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2024-11-04}.
      */
-    V2024_11_04("2024-11-04");
+    V2024_11_04("2024-11-04"),
+
+    /**
+     * Service version {@code 2025-01-05}.
+     */
+    V2025_01_05("2025-01-05"),
+
+    /**
+     * Service version {@code 2025-05-05}.
+     */
+    V2025_05_05("2025-05-05"),
+
+    /**
+     * Service version {@code 2025-07-05}.
+     */
+    V2025_07_05("2025-07-05"),
+
+    /**
+     * Service version {@code 2025-11-05}.
+     */
+    V2025_11_05("2025-11-05");
 
     private final String version;
 
@@ -149,6 +169,6 @@ public enum BlobServiceVersion implements ServiceVersion {
      * @return the latest {@link BlobServiceVersion}
      */
     public static BlobServiceVersion getLatest() {
-        return V2024_11_04;
+        return V2025_11_05;
     }
 }

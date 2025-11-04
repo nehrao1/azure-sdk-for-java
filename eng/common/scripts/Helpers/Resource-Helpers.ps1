@@ -38,6 +38,32 @@ function Get-PurgeableGroupResources {
     $purgeableResources += $deletedKeyVaults
   }
 
+  Write-Verbose "Retrieving AI resources from resource group $ResourceGroupName"
+
+  # Get AI resources that will go into soft-deleted state when the resource group is deleted
+  $subscriptionId = (Get-AzContext).Subscription.Id
+  $aiResources = @()
+
+  # Get active Cognitive Services accounts from the resource group
+  $response = Invoke-AzRestMethod -Method GET -Path "/subscriptions/$subscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.CognitiveServices/accounts?api-version=2024-10-01" -ErrorAction Ignore
+  if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300 -and $response.Content) {
+    $content = $response.Content | ConvertFrom-Json
+    
+    foreach ($r in $content.value) {
+      $aiResources += [pscustomobject] @{
+        AzsdkResourceType = "Cognitive Services ($($r.kind))"
+        AzsdkName         = $r.name
+        Name              = $r.name
+        Id                = $r.id
+      }
+    }
+  }
+
+  if ($aiResources) {
+    Write-Verbose "Found $($aiResources.Count) AI resources to potentially purge after resource group deletion."
+    $purgeableResources += $aiResources
+  }
+
   return $purgeableResources
 }
 
@@ -94,6 +120,29 @@ function Get-PurgeableResources {
   }
   catch { }
 
+  Write-Verbose "Retrieving deleted Cognitive Services accounts from subscription $subscriptionId"
+
+  # Get deleted Cognitive Services accounts for the current subscription.
+  $response = Invoke-AzRestMethod -Method GET -Path "/subscriptions/$subscriptionId/providers/Microsoft.CognitiveServices/deletedAccounts?api-version=2024-10-01" -ErrorAction Ignore
+  if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300 -and $response.Content) {
+    $content = $response.Content | ConvertFrom-Json
+
+    $deletedCognitiveServices = @()
+    foreach ($r in $content.value) {
+      $deletedCognitiveServices += [pscustomobject] @{
+        AzsdkResourceType = "Cognitive Services ($($r.kind))"
+        AzsdkName         = $r.name
+        Name              = $r.name
+        Id                = $r.id
+      }
+    }
+
+    if ($deletedCognitiveServices) {
+      Write-Verbose "Found $($deletedCognitiveServices.Count) deleted Cognitive Services accounts to potentially purge."
+      $purgeableResources += $deletedCognitiveServices
+    }
+  }
+
   return $purgeableResources
 }
 
@@ -117,15 +166,17 @@ filter Remove-PurgeableResources {
   }
 
   $subscriptionId = (Get-AzContext).Subscription.Id
+  $verboseFlag = $VerbosePreference -eq 'Continue'
 
   foreach ($r in $Resource) {
-    Log "Attempting to purge $($r.AzsdkResourceType) '$($r.AzsdkName)'"
     switch ($r.AzsdkResourceType) {
       'Key Vault' {
         if ($r.EnablePurgeProtection) {
-          # We will try anyway but will ignore errors.
-          Write-Warning "Key Vault '$($r.VaultName)' has purge protection enabled and may not be purged until $($r.ScheduledPurgeDate)"
+          Write-Verbose "Key Vault '$($r.VaultName)' has purge protection enabled and may not be purged until $($r.ScheduledPurgeDate)" -Verbose:$verboseFlag
+          continue
         }
+
+        Log "Attempting to purge $($r.AzsdkResourceType) '$($r.AzsdkName)'"
 
         # Use `-AsJob` to start a lightweight, cancellable job and pass to `Wait-PurgeableResoruceJob` for consistent behavior.
         Remove-AzKeyVault -VaultName $r.VaultName -Location $r.Location -InRemovedState -Force -ErrorAction Continue -AsJob `
@@ -134,16 +185,18 @@ filter Remove-PurgeableResources {
 
       'Managed HSM' {
         if ($r.EnablePurgeProtection) {
-          # We will try anyway but will ignore errors.
-          Write-Warning "Managed HSM '$($r.Name)' has purge protection enabled and may not be purged until $($r.ScheduledPurgeDate)"
+          Write-Verbose "Managed HSM '$($r.Name)' has purge protection enabled and may not be purged until $($r.ScheduledPurgeDate)" -Verbose:$verboseFlag
+          continue
         }
+
+        Log "Attempting to purge $($r.AzsdkResourceType) '$($r.AzsdkName)'"
 
         # Use `GetNewClosure()` on the `-Action` ScriptBlock to make sure variables are captured.
         Invoke-AzRestMethod -Method POST -Path "/subscriptions/$subscriptionId/providers/Microsoft.KeyVault/locations/$($r.Location)/deletedManagedHSMs/$($r.Name)/purge?api-version=2023-02-01" -ErrorAction Ignore -AsJob `
         | Wait-PurgeableResourceJob -Resource $r -Timeout $Timeout -PassThru:$PassThru -Action {
           param ( $response )
           if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
-            Write-Warning "Successfully requested that Managed HSM '$($r.Name)' be purged, but may take a few minutes before it is actually purged."
+            Write-Verbose "Successfully requested that Managed HSM '$($r.Name)' be purged, but may take a few minutes before it is actually purged." -Verbose:$verboseFlag
           }
           elseif ($response.Content) {
             $content = $response.Content | ConvertFrom-Json
@@ -151,6 +204,22 @@ filter Remove-PurgeableResources {
               $err = $content.error
               Write-Warning "Failed to deleted Managed HSM '$($r.Name)': ($($err.code)) $($err.message)"
             }
+          }
+        }.GetNewClosure()
+      }
+
+      { $_.StartsWith('Cognitive Services') }
+      {
+        Log "Attempting to purge $($r.AzsdkResourceType) '$($r.AzsdkName)'"
+        # Use `GetNewClosure()` on the `-Action` ScriptBlock to make sure variables are captured.
+        Invoke-AzRestMethod -Method DELETE -Path "$($r.id)?api-version=2024-10-01" -ErrorAction Ignore -AsJob `
+        | Wait-PurgeableResourceJob -Resource $r -Timeout $Timeout -PassThru:$PassThru -Action {
+          param ( $response )
+
+          if ($response.StatusCode -eq 200 -or $response.StatusCode -eq 202 -or $response.StatusCode -eq 204) {
+            Write-Verbose "Successfully purged $($r.AzsdkResourceType) '$($r.Name)'." -Verbose:$verboseFlag
+          } else {
+            Write-Warning "Failed purging $($r.AzsdkResourceType) '$($r.Name)' with status code $($response.StatusCode)."
           }
         }.GetNewClosure()
       }
@@ -223,8 +292,8 @@ function Remove-WormStorageAccounts() {
   # DO NOT REMOVE THIS
   # We call this script from live test pipelines as well, and a string mismatch/error could blow away
   # some static storage accounts we rely on
-  if (!$groupPrefix -or ($CI -and !$GroupPrefix.StartsWith('rg-'))) {
-    throw "The -GroupPrefix parameter must not be empty, or must start with 'rg-' in CI contexts"
+  if (!$groupPrefix -or ($CI -and (!$GroupPrefix.StartsWith('rg-') -and !$GroupPrefix.StartsWith('SSS3PT_rg-')))) {
+    throw "The -GroupPrefix parameter must not be empty, or must start with 'rg-' or 'SSS3PT_rg-' in CI contexts"
   }
 
   $groups = Get-AzResourceGroup | Where-Object { $_.ResourceGroupName.StartsWith($GroupPrefix) } | Where-Object { $_.ProvisioningState -ne 'Deleting' }
@@ -232,78 +301,10 @@ function Remove-WormStorageAccounts() {
   foreach ($group in $groups) {
     Write-Host "========================================="
     $accounts = Get-AzStorageAccount -ResourceGroupName $group.ResourceGroupName
-    if ($accounts) {
-      foreach ($account in $accounts) {
-        if ($WhatIfPreference) {
-          Write-Host "What if: Removing $($account.StorageAccountName) in $($account.ResourceGroupName)"
-        }
-        else {
-          Write-Host "Removing $($account.StorageAccountName) in $($account.ResourceGroupName)"
-        }
+    if (!$accounts) { break }
 
-        $hasContainers = ($account.Kind -ne "FileStorage")
-
-        # If it doesn't have containers then we can skip the explicit clean-up of this storage account
-        if (!$hasContainers) { continue }
-
-        $ctx = New-AzStorageContext -StorageAccountName $account.StorageAccountName
-
-        $immutableBlobs = $ctx `
-        | Get-AzStorageContainer `
-        | Where-Object { $_.BlobContainerProperties.HasImmutableStorageWithVersioning } `
-        | Get-AzStorageBlob
-        try {
-          foreach ($blob in $immutableBlobs) {
-            Write-Host "Removing legal hold - blob: $($blob.Name), account: $($account.StorageAccountName), group: $($group.ResourceGroupName)"
-            $blob | Set-AzStorageBlobLegalHold -DisableLegalHold | Out-Null
-          }
-        }
-        catch {
-          Write-Warning "User must have 'Storage Blob Data Owner' RBAC permission on subscription or resource group"
-          Write-Error $_
-          throw
-        }
-        # Sometimes we get a 404 blob not found but can still delete containers,
-        # and sometimes we must delete the blob if there's a legal hold.
-        # Try to remove the blob, but keep running regardless.
-        $succeeded = $false
-        for ($attempt = 0; $attempt -lt 2; $attempt++) {
-          if ($succeeded) {
-            break
-          }
-
-          try {
-            Write-Host "Removing immutability policies - account: $($ctx.StorageAccountName), group: $($group.ResourceGroupName)"
-            $null = $ctx | Get-AzStorageContainer | Get-AzStorageBlob | Remove-AzStorageBlobImmutabilityPolicy
-          }
-          catch {}
-
-          try {
-            $ctx | Get-AzStorageContainer | Get-AzStorageBlob | Remove-AzStorageBlob -Force
-            $succeeded = $true
-          }
-          catch {
-            Write-Warning "Failed to remove blobs - account: $($ctx.StorageAccountName), group: $($group.ResourceGroupName)"
-            Write-Warning $_
-          }
-        }
-
-        try {
-          # Use AzRm cmdlet as deletion will only work through ARM with the immutability policies defined on the blobs
-          $ctx | Get-AzStorageContainer | ForEach-Object { Remove-AzRmStorageContainer -Name $_.Name -StorageAccountName $ctx.StorageAccountName -ResourceGroupName $group.ResourceGroupName -Force }
-        }
-        catch {
-          Write-Warning "Container removal failed. Ignoring the error and trying to delete the storage account."
-          Write-Warning $_
-        }
-        Remove-AzStorageAccount -StorageAccountName $account.StorageAccountName -ResourceGroupName $account.ResourceGroupName -Force
-      }
-    }
-    if ($WhatIfPreference) {
-      Write-Host "What if: Removing resource group $($group.ResourceGroupName)"
-    }
-    else {
-      Remove-AzResourceGroup -ResourceGroupName $group.ResourceGroupName -Force -AsJob
+    foreach ($account in $accounts) {
+      RemoveStorageAccount -Account $account
     }
   }
 }
@@ -373,6 +374,106 @@ function SetStorageNetworkAccessRules([string]$ResourceGroupName, [array]$AllowI
       Start-Sleep 15
     }
   }
+}
+
+function RemoveStorageAccount($Account) {
+  Write-Host ($WhatIfPreference ? 'What if: ' : '') + "Readying $($Account.StorageAccountName) in $($Account.ResourceGroupName) for deletion"
+  # If it doesn't have containers then we can skip the explicit clean-up of this storage account
+  if ($Account.Kind -eq "FileStorage") { return }
+
+  $containers = New-AzStorageContext -StorageAccountName $Account.StorageAccountName | Get-AzStorageContainer
+  $deleteNow = @()
+
+  try {
+    foreach ($container in $containers) {
+      $blobs = $container | Get-AzStorageBlob
+      foreach ($blob in $blobs) {
+        $shouldDelete = EnableBlobDeletion -Blob $blob -Container $container -StorageAccountName $Account.StorageAccountName -ResourceGroupName $Account.ResourceGroupName
+        if ($shouldDelete) {
+          $deleteNow += $blob
+        }
+      }
+    }
+  } catch {
+    Write-Warning "Ensure user has 'Storage Blob Data Owner' RBAC permission on subscription or resource group"
+    Write-Error $_
+    throw
+  }
+
+  # Blobs with legal holds or immutability policies must be deleted individually
+  # before the container/account can be deleted
+  foreach ($blobToDelete in $deleteNow) {
+    try {
+      $blobToDelete | Remove-AzStorageBlob -Force
+    } catch {
+      Write-Host "Blob removal failed: $($Blob.Name), account: $($Account.storageAccountName), group: $($Account.ResourceGroupName)"
+      Write-Warning "Ignoring the error and trying to delete the storage account"
+      Write-Warning $_
+    }
+  }
+
+  foreach ($container in $containers) {
+    if (!($container | Get-Member 'BlobContainerProperties')) {
+      continue
+    }
+    if ($container.BlobContainerProperties.HasImmutableStorageWithVersioning) {
+      try {
+        # Use AzRm cmdlet as deletion will only work through ARM with the immutability policies defined on the blobs
+        # Add a retry in case blob deletion has not finished in time for container deletion, but not too many that we end up
+        # getting throttled by ARM/SRP if things are actually in a stuck state
+        Retry -Attempts 1 -Action { Remove-AzRmStorageContainer -Name $container.Name -StorageAccountName $Account.StorageAccountName -ResourceGroupName $Account.ResourceGroupName -Force }
+      } catch {
+        Write-Host "Container removal failed: $($container.Name), account: $($Account.storageAccountName), group: $($Account.ResourceGroupName)"
+        Write-Warning "Ignoring the error and trying to delete the storage account"
+        Write-Warning $_
+      }
+    }
+  }
+
+  if ($containers) {
+    Remove-AzStorageAccount -StorageAccountName $Account.StorageAccountName -ResourceGroupName $Account.ResourceGroupName -Force
+  }
+}
+
+function EnableBlobDeletion($Blob, $Container, $StorageAccountName, $ResourceGroupName) {
+  # Some properties like immutability policies require the blob to be
+  # deleted before the container can be deleted
+  $forceBlobDeletion = $false
+
+  # We can't edit blobs with customer encryption without using that key
+  # so just try to delete them fully instead. It is unlikely they
+  # will also have a legal hold enabled.
+  if (($Blob | Get-Member 'ListBlobProperties') `
+      -and $Blob.ListBlobProperties.Properties.CustomerProvidedKeySha256) {
+    return $true
+  }
+
+  if (!($Blob | Get-Member 'BlobProperties')) {
+    return $false
+  }
+
+  if ($Blob.BlobProperties.ImmutabilityPolicy.PolicyMode) {
+    Write-Host "Removing immutability policy - blob: $($Blob.Name), account: $StorageAccountName, group: $ResourceGroupName"
+    $null = $Blob | Remove-AzStorageBlobImmutabilityPolicy
+    $forceBlobDeletion = $true
+  }
+
+  if ($Blob.BlobProperties.HasLegalHold) {
+    Write-Host "Removing legal hold - blob: $($Blob.Name), account: $StorageAccountName, group: $ResourceGroupName"
+    $Blob | Set-AzStorageBlobLegalHold -DisableLegalHold | Out-Null
+    $forceBlobDeletion = $true
+  }
+
+  if ($Blob.BlobProperties.LeaseState -eq 'Leased') {
+    Write-Host "Breaking blob lease: $($Blob.Name), account: $StorageAccountName, group: $ResourceGroupName"
+    $Blob.ICloudBlob.BreakLease()
+  }
+
+  if (($Container | Get-Member 'BlobContainerProperties') -and $Container.BlobContainerProperties.HasImmutableStorageWithVersioning) {
+    $forceBlobDeletion = $true
+  }
+
+  return $forceBlobDeletion
 }
 
 function DoesSubnetOverlap([string]$ipOrCidr, [string]$overlapIp) {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeMonitoringData;
@@ -21,20 +21,19 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
     @Test
     public void testGetMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"uwbrwoyqty\",\"nodes\":[{\"nodeName\":\"ccumk\",\"availableMemoryInMB\":728800792,\"cpuUtilization\":436941349,\"concurrentJobsLimit\":1852688001,\"concurrentJobsRunning\":2013623616,\"maxConcurrentJobs\":1911258771,\"sentBytes\":4.5306683,\"receivedBytes\":32.07864,\"\":{\"lrfqst\":\"datarbotzvrgoxpayjs\",\"qmlnefvbeyugggf\":\"dataf\",\"aevrkxyjsuappdm\":\"datahntykenmjznjqrxy\",\"syoybjtzdgzt\":\"datajiguusbw\"}},{\"nodeName\":\"qiilfovmcjchbof\",\"availableMemoryInMB\":626803302,\"cpuUtilization\":1317203532,\"concurrentJobsLimit\":867009902,\"concurrentJobsRunning\":299777437,\"maxConcurrentJobs\":1143361378,\"sentBytes\":26.287401,\"receivedBytes\":81.01534,\"\":{\"rcjgkauyzbrd\":\"dataeznkrer\",\"gxqsbwepduyqxv\":\"databdb\",\"yftwdprtpxwgtt\":\"dataxarddbnqyayl\"}},{\"nodeName\":\"bjihz\",\"availableMemoryInMB\":1190147943,\"cpuUtilization\":765252755,\"concurrentJobsLimit\":832580974,\"concurrentJobsRunning\":1491820891,\"maxConcurrentJobs\":2117066441,\"sentBytes\":27.401001,\"receivedBytes\":71.859505,\"\":{\"lqnoeyfufleioyw\":\"datazwstytexueugq\",\"kt\":\"dataclhbytshsat\",\"yzjq\":\"datawqljnuayp\"}},{\"nodeName\":\"qajipnpwom\",\"availableMemoryInMB\":1489726911,\"cpuUtilization\":1683883253,\"concurrentJobsLimit\":508436125,\"concurrentJobsRunning\":961704290,\"maxConcurrentJobs\":2081574756,\"sentBytes\":69.46848,\"receivedBytes\":39.533035,\"\":{\"nw\":\"datadnp\",\"lwoozlfliiru\":\"dataqag\"}}]}";
+            = "{\"name\":\"mjznjqrxy\",\"nodes\":[{\"nodeName\":\"rkxyjsuappd\",\"availableMemoryInMB\":1926934452,\"cpuUtilization\":1147563189,\"concurrentJobsLimit\":1629500432,\"concurrentJobsRunning\":461264660,\"maxConcurrentJobs\":1272853993,\"sentBytes\":4.2850256,\"receivedBytes\":94.9003,\"qiilfovmcjchbof\":\"datatzdgztw\"},{\"nodeName\":\"vqvjfszvece\",\"availableMemoryInMB\":830535136,\"cpuUtilization\":1692491619,\"concurrentJobsLimit\":1164642750,\"concurrentJobsRunning\":199293505,\"maxConcurrentJobs\":2042279653,\"sentBytes\":71.67136,\"receivedBytes\":46.052544,\"ibdbkgxqsbwe\":\"dataauyzbr\",\"xarddbnqyayl\":\"dataduyqxv\"},{\"nodeName\":\"f\",\"availableMemoryInMB\":68854468,\"cpuUtilization\":1851658514,\"concurrentJobsLimit\":2083858335,\"concurrentJobsRunning\":790876134,\"maxConcurrentJobs\":1137739161,\"sentBytes\":43.51716,\"receivedBytes\":26.772446,\"xxndnbzhsedn\":\"datah\",\"ugqllq\":\"datajpouzwstytexu\"},{\"nodeName\":\"eyfuf\",\"availableMemoryInMB\":1023905384,\"cpuUtilization\":1497127636,\"concurrentJobsLimit\":1542933152,\"concurrentJobsRunning\":1194019769,\"maxConcurrentJobs\":410446443,\"sentBytes\":59.100063,\"receivedBytes\":38.65119,\"nuayp\":\"datathktpwql\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("imnfvqaqtzo", "ulwdhjb", "hflbchzoboeeiakw",
-                com.azure.core.util.Context.NONE)
+            .getMonitoringDataWithResponse("stb", "uqmlnefvbeyug", "gfshntyk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uwbrwoyqty", response.name());
+        Assertions.assertEquals("mjznjqrxy", response.name());
     }
 }

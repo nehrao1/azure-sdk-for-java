@@ -19,13 +19,18 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
+import static com.azure.ai.inference.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_PATH;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_FORMAT;
 
 public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     protected EmbeddingsClient embeddingsClient;
@@ -33,8 +38,7 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
 
     EmbeddingsClientBuilder getEmbeddingsClientBuilder(HttpClient httpClient) {
-        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder()
-                .httpClient(httpClient);
+        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder().httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -47,25 +51,20 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         }
         return builder;
     }
 
     ImageEmbeddingsClientBuilder getImageEmbeddingsClientBuilder(HttpClient httpClient) {
-        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder()
-                .httpClient(httpClient);
+        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder().httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -78,18 +77,16 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("IMAGE_EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(
+                    new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_IMAGE_EMBEDDINGS_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("IMAGE_EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(
+                    new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_IMAGE_EMBEDDINGS_KEY")));
         }
         return builder;
     }
@@ -97,12 +94,12 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         String sanitizedRequestUri = "https://REDACTED/";
         String requestUriRegex = "https://.*/openai/deployments/.*?/";
-        interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..endpoint", requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL),
-                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
-        ));
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
@@ -114,6 +111,10 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
 
     void getEmbeddingsRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(getPrompts());
+    }
+
+    void getImageEmbeddingsRunner(Consumer<List<ImageEmbeddingInput>> testRunner) {
+        testRunner.accept(getInputs());
     }
 
     static void assertEmbeddings(EmbeddingsResult actual) {
@@ -134,5 +135,12 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         prompts.add("Can you help me?");
         prompts.add("What's the best way to train a parrot?");
         return prompts;
+    }
+
+    private List<ImageEmbeddingInput> getInputs() {
+        Path testFilePath = Paths.get(TEST_IMAGE_PATH);
+        List<ImageEmbeddingInput> inputList = new ArrayList<>();
+        inputList.add(new ImageEmbeddingInput(testFilePath, TEST_IMAGE_FORMAT));
+        return inputList;
     }
 }

@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -12,7 +11,6 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -130,7 +128,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 // maybe we should consider changing to ArrayList to avoid conversion
                 return new Utils.ValueHolder<>(new ArrayList<>(routingMapValueHolder.v.getOverlappingRanges(range)));
             } else {
-                logger.debug("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range, forceRefresh);
+                logger.warn("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range, forceRefresh);
                 return new Utils.ValueHolder<>(null);
             }
         });

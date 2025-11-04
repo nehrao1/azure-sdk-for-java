@@ -6,11 +6,13 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
+import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.EnclavePlatform;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
 import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
@@ -25,30 +27,39 @@ public final class LedgersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ledgerName\":\"c\",\"ledgerUri\":\"qwoochcbon\",\"identityServiceUri\":\"pkvlrxn\",\"ledgerInternalNamespace\":\"ase\",\"runningState\":\"Pausing\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Canceled\",\"ledgerSku\":\"Basic\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"ienjbdlwtgr\",\"tenantId\":\"djpjumasxazjpq\",\"ledgerRoleName\":\"Reader\"},{\"principalId\":\"alhbx\",\"tenantId\":\"e\",\"ledgerRoleName\":\"Contributor\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"udgwdslfho\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"ynpwlbj\",\"tags\":{\"ehxnltyfsop\":\"acfta\",\"nzwdejba\":\"usue\",\"xdn\":\"orxzdmohctbqvud\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"}";
+            = "{\"properties\":{\"ledgerName\":\"vxyqjpkcattpngjc\",\"ledgerUri\":\"czsqpjhvm\",\"identityServiceUri\":\"jvnysounqe\",\"ledgerInternalNamespace\":\"noae\",\"runningState\":\"Unknown\",\"ledgerType\":\"Private\",\"provisioningState\":\"Failed\",\"ledgerSku\":\"Standard\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"pjmcmatuokthfuiu\",\"tenantId\":\"dsfcpkvxodpuoz\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"dagfuaxbezyiuok\",\"tenantId\":\"whrdxwzywqsmbsu\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"ryocfsfksymdd\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"i\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"qyud\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"qn\",\"ledgerRoleName\":\"Contributor\"}],\"hostLevel\":\"zvyifqrvkdvj\",\"maxBodySizeInMb\":838682594,\"subjectName\":\"mvvd\",\"nodeCount\":1391003633,\"writeLBAddressPrefix\":\"kpnpulexxbczwtr\",\"workerThreads\":1083545989,\"enclavePlatform\":\"IntelSgx\",\"applicationType\":\"CodeTransparency\"},\"location\":\"vsovmyokac\",\"tags\":{\"hzdobpxjmflbvvnc\":\"w\",\"rsa\":\"rkcciwwzjuqk\"},\"id\":\"iwkuofos\",\"name\":\"ghsauuimjmvxied\",\"type\":\"ugidyjrr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfidentialLedger response = manager.ledgers()
-            .getByResourceGroupWithResponse("xrjfeallnwsub", "snjampmng", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("gm", "qsl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ynpwlbj", response.location());
-        Assertions.assertEquals("acfta", response.tags().get("ehxnltyfsop"));
-        Assertions.assertEquals(RunningState.PAUSING, response.properties().runningState());
-        Assertions.assertEquals(LedgerType.UNKNOWN, response.properties().ledgerType());
-        Assertions.assertEquals(LedgerSku.BASIC, response.properties().ledgerSku());
-        Assertions.assertEquals("ienjbdlwtgr", response.properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("djpjumasxazjpq", response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions.assertEquals(LedgerRoleName.READER,
+        Assertions.assertEquals("vsovmyokac", response.location());
+        Assertions.assertEquals("w", response.tags().get("hzdobpxjmflbvvnc"));
+        Assertions.assertEquals(RunningState.UNKNOWN, response.properties().runningState());
+        Assertions.assertEquals(LedgerType.PRIVATE, response.properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.STANDARD, response.properties().ledgerSku());
+        Assertions.assertEquals("pjmcmatuokthfuiu",
+            response.properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("dsfcpkvxodpuoz", response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
             response.properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("udgwdslfho", response.properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals("ryocfsfksymdd", response.properties().certBasedSecurityPrincipals().get(0).cert());
         Assertions.assertEquals(LedgerRoleName.READER,
             response.properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("zvyifqrvkdvj", response.properties().hostLevel());
+        Assertions.assertEquals(838682594, response.properties().maxBodySizeInMb());
+        Assertions.assertEquals("mvvd", response.properties().subjectName());
+        Assertions.assertEquals(1391003633, response.properties().nodeCount());
+        Assertions.assertEquals("kpnpulexxbczwtr", response.properties().writeLBAddressPrefix());
+        Assertions.assertEquals(1083545989, response.properties().workerThreads());
+        Assertions.assertEquals(EnclavePlatform.INTEL_SGX, response.properties().enclavePlatform());
+        Assertions.assertEquals(ApplicationType.CODE_TRANSPARENCY, response.properties().applicationType());
     }
 }

@@ -524,8 +524,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<Void>> skipAction(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("actionName") String actionName, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:skip")
         @ExpectedResponses({ 204 })
@@ -536,8 +535,7 @@ public final class DevBoxesClientImpl {
         Response<Void> skipActionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("actionName") String actionName, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:delay")
         @ExpectedResponses({ 200 })
@@ -732,7 +730,8 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -762,7 +761,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -787,7 +787,8 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -817,7 +818,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -840,7 +842,8 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -870,7 +873,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -893,7 +897,8 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -923,7 +928,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -946,7 +952,8 @@ public final class DevBoxesClientImpl {
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -976,7 +983,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -999,7 +1007,8 @@ public final class DevBoxesClientImpl {
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -1029,7 +1038,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1052,7 +1062,8 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1060,7 +1071,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1087,7 +1099,8 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1095,7 +1108,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1120,7 +1134,8 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1128,7 +1143,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1153,7 +1169,8 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1161,7 +1178,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1185,7 +1203,8 @@ public final class DevBoxesClientImpl {
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1193,7 +1212,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1218,7 +1238,8 @@ public final class DevBoxesClientImpl {
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1226,7 +1247,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1250,7 +1272,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1261,16 +1284,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1295,7 +1309,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1319,7 +1334,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1330,16 +1346,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1364,7 +1371,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1386,7 +1394,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1397,16 +1406,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1431,7 +1431,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1453,7 +1454,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1464,16 +1466,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1498,7 +1491,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1520,7 +1514,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1531,16 +1526,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1565,7 +1551,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1592,7 +1579,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1603,16 +1591,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1637,7 +1616,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1661,7 +1641,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1672,16 +1653,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1706,7 +1678,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1730,7 +1703,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1741,16 +1715,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1775,7 +1740,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1799,7 +1765,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1810,16 +1777,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1844,7 +1802,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1872,7 +1831,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1883,16 +1843,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1917,7 +1868,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1942,7 +1894,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1953,16 +1906,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1987,7 +1931,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2013,7 +1958,8 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2024,16 +1970,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2058,7 +1995,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2083,7 +2021,8 @@ public final class DevBoxesClientImpl {
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2094,16 +2033,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2128,7 +2058,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2153,7 +2084,8 @@ public final class DevBoxesClientImpl {
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2164,16 +2096,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2198,7 +2121,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2223,7 +2147,8 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2234,16 +2159,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2268,11 +2184,13 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2283,16 +2201,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2317,9 +2226,10 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
+     * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName The name of a Dev Box.
@@ -2346,7 +2256,8 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2357,16 +2268,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2391,11 +2293,13 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2406,16 +2310,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2440,9 +2335,10 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
+     * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName The name of a Dev Box.
@@ -2468,7 +2364,8 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2479,16 +2376,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2513,11 +2401,13 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2528,16 +2418,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2562,263 +2443,10 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
-     * owner of the Dev Box as local administrator.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a Dev Box.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDevBoxAsync(String projectName, String userId,
-        String devBoxName, BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createDevBoxWithResponseAsync(projectName, userId, devBoxName, body, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates or replaces a Dev Box.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     name: String (Required)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * </pre>
      * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     name: String (Required)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
-     * owner of the Dev Box as local administrator.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a Dev Box.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDevBox(String projectName, String userId, String devBoxName,
-        BinaryData body, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createDevBoxWithResponse(projectName, userId, devBoxName, body, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates or replaces a Dev Box.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     name: String (Required)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     name: String (Required)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
-     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
+     * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName The name of a Dev Box.
@@ -2849,7 +2477,8 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2860,16 +2489,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2894,11 +2514,13 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2909,16 +2531,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2943,9 +2556,10 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute the operation.
+     * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName The name of a Dev Box.
@@ -2973,10 +2587,237 @@ public final class DevBoxesClientImpl {
     }
 
     /**
+     * Creates or replaces a Dev Box.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName The name of a Dev Box.
+     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
+     * owner of the Dev Box as local administrator.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a Dev Box.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateDevBoxAsync(String projectName, String userId,
+        String devBoxName, BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createDevBoxWithResponseAsync(projectName, userId, devBoxName, body, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Creates or replaces a Dev Box.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Deleting/Updating/Starting/Stopping/Provisioning/ProvisionedWithWarning/InGracePeriod/NotProvisioned) (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String(general_i_8c32gb256ssd_v2/general_i_8c32gb512ssd_v2/general_i_8c32gb1024ssd_v2/general_i_8c32gb2048ssd_v2/general_i_16c64gb256ssd_v2/general_i_16c64gb512ssd_v2/general_i_16c64gb1024ssd_v2/general_i_16c64gb2048ssd_v2/general_i_32c128gb512ssd_v2/general_i_32c128gb1024ssd_v2/general_i_32c128gb2048ssd_v2/general_a_8c32gb256ssd_v2/general_a_8c32gb512ssd_v2/general_a_8c32gb1024ssd_v2/general_a_8c32gb2048ssd_v2/general_a_16c64gb256ssd_v2/general_a_16c64gb512ssd_v2/general_a_16c64gb1024ssd_v2/general_a_16c64gb2048ssd_v2/general_a_32c128gb512ssd_v2/general_a_32c128gb1024ssd_v2/general_a_32c128gb2048ssd_v2) (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName The name of a Dev Box.
+     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
+     * owner of the Dev Box as local administrator.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a Dev Box.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateDevBox(String projectName, String userId, String devBoxName,
+        BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createDevBoxWithResponse(projectName, userId, devBoxName, body, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2987,19 +2828,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3025,7 +2858,8 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3036,19 +2870,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3073,7 +2899,8 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3084,127 +2911,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteDevBoxAsync(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deleteDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Deletes a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteDevBox(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deleteDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Deletes a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3235,7 +2946,8 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3246,19 +2958,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3286,10 +2990,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Starts a Dev Box.
+     * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3300,19 +3005,105 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName The name of a Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, Void> beginDeleteDevBoxAsync(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName The name of a Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Starts a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3338,7 +3129,8 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3349,19 +3141,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3386,7 +3170,8 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3397,127 +3182,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartDevBoxAsync(String projectName, String userId,
-        String devBoxName, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.startDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Starts a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartDevBox(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.startDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Starts a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3548,7 +3217,8 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3559,19 +3229,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3599,17 +3261,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Stops a Dev Box.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3620,19 +3276,112 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginStartDevBoxAsync(String projectName, String userId,
+        String devBoxName, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.startDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Starts a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginStartDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.startDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Stops a Dev Box.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3665,7 +3414,8 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3676,19 +3426,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3720,7 +3462,8 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3731,141 +3474,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStopDevBoxAsync(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.stopDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Stops a Dev Box.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStopDevBox(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.stopDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Stops a Dev Box.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3903,7 +3516,8 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3914,19 +3528,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3954,10 +3560,18 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Restarts a Dev Box.
+     * Stops a Dev Box.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3968,19 +3582,112 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginStopDevBoxAsync(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.stopDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Stops a Dev Box.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginStopDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.stopDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Restarts a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4006,7 +3713,8 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4017,19 +3725,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4054,7 +3754,8 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4065,127 +3766,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginRestartDevBoxAsync(String projectName, String userId,
-        String devBoxName, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.restartDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Restarts a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
      * }
-     * }</pre>
-     * 
-     * @param projectName Name of the project.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param devBoxName Display name for the Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginRestartDevBox(String projectName, String userId, String devBoxName,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.restartDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Restarts a Dev Box.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     name: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     resourceId: String (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4216,7 +3801,8 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4227,19 +3813,11 @@ public final class DevBoxesClientImpl {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4267,15 +3845,111 @@ public final class DevBoxesClientImpl {
     }
 
     /**
+     * Restarts a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginRestartDevBoxAsync(String projectName, String userId,
+        String devBoxName, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.restartDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Restarts a Dev Box.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param devBoxName Display name for the Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginRestartDevBox(String projectName, String userId, String devBoxName,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.restartDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4300,12 +3974,14 @@ public final class DevBoxesClientImpl {
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4330,7 +4006,8 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4340,7 +4017,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4369,7 +4047,8 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4379,7 +4058,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4406,7 +4086,8 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4416,7 +4097,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4444,7 +4126,8 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4454,7 +4137,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4481,7 +4165,8 @@ public final class DevBoxesClientImpl {
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4491,7 +4176,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4518,7 +4204,8 @@ public final class DevBoxesClientImpl {
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4528,7 +4215,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4568,10 +4256,9 @@ public final class DevBoxesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> skipActionWithResponseAsync(String projectName, String userId, String devBoxName,
         String actionName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.skipAction(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                projectName, userId, devBoxName, actionName, accept, requestOptions, context));
+                projectName, userId, devBoxName, actionName, requestOptions, context));
     }
 
     /**
@@ -4592,16 +4279,16 @@ public final class DevBoxesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> skipActionWithResponse(String projectName, String userId, String devBoxName,
         String actionName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.skipActionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), projectName, userId,
-            devBoxName, actionName, accept, requestOptions, Context.NONE);
+            devBoxName, actionName, requestOptions, Context.NONE);
     }
 
     /**
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4611,14 +4298,15 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
      * @param actionName The name of the action.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4640,7 +4328,8 @@ public final class DevBoxesClientImpl {
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4650,14 +4339,15 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
      * @param actionName The name of the action.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4677,7 +4367,8 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4691,25 +4382,17 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4733,7 +4416,8 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4747,25 +4431,17 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4788,7 +4464,8 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4802,25 +4479,17 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4843,7 +4512,8 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4857,25 +4527,17 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param devBoxName Display name for the Dev Box.
-     * @param delayUntil The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until, in RFC3339 format.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4895,12 +4557,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists available pools.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -4930,7 +4591,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4952,12 +4614,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists available pools.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -4987,7 +4648,8 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5007,12 +4669,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists all schedules within a pool that are configured by your project administrator.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -5020,7 +4681,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5043,12 +4705,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists all schedules within a pool that are configured by your project administrator.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -5056,7 +4717,8 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5076,12 +4738,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5092,16 +4753,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5126,7 +4778,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5149,12 +4802,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5165,16 +4817,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5199,7 +4842,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5219,12 +4863,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5235,16 +4878,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5269,7 +4903,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5291,12 +4926,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5307,16 +4941,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5341,7 +4966,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5362,12 +4988,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes in the project for a particular user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5378,16 +5003,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5412,7 +5028,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5435,12 +5052,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists Dev Boxes in the project for a particular user.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5451,16 +5067,7 @@ public final class DevBoxesClientImpl {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5485,7 +5092,8 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5505,12 +5113,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists actions on a Dev Box.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -5520,7 +5127,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5543,12 +5151,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Lists actions on a Dev Box.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -5558,7 +5165,8 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5578,12 +5186,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Delays all actions.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -5597,19 +5204,11 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5632,12 +5231,11 @@ public final class DevBoxesClientImpl {
     }
 
     /**
-     * Delays all actions.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -5651,19 +5249,11 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

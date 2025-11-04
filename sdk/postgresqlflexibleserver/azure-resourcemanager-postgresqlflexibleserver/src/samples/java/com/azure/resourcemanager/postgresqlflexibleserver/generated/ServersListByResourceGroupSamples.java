@@ -9,7 +9,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * ServerListByResourceGroup.json
      */
     /**
      * Sample code: ServerListByResourceGroup.
@@ -18,6 +20,6 @@ public final class ServersListByResourceGroupSamples {
      */
     public static void
         serverListByResourceGroup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
+        manager.servers().listByResourceGroup("testrgn", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,46 +22,61 @@ public class WebHookActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "WebHook";
 
     /*
      * Rest API method for target endpoint.
      */
+    @Generated
     private WebHookActivityMethod method;
 
     /*
      * WebHook activity target endpoint and path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
-     * The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10
+     * minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private String timeout;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
+    @Generated
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object body;
 
     /*
      * Authentication method used for calling the endpoint.
      */
+    @Generated
     private WebActivityAuthentication authentication;
 
     /*
-     * When set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as failed by setting statusCode >= 400 in callback request. Default is false. Type: boolean (or Expression with resultType boolean).
+     * When set to true, statusCode, output and error in callback request body will be consumed by activity. The
+     * activity can be marked as failed by setting statusCode >= 400 in callback request. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object reportStatusOnCallBack;
 
     /**
      * Creates an instance of WebHookActivity class.
      */
+    @Generated
     public WebHookActivity() {
     }
 
@@ -69,6 +85,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -79,6 +96,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the method value.
      */
+    @Generated
     public WebHookActivityMethod getMethod() {
         return this.method;
     }
@@ -89,6 +107,7 @@ public class WebHookActivity extends ControlActivity {
      * @param method the method value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setMethod(WebHookActivityMethod method) {
         this.method = method;
         return this;
@@ -100,6 +119,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -111,6 +131,7 @@ public class WebHookActivity extends ControlActivity {
      * @param url the url value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setUrl(Object url) {
         this.url = url;
         return this;
@@ -123,6 +144,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the timeout value.
      */
+    @Generated
     public String getTimeout() {
         return this.timeout;
     }
@@ -135,6 +157,7 @@ public class WebHookActivity extends ControlActivity {
      * @param timeout the timeout value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setTimeout(String timeout) {
         this.timeout = timeout;
         return this;
@@ -147,6 +170,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the headers value.
      */
+    @Generated
     public Object getHeaders() {
         return this.headers;
     }
@@ -159,6 +183,7 @@ public class WebHookActivity extends ControlActivity {
      * @param headers the headers value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setHeaders(Object headers) {
         this.headers = headers;
         return this;
@@ -170,6 +195,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the body value.
      */
+    @Generated
     public Object getBody() {
         return this.body;
     }
@@ -181,6 +207,7 @@ public class WebHookActivity extends ControlActivity {
      * @param body the body value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setBody(Object body) {
         this.body = body;
         return this;
@@ -191,6 +218,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the authentication value.
      */
+    @Generated
     public WebActivityAuthentication getAuthentication() {
         return this.authentication;
     }
@@ -201,6 +229,7 @@ public class WebHookActivity extends ControlActivity {
      * @param authentication the authentication value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setAuthentication(WebActivityAuthentication authentication) {
         this.authentication = authentication;
         return this;
@@ -213,6 +242,7 @@ public class WebHookActivity extends ControlActivity {
      * 
      * @return the reportStatusOnCallBack value.
      */
+    @Generated
     public Object getReportStatusOnCallBack() {
         return this.reportStatusOnCallBack;
     }
@@ -225,6 +255,7 @@ public class WebHookActivity extends ControlActivity {
      * @param reportStatusOnCallBack the reportStatusOnCallBack value to set.
      * @return the WebHookActivity object itself.
      */
+    @Generated
     public WebHookActivity setReportStatusOnCallBack(Object reportStatusOnCallBack) {
         this.reportStatusOnCallBack = reportStatusOnCallBack;
         return this;
@@ -233,6 +264,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setName(String name) {
         super.setName(name);
@@ -242,6 +274,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setDescription(String description) {
         super.setDescription(description);
@@ -251,6 +284,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setState(ActivityState state) {
         super.setState(state);
@@ -260,6 +294,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -269,6 +304,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -278,6 +314,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebHookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -287,6 +324,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -310,10 +348,16 @@ public class WebHookActivity extends ControlActivity {
             jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
             jsonWriter.writeUntypedField("url", this.url);
             jsonWriter.writeStringField("timeout", this.timeout);
-            jsonWriter.writeUntypedField("headers", this.headers);
-            jsonWriter.writeUntypedField("body", this.body);
+            if (this.headers != null) {
+                jsonWriter.writeUntypedField("headers", this.headers);
+            }
+            if (this.body != null) {
+                jsonWriter.writeUntypedField("body", this.body);
+            }
             jsonWriter.writeJsonField("authentication", this.authentication);
-            jsonWriter.writeUntypedField("reportStatusOnCallBack", this.reportStatusOnCallBack);
+            if (this.reportStatusOnCallBack != null) {
+                jsonWriter.writeUntypedField("reportStatusOnCallBack", this.reportStatusOnCallBack);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -333,6 +377,7 @@ public class WebHookActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebHookActivity.
      */
+    @Generated
     public static WebHookActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebHookActivity deserializedWebHookActivity = new WebHookActivity();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,36 +21,52 @@ public final class JsonFormat extends DatasetStorageFormat {
     /*
      * Type of dataset storage format.
      */
+    @Generated
     private String type = "JsonFormat";
 
     /*
-     * File pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'. It is case-sensitive.
+     * File pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value
+     * is 'setOfObjects'. It is case-sensitive.
      */
+    @Generated
     private Object filePattern;
 
     /*
-     * The character used to separate nesting levels. Default value is '.' (dot). Type: string (or Expression with resultType string).
+     * The character used to separate nesting levels. Default value is '.' (dot). Type: string (or Expression with
+     * resultType string).
      */
+    @Generated
     private Object nestingSeparator;
 
     /*
-     * The code page name of the preferred encoding. If not provided, the default value is 'utf-8', unless the byte order mark (BOM) denotes another Unicode encoding. The full list of supported values can be found in the 'Name' column of the table of encodings in the following reference: https://go.microsoft.com/fwlink/?linkid=861078. Type: string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If not provided, the default value is 'utf-8', unless the byte
+     * order mark (BOM) denotes another Unicode encoding. The full list of supported values can be found in the 'Name'
+     * column of the table of encodings in the following reference: https://go.microsoft.com/fwlink/?linkid=861078.
+     * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encodingName;
 
     /*
-     * The JSONPath of the JSON array element to be flattened. Example: "$.ArrayPath". Type: string (or Expression with resultType string).
+     * The JSONPath of the JSON array element to be flattened. Example: "$.ArrayPath". Type: string (or Expression with
+     * resultType string).
      */
+    @Generated
     private Object jsonNodeReference;
 
     /*
-     * The JSONPath definition for each column mapping with a customized column name to extract data from JSON file. For fields under root object, start with "$"; for fields inside the array chosen by jsonNodeReference property, start from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}. Type: object (or Expression with resultType object).
+     * The JSONPath definition for each column mapping with a customized column name to extract data from JSON file. For
+     * fields under root object, start with "$"; for fields inside the array chosen by jsonNodeReference property, start
+     * from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}. Type: object (or
+     * Expression with resultType object).
      */
+    @Generated
     private Object jsonPathDefinition;
 
     /**
      * Creates an instance of JsonFormat class.
      */
+    @Generated
     public JsonFormat() {
     }
 
@@ -58,6 +75,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -69,6 +87,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the filePattern value.
      */
+    @Generated
     public Object getFilePattern() {
         return this.filePattern;
     }
@@ -80,6 +99,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param filePattern the filePattern value to set.
      * @return the JsonFormat object itself.
      */
+    @Generated
     public JsonFormat setFilePattern(Object filePattern) {
         this.filePattern = filePattern;
         return this;
@@ -91,6 +111,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the nestingSeparator value.
      */
+    @Generated
     public Object getNestingSeparator() {
         return this.nestingSeparator;
     }
@@ -102,6 +123,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param nestingSeparator the nestingSeparator value to set.
      * @return the JsonFormat object itself.
      */
+    @Generated
     public JsonFormat setNestingSeparator(Object nestingSeparator) {
         this.nestingSeparator = nestingSeparator;
         return this;
@@ -115,6 +137,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the encodingName value.
      */
+    @Generated
     public Object getEncodingName() {
         return this.encodingName;
     }
@@ -128,6 +151,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param encodingName the encodingName value to set.
      * @return the JsonFormat object itself.
      */
+    @Generated
     public JsonFormat setEncodingName(Object encodingName) {
         this.encodingName = encodingName;
         return this;
@@ -139,6 +163,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the jsonNodeReference value.
      */
+    @Generated
     public Object getJsonNodeReference() {
         return this.jsonNodeReference;
     }
@@ -150,6 +175,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param jsonNodeReference the jsonNodeReference value to set.
      * @return the JsonFormat object itself.
      */
+    @Generated
     public JsonFormat setJsonNodeReference(Object jsonNodeReference) {
         this.jsonNodeReference = jsonNodeReference;
         return this;
@@ -163,6 +189,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * 
      * @return the jsonPathDefinition value.
      */
+    @Generated
     public Object getJsonPathDefinition() {
         return this.jsonPathDefinition;
     }
@@ -176,6 +203,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * @param jsonPathDefinition the jsonPathDefinition value to set.
      * @return the JsonFormat object itself.
      */
+    @Generated
     public JsonFormat setJsonPathDefinition(Object jsonPathDefinition) {
         this.jsonPathDefinition = jsonPathDefinition;
         return this;
@@ -184,6 +212,7 @@ public final class JsonFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonFormat setSerializer(Object serializer) {
         super.setSerializer(serializer);
@@ -193,6 +222,7 @@ public final class JsonFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonFormat setDeserializer(Object deserializer) {
         super.setDeserializer(deserializer);
@@ -202,17 +232,32 @@ public final class JsonFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", getSerializer());
-        jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        if (getSerializer() != null) {
+            jsonWriter.writeUntypedField("serializer", getSerializer());
+        }
+        if (getDeserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("filePattern", this.filePattern);
-        jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("jsonNodeReference", this.jsonNodeReference);
-        jsonWriter.writeUntypedField("jsonPathDefinition", this.jsonPathDefinition);
+        if (this.filePattern != null) {
+            jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        }
+        if (this.nestingSeparator != null) {
+            jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
+        }
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.jsonNodeReference != null) {
+            jsonWriter.writeUntypedField("jsonNodeReference", this.jsonNodeReference);
+        }
+        if (this.jsonPathDefinition != null) {
+            jsonWriter.writeUntypedField("jsonPathDefinition", this.jsonPathDefinition);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -229,6 +274,7 @@ public final class JsonFormat extends DatasetStorageFormat {
      * to JSON null.
      * @throws IOException If an error occurs while reading the JsonFormat.
      */
+    @Generated
     public static JsonFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonFormat deserializedJsonFormat = new JsonFormat();

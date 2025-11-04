@@ -7,11 +7,11 @@ package com.azure.resourcemanager.apimanagement.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationAccessPolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
+import java.util.Collections;
+import java.util.List;
 
-public final class AuthorizationAccessPolicyContractImpl
-    implements AuthorizationAccessPolicyContract,
-        AuthorizationAccessPolicyContract.Definition,
-        AuthorizationAccessPolicyContract.Update {
+public final class AuthorizationAccessPolicyContractImpl implements AuthorizationAccessPolicyContract,
+    AuthorizationAccessPolicyContract.Definition, AuthorizationAccessPolicyContract.Update {
     private AuthorizationAccessPolicyContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -26,6 +26,15 @@ public final class AuthorizationAccessPolicyContractImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public List<String> appIds() {
+        List<String> inner = this.innerModel().appIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String tenantId() {
@@ -62,8 +71,8 @@ public final class AuthorizationAccessPolicyContractImpl
 
     private String updateIfMatch;
 
-    public AuthorizationAccessPolicyContractImpl withExistingAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId) {
+    public AuthorizationAccessPolicyContractImpl withExistingAuthorization(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.authorizationProviderId = authorizationProviderId;
@@ -72,43 +81,25 @@ public final class AuthorizationAccessPolicyContractImpl
     }
 
     public AuthorizationAccessPolicyContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, this.innerModel(), createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationAccessPolicyContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, this.innerModel(), createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationAccessPolicyContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    AuthorizationAccessPolicyContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new AuthorizationAccessPolicyContractInner();
         this.serviceManager = serviceManager;
         this.authorizationAccessPolicyId = name;
@@ -121,82 +112,56 @@ public final class AuthorizationAccessPolicyContractImpl
     }
 
     public AuthorizationAccessPolicyContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationAccessPolicyContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationAccessPolicyContractImpl(
-        AuthorizationAccessPolicyContractInner innerObject,
+    AuthorizationAccessPolicyContractImpl(AuthorizationAccessPolicyContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.authorizationProviderId = Utils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
-        this.authorizationId = Utils.getValueFromIdByName(innerObject.id(), "authorizations");
-        this.authorizationAccessPolicyId = Utils.getValueFromIdByName(innerObject.id(), "accessPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.authorizationProviderId
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
+        this.authorizationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizations");
+        this.authorizationAccessPolicyId
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessPolicies");
     }
 
     public AuthorizationAccessPolicyContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .getWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationAccessPolicyContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationAccessPolicies()
-                .getWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationAccessPolicies()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, context)
+            .getValue();
+        return this;
+    }
+
+    public AuthorizationAccessPolicyContractImpl withAppIds(List<String> appIds) {
+        this.innerModel().withAppIds(appIds);
         return this;
     }
 

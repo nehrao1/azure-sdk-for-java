@@ -4,15 +4,14 @@
 
 package com.azure.storage.queue.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.storage.queue.models.SendMessageResult;
-import java.util.List;
-
-import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
@@ -40,14 +39,16 @@ public final class SendMessageResultWrapper implements XmlSerializable<SendMessa
         return queueMessagesList;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessagesList" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessagesList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (queueMessagesList != null) {
             for (SendMessageResult element : queueMessagesList) {
@@ -57,13 +58,15 @@ public final class SendMessageResultWrapper implements XmlSerializable<SendMessa
         return xmlWriter.writeEndElement();
     }
 
+    @Generated
     public static SendMessageResultWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
+    @Generated
     public static SendMessageResultWrapper fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessagesList" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessagesList" : rootElementName;
         return xmlReader.readObject(rootElementName, reader -> {
             List<SendMessageResult> items = null;
 

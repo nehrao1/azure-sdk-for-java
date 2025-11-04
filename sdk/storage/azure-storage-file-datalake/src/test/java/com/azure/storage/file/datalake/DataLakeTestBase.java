@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.MockHttpResponse;
@@ -28,12 +27,14 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
@@ -52,12 +53,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -83,12 +86,15 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected static final String ENCRYPTION_SCOPE_STRING = "testscope1";
 
-    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-        HttpHeaderName.fromString(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED);
+    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED);
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-    protected static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER = HttpHeaderName.fromString("x-ms-blob-sequence-number");
-    protected static final HttpHeaderName X_MS_COPY_COMPLETION_TIME = HttpHeaderName.fromString("x-ms-copy-completion-time");
-    protected static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION = HttpHeaderName.fromString("x-ms-copy-status-description");
+    protected static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER
+        = HttpHeaderName.fromString("x-ms-blob-sequence-number");
+    protected static final HttpHeaderName X_MS_COPY_COMPLETION_TIME
+        = HttpHeaderName.fromString("x-ms-copy-completion-time");
+    protected static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION
+        = HttpHeaderName.fromString("x-ms-copy-status-description");
     protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
     protected static final HttpHeaderName X_MS_COPY_PROGRESS = HttpHeaderName.fromString("x-ms-copy-progress");
     protected static final HttpHeaderName X_MS_COPY_SOURCE = HttpHeaderName.fromString("x-ms-copy-source");
@@ -96,12 +102,19 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
     protected static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
     protected static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
-    protected static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT =
-        HttpHeaderName.fromString("x-ms-blob-committed-block-count");
+    protected static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT
+        = HttpHeaderName.fromString("x-ms-blob-committed-block-count");
     protected static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-blob-content-md5");
     protected static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_META_FOO = HttpHeaderName.fromString("x-ms-meta-foo");
+    private static final HttpHeaderName CONTENT_DISPOSITION = HttpHeaderName.fromString("Content-Disposition");
+    private static final HttpHeaderName CONTENT_ENCODING = HttpHeaderName.fromString("Content-Encoding");
+    private static final HttpHeaderName CONTENT_LANGUAGE = HttpHeaderName.fromString("Content-Language");
+    private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
+    private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
+    private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
 
     protected String prefix;
 
@@ -130,8 +143,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-            .setComparingBodies(false)
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
@@ -157,8 +169,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
             return;
         }
 
-        DataLakeServiceClient cleanupClient = new DataLakeServiceClientBuilder()
-            .httpClient(getHttpClient())
+        DataLakeServiceClient cleanupClient = new DataLakeServiceClientBuilder().httpClient(getHttpClient())
             .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
             .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
             .buildClient();
@@ -180,8 +191,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder() {
-        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint());
+        DataLakeServiceClientBuilder builder
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint());
 
         instrument(builder);
 
@@ -251,8 +262,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakeServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential,
-        String endpoint,
-        HttpPipelinePolicy... policies) {
+        String endpoint, HttpPipelinePolicy... policies) {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
@@ -297,8 +307,11 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return createLeaseAsyncClient(pathAsyncClient, null);
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient, String leaseId) {
-        return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathAsyncClient).leaseId(leaseId).buildAsyncClient();
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient,
+        String leaseId) {
+        return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
     }
 
     protected static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient) {
@@ -309,16 +322,19 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).leaseId(leaseId).buildClient();
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient) {
+    protected static DataLakeLeaseAsyncClient
+        createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient) {
         return createLeaseAsyncClient(fileSystemAsyncClient, null);
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient, String leaseId) {
-        return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemAsyncClient).leaseId(leaseId).buildAsyncClient();
+    protected static DataLakeLeaseAsyncClient
+        createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
     }
 
-    protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential,
-        String endpoint,
+    protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint);
 
@@ -337,8 +353,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return instrument(builder).credential(credential);
     }
 
-    protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential,
-        String endpoint,
+    protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint);
 
@@ -346,67 +361,53 @@ public class DataLakeTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        return instrument(builder)
-            .credential(credential)
-            .buildFileAsyncClient();
+        return instrument(builder).credential(credential).buildFileAsyncClient();
     }
 
     protected DataLakeFileAsyncClient getFileAsyncClient(String sasToken, String endpoint, String pathName) {
-        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
-            .sasToken(sasToken)
+        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName)).sasToken(sasToken)
             .buildFileAsyncClient();
     }
 
-    protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
-        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
-
-        return instrument(builder)
-            .credential(credential)
-            .buildFileClient();
-    }
-
-    protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
-        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
-
-        return instrument(builder)
-            .credential(credential)
-            .buildFileAsyncClient();
-    }
-
-    protected DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
-        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
-            .sasToken(sasToken)
-            .buildFileClient();
-    }
-
-    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential,
-        String endpoint,
+    protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint,
         String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
-        return instrument(builder)
-            .credential(credential)
-            .buildDirectoryClient();
+        return instrument(builder).credential(credential).buildFileClient();
     }
 
-    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential,
-        String endpoint,
-        String pathName,
-        HttpPipelinePolicy... policies) {
+    protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+
+        return instrument(builder).credential(credential).buildFileAsyncClient();
+    }
+
+    protected DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
+        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName)).sasToken(sasToken)
+            .buildFileClient();
+    }
+
+    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint,
+        String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+
+        return instrument(builder).credential(credential).buildDirectoryClient();
+    }
+
+    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint,
+        String pathName, HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        return instrument(builder)
-            .credential(credential)
-            .buildDirectoryClient();
+        return instrument(builder).credential(credential).buildDirectoryClient();
     }
 
-
     protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
-                                                                                HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().pathName(pathName).endpoint(endpoint);
         builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
@@ -417,42 +418,32 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return instrument(builder);
     }
 
-
     protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         String pathName) {
-        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
-            .credential(credential);
+        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName)).credential(credential);
     }
 
     protected DataLakeDirectoryClient getDirectoryClient(String sasToken, String endpoint, String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
-        return instrument(builder)
-            .sasToken(sasToken)
-            .buildDirectoryClient();
+        return instrument(builder).sasToken(sasToken).buildDirectoryClient();
     }
 
     protected DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String sasToken, String endpoint, String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
-        return instrument(builder)
-            .sasToken(sasToken)
-            .buildDirectoryAsyncClient();
+        return instrument(builder).sasToken(sasToken).buildDirectoryAsyncClient();
     }
 
     protected DataLakeDirectoryAsyncClient getDirectoryAsyncClient(StorageSharedKeyCredential credential,
-        String endpoint,
-        String pathName,
-        HttpPipelinePolicy... policies) {
+        String endpoint, String pathName, HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        return instrument(builder)
-            .credential(credential)
-            .buildDirectoryAsyncClient();
+        return instrument(builder).credential(credential).buildDirectoryAsyncClient();
     }
 
     protected DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
@@ -491,7 +482,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
-
     // Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     protected ByteBuffer getRandomData(int size) {
         return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
@@ -526,12 +516,30 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertArraysEqual(contentMD5, response.getValue().getContentMd5());
     }
 
+    /*
+    This assertation contains headers I have manually determined will not appear when using this API
+     */
+    protected void validateUserDefinedHeadersNotPresent(Response<PathSystemProperties> response) {
+        assertNull(response.getHeaders().get(ACCEPT_RANGES));
+        assertNull(response.getHeaders().get(CACHE_CONTROL));
+        assertNull(response.getHeaders().get(CONTENT_DISPOSITION));
+        assertNull(response.getHeaders().get(CONTENT_ENCODING));
+        assertNull(response.getHeaders().get(CONTENT_LANGUAGE));
+        assertNull(response.getHeaders().get(CONTENT_TYPE));
+        assertNull(response.getHeaders().get(X_MS_LEASE_STATE));
+        assertNull(response.getHeaders().get(X_MS_LEASE_DURATION));
+        assertNull(response.getHeaders().get(X_MS_LEASE_STATUS));
+        assertNull(response.getHeaders().get(X_MS_META_FOO));
+    }
+
     protected String setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
 
     protected Mono<String> setupFileSystemLeaseAsyncConditionAsync(DataLakeFileSystemAsyncClient fsc, String leaseID) {
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1) : Mono.just(leaseID == null ? "null" : leaseID);
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID)
+            ? createLeaseAsyncClient(fsc).acquireLease(-1)
+            : Mono.just(leaseID == null ? "null" : leaseID);
     }
 
     /**
@@ -547,8 +555,22 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_ETAG, match) ? pc.getProperties().getETag() : match;
     }
 
-    protected Mono<String> setupPathMatchConditionAsync(DataLakePathAsyncClient pac, String match) {
-        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null" : match);
+    protected Mono<String> setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
+        if (Objects.equals(match, RECEIVED_ETAG)) {
+            return pac.getProperties().map(PathProperties::getETag);
+        } else {
+            return Mono.justOrEmpty(match).defaultIfEmpty("null");
+        }
+    }
+
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
+    }
+
+    protected static String convertNull(String condition) {
+        return "null".equals(condition) ? null : condition;
     }
 
     /**
@@ -574,20 +596,21 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected Mono<String> setupPathLeaseConditionAsync(DataLakePathAsyncClient pac, String leaseID) {
+    protected Mono<String> setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
         Mono<String> responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
             responseLeaseId = (pac instanceof DataLakeFileAsyncClient)
-                    ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1)
-                    : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
+                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1)
+                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
         }
         if (responseLeaseId == null) {
-            return Mono.just(leaseID == null ? "null" : leaseID);
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
 
         return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
-                ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
+            ? returnedLeaseId
+            : (leaseID == null ? "null" : leaseID));
     }
 
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
@@ -600,9 +623,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected static void entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
-            if (e.isInDefaultScope() == entry.isInDefaultScope() && Objects.equals(e.getAccessControlType(),
-                entry.getAccessControlType()) && Objects.equals(e.getEntityId(), entry.getEntityId()) && Objects.equals(
-                e.getPermissions(), entry.getPermissions())) {
+            if (e.isInDefaultScope() == entry.isInDefaultScope()
+                && Objects.equals(e.getAccessControlType(), entry.getAccessControlType())
+                && Objects.equals(e.getEntityId(), entry.getEntityId())
+                && Objects.equals(e.getPermissions(), entry.getPermissions())) {
                 return;
             }
         }
@@ -683,7 +707,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
-                                                           BlobErrorCode errMessage) {
+        BlobErrorCode errMessage) {
         DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, throwable);
         assertEquals(expectedStatusCode, exception.getStatusCode());
         assertEquals(errMessage.toString(), exception.getErrorCode());
@@ -735,6 +759,56 @@ public class DataLakeTestBase extends TestProxyTestBase {
             }
 
             sleepIfLiveTesting(delayMillis);
+        }
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
         }
     }
 }

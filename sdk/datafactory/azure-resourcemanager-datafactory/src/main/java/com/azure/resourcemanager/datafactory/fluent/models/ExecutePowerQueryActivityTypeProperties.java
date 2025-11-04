@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -172,7 +173,6 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
      */
     @Override
     public void validate() {
-        super.validate();
         if (sinks() != null) {
             sinks().values().forEach(e -> {
                 if (e != null) {
@@ -183,7 +183,28 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         if (queries() != null) {
             queries().forEach(e -> e.validate());
         }
+        if (dataFlow() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataFlow in model ExecutePowerQueryActivityTypeProperties"));
+        } else {
+            dataFlow().validate();
+        }
+        if (staging() != null) {
+            staging().validate();
+        }
+        if (integrationRuntime() != null) {
+            integrationRuntime().validate();
+        }
+        if (continuationSettings() != null) {
+            continuationSettings().validate();
+        }
+        if (compute() != null) {
+            compute().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutePowerQueryActivityTypeProperties.class);
 
     /**
      * {@inheritDoc}
@@ -196,10 +217,18 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         jsonWriter.writeJsonField("integrationRuntime", integrationRuntime());
         jsonWriter.writeJsonField("continuationSettings", continuationSettings());
         jsonWriter.writeJsonField("compute", compute());
-        jsonWriter.writeUntypedField("traceLevel", traceLevel());
-        jsonWriter.writeUntypedField("continueOnError", continueOnError());
-        jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
-        jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        if (traceLevel() != null) {
+            jsonWriter.writeUntypedField("traceLevel", traceLevel());
+        }
+        if (continueOnError() != null) {
+            jsonWriter.writeUntypedField("continueOnError", continueOnError());
+        }
+        if (runConcurrently() != null) {
+            jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
+        }
+        if (sourceStagingConcurrency() != null) {
+            jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        }
         jsonWriter.writeMapField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();

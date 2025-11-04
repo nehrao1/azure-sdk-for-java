@@ -51,7 +51,7 @@ public final class ZohoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ZohoLinkedServiceTypeProperties innerTypeProperties() {
+    ZohoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -278,13 +278,22 @@ public final class ZohoLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model ZohoLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/ListOperations.json
+     * x-ms-original-file: 2025-01-21/ListOperations.json
      */
     /**
      * Sample code: Operations_List.

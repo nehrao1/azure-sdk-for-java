@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AppProtocol;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
+import com.azure.resourcemanager.appcontainers.models.DaprAppHealth;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,36 +15,54 @@ public final class DaprTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Dapr model = BinaryData.fromString(
-            "{\"enabled\":false,\"appId\":\"qvkelnsm\",\"appProtocol\":\"grpc\",\"appPort\":1393240700,\"httpReadBufferSize\":1739794958,\"httpMaxRequestSize\":534713047,\"logLevel\":\"warn\",\"enableApiLogging\":false}")
+            "{\"enabled\":true,\"appId\":\"fqjhhkxbpvjymj\",\"appProtocol\":\"grpc\",\"appPort\":1905459835,\"httpReadBufferSize\":1602354627,\"httpMaxRequestSize\":1547170393,\"logLevel\":\"info\",\"enableApiLogging\":false,\"appHealth\":{\"enabled\":true,\"path\":\"xqzvszjfa\",\"probeIntervalSeconds\":34322019,\"probeTimeoutMilliseconds\":1315854655,\"threshold\":1757404890},\"maxConcurrency\":1144825464}")
             .toObject(Dapr.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("qvkelnsm", model.appId());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("fqjhhkxbpvjymj", model.appId());
         Assertions.assertEquals(AppProtocol.GRPC, model.appProtocol());
-        Assertions.assertEquals(1393240700, model.appPort());
-        Assertions.assertEquals(1739794958, model.httpReadBufferSize());
-        Assertions.assertEquals(534713047, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.WARN, model.logLevel());
-        Assertions.assertEquals(false, model.enableApiLogging());
+        Assertions.assertEquals(1905459835, model.appPort());
+        Assertions.assertEquals(1602354627, model.httpReadBufferSize());
+        Assertions.assertEquals(1547170393, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
+        Assertions.assertFalse(model.enableApiLogging());
+        Assertions.assertTrue(model.appHealth().enabled());
+        Assertions.assertEquals("xqzvszjfa", model.appHealth().path());
+        Assertions.assertEquals(34322019, model.appHealth().probeIntervalSeconds());
+        Assertions.assertEquals(1315854655, model.appHealth().probeTimeoutMilliseconds());
+        Assertions.assertEquals(1757404890, model.appHealth().threshold());
+        Assertions.assertEquals(1144825464, model.maxConcurrency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dapr model = new Dapr().withEnabled(false)
-            .withAppId("qvkelnsm")
+        Dapr model = new Dapr().withEnabled(true)
+            .withAppId("fqjhhkxbpvjymj")
             .withAppProtocol(AppProtocol.GRPC)
-            .withAppPort(1393240700)
-            .withHttpReadBufferSize(1739794958)
-            .withHttpMaxRequestSize(534713047)
-            .withLogLevel(LogLevel.WARN)
-            .withEnableApiLogging(false);
+            .withAppPort(1905459835)
+            .withHttpReadBufferSize(1602354627)
+            .withHttpMaxRequestSize(1547170393)
+            .withLogLevel(LogLevel.INFO)
+            .withEnableApiLogging(false)
+            .withAppHealth(new DaprAppHealth().withEnabled(true)
+                .withPath("xqzvszjfa")
+                .withProbeIntervalSeconds(34322019)
+                .withProbeTimeoutMilliseconds(1315854655)
+                .withThreshold(1757404890))
+            .withMaxConcurrency(1144825464);
         model = BinaryData.fromObject(model).toObject(Dapr.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("qvkelnsm", model.appId());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("fqjhhkxbpvjymj", model.appId());
         Assertions.assertEquals(AppProtocol.GRPC, model.appProtocol());
-        Assertions.assertEquals(1393240700, model.appPort());
-        Assertions.assertEquals(1739794958, model.httpReadBufferSize());
-        Assertions.assertEquals(534713047, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.WARN, model.logLevel());
-        Assertions.assertEquals(false, model.enableApiLogging());
+        Assertions.assertEquals(1905459835, model.appPort());
+        Assertions.assertEquals(1602354627, model.httpReadBufferSize());
+        Assertions.assertEquals(1547170393, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
+        Assertions.assertFalse(model.enableApiLogging());
+        Assertions.assertTrue(model.appHealth().enabled());
+        Assertions.assertEquals("xqzvszjfa", model.appHealth().path());
+        Assertions.assertEquals(34322019, model.appHealth().probeIntervalSeconds());
+        Assertions.assertEquals(1315854655, model.appHealth().probeTimeoutMilliseconds());
+        Assertions.assertEquals(1757404890, model.appHealth().threshold());
+        Assertions.assertEquals(1144825464, model.maxConcurrency());
     }
 }

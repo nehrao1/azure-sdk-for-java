@@ -42,6 +42,12 @@ public final class SalesforceV2Source extends TabularSource {
      */
     private Object includeDeletedObjects;
 
+    /*
+     * Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or
+     * Expression with resultType integer).
+     */
+    private Object pageSize;
+
     /**
      * Creates an instance of SalesforceV2Source class.
      */
@@ -131,6 +137,28 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
+     * Get the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the pageSize value.
+     */
+    public Object pageSize() {
+        return this.pageSize;
+    }
+
+    /**
+     * Set the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @param pageSize the pageSize value to set.
+     * @return the SalesforceV2Source object itself.
+     */
+    public SalesforceV2Source withPageSize(Object pageSize) {
+        this.pageSize = pageSize;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -191,7 +219,6 @@ public final class SalesforceV2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -200,16 +227,37 @@ public final class SalesforceV2Source extends TabularSource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (queryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        }
+        if (additionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        if (this.soqlQuery != null) {
+            jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        }
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.includeDeletedObjects != null) {
+            jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        }
+        if (this.pageSize != null) {
+            jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -254,6 +302,8 @@ public final class SalesforceV2Source extends TabularSource {
                     deserializedSalesforceV2Source.query = reader.readUntyped();
                 } else if ("includeDeletedObjects".equals(fieldName)) {
                     deserializedSalesforceV2Source.includeDeletedObjects = reader.readUntyped();
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedSalesforceV2Source.pageSize = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

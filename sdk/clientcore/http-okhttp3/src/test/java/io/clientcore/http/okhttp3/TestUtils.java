@@ -24,11 +24,11 @@ public final class TestUtils {
      * @return An OkHttp Dispatcher that will quiet the expected exceptions.
      */
     public static Dispatcher createQuietDispatcher(Class<? extends Throwable> expectedErrorType,
-                                                   String expectedErrorMessage) {
+        String expectedErrorMessage) {
         // Most tests will only run a single network call, so it's fine to use a single thread executor that won't
         // allow for concurrent requests.
         return new Dispatcher(Executors.newSingleThreadExecutor(r -> {
-            Thread thread = new Thread(r, "AzureQuietDispatch-" + QUIET_DISPATCHER_THREAD.getAndIncrement());
+            Thread thread = new Thread(r, "ClientCoreQuietDispatch-" + QUIET_DISPATCHER_THREAD.getAndIncrement());
             thread.setUncaughtExceptionHandler((t, e) -> {
                 if (e.getClass() == expectedErrorType
                     && e.getMessage() != null

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
@@ -22,23 +22,23 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"e\",\"properties\":{\"backupPolicyId\":\"occsr\",\"provisioningState\":\"zihmipgawtxxpky\",\"dailyBackupsToKeep\":1198784321,\"weeklyBackupsToKeep\":13818616,\"monthlyBackupsToKeep\":747589619,\"volumesAssigned\":1519575286,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"ycilrmcaykggnox\",\"volumeResourceId\":\"t\",\"backupsCount\":2071174765,\"policyEnabled\":false},{\"volumeName\":\"ndfcpfn\",\"volumeResourceId\":\"thjtwk\",\"backupsCount\":23086677,\"policyEnabled\":false},{\"volumeName\":\"uzvoamktcqiosm\",\"volumeResourceId\":\"zah\",\"backupsCount\":1781662163,\"policyEnabled\":true},{\"volumeName\":\"rtltla\",\"volumeResourceId\":\"ltzkatbhjmznnb\",\"backupsCount\":1452545825,\"policyEnabled\":true}]},\"location\":\"larvlagunbtg\",\"tags\":{\"yreeudz\":\"wlnbm\"},\"id\":\"av\",\"name\":\"pdqmjxlyyzglgouw\",\"type\":\"lmjjyuo\"}]}";
+            = "{\"value\":[{\"etag\":\"nw\",\"properties\":{\"backupPolicyId\":\"gajinnixjawrtmj\",\"provisioningState\":\"myccx\",\"dailyBackupsToKeep\":1452842923,\"weeklyBackupsToKeep\":1559080880,\"monthlyBackupsToKeep\":963389591,\"volumesAssigned\":1682316966,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"lusfnrdtjxtxrdcq\",\"volumeResourceId\":\"vidttgepuslvyjt\",\"backupsCount\":1750462834,\"policyEnabled\":false},{\"volumeName\":\"s\",\"volumeResourceId\":\"iesfuug\",\"backupsCount\":1608993191,\"policyEnabled\":true}]},\"location\":\"cjxeygt\",\"tags\":{\"jlxuz\":\"uicbuewmrsw\"},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupPolicy> response
-            = manager.backupPolicies().list("tsxoatftgz", "npbs", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("olbauirop", "ons", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("larvlagunbtg", response.iterator().next().location());
-        Assertions.assertEquals("wlnbm", response.iterator().next().tags().get("yreeudz"));
-        Assertions.assertEquals(1198784321, response.iterator().next().dailyBackupsToKeep());
-        Assertions.assertEquals(13818616, response.iterator().next().weeklyBackupsToKeep());
-        Assertions.assertEquals(747589619, response.iterator().next().monthlyBackupsToKeep());
-        Assertions.assertEquals(true, response.iterator().next().enabled());
+        Assertions.assertEquals("cjxeygt", response.iterator().next().location());
+        Assertions.assertEquals("uicbuewmrsw", response.iterator().next().tags().get("jlxuz"));
+        Assertions.assertEquals(1452842923, response.iterator().next().dailyBackupsToKeep());
+        Assertions.assertEquals(1559080880, response.iterator().next().weeklyBackupsToKeep());
+        Assertions.assertEquals(963389591, response.iterator().next().monthlyBackupsToKeep());
+        Assertions.assertFalse(response.iterator().next().enabled());
     }
 }

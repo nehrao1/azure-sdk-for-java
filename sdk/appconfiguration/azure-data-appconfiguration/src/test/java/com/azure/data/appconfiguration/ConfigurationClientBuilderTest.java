@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -22,12 +23,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.models.ConfigurationAudience;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -48,8 +52,8 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private final String key = "newKey";
     private final String value = "newValue";
-    private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
-
+    private static final String ENDPOINT
+        = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
 
     @Test
     @DoNotRecord
@@ -65,8 +69,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     public void clientMissingEndpointButTokenCredentialProvided() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
-            TokenCredential credentials = request -> Mono.just(
-                new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+            TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
             builder.credential(credentials).buildClient();
         });
     }
@@ -113,8 +116,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
             TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
-            builder.connectionString(FAKE_CONNECTION_STRING)
-                .credential(credentials).buildClient();
+            builder.connectionString(FAKE_CONNECTION_STRING).credential(credentials).buildClient();
         });
     }
 
@@ -147,7 +149,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    public void nullAADCredential() {
+    public void nullEntraCredential() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
             builder.endpoint(ENDPOINT).credential(null).buildAsyncClient();
@@ -156,23 +158,12 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    public void timeoutPolicy() {
-        final ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(FAKE_CONNECTION_STRING)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
-
-        assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
-    }
-
-    @Test
-    @DoNotRecord
     public void throwIfBothRetryOptionsAndRetryPolicyIsConfigured() {
-        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(FAKE_CONNECTION_STRING)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)));
+        final ConfigurationClientBuilder clientBuilder
+            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)));
 
         assertThrows(IllegalStateException.class, clientBuilder::buildClient);
     }
@@ -189,8 +180,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
         Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
-        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .credential(tokenCredential)
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder().credential(tokenCredential)
             .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -200,9 +190,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         }
         if (interceptorManager.isRecordMode()) {
-            clientBuilder
-                .httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
         }
         // Disable `("$.key")` sanitizer
         if (!interceptorManager.isLiveMode()) {
@@ -225,17 +213,14 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
         Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
-        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .credential(tokenCredential)
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder().credential(tokenCredential)
             .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (interceptorManager.isRecordMode()) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(HttpClient.createDefault());
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy()).httpClient(HttpClient.createDefault());
         }
 
         if (interceptorManager.isPlaybackMode()) {
@@ -247,9 +232,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             interceptorManager.removeSanitizers("AZSDK3447");
         }
 
-        ConfigurationSetting addedSetting = clientBuilder
-            .buildClient()
-            .setConfigurationSetting(key, null, value);
+        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
 
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
@@ -258,16 +241,17 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
-        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-            .connectionString(FAKE_CONNECTION_STRING)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-            .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.just(new MockHttpResponse(httpRequest, 400));
-            })
-            .buildClient();
+        ConfigurationClient configurationClient
+            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+                .httpClient(httpRequest -> {
+                    assertTrue(
+                        httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
@@ -279,7 +263,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .clientOptions(new ClientOptions().setHeaders(Collections.singleton(new Header("User-Agent", "custom"))))
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
@@ -289,8 +273,9 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void getEndpointAtClientInstance() {
-        ConfigurationClientBuilder configurationClientBuilder = new ConfigurationClientBuilder()
-                                                                          .connectionString(FAKE_CONNECTION_STRING);
+        ConfigurationClientBuilder configurationClientBuilder
+            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)));
         final ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
         assertEquals("https://localhost:8080", client.getEndpoint());
@@ -301,8 +286,78 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
         } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespace), exception);
+            throw new IllegalArgumentException(String.format(Locale.US, "Invalid namespace name: %s", namespace),
+                exception);
         }
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetUsGovScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.us/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.us";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.us";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetDefaultScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.com/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.com";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.com";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetChinaScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.cn/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.cn";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.cn";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testUserDefinedScope() throws Exception {
+        String fakeEndpoint = "https://example1.azconfig.azure.com";
+        ConfigurationClientBuilder builder
+            = new ConfigurationClientBuilder().endpoint("https://example1.azconfig.azure.com")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .audience(ConfigurationAudience.AZURE_CHINA);
+        builder.buildClient();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String actualScope = (String) method.invoke(builder, fakeEndpoint);
+        assertEquals(ConfigurationAudience.AZURE_CHINA + "/.default", actualScope);
     }
 }

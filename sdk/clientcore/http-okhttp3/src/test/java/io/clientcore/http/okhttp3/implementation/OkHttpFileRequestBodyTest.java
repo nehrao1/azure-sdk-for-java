@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.binarydata.FileBinaryData;
+import io.clientcore.core.models.binarydata.FileBinaryData;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ByteString;
@@ -27,7 +27,7 @@ public class OkHttpFileRequestBodyTest {
     private static final Random RANDOM = new Random();
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentTransferAll(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -35,8 +35,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody
+            = new OkHttpFileRequestBody(new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
 
         TestSink sink = new TestSink(false);
 
@@ -46,7 +46,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferTo(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -54,8 +54,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody
+            = new OkHttpFileRequestBody(new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
 
         TestSink sink = new TestSink(true);
 
@@ -65,7 +65,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferToWithOversizeContent(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -73,8 +73,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileBinaryData(file, 1024, 0L, size + 112L), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody
+            = new OkHttpFileRequestBody(new FileBinaryData(file, 1024, 0L, size + 112L), bytes.length, null);
 
         TestSink sink = new TestSink(true);
 
@@ -114,17 +114,17 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public BufferedSink emit() throws IOException {
+        public BufferedSink emit() {
             return null;
         }
 
         @Override
-        public BufferedSink emitCompleteSegments() throws IOException {
+        public BufferedSink emitCompleteSegments() {
             return null;
         }
 
         @Override
-        public void flush() throws IOException {
+        public void flush() {
 
         }
 
@@ -134,102 +134,102 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public BufferedSink write(byte[] bytes) throws IOException {
+        public BufferedSink write(byte[] bytes) {
             return null;
         }
 
         @Override
-        public BufferedSink write(byte[] bytes, int i, int i1) throws IOException {
+        public BufferedSink write(byte[] bytes, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink write(ByteString byteString) throws IOException {
+        public BufferedSink write(ByteString byteString) {
             return null;
         }
 
         @Override
-        public BufferedSink write(ByteString byteString, int i, int i1) throws IOException {
+        public BufferedSink write(ByteString byteString, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink write(Source source, long l) throws IOException {
+        public BufferedSink write(Source source, long l) {
             return null;
         }
 
         @Override
-        public long writeAll(Source source) throws IOException {
+        public long writeAll(Source source) {
             return 0;
         }
 
         @Override
-        public BufferedSink writeByte(int i) throws IOException {
+        public BufferedSink writeByte(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeDecimalLong(long l) throws IOException {
+        public BufferedSink writeDecimalLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeHexadecimalUnsignedLong(long l) throws IOException {
+        public BufferedSink writeHexadecimalUnsignedLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeInt(int i) throws IOException {
+        public BufferedSink writeInt(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeIntLe(int i) throws IOException {
+        public BufferedSink writeIntLe(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeLong(long l) throws IOException {
+        public BufferedSink writeLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeLongLe(long l) throws IOException {
+        public BufferedSink writeLongLe(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeShort(int i) throws IOException {
+        public BufferedSink writeShort(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeShortLe(int i) throws IOException {
+        public BufferedSink writeShortLe(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeString(String s, Charset charset) throws IOException {
+        public BufferedSink writeString(String s, Charset charset) {
             return null;
         }
 
         @Override
-        public BufferedSink writeString(String s, int i, int i1, Charset charset) throws IOException {
+        public BufferedSink writeString(String s, int i, int i1, Charset charset) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8(String s) throws IOException {
+        public BufferedSink writeUtf8(String s) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8(String s, int i, int i1) throws IOException {
+        public BufferedSink writeUtf8(String s, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8CodePoint(int i) throws IOException {
+        public BufferedSink writeUtf8CodePoint(int i) {
             return null;
         }
 
@@ -239,7 +239,7 @@ public class OkHttpFileRequestBodyTest {
 
             if (simulateIncompleteRead && src.remaining() > 1) {
                 buf = new byte[src.remaining() - 1];
-            } else  {
+            } else {
                 buf = new byte[src.remaining()];
             }
             src.get(buf);
@@ -253,7 +253,7 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
 
         }
 
@@ -263,7 +263,7 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public void write(Buffer buffer, long l) throws IOException {
+        public void write(Buffer buffer, long l) {
 
         }
     }

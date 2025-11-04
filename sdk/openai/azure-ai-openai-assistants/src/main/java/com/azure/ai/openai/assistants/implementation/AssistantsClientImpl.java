@@ -987,7 +987,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Required)
      *     name: String (Optional)
@@ -1013,11 +1014,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1050,7 +1053,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1074,7 +1078,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Required)
      *     name: String (Optional)
@@ -1100,11 +1105,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1137,7 +1144,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1170,14 +1178,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -1218,7 +1227,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1249,14 +1259,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -1297,7 +1308,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1316,7 +1328,8 @@ public final class AssistantsClientImpl {
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1349,7 +1362,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1371,7 +1385,8 @@ public final class AssistantsClientImpl {
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1404,7 +1419,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1424,7 +1440,8 @@ public final class AssistantsClientImpl {
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     name: String (Optional)
@@ -1454,11 +1471,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1491,7 +1510,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
@@ -1516,7 +1536,8 @@ public final class AssistantsClientImpl {
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     name: String (Optional)
@@ -1546,11 +1567,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1583,7 +1606,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
@@ -1607,13 +1631,15 @@ public final class AssistantsClientImpl {
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1636,13 +1662,15 @@ public final class AssistantsClientImpl {
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1662,7 +1690,8 @@ public final class AssistantsClientImpl {
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Optional): [
      *          (Optional){
@@ -1693,11 +1722,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1718,7 +1749,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1742,7 +1774,8 @@ public final class AssistantsClientImpl {
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Optional): [
      *          (Optional){
@@ -1773,11 +1806,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1798,7 +1833,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1821,7 +1857,8 @@ public final class AssistantsClientImpl {
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1842,7 +1879,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1864,7 +1902,8 @@ public final class AssistantsClientImpl {
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1885,7 +1924,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1905,7 +1945,8 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
@@ -1923,11 +1964,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1948,7 +1991,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to modify.
      * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
@@ -1973,7 +2017,8 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
@@ -1991,11 +2036,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2016,7 +2063,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to modify.
      * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
@@ -2040,13 +2088,15 @@ public final class AssistantsClientImpl {
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2068,13 +2118,15 @@ public final class AssistantsClientImpl {
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2094,7 +2146,8 @@ public final class AssistantsClientImpl {
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     role: String(user/assistant) (Required)
      *     content: String (Required)
@@ -2110,11 +2163,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2146,7 +2201,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to create the new message on.
      * @param threadMessageOptions A single message within an assistant thread, as provided during that thread's
@@ -2172,7 +2228,8 @@ public final class AssistantsClientImpl {
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     role: String(user/assistant) (Required)
      *     content: String (Required)
@@ -2188,11 +2245,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2224,7 +2283,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to create the new message on.
      * @param threadMessageOptions A single message within an assistant thread, as provided during that thread's
@@ -2260,14 +2320,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2307,7 +2368,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2340,14 +2402,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2387,7 +2450,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2407,7 +2471,8 @@ public final class AssistantsClientImpl {
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2439,7 +2504,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
@@ -2463,7 +2529,8 @@ public final class AssistantsClientImpl {
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2495,7 +2562,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
@@ -2517,17 +2585,20 @@ public final class AssistantsClientImpl {
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2559,7 +2630,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
@@ -2585,17 +2657,20 @@ public final class AssistantsClientImpl {
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2627,7 +2702,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
@@ -2650,9 +2726,18 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     model: String (Optional)
@@ -2696,6 +2781,7 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     parallel_tool_calls: Boolean (Optional)
      *     stream: Boolean (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -2711,11 +2797,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2757,12 +2845,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details used when creating a new run of an assistant thread.
@@ -2785,9 +2875,18 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     model: String (Optional)
@@ -2831,6 +2930,7 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     parallel_tool_calls: Boolean (Optional)
      *     stream: Boolean (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -2846,11 +2946,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2892,12 +2994,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details used when creating a new run of an assistant thread.
@@ -2931,14 +3035,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2983,6 +3088,7 @@ public final class AssistantsClientImpl {
      *                 last_messages: Integer (Optional)
      *             }
      *             tool_choice: BinaryData (Required)
+     *             parallel_tool_calls: boolean (Required)
      *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
@@ -2993,7 +3099,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3025,14 +3132,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -3077,6 +3185,7 @@ public final class AssistantsClientImpl {
      *                 last_messages: Integer (Optional)
      *             }
      *             tool_choice: BinaryData (Required)
+     *             parallel_tool_calls: boolean (Required)
      *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
@@ -3087,7 +3196,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3107,7 +3217,8 @@ public final class AssistantsClientImpl {
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3149,12 +3260,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
@@ -3178,7 +3291,8 @@ public final class AssistantsClientImpl {
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3220,12 +3334,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
@@ -3246,17 +3362,20 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3298,12 +3417,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
@@ -3329,17 +3450,20 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3381,12 +3505,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
@@ -3412,7 +3538,8 @@ public final class AssistantsClientImpl {
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_outputs (Required): [
      *          (Required){
@@ -3422,11 +3549,13 @@ public final class AssistantsClientImpl {
      *     ]
      *     stream: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3468,12 +3597,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
@@ -3500,7 +3631,8 @@ public final class AssistantsClientImpl {
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_outputs (Required): [
      *          (Required){
@@ -3510,11 +3642,13 @@ public final class AssistantsClientImpl {
      *     ]
      *     stream: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3556,12 +3690,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
@@ -3586,7 +3722,8 @@ public final class AssistantsClientImpl {
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3628,12 +3765,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
@@ -3657,7 +3796,8 @@ public final class AssistantsClientImpl {
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3699,12 +3839,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
@@ -3725,7 +3867,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     thread (Optional): {
@@ -3765,6 +3908,7 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     parallel_tool_calls: Boolean (Optional)
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
      *             file_ids (Optional): [
@@ -3792,11 +3936,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3838,12 +3984,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3867,7 +4015,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     thread (Optional): {
@@ -3907,6 +4056,7 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     parallel_tool_calls: Boolean (Optional)
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
      *             file_ids (Optional): [
@@ -3934,11 +4084,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3980,12 +4132,14 @@ public final class AssistantsClientImpl {
      *         last_messages: Integer (Optional)
      *     }
      *     tool_choice: BinaryData (Required)
+     *     parallel_tool_calls: boolean (Required)
      *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4006,9 +4160,18 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4038,7 +4201,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
@@ -4060,9 +4224,18 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4092,7 +4265,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
@@ -4118,6 +4292,8 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -4126,14 +4302,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4171,7 +4348,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
@@ -4197,6 +4375,8 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response. In the form of "," separated string.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -4205,14 +4385,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4250,7 +4431,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
@@ -4280,7 +4462,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4296,7 +4479,8 @@ public final class AssistantsClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4324,7 +4508,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4340,7 +4525,8 @@ public final class AssistantsClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4359,7 +4545,8 @@ public final class AssistantsClientImpl {
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -4370,9 +4557,10 @@ public final class AssistantsClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param uploadFileRequest The file data to upload and its purpose.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4394,7 +4582,8 @@ public final class AssistantsClientImpl {
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -4405,9 +4594,10 @@ public final class AssistantsClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param uploadFileRequest The file data to upload and its purpose.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4427,13 +4617,15 @@ public final class AssistantsClientImpl {
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4455,13 +4647,15 @@ public final class AssistantsClientImpl {
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4481,7 +4675,8 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -4492,7 +4687,8 @@ public final class AssistantsClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4514,7 +4710,8 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -4525,7 +4722,8 @@ public final class AssistantsClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4545,9 +4743,11 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * byte[]
-     * }</pre>
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4555,11 +4755,11 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(
             context -> service.getFileContent(this.getEndpoint(), fileId, accept, requestOptions, context));
     }
@@ -4568,9 +4768,11 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * byte[]
-     * }</pre>
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4578,11 +4780,11 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String accept = "application/octet-stream";
         return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 
@@ -4600,14 +4802,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4640,7 +4843,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4671,14 +4875,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -4711,7 +4916,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4730,7 +4936,8 @@ public final class AssistantsClientImpl {
      * Creates a vector store.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_ids (Optional): [
      *         String (Optional)
@@ -4747,11 +4954,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4776,7 +4985,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreOptions Request object for creating a vector store.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4800,7 +5010,8 @@ public final class AssistantsClientImpl {
      * Creates a vector store.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_ids (Optional): [
      *         String (Optional)
@@ -4817,11 +5028,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4846,7 +5059,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreOptions Request object for creating a vector store.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4870,7 +5084,8 @@ public final class AssistantsClientImpl {
      * Returns the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4895,7 +5110,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4918,7 +5134,8 @@ public final class AssistantsClientImpl {
      * Returns the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -4943,7 +5160,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4964,7 +5182,8 @@ public final class AssistantsClientImpl {
      * The ID of the vector store to modify.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     expires_after (Optional): {
@@ -4975,11 +5194,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5004,7 +5225,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to modify.
      * @param vectorStoreUpdateOptions Request object for updating a vector store.
@@ -5029,7 +5251,8 @@ public final class AssistantsClientImpl {
      * The ID of the vector store to modify.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     expires_after (Optional): {
@@ -5040,11 +5263,13 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5069,7 +5294,8 @@ public final class AssistantsClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to modify.
      * @param vectorStoreUpdateOptions Request object for updating a vector store.
@@ -5094,13 +5320,15 @@ public final class AssistantsClientImpl {
      * Deletes the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5123,13 +5351,15 @@ public final class AssistantsClientImpl {
      * Deletes the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5161,14 +5391,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -5180,7 +5411,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5192,7 +5423,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the files belong to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5227,14 +5459,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -5246,7 +5479,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5258,7 +5491,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the files belong to.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5279,18 +5513,21 @@ public final class AssistantsClientImpl {
      * Create a vector store file by attaching a file to a vector store.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_id: String (Required)
      *     chunking_strategy (Optional): {
      *         type: String(auto/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5299,14 +5536,15 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         code: String(server_error/unsupported_file/invalid_file) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
      *         type: String(other/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
      * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
@@ -5331,18 +5569,21 @@ public final class AssistantsClientImpl {
      * Create a vector store file by attaching a file to a vector store.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_id: String (Required)
      *     chunking_strategy (Optional): {
      *         type: String(auto/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5351,14 +5592,15 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         code: String(server_error/unsupported_file/invalid_file) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
      *         type: String(other/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
      * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
@@ -5382,7 +5624,8 @@ public final class AssistantsClientImpl {
      * Retrieves a vector store file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5391,14 +5634,15 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         code: String(server_error/unsupported_file/invalid_file) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
      *         type: String(other/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file belongs to.
      * @param fileId The ID of the file being retrieved.
@@ -5422,7 +5666,8 @@ public final class AssistantsClientImpl {
      * Retrieves a vector store file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5431,14 +5676,15 @@ public final class AssistantsClientImpl {
      *     vector_store_id: String (Required)
      *     status: String(in_progress/completed/failed/cancelled) (Required)
      *     last_error (Required): {
-     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         code: String(server_error/unsupported_file/invalid_file) (Required)
      *         message: String (Required)
      *     }
      *     chunking_strategy (Required): {
      *         type: String(other/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file belongs to.
      * @param fileId The ID of the file being retrieved.
@@ -5463,13 +5709,15 @@ public final class AssistantsClientImpl {
      * To delete the file, use the delete file endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file belongs to.
      * @param fileId The ID of the file to delete its relationship to the vector store.
@@ -5495,13 +5743,15 @@ public final class AssistantsClientImpl {
      * To delete the file, use the delete file endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file belongs to.
      * @param fileId The ID of the file to delete its relationship to the vector store.
@@ -5524,7 +5774,8 @@ public final class AssistantsClientImpl {
      * Create a vector store file batch.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_ids (Required): [
      *         String (Required)
@@ -5533,11 +5784,13 @@ public final class AssistantsClientImpl {
      *         type: String(auto/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5552,7 +5805,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File Batch.
      * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
@@ -5577,7 +5831,8 @@ public final class AssistantsClientImpl {
      * Create a vector store file batch.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     file_ids (Required): [
      *         String (Required)
@@ -5586,11 +5841,13 @@ public final class AssistantsClientImpl {
      *         type: String(auto/static) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5605,7 +5862,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File Batch.
      * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
@@ -5629,7 +5887,8 @@ public final class AssistantsClientImpl {
      * Retrieve a vector store file batch.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5644,7 +5903,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch being retrieved.
@@ -5668,7 +5928,8 @@ public final class AssistantsClientImpl {
      * Retrieve a vector store file batch.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5683,7 +5944,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch being retrieved.
@@ -5707,7 +5969,8 @@ public final class AssistantsClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5722,7 +5985,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch to cancel.
@@ -5747,7 +6011,8 @@ public final class AssistantsClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -5762,7 +6027,8 @@ public final class AssistantsClientImpl {
      *         total: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch to cancel.
@@ -5797,14 +6063,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -5816,7 +6083,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5828,7 +6095,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch that the files belong to.
@@ -5864,14 +6132,15 @@ public final class AssistantsClientImpl {
      * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
      * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with
      * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
      * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -5883,7 +6152,7 @@ public final class AssistantsClientImpl {
      *             vector_store_id: String (Required)
      *             status: String(in_progress/completed/failed/cancelled) (Required)
      *             last_error (Required): {
-     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 code: String(server_error/unsupported_file/invalid_file) (Required)
      *                 message: String (Required)
      *             }
      *             chunking_strategy (Required): {
@@ -5895,7 +6164,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
      * @param batchId The ID of the file batch that the files belong to.

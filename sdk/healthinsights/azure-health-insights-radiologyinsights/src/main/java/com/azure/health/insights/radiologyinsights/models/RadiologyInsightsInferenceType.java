@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -76,6 +75,24 @@ public final class RadiologyInsightsInferenceType extends ExpandableStringEnum<R
     public static final RadiologyInsightsInferenceType RADIOLOGY_PROCEDURE = fromString("radiologyProcedure");
 
     /**
+     * Scoring and assessment inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType SCORING_AND_ASSESSMENT = fromString("scoringAndAssessment");
+
+    /**
+     * Guidance inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType GUIDANCE = fromString("guidance");
+
+    /**
+     * Guidance measure inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType QUALITY_MEASURE = fromString("qualityMeasure");
+
+    /**
      * Creates a new instance of RadiologyInsightsInferenceType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -92,7 +109,6 @@ public final class RadiologyInsightsInferenceType extends ExpandableStringEnum<R
      * @return the corresponding RadiologyInsightsInferenceType.
      */
     @Generated
-    @JsonCreator
     public static RadiologyInsightsInferenceType fromString(String name) {
         return fromString(name, RadiologyInsightsInferenceType.class);
     }

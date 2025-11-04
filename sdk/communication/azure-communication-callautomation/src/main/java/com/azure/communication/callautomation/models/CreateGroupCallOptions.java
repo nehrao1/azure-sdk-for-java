@@ -3,12 +3,12 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.List;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * The options for creating a group call.
@@ -55,10 +55,10 @@ public final class CreateGroupCallOptions {
      */
     private CallIntelligenceOptions callIntelligenceOptions;
 
-    /**
-     * Custom Context
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
      */
-    private final CustomCallingContext customContext;
+    private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
      * Constructor
@@ -71,7 +71,6 @@ public final class CreateGroupCallOptions {
         this.callbackUrl = callbackUrl;
         this.sourceDisplayName = null;
         this.sourceCallIdNumber = null;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -131,10 +130,10 @@ public final class CreateGroupCallOptions {
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public CreateGroupCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
@@ -142,10 +141,10 @@ public final class CreateGroupCallOptions {
     /**
      * Set the transcription configuration.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+    public CreateGroupCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
     }
@@ -191,28 +190,40 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
+     * Get the Media Streaming Options.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the mediaStreamingOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
+    public MediaStreamingOptions getMediaStreamingOptions() {
         return mediaStreamingOptions;
     }
 
     /**
-     * Get the Transcription configuration.
+     * Get the Transcription Options.
      *
-     * @return the transcriptionConfiguration.
+     * @return the transcriptionOptions.
      */
-    public TranscriptionOptions getTranscriptionConfiguration() {
+    public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
 
     /**
-     *  get custom context
-     * @return custom context
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @return the teamsAppSource value.
      */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
+    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
+        return this.teamsAppSource;
+    }
+
+    /**
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @param teamsAppSource the teamsAppSource value to set.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
+        return this;
     }
 }

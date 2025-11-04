@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterCollection;
@@ -21,21 +21,21 @@ public final class BillingMetersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"p\",\"properties\":{\"category\":\"xelnwc\",\"meterType\":\"yjede\",\"displayName\":\"mlfmkqs\"},\"id\":\"zuawxtzxpuamwa\",\"name\":\"zxrvxcus\",\"type\":\"sphaivmxyasflvg\"},{\"location\":\"zwywako\",\"properties\":{\"category\":\"nsmjbl\",\"meterType\":\"jhlnymzotqyryu\",\"displayName\":\"bmqqvxmvw\"},\"id\":\"tayx\",\"name\":\"nsup\",\"type\":\"ujlzqnhcvsqltn\"}]}";
+            = "{\"value\":[{\"location\":\"ycsxzu\",\"properties\":{\"category\":\"rlsmdesqplpvmjc\",\"meterType\":\"ewbidyvteowxv\",\"displayName\":\"iudeu\"},\"id\":\"sxze\",\"name\":\"paxwkufyk\",\"type\":\"vuhx\"},{\"location\":\"mrutznabaobnsluj\",\"properties\":{\"category\":\"tymkmvguihywart\",\"meterType\":\"phkixkykxdssjpe\",\"displayName\":\"ucfx\"},\"id\":\"kkflrmymyincqlhr\",\"name\":\"s\",\"type\":\"sl\"},{\"location\":\"iiovgqcgxu\",\"properties\":{\"category\":\"kctotiowlxteq\",\"meterType\":\"tjgwdtguk\",\"displayName\":\"nblwphqlkcc\"},\"id\":\"gygqwah\",\"name\":\"iul\",\"type\":\"gniiprglvaw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingMeterCollection response
-            = manager.billingMeters().getWithResponse("ujeickp", com.azure.core.util.Context.NONE).getValue();
+            = manager.billingMeters().getWithResponse("ukklelss", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("p", response.value().get(0).location());
-        Assertions.assertEquals("xelnwc", response.value().get(0).properties().category());
-        Assertions.assertEquals("yjede", response.value().get(0).properties().meterType());
-        Assertions.assertEquals("mlfmkqs", response.value().get(0).properties().displayName());
+        Assertions.assertEquals("ycsxzu", response.value().get(0).location());
+        Assertions.assertEquals("rlsmdesqplpvmjc", response.value().get(0).properties().category());
+        Assertions.assertEquals("ewbidyvteowxv", response.value().get(0).properties().meterType());
+        Assertions.assertEquals("iudeu", response.value().get(0).properties().displayName());
     }
 }

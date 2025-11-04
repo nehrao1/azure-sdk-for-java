@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doAnswer;
@@ -41,6 +43,7 @@ public class SpyClientUnderTestFactory {
                 String masterKeyOrResourceToken,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -51,6 +54,7 @@ public class SpyClientUnderTestFactory {
                     masterKeyOrResourceToken,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     null,
@@ -65,7 +69,8 @@ public class SpyClientUnderTestFactory {
                     null,
                     null,
                     null,
-                    false);
+                    false
+            );
         }
 
         public abstract List<T> getCapturedRequests();
@@ -92,6 +97,7 @@ public class SpyClientUnderTestFactory {
                 String masterKey,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -101,11 +107,12 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, null);
+            init(null, null, null, null);
             updateOrigRxGatewayStoreModel();
         }
 
@@ -121,7 +128,8 @@ public class SpyClientUnderTestFactory {
                                                  UserAgentContainer userAgentContainer,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
-                                                 ApiType apiType) {
+                                                 ApiType apiType,
+                                                 Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,
@@ -129,7 +137,8 @@ public class SpyClientUnderTestFactory {
                 userAgentContainer,
                 globalEndpointManager,
                 rxClient,
-                apiType);
+                apiType,
+                null);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();
@@ -181,6 +190,7 @@ public class SpyClientUnderTestFactory {
                 String masterKey,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -190,24 +200,21 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, this::initHttpRequestCapture);
+            init(null, this::initHttpRequestCapture, null, null);
         }
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (invocationOnMock.getArguments().length == 2) {
-                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
-            }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
             return origHttpClient
-                .send(httpRequest, responseTimeout)
+                .send(httpRequest)
                 .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
                 .doOnError(f::completeExceptionally);
         }
@@ -278,12 +285,13 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    null,
                     createConfigsSpy(Protocol.HTTPS),
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init(null, null);
+            init(null, null, null, null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);
@@ -341,6 +349,7 @@ public class SpyClientUnderTestFactory {
                                                                   String masterKey,
                                                                   ConnectionPolicy connectionPolicy,
                                                                   ConsistencyLevel consistencyLevel,
+                                                                  ReadConsistencyStrategy readConsistencyStrategy,
                                                                   Configs configs,
                                                                   AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled,
@@ -350,6 +359,7 @@ public class SpyClientUnderTestFactory {
                 masterKey,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 contentResponseOnWriteEnabled,
@@ -368,6 +378,7 @@ public class SpyClientUnderTestFactory {
                                                         String masterKey,
                                                         ConnectionPolicy connectionPolicy,
                                                         ConsistencyLevel consistencyLevel,
+                                                        ReadConsistencyStrategy readConsistencyStrategy,
                                                         Configs configs,
                                                         AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled,
@@ -377,6 +388,7 @@ public class SpyClientUnderTestFactory {
                 masterKey,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 contentResponseOnWriteEnabled,

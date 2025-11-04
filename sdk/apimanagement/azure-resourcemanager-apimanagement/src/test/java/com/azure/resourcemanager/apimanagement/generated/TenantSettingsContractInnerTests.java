@@ -13,30 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TenantSettingsContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantSettingsContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"settings\":{\"zfffhtjnwo\":\"ctqkmvjanx\",\"xzqfcwr\":\"stfjxtvl\",\"hjmbji\":\"iomxeezw\",\"hpyvdkgdet\":\"egmxdbsohc\"}},\"id\":\"z\",\"name\":\"canzb\",\"type\":\"ekwuyckyvn\"}")
-                .toObject(TenantSettingsContractInner.class);
-        Assertions.assertEquals("ctqkmvjanx", model.settings().get("zfffhtjnwo"));
+        TenantSettingsContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"settings\":{\"w\":\"sbfjhh\",\"zkgtzqn\":\"pkvegeatt\",\"x\":\"qsttewuvcysjeuf\",\"uxlvrhprrvbwonl\":\"lpditfnonpi\"}},\"id\":\"qflvtlrvbst\",\"name\":\"huy\",\"type\":\"uninttlnrjdszd\"}")
+            .toObject(TenantSettingsContractInner.class);
+        Assertions.assertEquals("sbfjhh", model.settings().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TenantSettingsContractInner model =
-            new TenantSettingsContractInner()
-                .withSettings(
-                    mapOf(
-                        "zfffhtjnwo",
-                        "ctqkmvjanx",
-                        "xzqfcwr",
-                        "stfjxtvl",
-                        "hjmbji",
-                        "iomxeezw",
-                        "hpyvdkgdet",
-                        "egmxdbsohc"));
+        TenantSettingsContractInner model = new TenantSettingsContractInner().withSettings(
+            mapOf("w", "sbfjhh", "zkgtzqn", "pkvegeatt", "x", "qsttewuvcysjeuf", "uxlvrhprrvbwonl", "lpditfnonpi"));
         model = BinaryData.fromObject(model).toObject(TenantSettingsContractInner.class);
-        Assertions.assertEquals("ctqkmvjanx", model.settings().get("zfffhtjnwo"));
+        Assertions.assertEquals("sbfjhh", model.settings().get("w"));
     }
 
     // Use "Map.of" if available

@@ -51,7 +51,7 @@ public final class AzureSqlDWLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSqlDWLinkedServiceTypeProperties innerTypeProperties() {
+    AzureSqlDWLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -908,13 +908,22 @@ public final class AzureSqlDWLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model AzureSqlDWLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

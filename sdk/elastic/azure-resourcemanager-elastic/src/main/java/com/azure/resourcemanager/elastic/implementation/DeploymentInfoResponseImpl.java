@@ -14,8 +14,8 @@ public final class DeploymentInfoResponseImpl implements DeploymentInfoResponse 
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    DeploymentInfoResponseImpl(
-        DeploymentInfoResponseInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    DeploymentInfoResponseImpl(DeploymentInfoResponseInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,12 +36,24 @@ public final class DeploymentInfoResponseImpl implements DeploymentInfoResponse 
         return this.innerModel().diskCapacity();
     }
 
+    public String elasticsearchEndPoint() {
+        return this.innerModel().elasticsearchEndPoint();
+    }
+
     public String deploymentUrl() {
         return this.innerModel().deploymentUrl();
     }
 
     public MarketplaceSaaSInfo marketplaceSaasInfo() {
         return this.innerModel().marketplaceSaasInfo();
+    }
+
+    public String projectType() {
+        return this.innerModel().projectType();
+    }
+
+    public String configurationType() {
+        return this.innerModel().configurationType();
     }
 
     public DeploymentInfoResponseInner innerModel() {

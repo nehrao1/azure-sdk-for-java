@@ -11,7 +11,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.DateTimeException;
@@ -23,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import reactor.core.publisher.Mono;
 
 // DO NOT modify this helper class
 final class PollingUtils {
@@ -145,12 +145,13 @@ final class PollingUtils {
         return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
     }
 
+    private static final Pattern PATTERN = Pattern.compile("[^:]+://[^/]+/documentintelligence/.+/([^?/]+)");
+
     static String parseOperationId(String operationLocationHeader) {
         if (CoreUtils.isNullOrEmpty(operationLocationHeader)) {
             return null;
         }
-        Pattern pattern = Pattern.compile("[^:]+://[^/]+/documentintelligence/.+/([^?/]+)");
-        Matcher matcher = pattern.matcher(operationLocationHeader);
+        Matcher matcher = PATTERN.matcher(operationLocationHeader);
         if (matcher.find() && matcher.group(1) != null) {
             return matcher.group(1);
         }

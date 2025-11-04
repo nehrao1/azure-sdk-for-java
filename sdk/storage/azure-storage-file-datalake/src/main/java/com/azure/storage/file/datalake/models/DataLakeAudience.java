@@ -7,7 +7,6 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-
 /**
  * The audience to be used when requesting a token from Azure Active Directory (AAD).
  * Note: This audience only has an effect when authenticating a TokenCredential.
@@ -48,7 +47,7 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
      * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
      * located.
      * For more information see
-     * <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory">
+     * <a href="https://learn.microsoft.com/azure/storage/blobs/authorize-access-azure-active-directory">
      *     Authorize access to Azure blobs using Azure Active Directory</a>.
      *
      * @param audience The Azure Active Directory audience to use when forming authorization scopes.
@@ -59,6 +58,8 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
     }
 
     /**
+     * Gets known DataLakeAudience values.
+     *
      * @return known DataLakeAudience values.
      */
     public static Collection<DataLakeAudience> values() {

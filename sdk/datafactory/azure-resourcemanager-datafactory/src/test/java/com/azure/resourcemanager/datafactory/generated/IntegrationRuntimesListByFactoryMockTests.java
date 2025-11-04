@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
@@ -22,19 +22,19 @@ public final class IntegrationRuntimesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"sumzfvrakpqlltoi\",\"\":{\"bsbhaqsu\":\"dataeoibehrholjjxi\",\"euj\":\"datawdcgdkwwulj\",\"nhmnswlf\":\"datasxrsxbofmvau\"}},\"name\":\"kildl\",\"type\":\"tviwvej\",\"etag\":\"zk\",\"id\":\"dpssklm\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"cwkwm\",\"ukvsgkzxzn\":\"dataqldacxofaqas\",\"qpkpvdiirvxahx\":\"datatxocznszmjzsjfc\"},\"name\":\"lhxo\",\"type\":\"omakmi\",\"etag\":\"hduflajsgut\",\"id\":\"cbvxyqpr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<IntegrationRuntimeResource> response
-            = manager.integrationRuntimes().listByFactory("yabglsarfmjsch", "xudrom", com.azure.core.util.Context.NONE);
+        PagedIterable<IntegrationRuntimeResource> response = manager.integrationRuntimes()
+            .listByFactory("mdlhxwwhusrod", "omozafwq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dpssklm", response.iterator().next().id());
-        Assertions.assertEquals("sumzfvrakpqlltoi", response.iterator().next().properties().description());
+        Assertions.assertEquals("cbvxyqpr", response.iterator().next().id());
+        Assertions.assertEquals("cwkwm", response.iterator().next().properties().description());
     }
 }

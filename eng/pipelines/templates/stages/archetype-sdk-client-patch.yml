@@ -8,18 +8,12 @@ parameters:
 - name: SDKType
   type: string
   default: client
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 - name: BuildParallelization
   type: string
   default: '2C'
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
-- name: JavadocSafeJavaBuildVersion
-  type: string
-  default: $(JavadocSafeJavaBuildVersion)
 - name: TestPipeline
   type: boolean
   default: false
@@ -29,13 +23,13 @@ extends:
   parameters:
     stages:
       - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         jobs:
         - job: 'Build'
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
-            - name: ArtifactName
-              value: 'packages'
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: ArtifactsJsonEscaped
@@ -44,8 +38,8 @@ extends:
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
 
           pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            image: azsdk-pool-mms-ubuntu-2004-1espt
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
             os: linux
 
           steps:
@@ -80,13 +74,13 @@ extends:
               displayName: 'Set versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/set_versions.py'
-                arguments: '--build-type client --pst --project-list $(ProjectList)'
+                arguments: '--prep-source-testing --project-list $(ProjectList)'
 
             - task: PythonScript@0
               displayName: 'Update versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/update_versions.py'
-                arguments: '--update-type library --build-type client --sr'
+                arguments: '--skip-readme'
 
             - task: PythonScript@0
               displayName: 'Generate FromSource POM and directories for sparse checkout'
@@ -116,24 +110,15 @@ extends:
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
 
-            # Why is this necessary? Normal build and release jobs don't install reporting tools prior to building however
-            # they're still able to find the build tools through the root aggregate pom file. The ClientFromSourcePom only
-            # contains what is necessary for the list of libraries and needs to have them installed explicitly otherwise the
-            # checkstyle plugin will fail to find com.azure:sdk-build-tools which is a dependency. It does this in spite of
-            # the fact that we're not running actually running checkstyle, it loads it to skip it...well done.
-            - template: ../steps/install-reporting-tools.yml
-              parameters:
-                JdkVersion: ${{ parameters.JavaBuildVersion }}
-
             - task: Maven@4
-              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
+              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:
                 mavenPomFile: ClientFromSourcePom.xml
                 goals: 'deploy'
                 options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
-                jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }}
+                jdkVersionOption: ${{ parameters.JavaBuildVersion }}
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
 
@@ -165,7 +150,6 @@ extends:
                 filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
                 arguments: >
                   -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
                 pwsh: true
                 workingDirectory: $(Pipeline.Workspace)
               displayName: Update package properties with namespaces
@@ -173,7 +157,7 @@ extends:
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactPath: $(Build.ArtifactStagingDirectory)
-                ArtifactName: '$(ArtifactName)'
+                ArtifactName: 'packages'
 
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
@@ -186,15 +170,14 @@ extends:
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: AdditionalModulesJson
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
 
           pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            image: azsdk-pool-mms-ubuntu-2004-1espt
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
             os: linux
 
           steps:
@@ -208,6 +191,7 @@ extends:
                 Paths:
                   - '**/*.xml'
                   - '**/*.md'
+                  - '**/*.yml' # needed for package properties when setting the test pipeline version
                   - '.vscode/cspell.json'
                   - '!sdk/**/test-recordings/*'
                   - '!sdk/**/session-records/*'
@@ -227,13 +211,13 @@ extends:
               displayName: 'Set versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/set_versions.py'
-                arguments: '--build-type client --pst --project-list $(ProjectList)'
+                arguments: '--prep-source-testing --project-list $(ProjectList)'
 
             - task: PythonScript@0
               displayName: 'Update versions for source build'
               inputs:
                 scriptPath: 'eng/versioning/update_versions.py'
-                arguments: '--update-type library --build-type client --sr'
+                arguments: '--skip-readme'
 
             - task: PythonScript@0
               displayName: 'Generate FromSource POM and directories for sparse checkout'
@@ -259,13 +243,18 @@ extends:
                 filePath: eng/versioning/pom_file_version_scanner.ps1
                 arguments: -Debug:$$(IsDebug)
 
+            - task: PythonScript@0
+              displayName: 'Verify version text files'
+              inputs:
+                scriptPath: eng/versioning/find_unused_dependencies.py
+
             # Do all the verifications for all the artifacts after the sparse-checkout.
             - pwsh: |
                 $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --verify-version --artifact-id $($artifact.name) --group-id $($artifact.groupId)
                 }
               displayName: 'Verify artifact versions for release'
 
@@ -282,12 +271,6 @@ extends:
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
-
-            - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-              parameters:
-                # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of what's
-                # going on below
-                ScanPaths: $(ServiceDirectoriesFullPath)
 
             - template: /eng/common/pipelines/templates/steps/verify-samples.yml
               parameters:
@@ -322,8 +305,5 @@ extends:
           parameters:
             DependsOn:
               - Build
-            SDKType: ${{ parameters.SDKType }}
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
-            ArtifactName: packages
-            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}

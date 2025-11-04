@@ -6,83 +6,55 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.L2Network;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class L2NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"etag\":\"knxkvccxetyvkunm\",\"extendedLocation\":{\"name\":\"gno\",\"type\":\"ikkgqo\"},\"properties\":{\"associatedResourceIds\":[\"pinde\"],\"clusterId\":\"abbxbhmedeil\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"fcfxzirzzihvwy\",\"hybridAksClustersAssociatedIds\":[\"u\",\"jslczwciidj\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"r\",\"l2IsolationDomainId\":\"vdmvxadqa\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"awba\"]},\"location\":\"fbktyjmfczlf\",\"tags\":{\"cxn\":\"kfrbzgowoxqmjea\",\"hlusrvxisi\":\"qg\",\"qvlsumywzas\":\"jceagb\",\"oyjfqipu\":\"xgo\"},\"id\":\"yznclkfkee\",\"name\":\"gv\",\"type\":\"pemtuoqu\"}";
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"hoe\",\"type\":\"goiutgw\"},\"properties\":{\"associatedResourceIds\":[\"a\",\"p\",\"hazyntacihnco\"],\"clusterId\":\"ipnmliqmv\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ke\",\"hybridAksClustersAssociatedIds\":[\"rvgpomxpupdtsd\",\"jyies\",\"cwiqbuout\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"gleofjsbgbw\",\"l2IsolationDomainId\":\"zvdajfwnncf\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"gjj\",\"l\",\"iqlwixvtbou\",\"uxtndopgjttbasua\"]},\"location\":\"pdlndbeaqbkixvv\",\"tags\":{\"fjmsp\":\"npbbfqv\",\"jmphfkyezolgj\":\"gzfeuzj\",\"uydoccnx\":\"mi\",\"batecaat\":\"hanzbuiad\"},\"id\":\"dohzniucbdaombwi\",\"name\":\"njdllwktlepowavv\",\"type\":\"xu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        L2Network response = manager.l2Networks()
+            .define("zlehgcvkbcknjolg")
+            .withRegion("qqa")
+            .withExistingResourceGroup("s")
+            .withExtendedLocation(new ExtendedLocation().withName("xoqeintxwalj").withType("lzoblqwaafr"))
+            .withL2IsolationDomainId("lzdcduwjoedxng")
+            .withTags(mapOf("iqch", "kxwxdcvjwcyziake", "dsiwdfmmp", "rtui", "grpxncakiqaondjr", "hzzwvywrgyngy",
+                "ykglt", "clamgglvlmfejdoq"))
+            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+            .withInterfaceName("vpyigdaqq")
+            .withIfMatch("lijjjrtvam")
+            .withIfNoneMatch("a")
+            .create();
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        L2Network response =
-            manager
-                .l2Networks()
-                .define("zgczfcmfpfbode")
-                .withRegion("vdgxly")
-                .withExistingResourceGroup("srtmdylperpiltt")
-                .withExtendedLocation(new ExtendedLocation().withName("resrgvtshuvft").withType("ai"))
-                .withL2IsolationDomainId("ukklvzrlr")
-                .withTags(mapOf("jovmozsaye", "itdshezsvkolru", "uykykipfsd", "razwzlpzbt", "bezacfpztga", "epfnoc"))
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("elqxovppqi")
-                .create();
-
-        Assertions.assertEquals("pdlndbeaqbkixvv", response.location());
-        Assertions.assertEquals("npbbfqv", response.tags().get("fjmsp"));
-        Assertions.assertEquals("hoe", response.extendedLocation().name());
-        Assertions.assertEquals("goiutgw", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("gleofjsbgbw", response.interfaceName());
-        Assertions.assertEquals("zvdajfwnncf", response.l2IsolationDomainId());
+        Assertions.assertEquals("fbktyjmfczlf", response.location());
+        Assertions.assertEquals("kfrbzgowoxqmjea", response.tags().get("cxn"));
+        Assertions.assertEquals("gno", response.extendedLocation().name());
+        Assertions.assertEquals("ikkgqo", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
+        Assertions.assertEquals("r", response.interfaceName());
+        Assertions.assertEquals("vdmvxadqa", response.l2IsolationDomainId());
     }
 
     // Use "Map.of" if available

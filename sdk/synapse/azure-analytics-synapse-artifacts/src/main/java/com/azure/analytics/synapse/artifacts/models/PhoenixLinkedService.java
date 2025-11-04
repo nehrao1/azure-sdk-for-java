@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,71 +22,91 @@ public class PhoenixLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Phoenix";
 
     /*
      * The IP address or host name of the Phoenix server. (i.e. 192.168.222.160)
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port that the Phoenix server uses to listen for client connections. The default value is 8765.
      */
+    @Generated
     private Object port;
 
     /*
-     * The partial URL corresponding to the Phoenix server. (i.e. /gateway/sandbox/phoenix/version). The default value is hbasephoenix if using WindowsAzureHDInsightService.
+     * The partial URL corresponding to the Phoenix server. (i.e. /gateway/sandbox/phoenix/version). The default value
+     * is hbasephoenix if using WindowsAzureHDInsightService.
      */
+    @Generated
     private Object httpPath;
 
     /*
      * The authentication mechanism used to connect to the Phoenix server.
      */
+    @Generated
     private PhoenixAuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the Phoenix server.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
+    @Generated
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over SSL. The default value is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
+    @Generated
     private Object allowHostNameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of PhoenixLinkedService class.
      */
+    @Generated
     public PhoenixLinkedService() {
     }
 
@@ -94,6 +115,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -104,6 +126,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -114,6 +137,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -125,6 +149,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -136,6 +161,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -147,6 +173,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the httpPath value.
      */
+    @Generated
     public Object getHttpPath() {
         return this.httpPath;
     }
@@ -158,6 +185,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param httpPath the httpPath value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setHttpPath(Object httpPath) {
         this.httpPath = httpPath;
         return this;
@@ -168,6 +196,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public PhoenixAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -178,6 +207,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setAuthenticationType(PhoenixAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -188,6 +218,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -198,6 +229,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -208,6 +240,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -218,6 +251,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -229,6 +263,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -240,6 +275,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
         return this;
@@ -252,6 +288,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -264,6 +301,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -275,6 +313,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
@@ -286,6 +325,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -297,6 +337,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the allowHostNameCNMismatch value.
      */
+    @Generated
     public Object getAllowHostNameCNMismatch() {
         return this.allowHostNameCNMismatch;
     }
@@ -308,6 +349,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setAllowHostNameCNMismatch(Object allowHostNameCNMismatch) {
         this.allowHostNameCNMismatch = allowHostNameCNMismatch;
         return this;
@@ -319,6 +361,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
@@ -330,6 +373,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -341,6 +385,7 @@ public class PhoenixLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -352,6 +397,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PhoenixLinkedService object itself.
      */
+    @Generated
     public PhoenixLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -360,6 +406,17 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public PhoenixLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public PhoenixLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -369,6 +426,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PhoenixLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -378,6 +436,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PhoenixLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -387,6 +446,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PhoenixLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -396,9 +456,11 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -418,18 +480,36 @@ public class PhoenixLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("httpPath", this.httpPath);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.httpPath != null) {
+                jsonWriter.writeUntypedField("httpPath", this.httpPath);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
+            if (this.allowHostNameCNMismatch != null) {
+                jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -449,6 +529,7 @@ public class PhoenixLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoenixLinkedService.
      */
+    @Generated
     public static PhoenixLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoenixLinkedService deserializedPhoenixLinkedService = new PhoenixLinkedService();
@@ -457,7 +538,9 @@ public class PhoenixLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedPhoenixLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedPhoenixLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedPhoenixLinkedService.setDescription(reader.getString());

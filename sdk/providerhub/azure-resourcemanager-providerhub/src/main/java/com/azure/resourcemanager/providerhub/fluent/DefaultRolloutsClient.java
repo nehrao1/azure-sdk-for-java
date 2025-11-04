@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.providerhub.fluent.models.DefaultRolloutInner;
 
-/** An instance of this class provides access to all the operations defined in DefaultRolloutsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DefaultRolloutsClient.
+ */
 public interface DefaultRolloutsClient {
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -31,7 +33,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,22 +72,22 @@ public interface DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of default rollout definition.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties);
+    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties);
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -93,29 +95,29 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of default rollout definition.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context);
+    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties, Context context);
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default rollout definition.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties);
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -123,15 +125,15 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default rollout definition.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DefaultRolloutInner createOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context);
+    DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties,
+        Context context);
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +145,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -170,7 +172,7 @@ public interface DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

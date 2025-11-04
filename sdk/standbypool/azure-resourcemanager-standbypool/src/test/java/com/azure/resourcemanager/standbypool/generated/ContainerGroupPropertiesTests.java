@@ -15,22 +15,22 @@ public final class ContainerGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerGroupProperties model = BinaryData.fromString(
-            "{\"containerGroupProfile\":{\"id\":\"xppbhtqqro\",\"revision\":683948345631958154},\"subnetIds\":[{\"id\":\"algbquxigjyjg\"}]}")
+            "{\"containerGroupProfile\":{\"id\":\"mxdcufufsrp\",\"revision\":9221150832525333730},\"subnetIds\":[{\"id\":\"sezcxtb\"}]}")
             .toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("xppbhtqqro", model.containerGroupProfile().id());
-        Assertions.assertEquals(683948345631958154L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("algbquxigjyjg", model.subnetIds().get(0).id());
+        Assertions.assertEquals("mxdcufufsrp", model.containerGroupProfile().id());
+        Assertions.assertEquals(9221150832525333730L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("sezcxtb", model.subnetIds().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerGroupProperties model = new ContainerGroupProperties()
             .withContainerGroupProfile(
-                new ContainerGroupProfile().withId("xppbhtqqro").withRevision(683948345631958154L))
-            .withSubnetIds(Arrays.asList(new Subnet().withId("algbquxigjyjg")));
+                new ContainerGroupProfile().withId("mxdcufufsrp").withRevision(9221150832525333730L))
+            .withSubnetIds(Arrays.asList(new Subnet().withId("sezcxtb")));
         model = BinaryData.fromObject(model).toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("xppbhtqqro", model.containerGroupProfile().id());
-        Assertions.assertEquals(683948345631958154L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("algbquxigjyjg", model.subnetIds().get(0).id());
+        Assertions.assertEquals("mxdcufufsrp", model.containerGroupProfile().id());
+        Assertions.assertEquals(9221150832525333730L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("sezcxtb", model.subnetIds().get(0).id());
     }
 }

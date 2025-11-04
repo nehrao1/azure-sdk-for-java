@@ -7,10 +7,12 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class CosmosItemRequestOptions {
         ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
 
     private ConsistencyLevel consistencyLevel;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private IndexingDirective indexingDirective;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private List<String> preTriggerInclude;
@@ -55,6 +58,7 @@ public class CosmosItemRequestOptions {
      */
     CosmosItemRequestOptions(CosmosItemRequestOptions options) {
         consistencyLevel = options.consistencyLevel;
+        readConsistencyStrategy = options.readConsistencyStrategy;
         indexingDirective = options.indexingDirective;
         preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
         postTriggerInclude = options.postTriggerInclude != null ? new ArrayList<>(options.postTriggerInclude) : null;
@@ -94,11 +98,13 @@ public class CosmosItemRequestOptions {
         super();
 
         setPartitionKey(partitionKey);
-        this.thresholds = new CosmosDiagnosticsThresholds();
     }
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Most commonly used with replace, upsert and delete requests.
+     * This will be ignored if specified for create requests or for upsert requests if the item doesn't exist.
+     * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @return the ifMatchETag associated with the request.
      */
@@ -108,6 +114,9 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Most commonly used with replace, upsert and delete requests.
+     * This will be ignored if specified for create requests or for upsert requests if the item doesn't exist.
+     * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
@@ -119,6 +128,11 @@ public class CosmosItemRequestOptions {
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Most commonly used to detect changes to the resource via read requests.
+     * When Item Etag matches the specified ifNoneMatchETag then 304 status code will be returned, otherwise existing Item will be returned with 200.
+     * To match any Etag use "*"
+     * This will be ignored if specified for write requests (ex: Create, Replace, Delete).
+     * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @return the ifNoneMatchETag associated with the request.
      */
@@ -128,6 +142,11 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Most commonly used to detect changes to the resource via read requests.
+     * When Item Etag matches the specified ifNoneMatchETag then 304 status code will be returned, otherwise existing Item will be returned with 200.
+     * To match any Etag use "*"
+     * This will be ignored if specified for write requests (ex: Create, Replace, Delete).
+     * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      * @return the current request options
@@ -147,6 +166,16 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the read consistency strategy for the request.
+     *
+     * @return the read consistency strategy.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return readConsistencyStrategy;
+    }
+
+    /**
      * Sets the consistency level required for the request. The effective consistency level
      * can only be reduced for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
@@ -162,6 +191,26 @@ public class CosmosItemRequestOptions {
      */
     public CosmosItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
+        return this;
+    }
+
+    /**
+     * Sets the read consistency strategy required for the request. This allows specifying the effective consistency
+     * strategy for read/query operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
+     * accounts with lower default consistency level
+     * NOTE: If the read consistency strategy set on a request level here is `SESSION` and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * NOTE: The `setConsistencyLevel` value specified is ignored when `setReadConsistencyStrategy` is used unless
+     * `DEFAULT` is specified.
+     *
+     * @param readConsistencyStrategy the consistency level.
+     * @return the CosmosItemRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.readConsistencyStrategy = readConsistencyStrategy;
         return this;
     }
 
@@ -385,8 +434,10 @@ public class CosmosItemRequestOptions {
     }
 
     /**
-     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
-     * These regions will be excluded from the preferred regions list
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list. If all the regions are excluded,
+     * the request will be sent to the primary region for the account. The primary region is the write region in a
+     * single master account and the hub region in a multi-master account.
      *
      * @param excludeRegions list of regions
      * @return the {@link CosmosItemRequestOptions}
@@ -434,6 +485,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());
+        requestOptions.setReadConsistencyStrategy(getReadConsistencyStrategy());
         requestOptions.setIndexingDirective(indexingDirective);
         requestOptions.setPreTriggerInclude(preTriggerInclude);
         requestOptions.setPostTriggerInclude(postTriggerInclude);
@@ -487,6 +539,9 @@ public class CosmosItemRequestOptions {
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
+        if (this.thresholds == null) {
+            return Duration.ofMillis(100);
+        }
 
         return thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds);
     }
@@ -501,6 +556,10 @@ public class CosmosItemRequestOptions {
      * @return the CosmosItemRequestOptions
      */
     public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        if (this.thresholds == null) {
+            this.thresholds = new CosmosDiagnosticsThresholds();
+        }
+
         this.thresholds.setPointOperationLatencyThreshold(thresholdForDiagnosticsOnTracer);
 
         return this;

@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -19,18 +19,23 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentionPolicy> {
     /*
-     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the user is responsible for deleting it.
+     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the
+     * user is responsible for deleting it.
      */
+    @Generated
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
+     * Indicates the number of days that metrics data should be retained. All data older than this value will be
+     * deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      */
+    @Generated
     private Integer days;
 
     /**
      * Creates an instance of ShareRetentionPolicy class.
      */
+    @Generated
     public ShareRetentionPolicy() {
     }
 
@@ -40,6 +45,7 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * 
      * @return the enabled value.
      */
+    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -51,6 +57,7 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param enabled the enabled value to set.
      * @return the ShareRetentionPolicy object itself.
      */
+    @Generated
     public ShareRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -62,6 +69,7 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * 
      * @return the days value.
      */
+    @Generated
     public Integer getDays() {
         return this.days;
     }
@@ -73,19 +81,23 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param days the days value to set.
      * @return the ShareRetentionPolicy object itself.
      */
+    @Generated
     public ShareRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareRetentionPolicy" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.days);
@@ -98,9 +110,9 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
+    @Generated
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -113,12 +125,12 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * cases where the model can deserialize from different root element names.
      * @return An instance of ShareRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
+    @Generated
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareRetentionPolicy" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareRetentionPolicy deserializedShareRetentionPolicy = new ShareRetentionPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

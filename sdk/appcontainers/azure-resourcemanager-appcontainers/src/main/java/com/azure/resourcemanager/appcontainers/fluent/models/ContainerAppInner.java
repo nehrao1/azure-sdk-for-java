@@ -12,7 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
@@ -43,6 +45,11 @@ public final class ContainerAppInner extends Resource {
     private String managedBy;
 
     /*
+     * Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
+     */
+    private Kind kind;
+
+    /*
      * ContainerApp resource specific properties
      */
     private ContainerAppProperties innerProperties;
@@ -53,9 +60,9 @@ public final class ContainerAppInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -63,9 +70,9 @@ public final class ContainerAppInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ContainerAppInner class.
@@ -140,6 +147,28 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
+     * 
+     * @param kind the kind value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withKind(Kind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: ContainerApp resource specific properties.
      * 
      * @return the innerProperties value.
@@ -158,13 +187,13 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -178,13 +207,13 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -212,6 +241,15 @@ public final class ContainerAppInner extends Resource {
      */
     public ContainerAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the runningStatus property: Running status of the Container App.
+     * 
+     * @return the runningStatus value.
+     */
+    public ContainerAppRunningStatus runningStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningStatus();
     }
 
     /**
@@ -411,6 +449,7 @@ public final class ContainerAppInner extends Resource {
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -448,6 +487,8 @@ public final class ContainerAppInner extends Resource {
                     deserializedContainerAppInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("managedBy".equals(fieldName)) {
                     deserializedContainerAppInner.managedBy = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = Kind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

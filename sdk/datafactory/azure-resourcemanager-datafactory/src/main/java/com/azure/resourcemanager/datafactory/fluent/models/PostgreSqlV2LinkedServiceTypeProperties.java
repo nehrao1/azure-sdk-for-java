@@ -40,6 +40,11 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
     private Object database;
 
     /*
+     * The authentication type to use. Type: string.
+     */
+    private Object authenticationType;
+
+    /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
@@ -202,6 +207,26 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
      */
     public PostgreSqlV2LinkedServiceTypeProperties withDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the PostgreSqlV2LinkedServiceTypeProperties object itself.
+     */
+    public PostgreSqlV2LinkedServiceTypeProperties withAuthenticationType(Object authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -544,6 +569,11 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
                 .log(new IllegalArgumentException(
                     "Missing required property database in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
+        if (authenticationType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model PostgreSqlV2LinkedServiceTypeProperties"));
+        }
         if (sslMode() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -565,20 +595,47 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("server", this.server);
         jsonWriter.writeUntypedField("username", this.username);
         jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
         jsonWriter.writeUntypedField("sslMode", this.sslMode);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("schema", this.schema);
-        jsonWriter.writeUntypedField("pooling", this.pooling);
-        jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-        jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
-        jsonWriter.writeUntypedField("sslKey", this.sslKey);
-        jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
-        jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
-        jsonWriter.writeUntypedField("logParameters", this.logParameters);
-        jsonWriter.writeUntypedField("timezone", this.timezone);
-        jsonWriter.writeUntypedField("encoding", this.encoding);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
+        if (this.pooling != null) {
+            jsonWriter.writeUntypedField("pooling", this.pooling);
+        }
+        if (this.connectionTimeout != null) {
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
+        if (this.trustServerCertificate != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        }
+        if (this.sslCertificate != null) {
+            jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
+        }
+        if (this.sslKey != null) {
+            jsonWriter.writeUntypedField("sslKey", this.sslKey);
+        }
+        if (this.sslPassword != null) {
+            jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
+        }
+        if (this.readBufferSize != null) {
+            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+        }
+        if (this.logParameters != null) {
+            jsonWriter.writeUntypedField("logParameters", this.logParameters);
+        }
+        if (this.timezone != null) {
+            jsonWriter.writeUntypedField("timezone", this.timezone);
+        }
+        if (this.encoding != null) {
+            jsonWriter.writeUntypedField("encoding", this.encoding);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
@@ -607,6 +664,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.username = reader.readUntyped();
                 } else if ("database".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.authenticationType = reader.readUntyped();
                 } else if ("sslMode".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.sslMode = reader.readUntyped();
                 } else if ("port".equals(fieldName)) {

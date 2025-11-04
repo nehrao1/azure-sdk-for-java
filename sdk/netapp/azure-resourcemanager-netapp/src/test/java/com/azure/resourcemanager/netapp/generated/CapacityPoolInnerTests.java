@@ -17,34 +17,37 @@ public final class CapacityPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityPoolInner model = BinaryData.fromString(
-            "{\"etag\":\"ow\",\"properties\":{\"poolId\":\"przqlveu\",\"size\":4253810910381406422,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"mkh\",\"totalThroughputMibps\":23.892725,\"utilizedThroughputMibps\":43.313354,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"riplrbpbewtg\",\"tags\":{\"xzvlvqhjkbegib\":\"blcg\",\"wrtz\":\"nmxiebwwaloayqc\",\"ngmtsavjcb\":\"uzgwyzmhtx\"},\"id\":\"wxqpsrknftguvri\",\"name\":\"hprwmdyv\",\"type\":\"qtayri\"}")
+            "{\"etag\":\"oyrxvwfudwpzntxh\",\"properties\":{\"poolId\":\"hl\",\"size\":2074686312708379193,\"serviceLevel\":\"Premium\",\"provisioningState\":\"ck\",\"totalThroughputMibps\":70.234726,\"utilizedThroughputMibps\":47.60285,\"customThroughputMibps\":84.460884,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"location\":\"anuzbpzkafkuw\",\"tags\":{\"seyvj\":\"nwbmeh\"},\"id\":\"srtslhspkdeem\",\"name\":\"ofmxagkvtmelmqkr\",\"type\":\"ahvljuaha\"}")
             .toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("riplrbpbewtg", model.location());
-        Assertions.assertEquals("blcg", model.tags().get("xzvlvqhjkbegib"));
-        Assertions.assertEquals(4253810910381406422L, model.size());
-        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals("anuzbpzkafkuw", model.location());
+        Assertions.assertEquals("nwbmeh", model.tags().get("seyvj"));
+        Assertions.assertEquals(2074686312708379193L, model.size());
+        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
+        Assertions.assertEquals(84.460884F, model.customThroughputMibps());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(false, model.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
+        Assertions.assertTrue(model.coolAccess());
+        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolInner model = new CapacityPoolInner().withLocation("riplrbpbewtg")
-            .withTags(mapOf("xzvlvqhjkbegib", "blcg", "wrtz", "nmxiebwwaloayqc", "ngmtsavjcb", "uzgwyzmhtx"))
-            .withSize(4253810910381406422L)
-            .withServiceLevel(ServiceLevel.ULTRA)
+        CapacityPoolInner model = new CapacityPoolInner().withLocation("anuzbpzkafkuw")
+            .withTags(mapOf("seyvj", "nwbmeh"))
+            .withSize(2074686312708379193L)
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withCustomThroughputMibps(84.460884F)
             .withQosType(QosType.AUTO)
-            .withCoolAccess(false)
-            .withEncryptionType(EncryptionType.SINGLE);
+            .withCoolAccess(true)
+            .withEncryptionType(EncryptionType.DOUBLE);
         model = BinaryData.fromObject(model).toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("riplrbpbewtg", model.location());
-        Assertions.assertEquals("blcg", model.tags().get("xzvlvqhjkbegib"));
-        Assertions.assertEquals(4253810910381406422L, model.size());
-        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals("anuzbpzkafkuw", model.location());
+        Assertions.assertEquals("nwbmeh", model.tags().get("seyvj"));
+        Assertions.assertEquals(2074686312708379193L, model.size());
+        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
+        Assertions.assertEquals(84.460884F, model.customThroughputMibps());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(false, model.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
+        Assertions.assertTrue(model.coolAccess());
+        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
     }
 
     // Use "Map.of" if available

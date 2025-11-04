@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,9 +17,8 @@ public final class AnalyzersAnalyzeIdDocumentHeaders {
     /*
      * The Operation-Location property.
      */
+    @Generated
     private String operationLocation;
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -27,7 +27,7 @@ public final class AnalyzersAnalyzeIdDocumentHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public AnalyzersAnalyzeIdDocumentHeaders(HttpHeaders rawHeaders) {
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
     }
 
     /**
@@ -35,6 +35,7 @@ public final class AnalyzersAnalyzeIdDocumentHeaders {
      * 
      * @return the operationLocation value.
      */
+    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -45,6 +46,7 @@ public final class AnalyzersAnalyzeIdDocumentHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzersAnalyzeIdDocumentHeaders object itself.
      */
+    @Generated
     public AnalyzersAnalyzeIdDocumentHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;

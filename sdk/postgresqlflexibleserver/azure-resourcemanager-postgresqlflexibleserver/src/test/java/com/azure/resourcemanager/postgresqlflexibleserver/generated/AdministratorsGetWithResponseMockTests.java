@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAdministrator;
@@ -22,22 +22,22 @@ public final class AdministratorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"mduvw\",\"objectId\":\"lvxwmyg\",\"tenantId\":\"pgpqchiszepnnb\"},\"id\":\"rxgibbd\",\"name\":\"xconfozauors\",\"type\":\"kokwbqplhlvnu\"}";
+            = "{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"xpdlcgqlsis\",\"objectId\":\"qfrddgam\",\"tenantId\":\"hiosrsjuiv\"},\"id\":\"disyirnxz\",\"name\":\"czexrxzbujrtrhqv\",\"type\":\"revkhgnlnzo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ActiveDirectoryAdministrator response = manager.administrators()
-            .getWithResponse("ulfgslqu", "kwdlenrdsutujba", "pjuohminyfl", com.azure.core.util.Context.NONE)
+            .getWithResponse("qwyxebeybpm", "znrtffyaqit", "hheioqaqhvseuf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrincipalType.UNKNOWN, response.principalType());
-        Assertions.assertEquals("mduvw", response.principalName());
-        Assertions.assertEquals("lvxwmyg", response.objectId());
-        Assertions.assertEquals("pgpqchiszepnnb", response.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
+        Assertions.assertEquals("xpdlcgqlsis", response.principalName());
+        Assertions.assertEquals("qfrddgam", response.objectId());
+        Assertions.assertEquals("hiosrsjuiv", response.tenantId());
     }
 }

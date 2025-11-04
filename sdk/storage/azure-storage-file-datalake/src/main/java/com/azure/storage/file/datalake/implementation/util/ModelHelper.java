@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -11,11 +12,15 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.PathPermissions;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
@@ -84,8 +89,7 @@ public class ModelHelper {
             maxSingleUploadSize = FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
-        return new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
+        return new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
@@ -93,17 +97,18 @@ public class ModelHelper {
 
     public static DataLakeAclChangeFailedException changeAclRequestFailed(DataLakeStorageException e,
         String continuationToken) {
-        String message = String.format("An error occurred while recursively changing the access control list. See the "
-            + "exception of type %s with status=%s and error code=%s for more information. You can resume changing "
-            + "the access control list using continuationToken=%s after addressing the error.", e.getClass(),
-            e.getStatusCode(), e.getErrorCode(), continuationToken);
+        String message = String.format(
+            "An error occurred while recursively changing the access control list. See the "
+                + "exception of type %s with status=%s and error code=%s for more information. You can resume changing "
+                + "the access control list using continuationToken=%s after addressing the error.",
+            e.getClass(), e.getStatusCode(), e.getErrorCode(), continuationToken);
         return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 
     public static DataLakeAclChangeFailedException changeAclFailed(Exception e, String continuationToken) {
         String message = String.format("An error occurred while recursively changing the access control list. See the "
-                + "exception of type %s for more information. You can resume changing the access control list using "
-                + "continuationToken=%s after addressing the error.", e.getClass(), continuationToken);
+            + "exception of type %s for more information. You can resume changing the access control list using "
+            + "continuationToken=%s after addressing the error.", e.getClass(), continuationToken);
         return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 
@@ -115,26 +120,35 @@ public class ModelHelper {
      * @return {@link PathExpiryOptions}
      * @throws IllegalArgumentException if the options are invalid for the pathResourceType
      */
-    public static PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options, PathResourceType pathResourceType) {
+    public static PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options,
+        PathResourceType pathResourceType) {
         if (pathResourceType == PathResourceType.DIRECTORY) {
             if (options.getProposedLeaseId() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
             }
             if (options.getLeaseDuration() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
             }
-            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
+            if (options.getScheduleDeletionOptions() != null
+                && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
             }
-            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
+            if (options.getScheduleDeletionOptions() != null
+                && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
             }
         }
         if (options.getScheduleDeletionOptions() == null) {
             return null;
         }
-        if (options.getScheduleDeletionOptions().getTimeToExpire() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null
+            && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
         }
         if (options.getScheduleDeletionOptions().getTimeToExpire() != null) {
             return PathExpiryOptions.RELATIVE_TO_NOW;
@@ -158,11 +172,11 @@ public class ModelHelper {
             boolean firstMetadata = true;
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
-                    throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
-                        + "empty, or whitespace.");
+                    throw new IllegalArgumentException(
+                        "The key for one of the metadata key-value pairs is null, " + "empty, or whitespace.");
                 } else if (Objects.isNull(entry.getValue()) || entry.getValue().isEmpty()) {
-                    throw new IllegalArgumentException("The value for one of the metadata key-value pairs is null, "
-                        + "empty, or whitespace.");
+                    throw new IllegalArgumentException(
+                        "The value for one of the metadata key-value pairs is null, " + "empty, or whitespace.");
                 }
 
                 /*
@@ -192,12 +206,38 @@ public class ModelHelper {
      * <p>
      * The internal exception is required as the public exception was created using Object as the exception value. This
      * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
+     * added to handle this, and we map that to the public exception, keeping the API the same.
      *
      * @param internal The internal exception.
      * @return The public exception.
      */
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
-        return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        return new DataLakeStorageException(
+            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse()),
+            internal.getResponse(), internal.getValue());
     }
+
+    public static PathSystemProperties
+        getSystemPropertiesResponse(final ResponseBase<PathsGetPropertiesHeaders, Void> response) {
+        PathsGetPropertiesHeaders headers = response.getDeserializedHeaders();
+
+        OffsetDateTime creationTime = headers.getXMsCreationTime();
+        OffsetDateTime lastModified = headers.getLastModified();
+        String eTag = headers.getETag();
+        Long fileSize = headers.getContentLength();
+        Boolean isDirectory = Objects.equals(headers.getXMsResourceType(), "directory");
+        Boolean isServerEncrypted = headers.isXMsServerEncrypted();
+        String encryptionKeySha256 = headers.getXMsEncryptionKeySha256();
+        OffsetDateTime expiresOn = headers.getXMsExpiryTime();
+        String encryptionScope = headers.getXMsEncryptionScope();
+        String encryptionContext = headers.getXMsEncryptionContext();
+        String owner = headers.getXMsOwner();
+        String group = headers.getXMsGroup();
+        String permissions = headers.getXMsPermissions();
+        PathPermissions parsedPermissions = permissions != null ? PathPermissions.parseSymbolic(permissions) : null;
+
+        return AccessorUtility.create(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
+            encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group, parsedPermissions);
+    }
+
 }

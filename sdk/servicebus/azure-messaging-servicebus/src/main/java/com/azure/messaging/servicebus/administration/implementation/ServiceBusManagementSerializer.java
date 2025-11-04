@@ -9,10 +9,10 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -25,16 +25,15 @@ import java.util.regex.Pattern;
  */
 public class ServiceBusManagementSerializer implements SerializerAdapter {
     private static final String MINIMUM_DATETIME_FORMATTED = ">0001-01-01T00:00:00Z</";
-    private static final Pattern MINIMUM_DATETIME_PATTERN = Pattern.compile(">0001-01-01T00:00:00</",
-        Pattern.MULTILINE);
+    private static final Pattern MINIMUM_DATETIME_PATTERN
+        = Pattern.compile(">0001-01-01T00:00:00</", Pattern.MULTILINE);
     private static final Pattern NAMESPACE_PATTERN = Pattern.compile(
         "xmlns:(?<namespace>\\w+)=\"http://schemas\\.microsoft\\.com/netservices/2010/10/servicebus/connect\"",
         Pattern.MULTILINE);
-    private static final Pattern FILTER_ACTION_PATTERN = Pattern.compile("<(Filter|Action) type=",
-        Pattern.MULTILINE);
-    private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)",
-        Pattern.MULTILINE);
-    private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
+    private static final Pattern FILTER_ACTION_PATTERN = Pattern.compile("<(Filter|Action) type=", Pattern.MULTILINE);
+    private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)", Pattern.MULTILINE);
+    private static final String RULE_VALUE_ATTRIBUTE_XML
+        = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusManagementSerializer.class);
@@ -44,8 +43,10 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         final String contents = SERIALIZER_ADAPTER.serialize(object, encoding);
 
         final Class<?> clazz = object.getClass();
-        if (!CreateQueueBodyImpl.class.equals(clazz) && !CreateRuleBodyImpl.class.equals(clazz)
-            && !CreateSubscriptionBodyImpl.class.equals(clazz) && !CreateTopicBodyImpl.class.equals(clazz)) {
+        if (!CreateQueueBody.class.equals(clazz)
+            && !CreateRuleBody.class.equals(clazz)
+            && !CreateSubscriptionBody.class.equals(clazz)
+            && !CreateTopicBody.class.equals(clazz)) {
             return contents;
         }
 
@@ -60,18 +61,16 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         }
 
         final String namespace = namespaceMatcher.group("namespace");
-        String replaced = contents
-            .replaceAll(namespace + ":", "")
-            .replace("xmlns:" + namespace + "=", "xmlns=");
+        String replaced = contents.replaceAll(namespace + ":", "").replace("xmlns:" + namespace + "=", "xmlns=");
 
-        if (!CreateRuleBodyImpl.class.equals(clazz) && !CreateSubscriptionBodyImpl.class.equals(clazz)) {
+        if (!CreateRuleBody.class.equals(clazz) && !CreateSubscriptionBody.class.equals(clazz)) {
             return replaced;
         }
 
         // This hack is here because value of custom property within RuleFilter should have a namespace like
         // xmlns:d6p1="http://www.w3.org/2001/XMLSchema" ns0:type="d6p1:string".
         // It is possible that there is no "Value" to set in the rule.
-        if (CreateRuleBodyImpl.class.equals(clazz)) {
+        if (CreateRuleBody.class.equals(clazz)) {
             final Matcher filterValue = FILTER_VALUE_PATTERN.matcher(replaced);
             if (filterValue.find()) {
                 replaced = filterValue.replaceAll(RULE_VALUE_ATTRIBUTE_XML);

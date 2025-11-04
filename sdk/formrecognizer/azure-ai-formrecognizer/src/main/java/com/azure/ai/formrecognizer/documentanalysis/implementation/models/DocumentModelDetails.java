@@ -5,6 +5,8 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,36 +26,43 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /*
      * Unique document model name.
      */
+    @Generated
     private final String modelId;
 
     /*
      * Document model description.
      */
+    @Generated
     private String description;
 
     /*
      * Date and time (UTC) when the document model was created.
      */
+    @Generated
     private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the document model will expire.
      */
+    @Generated
     private OffsetDateTime expirationDateTime;
 
     /*
      * API version used to create this document model.
      */
+    @Generated
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Supported document types.
      */
+    @Generated
     private Map<String, DocumentTypeDetails> docTypes;
 
     /**
@@ -62,6 +71,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param modelId the modelId value to set.
      * @param createdDateTime the createdDateTime value to set.
      */
+    @Generated
     public DocumentModelDetails(String modelId, OffsetDateTime createdDateTime) {
         this.modelId = modelId;
         this.createdDateTime = createdDateTime;
@@ -72,6 +82,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -81,6 +92,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -91,6 +103,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param description the description value to set.
      * @return the DocumentModelDetails object itself.
      */
+    @Generated
     public DocumentModelDetails setDescription(String description) {
         this.description = description;
         return this;
@@ -101,6 +114,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -110,6 +124,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the expirationDateTime value.
      */
+    @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
     }
@@ -120,6 +135,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the DocumentModelDetails object itself.
      */
+    @Generated
     public DocumentModelDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
         return this;
@@ -130,6 +146,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public String getApiVersion() {
         return this.apiVersion;
     }
@@ -140,6 +157,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param apiVersion the apiVersion value to set.
      * @return the DocumentModelDetails object itself.
      */
+    @Generated
     public DocumentModelDetails setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -150,6 +168,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -160,6 +179,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param tags the tags value to set.
      * @return the DocumentModelDetails object itself.
      */
+    @Generated
     public DocumentModelDetails setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -170,6 +190,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * 
      * @return the docTypes value.
      */
+    @Generated
     public Map<String, DocumentTypeDetails> getDocTypes() {
         return this.docTypes;
     }
@@ -180,11 +201,16 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @param docTypes the docTypes value to set.
      * @return the DocumentModelDetails object itself.
      */
+    @Generated
     public DocumentModelDetails setDocTypes(Map<String, DocumentTypeDetails> docTypes) {
         this.docTypes = docTypes;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -192,8 +218,10 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
@@ -209,6 +237,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentModelDetails.
      */
+    @Generated
     public static DocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelIdFound = false;
@@ -228,14 +257,14 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                     modelId = reader.getString();
                     modelIdFound = true;
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     createdDateTimeFound = true;
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
                 } else if ("tags".equals(fieldName)) {

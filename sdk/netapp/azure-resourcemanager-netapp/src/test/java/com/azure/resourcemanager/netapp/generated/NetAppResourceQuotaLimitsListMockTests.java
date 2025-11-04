@@ -7,11 +7,11 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
+import com.azure.resourcemanager.netapp.models.QuotaItem;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -21,17 +21,17 @@ public final class NetAppResourceQuotaLimitsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"current\":1457958163,\"default\":1629390386},\"id\":\"qtz\",\"name\":\"s\",\"type\":\"gnowcjhfgmveca\"}]}";
+            = "{\"value\":[{\"properties\":{\"current\":1418439712,\"default\":2054437598,\"usage\":1020538162},\"id\":\"s\",\"name\":\"wprtu\",\"type\":\"wsawddjibabxvi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SubscriptionQuotaItem> response
-            = manager.netAppResourceQuotaLimits().list("cuplcplcwkhih", com.azure.core.util.Context.NONE);
+        PagedIterable<QuotaItem> response
+            = manager.netAppResourceQuotaLimits().list("vrefdeesv", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionsDelegationSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionsDelegationSettingsProperties model =
-            BinaryData.fromString("{\"enabled\":false}").toObject(SubscriptionsDelegationSettingsProperties.class);
-        Assertions.assertEquals(false, model.enabled());
+        SubscriptionsDelegationSettingsProperties model
+            = BinaryData.fromString("{\"enabled\":true}").toObject(SubscriptionsDelegationSettingsProperties.class);
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionsDelegationSettingsProperties model =
-            new SubscriptionsDelegationSettingsProperties().withEnabled(false);
+        SubscriptionsDelegationSettingsProperties model
+            = new SubscriptionsDelegationSettingsProperties().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(SubscriptionsDelegationSettingsProperties.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 }

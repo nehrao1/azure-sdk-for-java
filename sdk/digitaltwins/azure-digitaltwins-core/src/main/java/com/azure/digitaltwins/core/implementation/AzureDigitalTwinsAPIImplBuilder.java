@@ -11,7 +11,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,8 +19,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -32,6 +31,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -67,22 +67,6 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureDigitalTwinsAPIImplBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     @Generated
@@ -95,6 +79,25 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
     @Override
     public AzureDigitalTwinsAPIImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public AzureDigitalTwinsAPIImplBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -190,6 +193,46 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
     }
 
     /*
+     * ID for the operation's status monitor. The ID is generated if header was not passed by the client.
+     */
+    @Generated
+    private String operationId;
+
+    /**
+     * Sets ID for the operation's status monitor. The ID is generated if header was not passed by the client.
+     * 
+     * @param operationId the operationId value.
+     * @return the AzureDigitalTwinsAPIImplBuilder.
+     */
+    @Generated
+    public AzureDigitalTwinsAPIImplBuilder operationId(String operationId) {
+        this.operationId = operationId;
+        return this;
+    }
+
+    /*
+     * Desired timeout for the delete job. Once the specified timeout is reached, service will stop any delete
+     * operations triggered by the current delete job that are in progress, and go to a failed state. Please note that
+     * this will leave your instance in an unknown state as there won't be any rollback operation.
+     */
+    @Generated
+    private int timeoutInMinutes;
+
+    /**
+     * Sets Desired timeout for the delete job. Once the specified timeout is reached, service will stop any delete
+     * operations triggered by the current delete job that are in progress, and go to a failed state. Please note that
+     * this will leave your instance in an unknown state as there won't be any rollback operation.
+     * 
+     * @param timeoutInMinutes the timeoutInMinutes value.
+     * @return the AzureDigitalTwinsAPIImplBuilder.
+     */
+    @Generated
+    public AzureDigitalTwinsAPIImplBuilder timeoutInMinutes(int timeoutInMinutes) {
+        this.timeoutInMinutes = timeoutInMinutes;
+        return this;
+    }
+
+    /*
      * server parameter
      */
     @Generated
@@ -268,14 +311,21 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
      */
     @Generated
     public AzureDigitalTwinsAPIImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://digitaltwins-hostname";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-05-31";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-31";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        AzureDigitalTwinsAPIImpl client
-            = new AzureDigitalTwinsAPIImpl(localPipeline, localSerializerAdapter, localHost, localApiVersion);
+        AzureDigitalTwinsAPIImpl client = new AzureDigitalTwinsAPIImpl(localPipeline, localSerializerAdapter,
+            this.operationId, this.timeoutInMinutes, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated
@@ -291,10 +341,8 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -317,4 +365,6 @@ public final class AzureDigitalTwinsAPIImplBuilder implements HttpTrait<AzureDig
             .build();
         return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDigitalTwinsAPIImplBuilder.class);
 }

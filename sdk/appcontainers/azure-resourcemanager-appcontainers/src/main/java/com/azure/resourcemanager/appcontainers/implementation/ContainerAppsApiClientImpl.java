@@ -13,14 +13,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appcontainers.fluent.AvailableWorkloadProfilesClient;
@@ -36,16 +39,23 @@ import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionReplicasClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSessionPoolsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSourceControlsClient;
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
+import com.azure.resourcemanager.appcontainers.fluent.HttpRouteConfigsClient;
+import com.azure.resourcemanager.appcontainers.fluent.JavaComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsExecutionsClient;
+import com.azure.resourcemanager.appcontainers.fluent.LogicAppsClient;
+import com.azure.resourcemanager.appcontainers.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentDiagnosticsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentPrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentPrivateLinkResourcesClient;
+import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentUsagesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
-import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentUsagesClient;
 import com.azure.resourcemanager.appcontainers.fluent.NamespacesClient;
 import com.azure.resourcemanager.appcontainers.fluent.OperationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ResourceProvidersClient;
@@ -359,6 +369,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The JavaComponentsClient object to access its operations.
+     */
+    private final JavaComponentsClient javaComponents;
+
+    /**
+     * Gets the JavaComponentsClient object to access its operations.
+     * 
+     * @return the JavaComponentsClient object.
+     */
+    public JavaComponentsClient getJavaComponents() {
+        return this.javaComponents;
+    }
+
+    /**
      * The JobsExecutionsClient object to access its operations.
      */
     private final JobsExecutionsClient jobsExecutions;
@@ -443,6 +467,34 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The ManagedEnvironmentPrivateEndpointConnectionsClient object to access its operations.
+     */
+    private final ManagedEnvironmentPrivateEndpointConnectionsClient managedEnvironmentPrivateEndpointConnections;
+
+    /**
+     * Gets the ManagedEnvironmentPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateEndpointConnectionsClient object.
+     */
+    public ManagedEnvironmentPrivateEndpointConnectionsClient getManagedEnvironmentPrivateEndpointConnections() {
+        return this.managedEnvironmentPrivateEndpointConnections;
+    }
+
+    /**
+     * The ManagedEnvironmentPrivateLinkResourcesClient object to access its operations.
+     */
+    private final ManagedEnvironmentPrivateLinkResourcesClient managedEnvironmentPrivateLinkResources;
+
+    /**
+     * Gets the ManagedEnvironmentPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateLinkResourcesClient object.
+     */
+    public ManagedEnvironmentPrivateLinkResourcesClient getManagedEnvironmentPrivateLinkResources() {
+        return this.managedEnvironmentPrivateLinkResources;
+    }
+
+    /**
      * The DaprComponentsClient object to access its operations.
      */
     private final DaprComponentsClient daprComponents;
@@ -457,6 +509,34 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The HttpRouteConfigsClient object to access its operations.
+     */
+    private final HttpRouteConfigsClient httpRouteConfigs;
+
+    /**
+     * Gets the HttpRouteConfigsClient object to access its operations.
+     * 
+     * @return the HttpRouteConfigsClient object.
+     */
+    public HttpRouteConfigsClient getHttpRouteConfigs() {
+        return this.httpRouteConfigs;
+    }
+
+    /**
+     * The MaintenanceConfigurationsClient object to access its operations.
+     */
+    private final MaintenanceConfigurationsClient maintenanceConfigurations;
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     * 
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
+        return this.maintenanceConfigurations;
+    }
+
+    /**
      * The ManagedEnvironmentsStoragesClient object to access its operations.
      */
     private final ManagedEnvironmentsStoragesClient managedEnvironmentsStorages;
@@ -468,6 +548,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages() {
         return this.managedEnvironmentsStorages;
+    }
+
+    /**
+     * The ContainerAppsSessionPoolsClient object to access its operations.
+     */
+    private final ContainerAppsSessionPoolsClient containerAppsSessionPools;
+
+    /**
+     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
+     * 
+     * @return the ContainerAppsSessionPoolsClient object.
+     */
+    public ContainerAppsSessionPoolsClient getContainerAppsSessionPools() {
+        return this.containerAppsSessionPools;
     }
 
     /**
@@ -513,6 +607,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The LogicAppsClient object to access its operations.
+     */
+    private final LogicAppsClient logicApps;
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    public LogicAppsClient getLogicApps() {
+        return this.logicApps;
+    }
+
+    /**
      * Initializes an instance of ContainerAppsApiClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -529,7 +637,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-03-01";
+        this.apiVersion = "2025-07-01";
         this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.availableWorkloadProfiles = new AvailableWorkloadProfilesClientImpl(this);
         this.billingMeters = new BillingMetersClientImpl(this);
@@ -545,17 +653,25 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.managedEnvironmentsDiagnostics = new ManagedEnvironmentsDiagnosticsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.javaComponents = new JavaComponentsClientImpl(this);
         this.jobsExecutions = new JobsExecutionsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.managedEnvironments = new ManagedEnvironmentsClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.managedCertificates = new ManagedCertificatesClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
+        this.managedEnvironmentPrivateEndpointConnections
+            = new ManagedEnvironmentPrivateEndpointConnectionsClientImpl(this);
+        this.managedEnvironmentPrivateLinkResources = new ManagedEnvironmentPrivateLinkResourcesClientImpl(this);
         this.daprComponents = new DaprComponentsClientImpl(this);
+        this.httpRouteConfigs = new HttpRouteConfigsClientImpl(this);
+        this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.managedEnvironmentsStorages = new ManagedEnvironmentsStoragesClientImpl(this);
+        this.containerAppsSessionPools = new ContainerAppsSessionPoolsClientImpl(this);
         this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.managedEnvironmentUsages = new ManagedEnvironmentUsagesClientImpl(this);
+        this.logicApps = new LogicAppsClientImpl(this);
     }
 
     /**
@@ -593,6 +709,23 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

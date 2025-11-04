@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,39 +20,45 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
     /*
      * The index in the original payload of the item.
      */
+    @Generated
     private Integer index;
 
     /*
      * The item specific [HTTP Response status code](#Response Status Codes).
      */
+    @Generated
     private Integer statusCode;
 
     /*
      * The error message.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of TelemetryErrorDetails class.
      */
+    @Generated
     public TelemetryErrorDetails() {
     }
 
     /**
      * Get the index property: The index in the original payload of the item.
-     *
+     * 
      * @return the index value.
      */
+    @Generated
     public Integer getIndex() {
         return this.index;
     }
 
     /**
      * Set the index property: The index in the original payload of the item.
-     *
+     * 
      * @param index the index value to set.
      * @return the TelemetryErrorDetails object itself.
      */
+    @Generated
     public TelemetryErrorDetails setIndex(Integer index) {
         this.index = index;
         return this;
@@ -59,19 +66,21 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Get the statusCode property: The item specific [HTTP Response status code](#Response Status Codes).
-     *
+     * 
      * @return the statusCode value.
      */
+    @Generated
     public Integer getStatusCode() {
         return this.statusCode;
     }
 
     /**
      * Set the statusCode property: The item specific [HTTP Response status code](#Response Status Codes).
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the TelemetryErrorDetails object itself.
      */
+    @Generated
     public TelemetryErrorDetails setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
         return this;
@@ -79,19 +88,21 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TelemetryErrorDetails object itself.
      */
+    @Generated
     public TelemetryErrorDetails setMessage(String message) {
         this.message = message;
         return this;
@@ -100,6 +111,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,12 +123,13 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Reads an instance of TelemetryErrorDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryErrorDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TelemetryErrorDetails.
      */
+    @Generated
     public static TelemetryErrorDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelemetryErrorDetails deserializedTelemetryErrorDetails = new TelemetryErrorDetails();

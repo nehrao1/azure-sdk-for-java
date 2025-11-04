@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,60 @@
 
 ### Bugs Fixed
 
+## 1.0.5 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 1.0.4 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 1.0.3 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+## 1.0.2 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.0.1 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.3.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.11`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.3`.
+
+## 1.0.0 (2024-11-20)
+
+### Other Changes
+- Renamed `document_translate` API of SingleDocumentTranslationClient to `translate`.
+- Renamed `GetTranslationsStatus` API to `ListTranslationStatuses`.
+- Renamed `GetDocumentsStatus` API to `ListDocumentStatuses`.
+- Encapsulated all API parameters for `ListTranslationStatuses` into a dedicated options class named `ListTranslationStatusesOptions`.
+- Encapsulated all API parameters for `ListDocumentStatuses` into a dedicated options class named `ListDocumentStatusesOptions`.
 
 ## 1.0.0-beta.2 (2024-06-18)
 

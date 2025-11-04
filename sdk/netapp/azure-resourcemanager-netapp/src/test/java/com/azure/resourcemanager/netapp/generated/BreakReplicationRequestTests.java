@@ -13,13 +13,13 @@ public final class BreakReplicationRequestTests {
     public void testDeserialize() throws Exception {
         BreakReplicationRequest model
             = BinaryData.fromString("{\"forceBreakReplication\":true}").toObject(BreakReplicationRequest.class);
-        Assertions.assertEquals(true, model.forceBreakReplication());
+        Assertions.assertTrue(model.forceBreakReplication());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BreakReplicationRequest model = new BreakReplicationRequest().withForceBreakReplication(true);
         model = BinaryData.fromObject(model).toObject(BreakReplicationRequest.class);
-        Assertions.assertEquals(true, model.forceBreakReplication());
+        Assertions.assertTrue(model.forceBreakReplication());
     }
 }

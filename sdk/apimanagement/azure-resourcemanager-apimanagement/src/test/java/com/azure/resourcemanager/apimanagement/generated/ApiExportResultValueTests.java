@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiExportResultValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiExportResultValue model =
-            BinaryData.fromString("{\"link\":\"aknokzwjjzrl\"}").toObject(ApiExportResultValue.class);
-        Assertions.assertEquals("aknokzwjjzrl", model.link());
+        ApiExportResultValue model
+            = BinaryData.fromString("{\"link\":\"keciqchxrtuicd\"}").toObject(ApiExportResultValue.class);
+        Assertions.assertEquals("keciqchxrtuicd", model.link());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiExportResultValue model = new ApiExportResultValue().withLink("aknokzwjjzrl");
+        ApiExportResultValue model = new ApiExportResultValue().withLink("keciqchxrtuicd");
         model = BinaryData.fromObject(model).toObject(ApiExportResultValue.class);
-        Assertions.assertEquals("aknokzwjjzrl", model.link());
+        Assertions.assertEquals("keciqchxrtuicd", model.link());
     }
 }

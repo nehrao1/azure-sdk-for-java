@@ -124,7 +124,6 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (store() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -150,7 +149,9 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
         jsonWriter.writeJsonField("store", this.store);
         jsonWriter.writeUntypedField("secretName", this.secretName);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("secretVersion", this.secretVersion);
+        if (this.secretVersion != null) {
+            jsonWriter.writeUntypedField("secretVersion", this.secretVersion);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mongocluster.fluent.models.ListConnectionString
 public final class ListConnectionStringsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListConnectionStringsResultInner model = BinaryData
-            .fromString(
-                "{\"connectionStrings\":[{\"connectionString\":\"vyevcciqi\",\"description\":\"hungbwjzrnf\"}]}")
+        ListConnectionStringsResultInner model = BinaryData.fromString(
+            "{\"connectionStrings\":[{\"connectionString\":\"qawrlyxwj\",\"description\":\"prbnwbxgjvtbv\",\"name\":\"sszdnru\"},{\"connectionString\":\"guhmuouqfpr\",\"description\":\"wbnguitnwui\",\"name\":\"a\"},{\"connectionString\":\"ufizuckyf\",\"description\":\"rfidfvzwdz\",\"name\":\"tymw\"},{\"connectionString\":\"dkfthwxmnt\",\"description\":\"waopvkmijcmmxd\",\"name\":\"fufsrpymzi\"}]}")
             .toObject(ListConnectionStringsResultInner.class);
     }
 }

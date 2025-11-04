@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class PoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/GetPool.json
+     * x-ms-original-file: 2025-01-21/GetPool.json
      */
     /**
      * Sample code: Pools_Get.

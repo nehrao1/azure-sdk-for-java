@@ -15,6 +15,8 @@ import com.azure.resourcemanager.deviceregistry.models.Origin;
 import java.io.IOException;
 
 /**
+ * REST API Operation
+ * 
  * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
 @Immutable
@@ -103,23 +105,12 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (display() != null) {
-            display().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeJsonField("display", this.display);
         return jsonWriter.writeEndObject();
     }
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,28 +18,36 @@ import java.io.IOException;
 @Fluent
 public final class OraclePartitionSettings implements JsonSerializable<OraclePartitionSettings> {
     /*
-     * Names of the physical partitions of Oracle table. 
+     * Names of the physical partitions of Oracle table.
      */
+    @Generated
     private Object partitionNames;
 
     /*
-     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionLowerBound;
 
     /**
      * Creates an instance of OraclePartitionSettings class.
      */
+    @Generated
     public OraclePartitionSettings() {
     }
 
@@ -47,6 +56,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * 
      * @return the partitionNames value.
      */
+    @Generated
     public Object getPartitionNames() {
         return this.partitionNames;
     }
@@ -57,6 +67,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * @param partitionNames the partitionNames value to set.
      * @return the OraclePartitionSettings object itself.
      */
+    @Generated
     public OraclePartitionSettings setPartitionNames(Object partitionNames) {
         this.partitionNames = partitionNames;
         return this;
@@ -68,6 +79,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * 
      * @return the partitionColumnName value.
      */
+    @Generated
     public Object getPartitionColumnName() {
         return this.partitionColumnName;
     }
@@ -79,6 +91,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the OraclePartitionSettings object itself.
      */
+    @Generated
     public OraclePartitionSettings setPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
@@ -90,6 +103,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * 
      * @return the partitionUpperBound value.
      */
+    @Generated
     public Object getPartitionUpperBound() {
         return this.partitionUpperBound;
     }
@@ -101,6 +115,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the OraclePartitionSettings object itself.
      */
+    @Generated
     public OraclePartitionSettings setPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
@@ -112,6 +127,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * 
      * @return the partitionLowerBound value.
      */
+    @Generated
     public Object getPartitionLowerBound() {
         return this.partitionLowerBound;
     }
@@ -123,6 +139,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the OraclePartitionSettings object itself.
      */
+    @Generated
     public OraclePartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
@@ -131,13 +148,22 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionNames", this.partitionNames);
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        if (this.partitionNames != null) {
+            jsonWriter.writeUntypedField("partitionNames", this.partitionNames);
+        }
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +175,7 @@ public final class OraclePartitionSettings implements JsonSerializable<OraclePar
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the OraclePartitionSettings.
      */
+    @Generated
     public static OraclePartitionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OraclePartitionSettings deserializedOraclePartitionSettings = new OraclePartitionSettings();

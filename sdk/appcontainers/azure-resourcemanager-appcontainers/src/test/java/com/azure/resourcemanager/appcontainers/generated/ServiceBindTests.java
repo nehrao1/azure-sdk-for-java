@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceBindTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceBind model = BinaryData.fromString("{\"serviceId\":\"ndsytgadg\",\"name\":\"aeaeneqnzarrw\"}")
+        ServiceBind model = BinaryData.fromString("{\"serviceId\":\"gebdunygaeq\",\"name\":\"bqfatpxllrxcyjmo\"}")
             .toObject(ServiceBind.class);
-        Assertions.assertEquals("ndsytgadg", model.serviceId());
-        Assertions.assertEquals("aeaeneqnzarrw", model.name());
+        Assertions.assertEquals("gebdunygaeq", model.serviceId());
+        Assertions.assertEquals("bqfatpxllrxcyjmo", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceBind model = new ServiceBind().withServiceId("ndsytgadg").withName("aeaeneqnzarrw");
+        ServiceBind model = new ServiceBind().withServiceId("gebdunygaeq").withName("bqfatpxllrxcyjmo");
         model = BinaryData.fromObject(model).toObject(ServiceBind.class);
-        Assertions.assertEquals("ndsytgadg", model.serviceId());
-        Assertions.assertEquals("aeaeneqnzarrw", model.name());
+        Assertions.assertEquals("gebdunygaeq", model.serviceId());
+        Assertions.assertEquals("bqfatpxllrxcyjmo", model.name());
     }
 }

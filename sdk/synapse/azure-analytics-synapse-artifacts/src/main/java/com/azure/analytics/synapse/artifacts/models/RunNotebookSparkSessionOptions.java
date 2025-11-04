@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,91 +22,110 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The session kind
      */
+    @Generated
     private String kind;
 
     /*
      * User to impersonate when starting the session
      */
+    @Generated
     private String proxyUser;
 
     /*
      * The name of this session
      */
+    @Generated
     private String name;
 
     /*
      * jars to be used in this session
      */
+    @Generated
     private List<String> jars;
 
     /*
      * Python files to be used in this session
      */
+    @Generated
     private List<String> pythonFiles;
 
     /*
      * files to be used in this session
      */
+    @Generated
     private List<String> files;
 
     /*
      * Archives to be used in this session
      */
+    @Generated
     private List<String> archives;
 
     /*
      * The name of the YARN queue to which submitted
      */
+    @Generated
     private Object queue;
 
     /*
      * Spark configuration properties
      */
+    @Generated
     private Map<String, String> configuration;
 
     /*
      * Amount of memory to use for the driver process
      */
+    @Generated
     private String driverMemory;
 
     /*
      * Number of cores to use for the driver process
      */
+    @Generated
     private Integer driverCores;
 
     /*
      * Amount of memory to use per executor process
      */
+    @Generated
     private String executorMemory;
 
     /*
      * Number of cores to use for each executor
      */
+    @Generated
     private Integer executorCores;
 
     /*
      * Number of executors to launch for this session
      */
+    @Generated
     private Integer executorCount;
 
     /*
-     * Whether to queue session creation if Spark pool doesn't have enough capacity. Default value is true in notebook runs API
+     * Whether to queue session creation if Spark pool doesn't have enough capacity. Default value is true in notebook
+     * runs API
      */
+    @Generated
     private Boolean isQueueable;
 
     /*
      * Timeout in second to which session be orphaned
      */
+    @Generated
     private Integer heartbeatTimeoutInSecond;
 
     /**
      * Creates an instance of RunNotebookSparkSessionOptions class.
      */
+    @Generated
     public RunNotebookSparkSessionOptions() {
     }
 
@@ -114,6 +134,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -124,6 +145,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param tags the tags value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -134,6 +156,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the kind value.
      */
+    @Generated
     public String getKind() {
         return this.kind;
     }
@@ -144,6 +167,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param kind the kind value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setKind(String kind) {
         this.kind = kind;
         return this;
@@ -154,6 +178,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the proxyUser value.
      */
+    @Generated
     public String getProxyUser() {
         return this.proxyUser;
     }
@@ -164,6 +189,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param proxyUser the proxyUser value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setProxyUser(String proxyUser) {
         this.proxyUser = proxyUser;
         return this;
@@ -174,6 +200,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -184,6 +211,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param name the name value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setName(String name) {
         this.name = name;
         return this;
@@ -194,6 +222,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the jars value.
      */
+    @Generated
     public List<String> getJars() {
         return this.jars;
     }
@@ -204,6 +233,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param jars the jars value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setJars(List<String> jars) {
         this.jars = jars;
         return this;
@@ -214,6 +244,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the pythonFiles value.
      */
+    @Generated
     public List<String> getPythonFiles() {
         return this.pythonFiles;
     }
@@ -224,6 +255,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param pythonFiles the pythonFiles value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setPythonFiles(List<String> pythonFiles) {
         this.pythonFiles = pythonFiles;
         return this;
@@ -234,6 +266,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the files value.
      */
+    @Generated
     public List<String> getFiles() {
         return this.files;
     }
@@ -244,6 +277,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param files the files value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setFiles(List<String> files) {
         this.files = files;
         return this;
@@ -254,6 +288,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the archives value.
      */
+    @Generated
     public List<String> getArchives() {
         return this.archives;
     }
@@ -264,6 +299,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param archives the archives value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setArchives(List<String> archives) {
         this.archives = archives;
         return this;
@@ -274,6 +310,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the queue value.
      */
+    @Generated
     public Object getQueue() {
         return this.queue;
     }
@@ -284,6 +321,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param queue the queue value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setQueue(Object queue) {
         this.queue = queue;
         return this;
@@ -294,6 +332,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the configuration value.
      */
+    @Generated
     public Map<String, String> getConfiguration() {
         return this.configuration;
     }
@@ -304,6 +343,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param configuration the configuration value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setConfiguration(Map<String, String> configuration) {
         this.configuration = configuration;
         return this;
@@ -314,6 +354,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -324,6 +365,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param driverMemory the driverMemory value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -334,6 +376,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the driverCores value.
      */
+    @Generated
     public Integer getDriverCores() {
         return this.driverCores;
     }
@@ -344,6 +387,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param driverCores the driverCores value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setDriverCores(Integer driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -354,6 +398,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -364,6 +409,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param executorMemory the executorMemory value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -374,6 +420,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the executorCores value.
      */
+    @Generated
     public Integer getExecutorCores() {
         return this.executorCores;
     }
@@ -384,6 +431,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param executorCores the executorCores value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setExecutorCores(Integer executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -394,6 +442,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the executorCount value.
      */
+    @Generated
     public Integer getExecutorCount() {
         return this.executorCount;
     }
@@ -404,6 +453,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param executorCount the executorCount value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setExecutorCount(Integer executorCount) {
         this.executorCount = executorCount;
         return this;
@@ -415,6 +465,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the isQueueable value.
      */
+    @Generated
     public Boolean isQueueable() {
         return this.isQueueable;
     }
@@ -426,6 +477,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param isQueueable the isQueueable value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setIsQueueable(Boolean isQueueable) {
         this.isQueueable = isQueueable;
         return this;
@@ -436,6 +488,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * 
      * @return the heartbeatTimeoutInSecond value.
      */
+    @Generated
     public Integer getHeartbeatTimeoutInSecond() {
         return this.heartbeatTimeoutInSecond;
     }
@@ -446,6 +499,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * @param heartbeatTimeoutInSecond the heartbeatTimeoutInSecond value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
+    @Generated
     public RunNotebookSparkSessionOptions setHeartbeatTimeoutInSecond(Integer heartbeatTimeoutInSecond) {
         this.heartbeatTimeoutInSecond = heartbeatTimeoutInSecond;
         return this;
@@ -454,6 +508,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -465,7 +520,9 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
         jsonWriter.writeArrayField("pyFiles", this.pythonFiles, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("archives", this.archives, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeUntypedField("queue", this.queue);
+        if (this.queue != null) {
+            jsonWriter.writeUntypedField("queue", this.queue);
+        }
         jsonWriter.writeMapField("conf", this.configuration, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("driverMemory", this.driverMemory);
         jsonWriter.writeNumberField("driverCores", this.driverCores);
@@ -485,6 +542,7 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookSparkSessionOptions.
      */
+    @Generated
     public static RunNotebookSparkSessionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookSparkSessionOptions deserializedRunNotebookSparkSessionOptions

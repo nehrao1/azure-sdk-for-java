@@ -5,9 +5,7 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,9 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 
@@ -36,8 +32,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
 
-        com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
-            new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
+        com.azure.search.documents.models.IndexAction<Map<String, Object>> action
+            = new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
@@ -52,8 +48,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
 
-        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
-            new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
+        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action
+            = new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
@@ -68,8 +64,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
             .build();
 
-        com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
-            new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
+        com.azure.search.documents.models.IndexAction<Map<String, Object>> action
+            = new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
@@ -84,8 +80,8 @@ public class IndexActionTests {
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
             .build();
 
-        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
-            new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
+        com.azure.search.documents.models.IndexAction<ClassWithNullableField> action
+            = new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
@@ -95,11 +91,8 @@ public class IndexActionTests {
     }
 
     private static String convertToJson(JsonSerializable<?> jsonSerializable) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            writer.writeJson(jsonSerializable).flush();
-            return outputStream.toString(StandardCharsets.UTF_8.name());
+        try {
+            return jsonSerializable.toJsonString();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

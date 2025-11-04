@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,13 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
     /*
      * The Format property.
      */
+    @Generated
     private QueryFormat format;
 
     /**
      * Creates an instance of QuerySerialization class.
      */
+    @Generated
     public QuerySerialization() {
     }
 
@@ -34,6 +36,7 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
      * 
      * @return the format value.
      */
+    @Generated
     public QueryFormat getFormat() {
         return this.format;
     }
@@ -44,19 +47,22 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
      * @param format the format value to set.
      * @return the QuerySerialization object itself.
      */
+    @Generated
     public QuerySerialization setFormat(QueryFormat format) {
         this.format = format;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QuerySerialization" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QuerySerialization" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.format, "Format");
         return xmlWriter.writeEndElement();
@@ -68,9 +74,9 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
      * @param xmlReader The XmlReader being read.
      * @return An instance of QuerySerialization if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QuerySerialization.
      */
+    @Generated
     public static QuerySerialization fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -83,11 +89,12 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
      * cases where the model can deserialize from different root element names.
      * @return An instance of QuerySerialization if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QuerySerialization.
      */
+    @Generated
     public static QuerySerialization fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QuerySerialization" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "QuerySerialization" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QuerySerialization deserializedQuerySerialization = new QuerySerialization();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

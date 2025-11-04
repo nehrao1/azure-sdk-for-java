@@ -21,8 +21,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -85,6 +85,22 @@ public final class DataMapClientBuilder
     }
 
     /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public DataMapClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through.
      */
     @Generated
@@ -100,22 +116,6 @@ public final class DataMapClientBuilder
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public DataMapClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
         return this;
     }
 

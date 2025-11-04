@@ -13,14 +13,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.AdministratorsClient;
@@ -45,8 +48,11 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.QuotaUsagesClie
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerCapabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.TuningConfigurationsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.TuningIndexesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.TuningOptionsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -470,6 +476,48 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
+     * The TuningOptionsClient object to access its operations.
+     */
+    private final TuningOptionsClient tuningOptions;
+
+    /**
+     * Gets the TuningOptionsClient object to access its operations.
+     * 
+     * @return the TuningOptionsClient object.
+     */
+    public TuningOptionsClient getTuningOptions() {
+        return this.tuningOptions;
+    }
+
+    /**
+     * The TuningIndexesClient object to access its operations.
+     */
+    private final TuningIndexesClient tuningIndexes;
+
+    /**
+     * Gets the TuningIndexesClient object to access its operations.
+     * 
+     * @return the TuningIndexesClient object.
+     */
+    public TuningIndexesClient getTuningIndexes() {
+        return this.tuningIndexes;
+    }
+
+    /**
+     * The TuningConfigurationsClient object to access its operations.
+     */
+    private final TuningConfigurationsClient tuningConfigurations;
+
+    /**
+     * Gets the TuningConfigurationsClient object to access its operations.
+     * 
+     * @return the TuningConfigurationsClient object.
+     */
+    public TuningConfigurationsClient getTuningConfigurations() {
+        return this.tuningConfigurations;
+    }
+
+    /**
      * The VirtualEndpointsClient object to access its operations.
      */
     private final VirtualEndpointsClient virtualEndpoints;
@@ -514,7 +562,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-12-01-preview";
+        this.apiVersion = "2025-01-01-preview";
         this.administrators = new AdministratorsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
@@ -538,6 +586,9 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.replicas = new ReplicasClientImpl(this);
         this.logFiles = new LogFilesClientImpl(this);
         this.serverThreatProtectionSettings = new ServerThreatProtectionSettingsClientImpl(this);
+        this.tuningOptions = new TuningOptionsClientImpl(this);
+        this.tuningIndexes = new TuningIndexesClientImpl(this);
+        this.tuningConfigurations = new TuningConfigurationsClientImpl(this);
         this.virtualEndpoints = new VirtualEndpointsClientImpl(this);
         this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
     }
@@ -577,6 +628,23 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

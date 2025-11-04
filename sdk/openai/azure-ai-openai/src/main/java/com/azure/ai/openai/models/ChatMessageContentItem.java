@@ -77,10 +77,14 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("text".equals(discriminatorValue)) {
-                    return ChatMessageTextContentItem.fromJson(readerToUse.reset());
+                if ("refusal".equals(discriminatorValue)) {
+                    return ChatMessageRefusalContentItem.fromJson(readerToUse.reset());
                 } else if ("image_url".equals(discriminatorValue)) {
                     return ChatMessageImageContentItem.fromJson(readerToUse.reset());
+                } else if ("input_audio".equals(discriminatorValue)) {
+                    return ChatMessageAudioContentItem.fromJson(readerToUse.reset());
+                } else if ("text".equals(discriminatorValue)) {
+                    return ChatMessageTextContentItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

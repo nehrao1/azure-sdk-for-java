@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,267 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2025-04-18)
+
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK.  Package tag package-2024-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.VolumeGroups` was modified
+
+* `listByElasticSan(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Volumes` was modified
+
+* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.PreValidationResponse` was added
+
+* `models.PolicyState` was added
+
+* `models.XMsAccessSoftDeletedResources` was added
+
+* `models.DiskSnapshotList` was added
+
+* `models.VolumeNameList` was added
+
+* `models.DeleteRetentionPolicy` was added
+
+* `models.DeleteType` was added
+
+* `models.ResourceProviders` was added
+
+#### `models.VolumeGroup$Update` was modified
+
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+
+#### `models.VolumeGroups` was modified
+
+* `listByElasticSan(java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
+
+#### `models.VolumeGroupUpdate` was modified
+
+* `deleteRetentionPolicy()` was added
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+
+#### `models.Volumes` was modified
+
+* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList,com.azure.core.util.Context)` was added
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList)` was added
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList)` was added
+
+#### `ElasticSanManager` was modified
+
+* `resourceProviders()` was added
+
+#### `models.VolumeGroup$Definition` was modified
+
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+
+#### `models.VolumeGroup` was modified
+
+* `deleteRetentionPolicy()` was added
+
+## 1.2.0-beta.1 (2024-10-23)
+
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK.  Package tag package-preview-2024-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AutoScaleProperties` was added
+
+* `models.AutoScalePolicyEnforcement` was added
+
+* `models.ScaleUpProperties` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `autoScaleProperties()` was added
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan` was modified
+
+* `autoScaleProperties()` was added
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan$Update` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+## 1.1.0 (2024-09-25)
+
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK.  Package tag package-2024-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.NetworkRuleSet` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EncryptionProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SnapshotList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SnapshotCreationData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VolumeUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SourceCreationData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VolumeGroup$Update` was modified
+
+* `withEnforceDataIntegrityCheckForIscsi(java.lang.Boolean)` was added
+
+#### `models.SkuCapability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PrivateEndpoint` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KeyVaultProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SkuInformationList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VolumeGroupUpdate` was modified
+
+* `withEnforceDataIntegrityCheckForIscsi(java.lang.Boolean)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `enforceDataIntegrityCheckForIscsi()` was added
+
+#### `models.VolumeList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Sku` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SkuLocationInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EncryptionIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VirtualNetworkRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ElasticSanList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IscsiTargetInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `id()` was added
+* `name()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `type()` was added
+
+#### `models.VolumeGroup$Definition` was modified
+
+* `withEnforceDataIntegrityCheckForIscsi(java.lang.Boolean)` was added
+
+#### `models.ManagedByInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VolumeGroupList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Identity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VolumeGroup` was modified
+
+* `enforceDataIntegrityCheckForIscsi()` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateEndpointConnectionListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0 (2024-01-25)
 

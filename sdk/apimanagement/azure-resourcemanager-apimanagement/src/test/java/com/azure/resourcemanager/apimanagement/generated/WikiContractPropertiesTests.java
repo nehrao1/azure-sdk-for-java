@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WikiContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WikiContractProperties model =
-            BinaryData
-                .fromString("{\"documents\":[{\"documentationId\":\"blkwqpatvbqs\"}]}")
-                .toObject(WikiContractProperties.class);
-        Assertions.assertEquals("blkwqpatvbqs", model.documents().get(0).documentationId());
+        WikiContractProperties model = BinaryData.fromString(
+            "{\"documents\":[{\"documentationId\":\"evtf\"},{\"documentationId\":\"nlbvgjcodkk\"},{\"documentationId\":\"iiy\"}]}")
+            .toObject(WikiContractProperties.class);
+        Assertions.assertEquals("evtf", model.documents().get(0).documentationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WikiContractProperties model =
-            new WikiContractProperties()
-                .withDocuments(Arrays.asList(new WikiDocumentationContract().withDocumentationId("blkwqpatvbqs")));
+        WikiContractProperties model = new WikiContractProperties()
+            .withDocuments(Arrays.asList(new WikiDocumentationContract().withDocumentationId("evtf"),
+                new WikiDocumentationContract().withDocumentationId("nlbvgjcodkk"),
+                new WikiDocumentationContract().withDocumentationId("iiy")));
         model = BinaryData.fromObject(model).toObject(WikiContractProperties.class);
-        Assertions.assertEquals("blkwqpatvbqs", model.documents().get(0).documentationId());
+        Assertions.assertEquals("evtf", model.documents().get(0).documentationId());
     }
 }

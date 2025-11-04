@@ -4,7 +4,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,31 +25,37 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
     /*
      * ID of the target Azure resource where the document model should be copied to.
      */
+    @Generated
     private final String targetResourceId;
 
     /*
      * Location of the target Azure resource where the document model should be copied to.
      */
+    @Generated
     private final String targetResourceRegion;
 
     /*
      * Identifier of the target document model.
      */
+    @Generated
     private final String targetModelId;
 
     /*
      * URL of the copied document model in the target account.
      */
+    @Generated
     private final String targetModelLocation;
 
     /*
      * Token used to authorize the request.
      */
+    @Generated
     private final String accessToken;
 
     /*
      * Date/time when the access token expires.
      */
+    @Generated
     private final OffsetDateTime expirationDateTime;
 
     /**
@@ -60,6 +68,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * @param accessToken the accessToken value to set.
      * @param expirationDateTime the expirationDateTime value to set.
      */
+    @Generated
     public CopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
         String targetModelLocation, String accessToken, OffsetDateTime expirationDateTime) {
         this.targetResourceId = targetResourceId;
@@ -75,6 +84,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the targetResourceId value.
      */
+    @Generated
     public String getTargetResourceId() {
         return this.targetResourceId;
     }
@@ -85,6 +95,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the targetResourceRegion value.
      */
+    @Generated
     public String getTargetResourceRegion() {
         return this.targetResourceRegion;
     }
@@ -94,6 +105,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the targetModelId value.
      */
+    @Generated
     public String getTargetModelId() {
         return this.targetModelId;
     }
@@ -103,6 +115,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the targetModelLocation value.
      */
+    @Generated
     public String getTargetModelLocation() {
         return this.targetModelLocation;
     }
@@ -112,6 +125,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the accessToken value.
      */
+    @Generated
     public String getAccessToken() {
         return this.accessToken;
     }
@@ -121,10 +135,15 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * 
      * @return the expirationDateTime value.
      */
+    @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,8 +152,10 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
         jsonWriter.writeStringField("targetModelId", this.targetModelId);
         jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
         jsonWriter.writeStringField("accessToken", this.accessToken);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +168,7 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyAuthorization.
      */
+    @Generated
     public static CopyAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean targetResourceIdFound = false;
@@ -181,15 +203,19 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
                     accessToken = reader.getString();
                     accessTokenFound = true;
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     expirationDateTimeFound = true;
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (targetResourceIdFound && targetResourceRegionFound && targetModelIdFound && targetModelLocationFound
-                && accessTokenFound && expirationDateTimeFound) {
+            if (targetResourceIdFound
+                && targetResourceRegionFound
+                && targetModelIdFound
+                && targetModelLocationFound
+                && accessTokenFound
+                && expirationDateTimeFound) {
                 return new CopyAuthorization(targetResourceId, targetResourceRegion, targetModelId, targetModelLocation,
                     accessToken, expirationDateTime);
             }

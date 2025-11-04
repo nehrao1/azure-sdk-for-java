@@ -36,7 +36,7 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
     SecretProperties properties;
 
     /**
-     * Creates an empty instance of the Secret.
+     * Creates an empty instance of KeyVaultSecret. This constructor is used by the deserializer.
      */
     KeyVaultSecret() {
         properties = new SecretProperties();
@@ -103,9 +103,7 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("value", value)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("value", value).writeEndObject();
     }
 
     /**
@@ -141,7 +139,7 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
                     keyVaultSecret.properties.contentType = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     keyVaultSecret.properties.tags = reader.readMap(JsonReader::getString);
-                } else  {
+                } else {
                     reader.skipChildren();
                 }
             }
@@ -150,4 +148,3 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
         });
     }
 }
-

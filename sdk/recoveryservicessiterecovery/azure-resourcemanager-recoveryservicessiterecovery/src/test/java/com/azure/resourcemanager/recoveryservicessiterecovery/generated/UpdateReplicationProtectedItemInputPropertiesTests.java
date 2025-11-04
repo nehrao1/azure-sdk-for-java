@@ -27,8 +27,8 @@ public final class UpdateReplicationProtectedItemInputPropertiesTests {
         Assertions.assertEquals("eyvpnqicvinvkj", model.enableRdpOnTargetOption());
         Assertions.assertEquals("rbuukzclewyhmlwp", model.vmNics().get(0).nicId());
         Assertions.assertEquals("pofncck", model.vmNics().get(0).ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(false, model.vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertFalse(model.vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertTrue(model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("hxx", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("yq", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
         Assertions.assertEquals("zfeqztppri", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
@@ -40,15 +40,15 @@ public final class UpdateReplicationProtectedItemInputPropertiesTests {
         Assertions.assertEquals("tvcof", model.vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("xicslfao", model.vmNics().get(0).selectionType());
         Assertions.assertEquals("piyylhalnswhccsp", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(true, model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertTrue(model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("vwitqscyw", model.vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("oluhczbwemh", model.vmNics().get(0).recoveryNicName());
         Assertions.assertEquals("rsbrgzdwm", model.vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.vmNics().get(0).reuseExistingNic());
+        Assertions.assertTrue(model.vmNics().get(0).reuseExistingNic());
         Assertions.assertEquals("pqwd", model.vmNics().get(0).tfoNicName());
         Assertions.assertEquals("gicccnxqhuex", model.vmNics().get(0).tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertTrue(model.vmNics().get(0).tfoReuseExistingNic());
         Assertions.assertEquals("lstvlzywe", model.vmNics().get(0).targetNicName());
         Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.licenseType());
         Assertions.assertEquals("zcjaesgvvsccy", model.recoveryAvailabilitySetId());
@@ -57,98 +57,138 @@ public final class UpdateReplicationProtectedItemInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateReplicationProtectedItemInputProperties model
-            = new UpdateReplicationProtectedItemInputProperties()
-                .withRecoveryAzureVMName(
-                    "lpqblylsyxk")
-                .withRecoveryAzureVMSize("nsj").withSelectedRecoveryAzureNetworkId("vti")
-                .withSelectedTfoAzureNetworkId("xsdszuempsb").withSelectedSourceNicId(
-                    "f")
-                .withEnableRdpOnTargetOption(
-                    "eyvpnqicvinvkj")
+            = new UpdateReplicationProtectedItemInputProperties().withRecoveryAzureVMName("lpqblylsyxk")
+                .withRecoveryAzureVMSize("nsj")
+                .withSelectedRecoveryAzureNetworkId("vti")
+                .withSelectedTfoAzureNetworkId("xsdszuempsb")
+                .withSelectedSourceNicId("f")
+                .withEnableRdpOnTargetOption("eyvpnqicvinvkj")
                 .withVmNics(Arrays.asList(
                     new VMNicInputDetails().withNicId("rbuukzclewyhmlwp")
                         .withIpConfigs(Arrays.asList(
-                            new IpConfigInputDetails().withIpConfigName("pofncck").withIsPrimary(false)
-                                .withIsSeletedForFailover(true).withRecoverySubnetName("hxx")
-                                .withRecoveryStaticIpAddress("yq").withRecoveryPublicIpAddressId("zfeqztppri")
+                            new IpConfigInputDetails().withIpConfigName("pofncck")
+                                .withIsPrimary(false)
+                                .withIsSeletedForFailover(true)
+                                .withRecoverySubnetName("hxx")
+                                .withRecoveryStaticIpAddress("yq")
+                                .withRecoveryPublicIpAddressId("zfeqztppri")
                                 .withRecoveryLBBackendAddressPoolIds(
                                     Arrays.asList("or", "altol", "ncwsob", "wcsdbnwdcfhucq"))
-                                .withTfoSubnetName("fuvglsbjjca").withTfoStaticIpAddress("xbvtvudu")
+                                .withTfoSubnetName("fuvglsbjjca")
+                                .withTfoStaticIpAddress("xbvtvudu")
                                 .withTfoPublicIpAddressId("cormr")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("tvcof", "dflvkg", "u", "gdknnqv")),
-                            new IpConfigInputDetails().withIpConfigName("znqntoru").withIsPrimary(true)
-                                .withIsSeletedForFailover(false).withRecoverySubnetName("mkycgra")
-                                .withRecoveryStaticIpAddress("juetaebur").withRecoveryPublicIpAddressId("dmovsm")
+                            new IpConfigInputDetails().withIpConfigName("znqntoru")
+                                .withIsPrimary(true)
+                                .withIsSeletedForFailover(false)
+                                .withRecoverySubnetName("mkycgra")
+                                .withRecoveryStaticIpAddress("juetaebur")
+                                .withRecoveryPublicIpAddressId("dmovsm")
                                 .withRecoveryLBBackendAddressPoolIds(Arrays.asList("wabm", "oefki"))
-                                .withTfoSubnetName("vtpuqujmqlgk").withTfoStaticIpAddress("tndoaongbjc")
+                                .withTfoSubnetName("vtpuqujmqlgk")
+                                .withTfoStaticIpAddress("tndoaongbjc")
                                 .withTfoPublicIpAddressId("ujitcjedftww")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("kojvd")),
-                            new IpConfigInputDetails().withIpConfigName("zfoqouicybxar").withIsPrimary(true)
-                                .withIsSeletedForFailover(false).withRecoverySubnetName("oxciqopidoamcio")
+                            new IpConfigInputDetails().withIpConfigName("zfoqouicybxar")
+                                .withIsPrimary(true)
+                                .withIsSeletedForFailover(false)
+                                .withRecoverySubnetName("oxciqopidoamcio")
                                 .withRecoveryStaticIpAddress("khazxkhnzbonlwn")
                                 .withRecoveryPublicIpAddressId("egokdwbwhkszzcmr")
                                 .withRecoveryLBBackendAddressPoolIds(
                                     Arrays.asList("ztvbtqgsfr", "oyzko", "wtl", "nguxawqaldsy"))
-                                .withTfoSubnetName("ximerqfobwyznk").withTfoStaticIpAddress("kutwpf")
+                                .withTfoSubnetName("ximerqfobwyznk")
+                                .withTfoStaticIpAddress("kutwpf")
                                 .withTfoPublicIpAddressId("a")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("r", "kdsnfdsdoakgtdl", "kkze")),
-                            new IpConfigInputDetails().withIpConfigName("l").withIsPrimary(true)
-                                .withIsSeletedForFailover(false).withRecoverySubnetName("dsttwvo")
-                                .withRecoveryStaticIpAddress("bbejdcngqqm").withRecoveryPublicIpAddressId("kufgmj")
+                            new IpConfigInputDetails()
+                                .withIpConfigName("l")
+                                .withIsPrimary(true)
+                                .withIsSeletedForFailover(false)
+                                .withRecoverySubnetName("dsttwvo")
+                                .withRecoveryStaticIpAddress("bbejdcngqqm")
+                                .withRecoveryPublicIpAddressId("kufgmj")
                                 .withRecoveryLBBackendAddressPoolIds(Arrays.asList("rdgrtw"))
-                                .withTfoSubnetName("nuuzkopbm").withTfoStaticIpAddress("rfdwoyu")
+                                .withTfoSubnetName("nuuzkopbm")
+                                .withTfoStaticIpAddress("rfdwoyu")
                                 .withTfoPublicIpAddressId("ziuiefozbhdm")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("mzqhoftrmaequi"))))
-                        .withSelectionType("xicslfao").withRecoveryNetworkSecurityGroupId("piyylhalnswhccsp")
-                        .withEnableAcceleratedNetworkingOnRecovery(true).withTfoNetworkSecurityGroupId("vwitqscyw")
-                        .withEnableAcceleratedNetworkingOnTfo(false).withRecoveryNicName("oluhczbwemh")
-                        .withRecoveryNicResourceGroupName("rsbrgzdwm").withReuseExistingNic(true).withTfoNicName("pqwd")
-                        .withTfoNicResourceGroupName("gicccnxqhuex").withTfoReuseExistingNic(true)
+                        .withSelectionType("xicslfao")
+                        .withRecoveryNetworkSecurityGroupId("piyylhalnswhccsp")
+                        .withEnableAcceleratedNetworkingOnRecovery(true)
+                        .withTfoNetworkSecurityGroupId("vwitqscyw")
+                        .withEnableAcceleratedNetworkingOnTfo(false)
+                        .withRecoveryNicName("oluhczbwemh")
+                        .withRecoveryNicResourceGroupName("rsbrgzdwm")
+                        .withReuseExistingNic(true)
+                        .withTfoNicName("pqwd")
+                        .withTfoNicResourceGroupName("gicccnxqhuex")
+                        .withTfoReuseExistingNic(true)
                         .withTargetNicName("lstvlzywe"),
                     new VMNicInputDetails().withNicId("zrncsdt")
                         .withIpConfigs(Arrays.asList(new IpConfigInputDetails().withIpConfigName("iypbsfgytgusl")
-                            .withIsPrimary(false).withIsSeletedForFailover(false).withRecoverySubnetName("gq")
-                            .withRecoveryStaticIpAddress("yhejhzisxgfp").withRecoveryPublicIpAddressId("olppvksrpqvujz")
+                            .withIsPrimary(false)
+                            .withIsSeletedForFailover(false)
+                            .withRecoverySubnetName("gq")
+                            .withRecoveryStaticIpAddress("yhejhzisxgfp")
+                            .withRecoveryPublicIpAddressId("olppvksrpqvujz")
                             .withRecoveryLBBackendAddressPoolIds(
                                 Arrays.asList("htwdwrftswibyrcd", "bhshfwpracstwity", "hevxcced"))
-                            .withTfoSubnetName("nmdyodnwzxl").withTfoStaticIpAddress("cvnhltiugc")
-                            .withTfoPublicIpAddressId("avvwxqi").withTfoLBBackendAddressPoolIds(
+                            .withTfoSubnetName("nmdyodnwzxl")
+                            .withTfoStaticIpAddress("cvnhltiugc")
+                            .withTfoPublicIpAddressId("avvwxqi")
+                            .withTfoLBBackendAddressPoolIds(
                                 Arrays.asList("unyowxwl", "djrkvfgbvfvpd", "odacizs", "q"))))
-                        .withSelectionType("krribdeibqi").withRecoveryNetworkSecurityGroupId("kghv")
-                        .withEnableAcceleratedNetworkingOnRecovery(true).withTfoNetworkSecurityGroupId("wm")
-                        .withEnableAcceleratedNetworkingOnTfo(false).withRecoveryNicName("ajpjo")
-                        .withRecoveryNicResourceGroupName(
-                            "kqnyh")
-                        .withReuseExistingNic(
-                            false)
-                        .withTfoNicName(
-                            "tjivfxzsjabib")
-                        .withTfoNicResourceGroupName(
-                            "stawfsdjpvkv")
-                        .withTfoReuseExistingNic(true).withTargetNicName("bkzbzkd"),
+                        .withSelectionType("krribdeibqi")
+                        .withRecoveryNetworkSecurityGroupId("kghv")
+                        .withEnableAcceleratedNetworkingOnRecovery(true)
+                        .withTfoNetworkSecurityGroupId("wm")
+                        .withEnableAcceleratedNetworkingOnTfo(false)
+                        .withRecoveryNicName("ajpjo")
+                        .withRecoveryNicResourceGroupName("kqnyh")
+                        .withReuseExistingNic(false)
+                        .withTfoNicName("tjivfxzsjabib")
+                        .withTfoNicResourceGroupName("stawfsdjpvkv")
+                        .withTfoReuseExistingNic(true)
+                        .withTargetNicName("bkzbzkd"),
                     new VMNicInputDetails().withNicId("cjabudurgkakmo")
                         .withIpConfigs(Arrays.asList(
-                            new IpConfigInputDetails().withIpConfigName("jk").withIsPrimary(false)
-                                .withIsSeletedForFailover(true).withRecoverySubnetName("uwqlgzrfzeey")
-                                .withRecoveryStaticIpAddress("izikayuhq").withRecoveryPublicIpAddressId("jbsybbqw")
+                            new IpConfigInputDetails().withIpConfigName("jk")
+                                .withIsPrimary(false)
+                                .withIsSeletedForFailover(true)
+                                .withRecoverySubnetName("uwqlgzrfzeey")
+                                .withRecoveryStaticIpAddress("izikayuhq")
+                                .withRecoveryPublicIpAddressId("jbsybbqw")
                                 .withRecoveryLBBackendAddressPoolIds(Arrays.asList("ldgmfpgvmpip"))
-                                .withTfoSubnetName("ltha").withTfoStaticIpAddress("x")
+                                .withTfoSubnetName("ltha")
+                                .withTfoStaticIpAddress("x")
                                 .withTfoPublicIpAddressId("mwutwbdsre")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("rhneuyowq", "d", "ytisibir")),
-                            new IpConfigInputDetails().withIpConfigName("pikpz").withIsPrimary(false)
-                                .withIsSeletedForFailover(false).withRecoverySubnetName("nlfzxiavrmbz")
-                                .withRecoveryStaticIpAddress("okixrjqcir").withRecoveryPublicIpAddressId("pfrlazsz")
+                            new IpConfigInputDetails().withIpConfigName("pikpz")
+                                .withIsPrimary(false)
+                                .withIsSeletedForFailover(false)
+                                .withRecoverySubnetName("nlfzxiavrmbz")
+                                .withRecoveryStaticIpAddress("okixrjqcir")
+                                .withRecoveryPublicIpAddressId("pfrlazsz")
                                 .withRecoveryLBBackendAddressPoolIds(Arrays.asList("oiindfpwpjy", "wbtlhflsjcdh"))
-                                .withTfoSubnetName("fjvfbgofeljagr").withTfoStaticIpAddress("qhl")
+                                .withTfoSubnetName("fjvfbgofeljagr")
+                                .withTfoStaticIpAddress("qhl")
                                 .withTfoPublicIpAddressId("riiiojnalghfkv")
                                 .withTfoLBBackendAddressPoolIds(Arrays.asList("ex", "owueluqh"))))
-                        .withSelectionType("hhxvrhmzkwpj").withRecoveryNetworkSecurityGroupId("wspughftqsxhqx")
-                        .withEnableAcceleratedNetworkingOnRecovery(true).withTfoNetworkSecurityGroupId("kndxdigrjgu")
-                        .withEnableAcceleratedNetworkingOnTfo(true).withRecoveryNicName("msyqtfi")
-                        .withRecoveryNicResourceGroupName("hbotzingamvppho").withReuseExistingNic(false)
-                        .withTfoNicName("udphqamvdkfwyn").withTfoNicResourceGroupName("vtbvkayh")
-                        .withTfoReuseExistingNic(false).withTargetNicName("yqiatkzwp")))
-                .withLicenseType(LicenseType.WINDOWS_SERVER).withRecoveryAvailabilitySetId("zcjaesgvvsccy")
+                        .withSelectionType("hhxvrhmzkwpj")
+                        .withRecoveryNetworkSecurityGroupId("wspughftqsxhqx")
+                        .withEnableAcceleratedNetworkingOnRecovery(true)
+                        .withTfoNetworkSecurityGroupId("kndxdigrjgu")
+                        .withEnableAcceleratedNetworkingOnTfo(true)
+                        .withRecoveryNicName("msyqtfi")
+                        .withRecoveryNicResourceGroupName("hbotzingamvppho")
+                        .withReuseExistingNic(false)
+                        .withTfoNicName("udphqamvdkfwyn")
+                        .withTfoNicResourceGroupName("vtbvkayh")
+                        .withTfoReuseExistingNic(false)
+                        .withTargetNicName("yqiatkzwp")))
+                .withLicenseType(LicenseType.WINDOWS_SERVER)
+                .withRecoveryAvailabilitySetId("zcjaesgvvsccy")
                 .withProviderSpecificDetails(new UpdateReplicationProtectedItemProviderInput());
         model = BinaryData.fromObject(model).toObject(UpdateReplicationProtectedItemInputProperties.class);
         Assertions.assertEquals("lpqblylsyxk", model.recoveryAzureVMName());
@@ -159,8 +199,8 @@ public final class UpdateReplicationProtectedItemInputPropertiesTests {
         Assertions.assertEquals("eyvpnqicvinvkj", model.enableRdpOnTargetOption());
         Assertions.assertEquals("rbuukzclewyhmlwp", model.vmNics().get(0).nicId());
         Assertions.assertEquals("pofncck", model.vmNics().get(0).ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(false, model.vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertFalse(model.vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertTrue(model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("hxx", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("yq", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
         Assertions.assertEquals("zfeqztppri", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
@@ -172,15 +212,15 @@ public final class UpdateReplicationProtectedItemInputPropertiesTests {
         Assertions.assertEquals("tvcof", model.vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("xicslfao", model.vmNics().get(0).selectionType());
         Assertions.assertEquals("piyylhalnswhccsp", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(true, model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertTrue(model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("vwitqscyw", model.vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("oluhczbwemh", model.vmNics().get(0).recoveryNicName());
         Assertions.assertEquals("rsbrgzdwm", model.vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.vmNics().get(0).reuseExistingNic());
+        Assertions.assertTrue(model.vmNics().get(0).reuseExistingNic());
         Assertions.assertEquals("pqwd", model.vmNics().get(0).tfoNicName());
         Assertions.assertEquals("gicccnxqhuex", model.vmNics().get(0).tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertTrue(model.vmNics().get(0).tfoReuseExistingNic());
         Assertions.assertEquals("lstvlzywe", model.vmNics().get(0).targetNicName());
         Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.licenseType());
         Assertions.assertEquals("zcjaesgvvsccy", model.recoveryAvailabilitySetId());

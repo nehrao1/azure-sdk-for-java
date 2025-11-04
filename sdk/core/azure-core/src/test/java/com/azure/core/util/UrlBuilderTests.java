@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,13 +16,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -172,7 +171,7 @@ public class UrlBuilderTests {
     public void hostWhenHostContainsQuery() {
         final UrlBuilder builder = new UrlBuilder().setHost("www.example.com?a=b");
         assertEquals("www.example.com", builder.getHost());
-        assertThat(builder.toString(), CoreMatchers.containsString("a=b"));
+        assertTrue(builder.toString().contains("a=b"), "Expected " + builder + "to contain 'a=b'.");
         assertEquals("www.example.com?a=b", builder.toString());
     }
 
@@ -280,7 +279,7 @@ public class UrlBuilderTests {
     public void portStringQuery() {
         final UrlBuilder builder = new UrlBuilder().setPort("50?a=b&c=d");
         assertEquals(50, builder.getPort());
-        assertThat(builder.toString(), CoreMatchers.containsString("?a=b&c=d"));
+        assertTrue(builder.toString().contains("?a=b&c=d"), "Expected " + builder + "to contain '?a=b&c=d'.");
         assertEquals(":50?a=b&c=d", builder.toString());
     }
 
@@ -702,18 +701,17 @@ public class UrlBuilderTests {
 
     @Test
     public void parallelParsing() throws InterruptedException {
-        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
-            ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, false);
-
         AtomicInteger callCount = new AtomicInteger();
         List<Callable<UrlBuilder>> tasks = IntStream.range(0, 20000).mapToObj(i -> (Callable<UrlBuilder>) () -> {
             callCount.incrementAndGet();
             return UrlBuilder.parse("https://example" + i + ".com");
         }).collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
-        pool.invokeAll(tasks);
-        pool.shutdown();
-        assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
+        List<Future<UrlBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks, 10, TimeUnit.SECONDS);
+        for (Future<UrlBuilder> future : futures) {
+            assertTrue(future.isDone());
+            assertDoesNotThrow(() -> future.get());
+        }
         assertEquals(20000, callCount.get());
     }
 

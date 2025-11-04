@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,33 +18,41 @@ import java.io.IOException;
 @Fluent
 public final class NotebookResource implements JsonSerializable<NotebookResource> {
     /*
-     * Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
+    @Generated
     private String type;
 
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * Properties of Notebook.
      */
+    @Generated
     private Notebook properties;
 
     /**
      * Creates an instance of NotebookResource class.
      */
+    @Generated
     public NotebookResource() {
     }
 
@@ -53,6 +62,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -62,6 +72,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -72,6 +83,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * @param name the name value to set.
      * @return the NotebookResource object itself.
      */
+    @Generated
     public NotebookResource setName(String name) {
         this.name = name;
         return this;
@@ -83,6 +95,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -92,6 +105,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * 
      * @return the etag value.
      */
+    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -101,6 +115,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * 
      * @return the properties value.
      */
+    @Generated
     public Notebook getProperties() {
         return this.properties;
     }
@@ -111,6 +126,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * @param properties the properties value to set.
      * @return the NotebookResource object itself.
      */
+    @Generated
     public NotebookResource setProperties(Notebook properties) {
         this.properties = properties;
         return this;
@@ -119,6 +135,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -136,6 +153,7 @@ public final class NotebookResource implements JsonSerializable<NotebookResource
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookResource.
      */
+    @Generated
     public static NotebookResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookResource deserializedNotebookResource = new NotebookResource();

@@ -72,6 +72,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
             public void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
                 keyProperties.hsmPlatform = hsmPlatform;
             }
+
+            @Override
+            public void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation) {
+                keyProperties.keyAttestation = keyAttestation;
+            }
         });
     }
     /**
@@ -154,6 +159,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     private String hsmPlatform;
 
     /**
+     * The key attestation information.
+     */
+    private KeyAttestation keyAttestation;
+
+    /**
      * Creates a new instance of {@link KeyProperties}.
      */
     public KeyProperties() {
@@ -207,7 +217,6 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     public String getName() {
         return this.name;
     }
-
 
     /**
      * Get the enabled value.
@@ -324,7 +333,6 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
         return this.id;
     }
 
-
     /**
      * Get the tags associated with the key.
      *
@@ -372,6 +380,15 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
      */
     public String getHsmPlatform() {
         return hsmPlatform;
+    }
+
+    /**
+     * Get the key attestation information.
+     *
+     * @return The key attestation information.
+     */
+    public KeyAttestation getKeyAttestation() {
+        return keyAttestation;
     }
 
     @Override

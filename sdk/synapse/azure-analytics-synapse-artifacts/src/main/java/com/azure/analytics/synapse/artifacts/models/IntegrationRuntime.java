@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,23 +22,26 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
     /*
      * Type of integration runtime.
      */
-    private IntegrationRuntimeType type;
+    @Generated
+    private IntegrationRuntimeType type = IntegrationRuntimeType.fromString("IntegrationRuntime");
 
     /*
      * Integration runtime description.
      */
+    @Generated
     private String description;
 
     /*
      * Azure Synapse nested object which serves as a compute resource for activities.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntime class.
      */
+    @Generated
     public IntegrationRuntime() {
-        this.type = IntegrationRuntimeType.fromString("IntegrationRuntime");
     }
 
     /**
@@ -45,6 +49,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * 
      * @return the type value.
      */
+    @Generated
     public IntegrationRuntimeType getType() {
         return this.type;
     }
@@ -54,6 +59,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -64,6 +70,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * @param description the description value to set.
      * @return the IntegrationRuntime object itself.
      */
+    @Generated
     public IntegrationRuntime setDescription(String description) {
         this.description = description;
         return this;
@@ -75,6 +82,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -86,6 +94,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntime object itself.
      */
+    @Generated
     public IntegrationRuntime setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -94,6 +103,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,6 +125,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntime.
      */
+    @Generated
     public static IntegrationRuntime fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -142,6 +153,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
         });
     }
 
+    @Generated
     static IntegrationRuntime fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntime deserializedIntegrationRuntime = new IntegrationRuntime();

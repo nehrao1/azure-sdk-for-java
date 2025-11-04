@@ -13,19 +13,26 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.hybridcompute.fluent.ExtensionMetadataV2sClient;
 import com.azure.resourcemanager.hybridcompute.fluent.ExtensionMetadatasClient;
+import com.azure.resourcemanager.hybridcompute.fluent.ExtensionPublishersClient;
+import com.azure.resourcemanager.hybridcompute.fluent.ExtensionTypesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.GatewaysClient;
 import com.azure.resourcemanager.hybridcompute.fluent.HybridComputeManagementClient;
+import com.azure.resourcemanager.hybridcompute.fluent.LicenseProfilesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.LicensesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.MachineExtensionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.MachineRunCommandsClient;
@@ -165,6 +172,20 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
     }
 
     /**
+     * The LicenseProfilesClient object to access its operations.
+     */
+    private final LicenseProfilesClient licenseProfiles;
+
+    /**
+     * Gets the LicenseProfilesClient object to access its operations.
+     * 
+     * @return the LicenseProfilesClient object.
+     */
+    public LicenseProfilesClient getLicenseProfiles() {
+        return this.licenseProfiles;
+    }
+
+    /**
      * The MachineExtensionsClient object to access its operations.
      */
     private final MachineExtensionsClient machineExtensions;
@@ -204,6 +225,48 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
      */
     public ExtensionMetadatasClient getExtensionMetadatas() {
         return this.extensionMetadatas;
+    }
+
+    /**
+     * The ExtensionMetadataV2sClient object to access its operations.
+     */
+    private final ExtensionMetadataV2sClient extensionMetadataV2s;
+
+    /**
+     * Gets the ExtensionMetadataV2sClient object to access its operations.
+     * 
+     * @return the ExtensionMetadataV2sClient object.
+     */
+    public ExtensionMetadataV2sClient getExtensionMetadataV2s() {
+        return this.extensionMetadataV2s;
+    }
+
+    /**
+     * The ExtensionTypesClient object to access its operations.
+     */
+    private final ExtensionTypesClient extensionTypes;
+
+    /**
+     * Gets the ExtensionTypesClient object to access its operations.
+     * 
+     * @return the ExtensionTypesClient object.
+     */
+    public ExtensionTypesClient getExtensionTypes() {
+        return this.extensionTypes;
+    }
+
+    /**
+     * The ExtensionPublishersClient object to access its operations.
+     */
+    private final ExtensionPublishersClient extensionPublishers;
+
+    /**
+     * Gets the ExtensionPublishersClient object to access its operations.
+     * 
+     * @return the ExtensionPublishersClient object.
+     */
+    public ExtensionPublishersClient getExtensionPublishers() {
+        return this.extensionPublishers;
     }
 
     /**
@@ -349,12 +412,16 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-05-20-preview";
+        this.apiVersion = "2025-02-19-preview";
         this.licenses = new LicensesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
+        this.licenseProfiles = new LicenseProfilesClientImpl(this);
         this.machineExtensions = new MachineExtensionsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.extensionMetadatas = new ExtensionMetadatasClientImpl(this);
+        this.extensionMetadataV2s = new ExtensionMetadataV2sClientImpl(this);
+        this.extensionTypes = new ExtensionTypesClientImpl(this);
+        this.extensionPublishers = new ExtensionPublishersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.networkProfiles = new NetworkProfilesClientImpl(this);
         this.machineRunCommands = new MachineRunCommandsClientImpl(this);
@@ -401,6 +468,23 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

@@ -15,33 +15,33 @@ public final class PartnerDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerDestinationProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"b27f1931-fb55-40c4-a7a7-ba7868b30425\",\"endpointServiceContext\":\"ltlwtjjguktalhs\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-19T06:58:15Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"rpoaimlnwi\",\"messageForActivation\":\"omylwea\"}")
+            "{\"partnerRegistrationImmutableId\":\"97002a9f-e01f-45b4-b30d-a3fe37a8fef7\",\"endpointServiceContext\":\"ecxn\",\"expirationTimeIfNotActivatedUtc\":\"2021-02-18T17:11:23Z\",\"provisioningState\":\"Creating\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"zmlqtmldgxo\",\"messageForActivation\":\"irclnpk\"}")
             .toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("b27f1931-fb55-40c4-a7a7-ba7868b30425"),
+        Assertions.assertEquals(UUID.fromString("97002a9f-e01f-45b4-b30d-a3fe37a8fef7"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("ltlwtjjguktalhs", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T06:58:15Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("ecxn", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-18T17:11:23Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("rpoaimlnwi", model.endpointBaseUrl());
-        Assertions.assertEquals("omylwea", model.messageForActivation());
+        Assertions.assertEquals("zmlqtmldgxo", model.endpointBaseUrl());
+        Assertions.assertEquals("irclnpk", model.messageForActivation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerDestinationProperties model = new PartnerDestinationProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("b27f1931-fb55-40c4-a7a7-ba7868b30425"))
-            .withEndpointServiceContext("ltlwtjjguktalhs")
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-06-19T06:58:15Z"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("97002a9f-e01f-45b4-b30d-a3fe37a8fef7"))
+            .withEndpointServiceContext("ecxn")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-02-18T17:11:23Z"))
             .withActivationState(PartnerDestinationActivationState.NEVER_ACTIVATED)
-            .withEndpointBaseUrl("rpoaimlnwi")
-            .withMessageForActivation("omylwea");
+            .withEndpointBaseUrl("zmlqtmldgxo")
+            .withMessageForActivation("irclnpk");
         model = BinaryData.fromObject(model).toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("b27f1931-fb55-40c4-a7a7-ba7868b30425"),
+        Assertions.assertEquals(UUID.fromString("97002a9f-e01f-45b4-b30d-a3fe37a8fef7"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("ltlwtjjguktalhs", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T06:58:15Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("ecxn", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-18T17:11:23Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("rpoaimlnwi", model.endpointBaseUrl());
-        Assertions.assertEquals("omylwea", model.messageForActivation());
+        Assertions.assertEquals("zmlqtmldgxo", model.endpointBaseUrl());
+        Assertions.assertEquals("irclnpk", model.messageForActivation());
     }
 }

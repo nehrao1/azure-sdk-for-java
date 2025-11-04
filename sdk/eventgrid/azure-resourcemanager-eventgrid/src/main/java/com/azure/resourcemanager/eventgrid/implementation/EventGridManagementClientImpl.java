@@ -13,14 +13,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.eventgrid.fluent.CaCertificatesClient;
@@ -28,15 +31,15 @@ import com.azure.resourcemanager.eventgrid.fluent.ChannelsClient;
 import com.azure.resourcemanager.eventgrid.fluent.ClientGroupsClient;
 import com.azure.resourcemanager.eventgrid.fluent.ClientsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainEventSubscriptionsClient;
-import com.azure.resourcemanager.eventgrid.fluent.DomainsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainTopicsClient;
+import com.azure.resourcemanager.eventgrid.fluent.DomainsClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventGridManagementClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
-import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicsClient;
+import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.OperationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerConfigurationsClient;
@@ -51,9 +54,9 @@ import com.azure.resourcemanager.eventgrid.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventgrid.fluent.SystemTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.SystemTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicEventSubscriptionsClient;
-import com.azure.resourcemanager.eventgrid.fluent.TopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicSpacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicTypesClient;
+import com.azure.resourcemanager.eventgrid.fluent.TopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.VerifiedPartnersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -607,7 +610,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-06-01-preview";
+        this.apiVersion = "2025-04-01-preview";
         this.caCertificates = new CaCertificatesClientImpl(this);
         this.channels = new ChannelsClientImpl(this);
         this.clientGroups = new ClientGroupsClientImpl(this);
@@ -676,6 +679,23 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

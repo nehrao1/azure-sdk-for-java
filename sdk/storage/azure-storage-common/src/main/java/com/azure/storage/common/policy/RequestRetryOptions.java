@@ -46,10 +46,10 @@ public final class RequestRetryOptions {
      * <p>This value should be based on the bandwidth available to the host machine and proximity to the Storage
      * service, a good starting point may be 60 seconds per MB of anticipated payload size.</p>
      * @param retryDelayInMs Optional. Specifies the amount of delay to use before retrying an operation, default value
-     * is {@code 4ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code 30ms}
-     * when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
+     * is {@code 4_000ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code
+     * 30_000ms} when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
      * @param maxRetryDelayInMs Optional. Specifies the maximum delay allowed before retrying an operation, default
-     * value is {@code 120ms}.
+     * value is {@code 120_000ms}.
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      *
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
@@ -102,8 +102,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1,
-                Integer.MAX_VALUE);
+            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             /*
@@ -114,8 +113,7 @@ public final class RequestRetryOptions {
             this.tryTimeout = Duration.ofSeconds(Integer.MAX_VALUE);
         }
 
-        if ((retryDelay == null && maxRetryDelay != null)
-            || (retryDelay != null && maxRetryDelay == null)) {
+        if ((retryDelay == null && maxRetryDelay != null) || (retryDelay != null && maxRetryDelay == null)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
@@ -132,9 +130,11 @@ public final class RequestRetryOptions {
                 case EXPONENTIAL:
                     this.retryDelay = Duration.ofSeconds(4);
                     break;
+
                 case FIXED:
                     this.retryDelay = Duration.ofSeconds(30);
                     break;
+
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
             }
@@ -224,7 +224,7 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Calculates how long to delay before sending the next request.
+     * Calculates how long in milliseconds to delay before sending the next request.
      *
      * @param tryCount An {@code int} indicating which try we are on.
      * @return A {@code long} value of how many milliseconds to delay.
@@ -240,6 +240,7 @@ public final class RequestRetryOptions {
                 // The first try should have zero delay. Every other try has the fixed value
                 delay = tryCount > 1 ? this.retryDelay.toMillis() : 0;
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
         }
@@ -257,7 +258,8 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Creates new {@link RequestRetryOptions} from {@link RetryOptions} and let specify storage specific parameters.
+     * Creates new {@link RequestRetryOptions} from {@link RetryOptions} and let the user specify storage specific
+     * parameters.
      *
      * @param retryOptions The {@link RetryOptions}.
      * @param tryTimeout Optional. Specified the maximum time allowed before a request is cancelled and

@@ -27,6 +27,11 @@ public final class ServiceNowV2Source extends TabularSource {
      */
     private ExpressionV2 expression;
 
+    /*
+     * Page size of the result. Type: integer (or Expression with resultType integer).
+     */
+    private Object pageSize;
+
     /**
      * Creates an instance of ServiceNowV2Source class.
      */
@@ -60,6 +65,26 @@ public final class ServiceNowV2Source extends TabularSource {
      */
     public ServiceNowV2Source withExpression(ExpressionV2 expression) {
         this.expression = expression;
+        return this;
+    }
+
+    /**
+     * Get the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the pageSize value.
+     */
+    public Object pageSize() {
+        return this.pageSize;
+    }
+
+    /**
+     * Set the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
+     * 
+     * @param pageSize the pageSize value to set.
+     * @return the ServiceNowV2Source object itself.
+     */
+    public ServiceNowV2Source withPageSize(Object pageSize) {
+        this.pageSize = pageSize;
         return this;
     }
 
@@ -124,7 +149,6 @@ public final class ServiceNowV2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (expression() != null) {
             expression().validate();
         }
@@ -136,14 +160,29 @@ public final class ServiceNowV2Source extends TabularSource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (queryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        }
+        if (additionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("expression", this.expression);
+        if (this.pageSize != null) {
+            jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -184,6 +223,8 @@ public final class ServiceNowV2Source extends TabularSource {
                     deserializedServiceNowV2Source.type = reader.getString();
                 } else if ("expression".equals(fieldName)) {
                     deserializedServiceNowV2Source.expression = ExpressionV2.fromJson(reader);
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedServiceNowV2Source.pageSize = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

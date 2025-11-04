@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypeProperties;
+import com.azure.resourcemanager.datafactory.fluent.models.ServiceNowV2DatasetTypeProperties;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
     /*
      * Properties specific to this dataset type.
      */
-    private GenericDatasetTypeProperties innerTypeProperties;
+    private ServiceNowV2DatasetTypeProperties innerTypeProperties;
 
     /**
      * Creates an instance of ServiceNowV2ObjectDataset class.
@@ -50,7 +51,7 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private GenericDatasetTypeProperties innerTypeProperties() {
+    ServiceNowV2DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -134,9 +135,32 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
      */
     public ServiceNowV2ObjectDataset withTableName(Object tableName) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new GenericDatasetTypeProperties();
+            this.innerTypeProperties = new ServiceNowV2DatasetTypeProperties();
         }
         this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the valueType property: Type of value copied from source.
+     * 
+     * @return the valueType value.
+     */
+    public ValueType valueType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().valueType();
+    }
+
+    /**
+     * Set the valueType property: Type of value copied from source.
+     * 
+     * @param valueType the valueType value to set.
+     * @return the ServiceNowV2ObjectDataset object itself.
+     */
+    public ServiceNowV2ObjectDataset withValueType(ValueType valueType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ServiceNowV2DatasetTypeProperties();
+        }
+        this.innerTypeProperties().withValueType(valueType);
         return this;
     }
 
@@ -147,11 +171,29 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model ServiceNowV2ObjectDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceNowV2ObjectDataset.class);
 
     /**
      * {@inheritDoc}
@@ -161,8 +203,12 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
         jsonWriter.writeStringField("description", description());
-        jsonWriter.writeUntypedField("structure", structure());
-        jsonWriter.writeUntypedField("schema", schema());
+        if (structure() != null) {
+            jsonWriter.writeUntypedField("structure", structure());
+        }
+        if (schema() != null) {
+            jsonWriter.writeUntypedField("schema", schema());
+        }
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", folder());
@@ -215,7 +261,7 @@ public final class ServiceNowV2ObjectDataset extends Dataset {
                     deserializedServiceNowV2ObjectDataset.type = reader.getString();
                 } else if ("typeProperties".equals(fieldName)) {
                     deserializedServiceNowV2ObjectDataset.innerTypeProperties
-                        = GenericDatasetTypeProperties.fromJson(reader);
+                        = ServiceNowV2DatasetTypeProperties.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

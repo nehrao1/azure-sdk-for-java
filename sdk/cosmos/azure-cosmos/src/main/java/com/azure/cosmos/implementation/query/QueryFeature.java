@@ -15,5 +15,8 @@ public enum QueryFeature {
     Top,
     NonValueAggregate,
     DCount,
-    NonStreamingOrderBy
+    NonStreamingOrderBy,
+    HybridSearch,
+    CountIf,
+    WeightedRankFusion
 }

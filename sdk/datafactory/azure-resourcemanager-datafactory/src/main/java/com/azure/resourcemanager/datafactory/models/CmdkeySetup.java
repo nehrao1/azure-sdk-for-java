@@ -48,7 +48,7 @@ public final class CmdkeySetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private CmdkeySetupTypeProperties innerTypeProperties() {
+    CmdkeySetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -128,7 +128,6 @@ public final class CmdkeySetup extends CustomSetupBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResource;
@@ -22,18 +22,18 @@ public final class PrivateLinkResourcesListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"j\",\"requiredMembers\":[\"xivetvt\",\"qaqtdoqmcbxvwvxy\"],\"requiredZoneNames\":[\"bhsfxob\",\"ytkblmpew\",\"wfbkrvrns\"]},\"id\":\"shqjohxcrsbf\",\"name\":\"vasrruvwb\",\"type\":\"sqfsubcgjbirxb\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"blmpewww\",\"requiredMembers\":[\"rvrnsvshqjohxc\",\"sbfov\"],\"requiredZoneNames\":[\"ruvw\",\"hsqfsubcgjbirxbp\",\"bsrfbj\"]},\"id\":\"dtws\",\"name\":\"otftpvjzbexilz\",\"type\":\"nfqqnvwp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response
-            = manager.privateLinkResources().listByCluster("tswb", "qzvszjf", com.azure.core.util.Context.NONE);
+            = manager.privateLinkResources().listByCluster("lqbhsf", "obl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bhsfxob", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("ruvw", response.iterator().next().requiredZoneNames().get(0));
     }
 }

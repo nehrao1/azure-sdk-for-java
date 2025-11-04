@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,18 +22,20 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
     /*
      * The export setting type.
      */
-    private String type;
+    @Generated
+    private String type = "ExportSettings";
 
     /*
      * Export command settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ExportSettings class.
      */
+    @Generated
     public ExportSettings() {
-        this.type = "ExportSettings";
     }
 
     /**
@@ -40,6 +43,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -49,6 +53,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -59,6 +64,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ExportSettings object itself.
      */
+    @Generated
     public ExportSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -67,6 +73,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +94,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExportSettings.
      */
+    @Generated
     public static ExportSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -114,6 +122,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
         });
     }
 
+    @Generated
     static ExportSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExportSettings deserializedExportSettings = new ExportSettings();

@@ -79,6 +79,19 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     }
 
     @Test
+    void configureWithNamespaceAndEmptyConnectionString() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=",
+                "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
+            });
+    }
+
+    @Test
     void configureWithNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
@@ -163,6 +176,9 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             });
     }
 
+    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
+    // https://github.com/Azure/azure-sdk-for-java/issues/46359
+    @SuppressWarnings("deprecation")
     @Test
     void configurationPropertiesShouldBind() {
         String connectionString = String.format(CONNECTION_STRING_FORMAT, "fake-namespace");

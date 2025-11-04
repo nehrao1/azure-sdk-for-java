@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayTokenContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayTokenContractInner model =
-            BinaryData.fromString("{\"value\":\"ksmfxm\"}").toObject(GatewayTokenContractInner.class);
-        Assertions.assertEquals("ksmfxm", model.value());
+        GatewayTokenContractInner model
+            = BinaryData.fromString("{\"value\":\"ebjnf\"}").toObject(GatewayTokenContractInner.class);
+        Assertions.assertEquals("ebjnf", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayTokenContractInner model = new GatewayTokenContractInner().withValue("ksmfxm");
+        GatewayTokenContractInner model = new GatewayTokenContractInner().withValue("ebjnf");
         model = BinaryData.fromObject(model).toObject(GatewayTokenContractInner.class);
-        Assertions.assertEquals("ksmfxm", model.value());
+        Assertions.assertEquals("ebjnf", model.value());
     }
 }

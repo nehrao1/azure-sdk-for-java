@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
@@ -27,13 +27,12 @@ public final class SnapshotsRestoreFilesMockTests {
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.snapshots()
-            .restoreFiles("olewjwi", "ubwefqs", "ap", "qtferrqwexjkmf", "apjwogqqnobpudcd",
-                new SnapshotRestoreFiles()
-                    .withFilePaths(Arrays.asList("tqwpwya", "bzasqbucljgkyexa", "guyaip", "dsdaultxijjumf"))
-                    .withDestinationPath("azlnqnmcjngzqdqx"),
+            .restoreFiles("gqoweyirdhlisn", "wfl", "qmp", "zruwn", "qxpxiwfcngjsaa",
+                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("ixtmkzjvkviirhgf", "rwsdp"))
+                    .withDestinationPath("atzv"),
                 com.azure.core.util.Context.NONE);
 
     }

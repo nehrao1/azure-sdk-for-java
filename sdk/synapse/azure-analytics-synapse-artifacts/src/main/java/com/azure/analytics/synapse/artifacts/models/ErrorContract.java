@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,37 +20,35 @@ import java.io.IOException;
 @Fluent
 public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /*
-     * Error Response
-     * 
      * The error details.
      */
+    @Generated
     private ErrorResponse error;
 
     /**
      * Creates an instance of ErrorContract class.
      */
+    @Generated
     public ErrorContract() {
     }
 
     /**
-     * Get the error property: Error Response
-     * 
-     * The error details.
+     * Get the error property: The error details.
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorResponse getError() {
         return this.error;
     }
 
     /**
-     * Set the error property: Error Response
-     * 
-     * The error details.
+     * Set the error property: The error details.
      * 
      * @param error the error value to set.
      * @return the ErrorContract object itself.
      */
+    @Generated
     public ErrorContract setError(ErrorResponse error) {
         this.error = error;
         return this;
@@ -58,6 +57,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +73,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ErrorContract.
      */
+    @Generated
     public static ErrorContract fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorContract deserializedErrorContract = new ErrorContract();

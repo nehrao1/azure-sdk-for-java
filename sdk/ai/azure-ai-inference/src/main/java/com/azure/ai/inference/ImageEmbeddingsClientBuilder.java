@@ -22,8 +22,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.KeyCredentialPolicy;
@@ -64,6 +64,8 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private String[] scopes = DEFAULT_SCOPES;
 
     /**
      * Create an instance of the ImageEmbeddingsClientBuilder.
@@ -268,6 +270,17 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
     }
 
     /**
+     * Sets auth domain scopes for client authentication.
+     *
+     * @param scopes domain scope to authenticate against.
+     * @return the ImageEmbeddingsClientBuilder.
+     */
+    public ImageEmbeddingsClientBuilder scopes(String[] scopes) {
+        this.scopes = scopes;
+        return this;
+    }
+
+    /**
      * Builds an instance of ImageEmbeddingsClientImpl with the provided parameters.
      *
      * @return an instance of ImageEmbeddingsClientImpl.
@@ -290,7 +303,6 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -315,9 +327,10 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(new KeyCredentialPolicy("Authorization", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, this.scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

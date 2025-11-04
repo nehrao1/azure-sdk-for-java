@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,16 +24,20 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     /*
      * The status of the secondary location
      */
+    @Generated
     private GeoReplicationStatus status;
 
     /*
-     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
+     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
+     * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
+    @Generated
     private DateTimeRfc1123 lastSyncTime;
 
     /**
      * Creates an instance of GeoReplication class.
      */
+    @Generated
     public GeoReplication() {
     }
 
@@ -42,6 +46,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * 
      * @return the status value.
      */
+    @Generated
     public GeoReplicationStatus getStatus() {
         return this.status;
     }
@@ -52,6 +57,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @param status the status value to set.
      * @return the GeoReplication object itself.
      */
+    @Generated
     public GeoReplication setStatus(GeoReplicationStatus status) {
         this.status = status;
         return this;
@@ -64,6 +70,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * 
      * @return the lastSyncTime value.
      */
+    @Generated
     public OffsetDateTime getLastSyncTime() {
         if (this.lastSyncTime == null) {
             return null;
@@ -79,6 +86,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @param lastSyncTime the lastSyncTime value to set.
      * @return the GeoReplication object itself.
      */
+    @Generated
     public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
         if (lastSyncTime == null) {
             this.lastSyncTime = null;
@@ -88,14 +96,16 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "GeoReplication" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Status", this.status == null ? null : this.status.toString());
         xmlWriter.writeStringElement("LastSyncTime", Objects.toString(this.lastSyncTime, null));
@@ -108,9 +118,9 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
+    @Generated
     public static GeoReplication fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -123,11 +133,12 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
+    @Generated
     public static GeoReplication fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "GeoReplication" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             GeoReplication deserializedGeoReplication = new GeoReplication();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

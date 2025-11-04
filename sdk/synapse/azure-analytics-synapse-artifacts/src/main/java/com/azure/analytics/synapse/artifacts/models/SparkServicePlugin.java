@@ -5,6 +5,8 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,36 +23,43 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
     /*
      * The preparationStartedAt property.
      */
+    @Generated
     private OffsetDateTime preparationStartedAt;
 
     /*
      * The resourceAcquisitionStartedAt property.
      */
+    @Generated
     private OffsetDateTime resourceAcquisitionStartedAt;
 
     /*
      * The submissionStartedAt property.
      */
+    @Generated
     private OffsetDateTime submissionStartedAt;
 
     /*
      * The monitoringStartedAt property.
      */
+    @Generated
     private OffsetDateTime monitoringStartedAt;
 
     /*
      * The cleanupStartedAt property.
      */
+    @Generated
     private OffsetDateTime cleanupStartedAt;
 
     /*
      * The currentState property.
      */
+    @Generated
     private PluginCurrentState currentState;
 
     /**
      * Creates an instance of SparkServicePlugin class.
      */
+    @Generated
     public SparkServicePlugin() {
     }
 
@@ -59,6 +68,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the preparationStartedAt value.
      */
+    @Generated
     public OffsetDateTime getPreparationStartedAt() {
         return this.preparationStartedAt;
     }
@@ -69,6 +79,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param preparationStartedAt the preparationStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setPreparationStartedAt(OffsetDateTime preparationStartedAt) {
         this.preparationStartedAt = preparationStartedAt;
         return this;
@@ -79,6 +90,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the resourceAcquisitionStartedAt value.
      */
+    @Generated
     public OffsetDateTime getResourceAcquisitionStartedAt() {
         return this.resourceAcquisitionStartedAt;
     }
@@ -89,6 +101,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param resourceAcquisitionStartedAt the resourceAcquisitionStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setResourceAcquisitionStartedAt(OffsetDateTime resourceAcquisitionStartedAt) {
         this.resourceAcquisitionStartedAt = resourceAcquisitionStartedAt;
         return this;
@@ -99,6 +112,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the submissionStartedAt value.
      */
+    @Generated
     public OffsetDateTime getSubmissionStartedAt() {
         return this.submissionStartedAt;
     }
@@ -109,6 +123,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param submissionStartedAt the submissionStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setSubmissionStartedAt(OffsetDateTime submissionStartedAt) {
         this.submissionStartedAt = submissionStartedAt;
         return this;
@@ -119,6 +134,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the monitoringStartedAt value.
      */
+    @Generated
     public OffsetDateTime getMonitoringStartedAt() {
         return this.monitoringStartedAt;
     }
@@ -129,6 +145,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param monitoringStartedAt the monitoringStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setMonitoringStartedAt(OffsetDateTime monitoringStartedAt) {
         this.monitoringStartedAt = monitoringStartedAt;
         return this;
@@ -139,6 +156,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the cleanupStartedAt value.
      */
+    @Generated
     public OffsetDateTime getCleanupStartedAt() {
         return this.cleanupStartedAt;
     }
@@ -149,6 +167,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param cleanupStartedAt the cleanupStartedAt value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setCleanupStartedAt(OffsetDateTime cleanupStartedAt) {
         this.cleanupStartedAt = cleanupStartedAt;
         return this;
@@ -159,6 +178,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * 
      * @return the currentState value.
      */
+    @Generated
     public PluginCurrentState getCurrentState() {
         return this.currentState;
     }
@@ -169,6 +189,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * @param currentState the currentState value to set.
      * @return the SparkServicePlugin object itself.
      */
+    @Generated
     public SparkServicePlugin setCurrentState(PluginCurrentState currentState) {
         this.currentState = currentState;
         return this;
@@ -177,6 +198,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -212,6 +234,7 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkServicePlugin.
      */
+    @Generated
     public static SparkServicePlugin fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkServicePlugin deserializedSparkServicePlugin = new SparkServicePlugin();
@@ -220,20 +243,20 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
                 reader.nextToken();
 
                 if ("preparationStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.preparationStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.preparationStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("resourceAcquisitionStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.resourceAcquisitionStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.resourceAcquisitionStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("submissionStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.submissionStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.submissionStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("monitoringStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.monitoringStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.monitoringStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("cleanupStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.cleanupStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.cleanupStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("currentState".equals(fieldName)) {
                     deserializedSparkServicePlugin.currentState = PluginCurrentState.fromString(reader.getString());
                 } else {

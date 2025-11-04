@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
@@ -54,7 +55,9 @@ public class LocalTestServer {
     public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
         this.server = new Server(new ExecutorThreadPool(maxThreads));
 
-        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
+        HttpConfiguration httpConfiguration = new HttpConfiguration();
+        httpConfiguration.setResponseHeaderSize(16 * 1024);
+        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(httpConfiguration);
         this.httpConnector = new ServerConnector(server, httpConnectionFactory);
         this.httpConnector.setHost("localhost");
 
@@ -71,11 +74,11 @@ public class LocalTestServer {
         SslConnectionFactory sslConnectionFactory
             = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
-        HttpConfiguration httpConfiguration = new HttpConfiguration();
-        httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+        HttpConfiguration httpsConfiguration = new HttpConfiguration(httpConfiguration);
+        httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
 
         this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpsConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
@@ -112,9 +115,27 @@ public class LocalTestServer {
     public void start() {
         try {
             server.start();
+            while (!hasServerStarted(server)) {
+                Thread.sleep(1000); // Wait until the server has actually started.
+            }
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean hasServerStarted(Server server) {
+        String serverState = server.getState();
+
+        if (serverState.equals(AbstractLifeCycle.FAILED)
+            || serverState.equals(AbstractLifeCycle.STOPPING)
+            || serverState.equals(AbstractLifeCycle.STOPPED)) {
+            throw new RuntimeException(
+                "Server state has reached an unexpected state while waiting for it to start: " + serverState);
+        }
+
+        return serverState.equals(AbstractLifeCycle.STARTED) || serverState.equals(AbstractLifeCycle.RUNNING);
     }
 
     /**

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appcontainers.models.DiagnosticsDefinition;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticSupportTopic;
+import com.azure.resourcemanager.appcontainers.models.DiagnosticsDefinition;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,17 +14,18 @@ public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsDefinition model = BinaryData.fromString(
-            "{\"id\":\"dg\",\"name\":\"gsj\",\"description\":\"nwqjnoba\",\"author\":\"hdd\",\"category\":\"acegfnmntf\",\"supportTopicList\":[{\"id\":\"emfnczdwvvbal\",\"pesId\":\"l\"}],\"analysisTypes\":[\"podbzevwrdnh\",\"ukuv\"],\"type\":\"cswsmystul\",\"score\":88.066}")
+            "{\"id\":\"fnczdwvvbalx\",\"name\":\"lchpodbzevwrdn\",\"description\":\"ukuv\",\"author\":\"cswsmystul\",\"category\":\"ypfcvlerchpqbmf\",\"supportTopicList\":[{\"id\":\"bwidfcxsspuunn\",\"pesId\":\"yhkx\"},{\"id\":\"ddrihpf\",\"pesId\":\"qcaaewdaomdjvl\"},{\"id\":\"x\",\"pesId\":\"zb\"}],\"analysisTypes\":[\"geivsiykzkdncj\",\"xonbzoggculapz\"],\"type\":\"rpgogtqxep\",\"score\":23.087067}")
             .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("podbzevwrdnh", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsDefinition model
-            = new DiagnosticsDefinition().withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("podbzevwrdnh", "ukuv"));
+        DiagnosticsDefinition model = new DiagnosticsDefinition()
+            .withSupportTopicList(
+                Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
+            .withAnalysisTypes(Arrays.asList("geivsiykzkdncj", "xonbzoggculapz"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("podbzevwrdnh", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 }

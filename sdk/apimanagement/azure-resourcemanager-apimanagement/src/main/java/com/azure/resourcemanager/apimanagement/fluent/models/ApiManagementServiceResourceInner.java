@@ -7,76 +7,94 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceIdentity;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuProperties;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimResource;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.LegacyPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
 import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkConfiguration;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A single API Management service resource in List or Get response. */
+/**
+ * A single API Management service resource in List or Get response.
+ */
 @Fluent
 public final class ApiManagementServiceResourceInner extends ApimResource {
     /*
      * Properties of the API Management service.
      */
-    @JsonProperty(value = "properties", required = true)
     private ApiManagementServiceProperties innerProperties = new ApiManagementServiceProperties();
 
     /*
      * SKU properties of the API Management service.
      */
-    @JsonProperty(value = "sku", required = true)
     private ApiManagementServiceSkuProperties sku;
 
     /*
      * Managed service identity of the Api Management service.
      */
-    @JsonProperty(value = "identity")
     private ApiManagementServiceIdentity identity;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * ETag of the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ApiManagementServiceResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApiManagementServiceResourceInner class.
+     */
     public ApiManagementServiceResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the API Management service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiManagementServiceProperties innerProperties() {
@@ -85,7 +103,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the sku property: SKU properties of the API Management service.
-     *
+     * 
      * @return the sku value.
      */
     public ApiManagementServiceSkuProperties sku() {
@@ -94,7 +112,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the sku property: SKU properties of the API Management service.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -105,7 +123,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the identity property: Managed service identity of the Api Management service.
-     *
+     * 
      * @return the identity value.
      */
     public ApiManagementServiceIdentity identity() {
@@ -114,7 +132,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the identity property: Managed service identity of the Api Management service.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -125,7 +143,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -134,7 +152,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -143,7 +161,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -154,7 +172,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the etag property: ETag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -163,7 +181,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -172,7 +190,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -181,7 +199,39 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -190,7 +240,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the publisherEmail property: Publisher email.
-     *
+     * 
      * @return the publisherEmail value.
      */
     public String publisherEmail() {
@@ -199,7 +249,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the publisherEmail property: Publisher email.
-     *
+     * 
      * @param publisherEmail the publisherEmail value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -213,7 +263,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the publisherName property: Publisher name.
-     *
+     * 
      * @return the publisherName value.
      */
     public String publisherName() {
@@ -222,7 +272,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the publisherName property: Publisher name.
-     *
+     * 
      * @param publisherName the publisherName value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -236,7 +286,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the notificationSenderEmail property: Email address from which the notification will be sent.
-     *
+     * 
      * @return the notificationSenderEmail value.
      */
     public String notificationSenderEmail() {
@@ -245,7 +295,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the notificationSenderEmail property: Email address from which the notification will be sent.
-     *
+     * 
      * @param notificationSenderEmail the notificationSenderEmail value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -260,7 +310,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the provisioningState property: The current provisioning state of the API Management service which can be one
      * of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -270,7 +320,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the targetProvisioningState property: The provisioning state of the API Management service, which is targeted
      * by the long running operation started on the service.
-     *
+     * 
      * @return the targetProvisioningState value.
      */
     public String targetProvisioningState() {
@@ -280,7 +330,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the createdAtUtc property: Creation UTC date of the API Management service.The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdAtUtc value.
      */
     public OffsetDateTime createdAtUtc() {
@@ -289,7 +339,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the gatewayUrl property: Gateway URL of the API Management service.
-     *
+     * 
      * @return the gatewayUrl value.
      */
     public String gatewayUrl() {
@@ -298,7 +348,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the gatewayRegionalUrl property: Gateway URL of the API Management service in the Default Region.
-     *
+     * 
      * @return the gatewayRegionalUrl value.
      */
     public String gatewayRegionalUrl() {
@@ -307,7 +357,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the portalUrl property: Publisher portal endpoint Url of the API Management service.
-     *
+     * 
      * @return the portalUrl value.
      */
     public String portalUrl() {
@@ -316,7 +366,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the managementApiUrl property: Management API endpoint URL of the API Management service.
-     *
+     * 
      * @return the managementApiUrl value.
      */
     public String managementApiUrl() {
@@ -325,7 +375,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the scmUrl property: SCM endpoint URL of the API Management service.
-     *
+     * 
      * @return the scmUrl value.
      */
     public String scmUrl() {
@@ -334,7 +384,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the developerPortalUrl property: DEveloper Portal endpoint URL of the API Management service.
-     *
+     * 
      * @return the developerPortalUrl value.
      */
     public String developerPortalUrl() {
@@ -343,7 +393,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the hostnameConfigurations property: Custom hostname configuration of the API Management service.
-     *
+     * 
      * @return the hostnameConfigurations value.
      */
     public List<HostnameConfiguration> hostnameConfigurations() {
@@ -352,12 +402,12 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the hostnameConfigurations property: Custom hostname configuration of the API Management service.
-     *
+     * 
      * @param hostnameConfigurations the hostnameConfigurations value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceResourceInner
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -368,7 +418,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in
      * Primary region. Available only for Basic, Standard, Premium and Isolated SKU.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<String> publicIpAddresses() {
@@ -379,7 +429,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Get the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service in
      * Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard, Premium and
      * Isolated SKU.
-     *
+     * 
      * @return the privateIpAddresses value.
      */
     public List<String> privateIpAddresses() {
@@ -390,7 +440,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
      * Network.
-     *
+     * 
      * @return the publicIpAddressId value.
      */
     public String publicIpAddressId() {
@@ -401,7 +451,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
      * Network.
-     *
+     * 
      * @param publicIpAddressId the publicIpAddressId value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -417,7 +467,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
      * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
      * are the exclusive access method. Default value is 'Enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -428,7 +478,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
      * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
      * are the exclusive access method. Default value is 'Enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -441,8 +491,31 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     }
 
     /**
+     * Get the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @return the configurationApi value.
+     */
+    public ConfigurationApi configurationApi() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationApi();
+    }
+
+    /**
+     * Set the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @param configurationApi the configurationApi value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withConfigurationApi(ConfigurationApi configurationApi) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withConfigurationApi(configurationApi);
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
-     *
+     * 
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
@@ -451,12 +524,12 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
-     *
+     * 
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceResourceInner
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -466,7 +539,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the additionalLocations property: Additional datacenter locations of the API Management service.
-     *
+     * 
      * @return the additionalLocations value.
      */
     public List<AdditionalLocation> additionalLocations() {
@@ -475,7 +548,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the additionalLocations property: Additional datacenter locations of the API Management service.
-     *
+     * 
      * @param additionalLocations the additionalLocations value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -511,7 +584,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
      * required by internal platform components:
      * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-     *
+     * 
      * @return the customProperties value.
      */
     public Map<String, String> customProperties() {
@@ -542,7 +615,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
      * required by internal platform components:
      * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -557,7 +630,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the certificates property: List of Certificates that need to be installed in the API Management service. Max
      * supported certificates that can be installed is 10.
-     *
+     * 
      * @return the certificates value.
      */
     public List<CertificateConfiguration> certificates() {
@@ -567,7 +640,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Set the certificates property: List of Certificates that need to be installed in the API Management service. Max
      * supported certificates that can be installed is 10.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -583,7 +656,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Get the enableClientCertificate property: Property only meant to be used for Consumption SKU Service. This
      * enforces a client certificate to be presented on each request to the gateway. This also enables the ability to
      * authenticate the certificate in the policy on the gateway.
-     *
+     * 
      * @return the enableClientCertificate value.
      */
     public Boolean enableClientCertificate() {
@@ -594,7 +667,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * Set the enableClientCertificate property: Property only meant to be used for Consumption SKU Service. This
      * enforces a client certificate to be presented on each request to the gateway. This also enables the ability to
      * authenticate the certificate in the policy on the gateway.
-     *
+     * 
      * @param enableClientCertificate the enableClientCertificate value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -608,7 +681,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @return the natGatewayState value.
      */
     public NatGatewayState natGatewayState() {
@@ -617,7 +690,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @param natGatewayState the natGatewayState value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -632,7 +705,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
      * deployed service. Available only for Premium SKU on stv2 platform.
-     *
+     * 
      * @return the outboundPublicIpAddresses value.
      */
     public List<String> outboundPublicIpAddresses() {
@@ -642,7 +715,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in master region.
-     *
+     * 
      * @return the disableGateway value.
      */
     public Boolean disableGateway() {
@@ -652,7 +725,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Set the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in master region.
-     *
+     * 
      * @param disableGateway the disableGateway value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -669,7 +742,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * None (Default Value) means the API Management service is not part of any Virtual Network, External means the API
      * Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means
      * that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
@@ -681,7 +754,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * None (Default Value) means the API Management service is not part of any Virtual Network, External means the API
      * Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means
      * that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
-     *
+     * 
      * @param virtualNetworkType the virtualNetworkType value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -695,7 +768,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the apiVersionConstraint property: Control Plane Apis version constraint for the API Management service.
-     *
+     * 
      * @return the apiVersionConstraint value.
      */
     public ApiVersionConstraint apiVersionConstraint() {
@@ -704,7 +777,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the apiVersionConstraint property: Control Plane Apis version constraint for the API Management service.
-     *
+     * 
      * @param apiVersionConstraint the apiVersionConstraint value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -719,7 +792,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Get the restore property: Undelete Api Management Service if it was previously soft-deleted. If this flag is
      * specified and set to True all other properties will be ignored.
-     *
+     * 
      * @return the restore value.
      */
     public Boolean restore() {
@@ -729,7 +802,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     /**
      * Set the restore property: Undelete Api Management Service if it was previously soft-deleted. If this flag is
      * specified and set to True all other properties will be ignored.
-     *
+     * 
      * @param restore the restore value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
@@ -743,7 +816,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the privateEndpointConnections property: List of Private Endpoint Connections of this service.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections() {
@@ -752,12 +825,12 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Set the privateEndpointConnections property: List of Private Endpoint Connections of this service.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceResourceInner
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -767,7 +840,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
 
     /**
      * Get the platformVersion property: Compute Platform Version running the service in this location.
-     *
+     * 
      * @return the platformVersion value.
      */
     public PlatformVersion platformVersion() {
@@ -775,26 +848,69 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     }
 
     /**
+     * Get the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @return the legacyPortalStatus value.
+     */
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().legacyPortalStatus();
+    }
+
+    /**
+     * Set the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @param legacyPortalStatus the legacyPortalStatus value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withLegacyPortalStatus(legacyPortalStatus);
+        return this;
+    }
+
+    /**
+     * Get the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @return the developerPortalStatus value.
+     */
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().developerPortalStatus();
+    }
+
+    /**
+     * Set the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @param developerPortalStatus the developerPortalStatus value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withDeveloperPortalStatus(developerPortalStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApiManagementServiceResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ApiManagementServiceResourceInner"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model ApiManagementServiceResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model ApiManagementServiceResourceInner"));
         } else {
             sku().validate();
         }
@@ -802,12 +918,79 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
             identity().validate();
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model ApiManagementServiceResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ApiManagementServiceResourceInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServiceResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceResourceInner.
+     */
+    public static ApiManagementServiceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceResourceInner deserializedApiManagementServiceResourceInner
+                = new ApiManagementServiceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.innerProperties
+                        = ApiManagementServiceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.sku
+                        = ApiManagementServiceSkuProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.location = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.identity
+                        = ApiManagementServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApiManagementServiceResourceInner.etag = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceResourceInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceResourceInner;
+        });
+    }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,52 @@ public class OdbcLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Odbc";
 
     /*
-     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type:
+     * string (or Expression with resultType string).
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * The access credential portion of the connection string specified in driver-specific property-value format.
      */
+    @Generated
     private SecretBase credential;
 
     /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * Password for Basic authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of OdbcLinkedService class.
      */
+    @Generated
     public OdbcLinkedService() {
     }
 
@@ -64,6 +76,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +88,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -86,6 +100,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -97,6 +112,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -108,6 +124,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -119,6 +136,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public SecretBase getCredential() {
         return this.credential;
     }
@@ -130,6 +148,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setCredential(SecretBase credential) {
         this.credential = credential;
         return this;
@@ -141,6 +160,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -152,6 +172,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -162,6 +183,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -172,6 +194,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -183,6 +206,7 @@ public class OdbcLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -194,6 +218,7 @@ public class OdbcLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OdbcLinkedService object itself.
      */
+    @Generated
     public OdbcLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -202,6 +227,17 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public OdbcLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public OdbcLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -211,6 +247,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OdbcLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -220,6 +257,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OdbcLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -229,6 +267,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OdbcLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -238,9 +277,11 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -254,11 +295,17 @@ public class OdbcLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            if (this.authenticationType != null) {
+                jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -278,6 +325,7 @@ public class OdbcLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OdbcLinkedService.
      */
+    @Generated
     public static OdbcLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OdbcLinkedService deserializedOdbcLinkedService = new OdbcLinkedService();
@@ -286,7 +334,9 @@ public class OdbcLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedOdbcLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedOdbcLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedOdbcLinkedService.setDescription(reader.getString());

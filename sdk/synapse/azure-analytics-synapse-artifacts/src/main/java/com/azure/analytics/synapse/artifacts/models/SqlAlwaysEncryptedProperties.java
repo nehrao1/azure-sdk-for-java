@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,32 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
     /*
      * Sql always encrypted AKV authentication type. Type: string.
      */
+    @Generated
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string (or Expression with resultType string).
+     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
+     * (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure Key Vault.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of SqlAlwaysEncryptedProperties class.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties() {
     }
 
@@ -47,6 +54,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * 
      * @return the alwaysEncryptedAkvAuthType value.
      */
+    @Generated
     public SqlAlwaysEncryptedAkvAuthType getAlwaysEncryptedAkvAuthType() {
         return this.alwaysEncryptedAkvAuthType;
     }
@@ -57,6 +65,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * @param alwaysEncryptedAkvAuthType the alwaysEncryptedAkvAuthType value to set.
      * @return the SqlAlwaysEncryptedProperties object itself.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties
         setAlwaysEncryptedAkvAuthType(SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType) {
         this.alwaysEncryptedAkvAuthType = alwaysEncryptedAkvAuthType;
@@ -69,6 +78,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -80,6 +90,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the SqlAlwaysEncryptedProperties object itself.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -91,6 +102,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -102,6 +114,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the SqlAlwaysEncryptedProperties object itself.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -112,6 +125,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -122,6 +136,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * @param credential the credential value to set.
      * @return the SqlAlwaysEncryptedProperties object itself.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -130,12 +145,15 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("alwaysEncryptedAkvAuthType",
             this.alwaysEncryptedAkvAuthType == null ? null : this.alwaysEncryptedAkvAuthType.toString());
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
@@ -150,6 +168,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlAlwaysEncryptedProperties.
      */
+    @Generated
     public static SqlAlwaysEncryptedProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlAlwaysEncryptedProperties deserializedSqlAlwaysEncryptedProperties = new SqlAlwaysEncryptedProperties();

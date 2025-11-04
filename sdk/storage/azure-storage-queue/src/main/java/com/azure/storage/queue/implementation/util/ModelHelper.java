@@ -5,6 +5,7 @@ package com.azure.storage.queue.implementation.util;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
@@ -28,6 +29,7 @@ public class ModelHelper {
         switch (messageEncoding) {
             case NONE:
                 return BinaryData.fromString(messageText);
+
             case BASE64:
                 try {
                     return BinaryData.fromBytes(Base64.getDecoder().decode(messageText));
@@ -40,10 +42,9 @@ public class ModelHelper {
         }
     }
 
-    public static QueueMessageItem transformQueueMessageItemInternal(
-        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        QueueMessageItem queueMessageItem = new QueueMessageItem()
-            .setMessageId(queueMessageItemInternal.getMessageId())
+    public static QueueMessageItem transformQueueMessageItemInternal(QueueMessageItemInternal queueMessageItemInternal,
+        QueueMessageEncoding messageEncoding) {
+        QueueMessageItem queueMessageItem = new QueueMessageItem().setMessageId(queueMessageItemInternal.getMessageId())
             .setDequeueCount(queueMessageItemInternal.getDequeueCount())
             .setExpirationTime(queueMessageItemInternal.getExpirationTime())
             .setInsertionTime(queueMessageItemInternal.getInsertionTime())
@@ -58,11 +59,11 @@ public class ModelHelper {
 
     public static PeekedMessageItem transformPeekedMessageItemInternal(
         PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
-            .setMessageId(peekedMessageItemInternal.getMessageId())
-            .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
-            .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
-            .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
+        PeekedMessageItem peekedMessageItem
+            = new PeekedMessageItem().setMessageId(peekedMessageItemInternal.getMessageId())
+                .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
+                .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
+                .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
         BinaryData decodedMessage = decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding);
         if (decodedMessage != null) {
             peekedMessageItem.setBody(decodedMessage);
@@ -75,11 +76,13 @@ public class ModelHelper {
         switch (messageEncoding) {
             case NONE:
                 return message.toString();
+
             case BASE64:
                 return Base64.getEncoder().encodeToString(message.toBytes());
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported message encoding="
-                    + messageEncoding));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
         }
     }
 
@@ -99,6 +102,9 @@ public class ModelHelper {
      * @return The public exception.
      */
     public static QueueStorageException mapToQueueStorageException(QueueStorageExceptionInternal internal) {
-        return new QueueStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        String code = internal.getValue() == null ? null : internal.getValue().getCode();
+        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+        return new QueueStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
+            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
 }

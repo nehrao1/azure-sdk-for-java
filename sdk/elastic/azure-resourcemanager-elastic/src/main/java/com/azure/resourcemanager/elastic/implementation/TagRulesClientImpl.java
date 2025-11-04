@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elastic.fluent.TagRulesClient;
@@ -38,106 +40,133 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TagRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TagRulesClient.
+ */
 public final class TagRulesClientImpl implements TagRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TagRulesService service;
 
-    /** The service client containing this operation class. */
-    private final MicrosoftElasticImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final ElasticManagementClientImpl client;
 
     /**
      * Initializes an instance of TagRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    TagRulesClientImpl(MicrosoftElasticImpl client) {
+    TagRulesClientImpl(ElasticManagementClientImpl client) {
         this.service = RestProxy.create(TagRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftElasticTagRules to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for ElasticManagementClientTagRules to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftElasticTagR")
+    @ServiceInterface(name = "ElasticManagementClientTagRules")
     public interface TagRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoringTagRulesListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitoringTagRulesListResponse>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoringTagRulesInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @BodyParam("application/json") MonitoringTagRulesInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<MonitoringTagRulesListResponse> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoringTagRulesInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitoringTagRulesInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @BodyParam("application/json") MonitoringTagRulesInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<MonitoringTagRulesInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @BodyParam("application/json") MonitoringTagRulesInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MonitoringTagRulesInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MonitoringTagRulesInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules/{ruleSetName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("ruleSetName") String ruleSetName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoringTagRulesListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MonitoringTagRulesListResponse> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -145,19 +174,15 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoringTagRulesInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<MonitoringTagRulesInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,88 +193,18 @@ public final class TagRulesClientImpl implements TagRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
-            .<PagedResponse<MonitoringTagRulesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
+            .<PagedResponse<MonitoringTagRulesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoringTagRulesInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,33 +213,95 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoringTagRulesInner> listAsync(String resourceGroupName, String monitorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoringTagRulesInner> listSinglePage(String resourceGroupName, String monitorName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoringTagRulesListResponse> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedFlux}.
+     * @return response of a list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MonitoringTagRulesInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoringTagRulesInner> listSinglePage(String resourceGroupName, String monitorName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoringTagRulesListResponse> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -293,13 +310,15 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
-     * List the tag rules for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,13 +328,15 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @param body request body of MonitoringTagRules.
@@ -323,22 +344,18 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, MonitoringTagRulesInner body) {
+    private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String ruleSetName, MonitoringTagRulesInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -355,87 +372,16 @@ public final class TagRulesClientImpl implements TagRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            ruleSetName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Tag Rule Set resource name.
-     * @param body request body of MonitoringTagRules.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String ruleSetName,
-        MonitoringTagRulesInner body,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (ruleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                ruleSetName,
-                body,
-                accept,
-                context);
-    }
-
-    /**
-     * Create or update a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -444,17 +390,18 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return capture logs and metrics of Azure resources based on ARM tags on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoringTagRulesInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String ruleSetName) {
+    private Mono<MonitoringTagRulesInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String ruleSetName) {
         final MonitoringTagRulesInner body = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, ruleSetName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @param body request body of MonitoringTagRules.
@@ -465,19 +412,43 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String ruleSetName,
-        MonitoringTagRulesInner body,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, ruleSetName, body, context).block();
+    public Response<MonitoringTagRulesInner> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
+        String ruleSetName, MonitoringTagRulesInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (ruleSetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, body, accept, context);
     }
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,31 +463,27 @@ public final class TagRulesClientImpl implements TagRulesClient {
     }
 
     /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName) {
+    private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
+        String ruleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -530,83 +497,22 @@ public final class TagRulesClientImpl implements TagRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            ruleSetName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Tag Rule Set resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (ruleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                ruleSetName,
-                accept,
-                context);
-    }
-
-    /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource on successful completion of {@link Mono}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoringTagRulesInner> getAsync(String resourceGroupName, String monitorName, String ruleSetName) {
@@ -615,33 +521,58 @@ public final class TagRulesClientImpl implements TagRulesClient {
     }
 
     /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitoringTagRulesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, ruleSetName, context).block();
+    public Response<MonitoringTagRulesInner> getWithResponse(String resourceGroupName, String monitorName,
+        String ruleSetName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (ruleSetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, ruleSetName, accept, context);
     }
 
     /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoringTagRulesInner get(String resourceGroupName, String monitorName, String ruleSetName) {
@@ -649,9 +580,10 @@ public final class TagRulesClientImpl implements TagRulesClient {
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -660,19 +592,15 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String ruleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -686,76 +614,100 @@ public final class TagRulesClientImpl implements TagRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            ruleSetName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, String ruleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (ruleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                ruleSetName,
-                accept,
-                context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, accept, Context.NONE);
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName Tag Rule Set resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (ruleSetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, accept, context);
+    }
+
+    /**
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,42 +716,18 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String ruleSetName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        String ruleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, ruleSetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Tag Rule Set resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, monitorName, ruleSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -808,15 +736,17 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String ruleSetName) {
-        return this.beginDeleteAsync(resourceGroupName, monitorName, ruleSetName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String ruleSetName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, ruleSetName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @param context The context to associate with this operation.
@@ -826,15 +756,17 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, monitorName, ruleSetName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String ruleSetName, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, ruleSetName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,34 +776,15 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String ruleSetName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, ruleSetName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, monitorName, ruleSetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Tag Rule Set resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, ruleSetName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,13 +793,14 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String ruleSetName) {
-        deleteAsync(resourceGroupName, monitorName, ruleSetName).block();
+        beginDelete(resourceGroupName, monitorName, ruleSetName).getFinalResult();
     }
 
     /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Tag Rule Set resource name.
      * @param context The context to associate with this operation.
@@ -896,14 +810,16 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        deleteAsync(resourceGroupName, monitorName, ruleSetName, context).block();
+        beginDelete(resourceGroupName, monitorName, ruleSetName, context).getFinalResult();
     }
 
     /**
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -915,60 +831,76 @@ public final class TagRulesClientImpl implements TagRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MonitoringTagRulesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MonitoringTagRulesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoringTagRulesInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoringTagRulesListResponse> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return response of a list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoringTagRulesInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<MonitoringTagRulesInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        Response<MonitoringTagRulesListResponse> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TagRulesClientImpl.class);
 }

@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,52 +15,60 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
     /**
      * Static value Verbose for SeverityLevel.
      */
+    @Generated
     public static final SeverityLevel VERBOSE = fromString("Verbose");
 
     /**
      * Static value Information for SeverityLevel.
      */
+    @Generated
     public static final SeverityLevel INFORMATION = fromString("Information");
 
     /**
      * Static value Warning for SeverityLevel.
      */
+    @Generated
     public static final SeverityLevel WARNING = fromString("Warning");
 
     /**
      * Static value Error for SeverityLevel.
      */
+    @Generated
     public static final SeverityLevel ERROR = fromString("Error");
 
     /**
      * Static value Critical for SeverityLevel.
      */
+    @Generated
     public static final SeverityLevel CRITICAL = fromString("Critical");
 
     /**
      * Creates a new instance of SeverityLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SeverityLevel() {
     }
 
     /**
      * Creates or finds a SeverityLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SeverityLevel.
      */
+    @Generated
     public static SeverityLevel fromString(String name) {
         return fromString(name, SeverityLevel.class);
     }
 
     /**
      * Gets known SeverityLevel values.
-     *
+     * 
      * @return known SeverityLevel values.
      */
+    @Generated
     public static Collection<SeverityLevel> values() {
         return values(SeverityLevel.class);
     }

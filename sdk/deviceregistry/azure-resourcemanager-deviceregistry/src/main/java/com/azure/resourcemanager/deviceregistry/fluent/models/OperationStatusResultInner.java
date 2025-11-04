@@ -7,7 +7,6 @@ package com.azure.resourcemanager.deviceregistry.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -61,6 +60,11 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * If present, details of the operation error.
      */
     private ManagementError error;
+
+    /*
+     * Fully qualified ID of the resource against which the original async operation was started.
+     */
+    private String resourceId;
 
     /**
      * Creates an instance of OperationStatusResultInner class.
@@ -141,22 +145,14 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
     }
 
     /**
-     * Validates the instance.
+     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the resourceId value.
      */
-    public void validate() {
-        if (status() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property status in model OperationStatusResultInner"));
-        }
-        if (operations() != null) {
-            operations().forEach(e -> e.validate());
-        }
+    public String resourceId() {
+        return this.resourceId;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusResultInner.class);
 
     /**
      * {@inheritDoc}
@@ -213,6 +209,8 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
                     deserializedOperationStatusResultInner.operations = operations;
                 } else if ("error".equals(fieldName)) {
                     deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.resourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

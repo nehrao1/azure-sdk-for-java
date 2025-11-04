@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
@@ -22,19 +22,19 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
     @Test
     public void testGetValidationDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"rgmsplzga\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"connectionDetails\":[{\"id\":\"vnewgnxkympqanx\",\"privateIpAddress\":\"kixtwbtaoy\",\"linkIdentifier\":\"yghs\",\"groupId\":\"cyl\",\"memberName\":\"gmnsghpxy\"},{\"id\":\"hdrwjjkh\",\"privateIpAddress\":\"omacluzvxnqmhr\",\"linkIdentifier\":\"pd\",\"groupId\":\"mkoisqcssf\",\"memberName\":\"uifmc\"},{\"id\":\"p\",\"privateIpAddress\":\"kdqzrdzsylo\",\"linkIdentifier\":\"gtrczzydmxzjijpv\",\"groupId\":\"urkihci\",\"memberName\":\"defxrdc\"},{\"id\":\"nbkkjanurnnq\",\"privateIpAddress\":\"q\",\"linkIdentifier\":\"izxqltgrd\",\"groupId\":\"ypxrx\",\"memberName\":\"fihwu\"}]}";
+            = "{\"id\":\"pdsxzakuejkm\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"ofqcvovjufycsjm\",\"privateIpAddress\":\"e\",\"linkIdentifier\":\"ej\",\"groupId\":\"iuxegth\",\"memberName\":\"tudaw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsWithResponse("psmgo", "guamlj", com.azure.core.util.Context.NONE)
+            .getValidationDetailsWithResponse("caqt", "ltcoqc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
     }
 }

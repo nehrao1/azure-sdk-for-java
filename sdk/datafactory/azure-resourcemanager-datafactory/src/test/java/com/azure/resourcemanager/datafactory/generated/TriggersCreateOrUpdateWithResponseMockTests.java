@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Trigger;
@@ -25,21 +25,23 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"\":{\"fbreyvrlycikwqt\":\"datama\"}},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"fbreyvrlycikwqt\":\"datama\"},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TriggerResource response = manager.triggers()
             .define("sktzrdxxsbbdo")
             .withExistingFactory("usxyugidkgsjivdt", "tkqqdqxslbrttlw")
             .withProperties(new Trigger().withDescription("jnbcdnjexcyh")
                 .withAnnotations(Arrays.asList("dataraubx", "databmqgimwivqph"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
+                .withAdditionalProperties(mapOf("mdx", "dataiwm", "twnhpcfsqdzi", "datawfajajpojzazzaks",
+                    "qvinvryxwzxjxotp", "datavykysavevnerpyzu", "kinsry", "dataokmdaihgig", "type", "Trigger",
+                    "runtimeState", "Stopped")))
             .withIfMatch("nyzytgkdw")
             .create();
 

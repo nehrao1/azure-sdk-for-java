@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,123 @@
 
 ### Bugs Fixed
 
+## 4.10.3 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 4.10.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 4.10.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+## 4.10.0 (2025-06-13)
+
+### Features Added
+
+> Compared to the last stable release - `4.9.4`
+- Added support for service version `7.6`.
+
+### Breaking Changes
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Removed support for service version `7.6-preview.2`.
+
+### Other Changes
+#### Dependency Updates
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+
+## 4.10.0-beta.1 (2025-04-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 4.9.4 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 4.9.3 (2025-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+
+## 4.9.2 (2025-01-14)
+
+### Bugs Fixed
+- Fixed issue where certain `toString()` calls could cause a `NullPointerException`. ([#43776](https://github.com/Azure/azure-sdk-for-java/pull/43776))
+
+## 4.9.1 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+## 4.9.0 (2024-10-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
+## 4.8.7 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.8.6 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
 ## 4.8.5 (2024-07-29)
 
@@ -20,7 +136,6 @@
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
-
 ## 4.8.4 (2024-06-27)
 
 ### Other Changes
@@ -29,7 +144,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 4.8.3 (2024-05-13)
 
@@ -49,7 +163,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
-
 ## 4.8.1 (2024-03-20)
 
 ### Other Changes
@@ -58,7 +171,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
@@ -394,7 +506,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 - Upgraded `azure-core` dependency to `1.19.0`
 - Upgraded `azure-core-http-netty` dependency to `1.10.2`
 
-
 ## 4.3.1 (2021-07-08)
 
 ### Other Changes
@@ -609,7 +720,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/src/samples/java)
 demonstrate the new API.
-
 
 ### Major changes from `azure-keyvault`
 - Packages scoped by functionality

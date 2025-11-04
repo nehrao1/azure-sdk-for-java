@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,33 +20,43 @@ import java.util.Map;
 @Fluent
 public final class MongoDbCursorMethodsProperties implements JsonSerializable<MongoDbCursorMethodsProperties> {
     /*
-     * Specifies the fields to return in the documents that match the query filter. To return all fields in the matching documents, omit this parameter. Type: string (or Expression with resultType string).
+     * Specifies the fields to return in the documents that match the query filter. To return all fields in the matching
+     * documents, omit this parameter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object project;
 
     /*
-     * Specifies the order in which the query returns matching documents. Type: string (or Expression with resultType string). Type: string (or Expression with resultType string).
+     * Specifies the order in which the query returns matching documents. Type: string (or Expression with resultType
+     * string). Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sort;
 
     /*
-     * Specifies the how many documents skipped and where MongoDB begins returning results. This approach may be useful in implementing paginated results. Type: integer (or Expression with resultType integer).
+     * Specifies the how many documents skipped and where MongoDB begins returning results. This approach may be useful
+     * in implementing paginated results. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object skip;
 
     /*
-     * Specifies the maximum number of documents the server returns. limit() is analogous to the LIMIT statement in a SQL database. Type: integer (or Expression with resultType integer).
+     * Specifies the maximum number of documents the server returns. limit() is analogous to the LIMIT statement in a
+     * SQL database. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object limit;
 
     /*
      * Cursor methods for Mongodb query
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of MongoDbCursorMethodsProperties class.
      */
+    @Generated
     public MongoDbCursorMethodsProperties() {
     }
 
@@ -55,6 +66,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * 
      * @return the project value.
      */
+    @Generated
     public Object getProject() {
         return this.project;
     }
@@ -66,6 +78,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * @param project the project value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
      */
+    @Generated
     public MongoDbCursorMethodsProperties setProject(Object project) {
         this.project = project;
         return this;
@@ -77,6 +90,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * 
      * @return the sort value.
      */
+    @Generated
     public Object getSort() {
         return this.sort;
     }
@@ -88,6 +102,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * @param sort the sort value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
      */
+    @Generated
     public MongoDbCursorMethodsProperties setSort(Object sort) {
         this.sort = sort;
         return this;
@@ -99,6 +114,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * 
      * @return the skip value.
      */
+    @Generated
     public Object getSkip() {
         return this.skip;
     }
@@ -110,6 +126,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * @param skip the skip value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
      */
+    @Generated
     public MongoDbCursorMethodsProperties setSkip(Object skip) {
         this.skip = skip;
         return this;
@@ -121,6 +138,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * 
      * @return the limit value.
      */
+    @Generated
     public Object getLimit() {
         return this.limit;
     }
@@ -132,6 +150,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * @param limit the limit value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
      */
+    @Generated
     public MongoDbCursorMethodsProperties setLimit(Object limit) {
         this.limit = limit;
         return this;
@@ -142,6 +161,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -152,6 +172,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * @param additionalProperties the additionalProperties value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
      */
+    @Generated
     public MongoDbCursorMethodsProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -160,13 +181,22 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("project", this.project);
-        jsonWriter.writeUntypedField("sort", this.sort);
-        jsonWriter.writeUntypedField("skip", this.skip);
-        jsonWriter.writeUntypedField("limit", this.limit);
+        if (this.project != null) {
+            jsonWriter.writeUntypedField("project", this.project);
+        }
+        if (this.sort != null) {
+            jsonWriter.writeUntypedField("sort", this.sort);
+        }
+        if (this.skip != null) {
+            jsonWriter.writeUntypedField("skip", this.skip);
+        }
+        if (this.limit != null) {
+            jsonWriter.writeUntypedField("limit", this.limit);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -183,6 +213,7 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MongoDbCursorMethodsProperties.
      */
+    @Generated
     public static MongoDbCursorMethodsProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbCursorMethodsProperties deserializedMongoDbCursorMethodsProperties

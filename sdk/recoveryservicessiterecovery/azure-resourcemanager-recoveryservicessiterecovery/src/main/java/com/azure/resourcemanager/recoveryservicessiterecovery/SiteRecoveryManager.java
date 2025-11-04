@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,11 +20,13 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.SiteRecoveryManagementClient;
+import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ClusterRecoveryPointOperationsImpl;
+import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ClusterRecoveryPointsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.MigrationRecoveryPointsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.OperationsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.RecoveryPointsImpl;
@@ -40,6 +43,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.Rep
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationPoliciesImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectableItemsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectedItemsImpl;
+import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectionClustersImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectionContainerMappingsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.ReplicationProtectionIntentsImpl;
@@ -53,6 +57,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.Sto
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.StorageClassificationsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.SupportedOperatingSystemsOperationsImpl;
 import com.azure.resourcemanager.recoveryservicessiterecovery.implementation.TargetComputeSizesImpl;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.ClusterRecoveryPointOperations;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.ClusterRecoveryPoints;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationRecoveryPoints;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Operations;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPoints;
@@ -69,6 +75,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationPolicies;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectableItems;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectedItems;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionClusters;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionContainerMappings;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionContainers;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionIntents;
@@ -85,6 +92,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -124,6 +132,12 @@ public final class SiteRecoveryManager {
 
     private TargetComputeSizes targetComputeSizes;
 
+    private ReplicationProtectionClusters replicationProtectionClusters;
+
+    private ClusterRecoveryPoints clusterRecoveryPoints;
+
+    private ClusterRecoveryPointOperations clusterRecoveryPointOperations;
+
     private ReplicationProtectionContainerMappings replicationProtectionContainerMappings;
 
     private ReplicationRecoveryServicesProviders replicationRecoveryServicesProviders;
@@ -154,8 +168,10 @@ public final class SiteRecoveryManager {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new SiteRecoveryManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -198,6 +214,9 @@ public final class SiteRecoveryManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-recoveryservicessiterecovery.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -305,13 +324,22 @@ public final class SiteRecoveryManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-")
-                .append("com.azure.resourcemanager.recoveryservicessiterecovery").append("/").append("1.1.0");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.recoveryservicessiterecovery")
+                .append("/")
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -330,18 +358,21 @@ public final class SiteRecoveryManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SiteRecoveryManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -545,6 +576,44 @@ public final class SiteRecoveryManager {
             this.targetComputeSizes = new TargetComputeSizesImpl(clientObject.getTargetComputeSizes(), this);
         }
         return targetComputeSizes;
+    }
+
+    /**
+     * Gets the resource collection API of ReplicationProtectionClusters. It manages ReplicationProtectionCluster.
+     * 
+     * @return Resource collection API of ReplicationProtectionClusters.
+     */
+    public ReplicationProtectionClusters replicationProtectionClusters() {
+        if (this.replicationProtectionClusters == null) {
+            this.replicationProtectionClusters
+                = new ReplicationProtectionClustersImpl(clientObject.getReplicationProtectionClusters(), this);
+        }
+        return replicationProtectionClusters;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterRecoveryPoints.
+     * 
+     * @return Resource collection API of ClusterRecoveryPoints.
+     */
+    public ClusterRecoveryPoints clusterRecoveryPoints() {
+        if (this.clusterRecoveryPoints == null) {
+            this.clusterRecoveryPoints = new ClusterRecoveryPointsImpl(clientObject.getClusterRecoveryPoints(), this);
+        }
+        return clusterRecoveryPoints;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterRecoveryPointOperations.
+     * 
+     * @return Resource collection API of ClusterRecoveryPointOperations.
+     */
+    public ClusterRecoveryPointOperations clusterRecoveryPointOperations() {
+        if (this.clusterRecoveryPointOperations == null) {
+            this.clusterRecoveryPointOperations
+                = new ClusterRecoveryPointOperationsImpl(clientObject.getClusterRecoveryPointOperations(), this);
+        }
+        return clusterRecoveryPointOperations;
     }
 
     /**

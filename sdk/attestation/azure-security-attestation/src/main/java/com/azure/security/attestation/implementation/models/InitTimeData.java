@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -24,19 +25,21 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
     /*
      * Initialization time data are passed into the Trusted Execution Environment (TEE) when it is created. For an
      * Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the quote's "config id"
-     * attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's "host data"
-     * attribute.
+     * attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's "host data" attribute.
      */
+    @Generated
     private Base64Url data;
 
     /*
      * The type of data contained within the "data" field
      */
+    @Generated
     private DataType dataType;
 
     /**
      * Creates an instance of InitTimeData class.
      */
+    @Generated
     public InitTimeData() {
     }
 
@@ -48,6 +51,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
      * 
      * @return the data value.
      */
+    @Generated
     public byte[] getData() {
         if (this.data == null) {
             return null;
@@ -64,6 +68,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
      * @param data the data value to set.
      * @return the InitTimeData object itself.
      */
+    @Generated
     public InitTimeData setData(byte[] data) {
         if (data == null) {
             this.data = null;
@@ -78,6 +83,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
      * 
      * @return the dataType value.
      */
+    @Generated
     public DataType getDataType() {
         return this.dataType;
     }
@@ -88,6 +94,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
      * @param dataType the dataType value to set.
      * @return the InitTimeData object itself.
      */
+    @Generated
     public InitTimeData setDataType(DataType dataType) {
         this.dataType = dataType;
         return this;
@@ -101,6 +108,10 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +128,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the InitTimeData.
      */
+    @Generated
     public static InitTimeData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InitTimeData deserializedInitTimeData = new InitTimeData();

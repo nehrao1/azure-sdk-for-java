@@ -101,7 +101,6 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -111,8 +110,12 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
-        jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        if (this.dateFormat != null) {
+            jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        }
+        if (this.timestampFormat != null) {
+            jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

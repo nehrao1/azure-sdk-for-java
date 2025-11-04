@@ -69,14 +69,14 @@ public class ReadmeSamples {
         // END: readme-sample-createAsyncClient
     }
 
-    public void aadAuthentication() {
-        // BEGIN: readme-sample-aadAuthentication
+    public void entraAuthentication() {
+        // BEGIN: readme-sample-entraAuthentication
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
             .buildClient();
-        // END: readme-sample-aadAuthentication
+        // END: readme-sample-entraAuthentication
     }
 
     public void sqlExample() {
@@ -364,7 +364,7 @@ public class ReadmeSamples {
                 .buildClient();
         // or
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+        ConfigurationClient configurationClientEntraId = new ConfigurationClientBuilder()
                 .credential(credential)
                 .endpoint(endpoint)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -375,7 +375,8 @@ public class ReadmeSamples {
 
     public void troubleshootingExceptions() {
         ConfigurationClient client = new ConfigurationClientBuilder()
-                                                      .buildClient();
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
         // BEGIN: readme-sample-troubleshootingExceptions
         try {
             ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
@@ -387,7 +388,8 @@ public class ReadmeSamples {
         // END: readme-sample-troubleshootingExceptions
 
         ConfigurationAsyncClient asyncClient = new ConfigurationClientBuilder()
-                                         .buildAsyncClient();
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
         // BEGIN: readme-sample-troubleshootingExceptions-async
         ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
         asyncClient.getConfigurationSetting(setting)

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRule;
@@ -21,23 +21,23 @@ public final class FirewallRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"sdtmcdzs\",\"endIpAddress\":\"fcohdxbzlmcmu\"},\"id\":\"cvhd\",\"name\":\"evwqqxeyskonq\",\"type\":\"inkfkbgbz\"}";
+            = "{\"properties\":{\"startIpAddress\":\"jxtxrdc\",\"endIpAddress\":\"tjvidt\"},\"id\":\"epu\",\"name\":\"lvyjtcvuwkas\",\"type\":\"zies\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FirewallRule response = manager.firewallRules()
-            .define("mftpmdtz")
-            .withExistingFlexibleServer("jkavl", "or")
-            .withStartIpAddress("jltfvnzcyjtotpv")
-            .withEndIpAddress("pvpbdbzqgqqiheds")
+            .define("rmlmuowo")
+            .withExistingFlexibleServer("tefypococtfjgti", "rjvzuyt")
+            .withStartIpAddress("bauiropi")
+            .withEndIpAddress("nszonwpngaj")
             .create();
 
-        Assertions.assertEquals("sdtmcdzs", response.startIpAddress());
-        Assertions.assertEquals("fcohdxbzlmcmu", response.endIpAddress());
+        Assertions.assertEquals("jxtxrdc", response.startIpAddress());
+        Assertions.assertEquals("tjvidt", response.endIpAddress());
     }
 }

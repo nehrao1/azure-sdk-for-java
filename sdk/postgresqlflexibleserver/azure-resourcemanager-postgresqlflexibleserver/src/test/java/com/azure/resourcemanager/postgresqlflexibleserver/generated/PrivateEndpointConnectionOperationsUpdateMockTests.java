@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
@@ -25,27 +25,27 @@ public final class PrivateEndpointConnectionOperationsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"xrdcqtj\",\"idttgepus\",\"vyjtcvu\"],\"privateEndpoint\":{\"id\":\"s\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"sfuughtuqfecjx\",\"actionsRequired\":\"gtuhxuicbu\"},\"provisioningState\":\"Succeeded\"},\"id\":\"s\",\"name\":\"njlx\",\"type\":\"zrhwp\"}";
+            = "{\"properties\":{\"groupIds\":[\"kixkykxdssjpemm\",\"cfxhikkflrmy\",\"yincql\"],\"privateEndpoint\":{\"id\":\"s\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"iiiovgqcgxuugq\",\"actionsRequired\":\"totiowlxteqdptjg\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ukranblw\",\"name\":\"hqlkccuzgygqwaho\",\"type\":\"ulwgniiprglvawuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnectionOperations()
-            .update("epdfgkmtdherng", "tcjuahokqto", "kauxof",
+            .update("lktgjc", "gguxhemlwyw", "eeczgfbu",
                 new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                        .withDescription("bauiropi")
-                        .withActionsRequired("szonwpngajinn")),
+                        .withDescription("gfsxzec")
+                        .withActionsRequired("xw")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("sfuughtuqfecjx", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gtuhxuicbu", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("iiiovgqcgxuugq", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("totiowlxteqdptjg", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

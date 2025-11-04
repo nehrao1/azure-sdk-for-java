@@ -4,12 +4,12 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
@@ -42,6 +42,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
+    private final boolean completeAfterAllCurrentChangesRetrieved;
+    private final Long endLSN;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -52,10 +54,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
+        boolean completeAfterAllCurrentChangesRetrieved,
+        Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
-        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+        DiagnosticsClientContext diagnosticsClientContext) {
+        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
@@ -74,8 +79,11 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 client,
                 requestOptionProperties,
                 collectionLink,
-                isSplitHandlingDisabled);
+                isSplitHandlingDisabled,
+                diagnosticsClientContext);
         this.createRequestFunc = createRequestFunc;
+        this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = endLSN;
     }
 
     @Override
@@ -112,13 +120,33 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (continuationSnapshot != null &&
-                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
+                           if (continuationSnapshot != null) {
 
-                           // not all continuations have been drained yet
-                           // repeat with the next continuation
-                           this.reEnableShouldFetchMoreForRetry();
-                           return Mono.empty();
+                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
+                               if (shouldComplete) {
+                                   this.disableShouldFetchMore();
+                                   return Mono.just(r);
+                               }
+
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                                   // if we have reached here, it means we have got 304 for the current feedRange,
+                                   // but we need to continue drain the changes from other sub-feedRange
+                                   this.reEnableShouldFetchMoreForRetry();
+                                   return Mono.empty();
+                               }
+                           }
+                       } else {
+                           // complete query based on 304s
+                           if (continuationSnapshot != null &&
+                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+
+                               // not all continuations have been drained yet
+                               // repeat with the next continuation
+                               this.reEnableShouldFetchMoreForRetry();
+                               return Mono.empty();
+                           }
                        }
 
                        return Mono.just(r);
@@ -133,7 +161,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
-        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges;
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved && this.endLSN == null;
         return this.changeFeedState.applyServerResponseContinuation(
             serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }
@@ -274,19 +302,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         RxDocumentClientImpl client,
         Map<String, Object> requestOptionProperties,
         String collectionLink,
-        boolean isSplitHandlingDisabled) {
+        boolean isSplitHandlingDisabled,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
 
         // constructing retry policies for changeFeed requests
         DocumentClientRetryPolicy retryPolicyInstance =
-            client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
-
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
-            client.getCollectionCache(),
-            retryPolicyInstance,
-            collectionLink,
-            requestOptionProperties);
+            client.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext);
 
         if (isSplitHandlingDisabled) {
             // True for ChangeFeedProcessor - where all retry-logic is handled

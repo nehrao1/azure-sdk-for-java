@@ -6,21 +6,27 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.LogAnalyticsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appcontainers.models.Mtls;
+import com.azure.resourcemanager.appcontainers.models.UserAssignedIdentity;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for ManagedEnvironments CreateOrUpdate.
  */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
      */
     /**
@@ -63,9 +69,8 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ManagedEnvironments_CreateOrUpdate.
-     * json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ManagedEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create environments.
@@ -77,6 +82,11 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
             .define("testcontainerenv")
             .withRegion("East US")
             .withExistingResourceGroup("examplerg")
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity",
+                    new UserAssignedIdentity())))
             .withDaprAIConnectionString(
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
             .withVnetConfiguration(new VnetConfiguration().withInfrastructureSubnetId(
@@ -105,6 +115,22 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(true)))
             .withPeerTrafficConfiguration(new ManagedEnvironmentPropertiesPeerTrafficConfiguration()
                 .withEncryption(new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(true)))
+            .withIngressConfiguration(new IngressConfiguration().withWorkloadProfileName("My-CO-01")
+                .withTerminationGracePeriodSeconds(3600)
+                .withHeaderCountLimit(30)
+                .withRequestIdleTimeout(5))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

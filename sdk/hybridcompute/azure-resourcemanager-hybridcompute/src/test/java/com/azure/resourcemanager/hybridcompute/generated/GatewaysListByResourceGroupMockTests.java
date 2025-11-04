@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Gateway;
@@ -23,21 +23,21 @@ public final class GatewaysListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"gatewayId\":\"kffdjktsys\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"c\",\"allowedFeatures\":[\"xnfuijtkbusqogs\",\"ikayiansharuj\",\"ji\",\"xfz\"]},\"location\":\"qttv\",\"tags\":{\"qekewvnqvcd\":\"qhjpenuygbqe\",\"punj\":\"guaucmfdjwnla\",\"sserxhtvsoxhlwn\":\"ikczvvitacgxmf\",\"uuuybnchrsziz\":\"sjgqrsxyp\"},\"id\":\"yuel\",\"name\":\"etndnbfqyggagf\",\"type\":\"nlgmtrwahzjmu\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"gatewayId\":\"ahxsgxjcmm\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"cubiwsdr\",\"allowedFeatures\":[\"qwodiffjx\"]},\"location\":\"rmmuabwibvjo\",\"tags\":{\"e\":\"nmc\",\"akpoldtvevbo\":\"oyzbamwineofvf\",\"zjknyuxg\":\"lz\"},\"id\":\"ttxpnrupza\",\"name\":\"mrdixtreki\",\"type\":\"swyskbruffg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Gateway> response
-            = manager.gateways().listByResourceGroup("jurbuhhlkyqltqsr", com.azure.core.util.Context.NONE);
+            = manager.gateways().listByResourceGroup("albmqkyojwyvfk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qttv", response.iterator().next().location());
-        Assertions.assertEquals("qhjpenuygbqe", response.iterator().next().tags().get("qekewvnqvcd"));
+        Assertions.assertEquals("rmmuabwibvjo", response.iterator().next().location());
+        Assertions.assertEquals("nmc", response.iterator().next().tags().get("e"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("xnfuijtkbusqogs", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("qwodiffjx", response.iterator().next().allowedFeatures().get(0));
     }
 }

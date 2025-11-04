@@ -4,24 +4,46 @@
 package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -42,30 +64,38 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.xml.XmlWriter;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -95,17 +125,18 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-        HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
     protected static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
-    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-        HttpHeaderName.fromString("x-ms-encryption-key-sha256");
-    protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
-        HttpHeaderName.fromString("x-ms-blob-content-length");
+    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+    protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-blob-content-length");
 
     protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
 
     protected static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+    protected static final HttpHeaderName X_MS_BLOB_SEALED = HttpHeaderName.fromString("x-ms-blob-sealed");
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -123,8 +154,6 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
-    private static final Pattern URL_SANITIZER = Pattern.compile("(?<=http://|https://)([^/?]+)");
-
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -141,24 +170,34 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String prefix;
 
+    // used to support cross package tests without taking a dependency on the package
+    protected HttpPipeline dataPlanePipeline;
+    protected HttpHeaders genericHeaders;
+
+    // used to build pipeline to management plane
+    protected static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
+    protected static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
+
     @Override
     public void beforeTest() {
         super.beforeTest();
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
+                        TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
-        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-            .setComparingBodies(false)
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
@@ -193,11 +232,11 @@ public class BlobTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-            .httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .buildClient();
+        BlobServiceClient cleanupClient
+            = new BlobServiceClientBuilder().httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .buildClient();
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
         for (BlobContainerItem container : cleanupClient.listBlobContainers(options, null)) {
@@ -220,8 +259,10 @@ public class BlobTestBase extends TestProxyTestBase {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        return StorageCommonTestUtils.getTokenCredential(interceptorManager).getTokenSync(new TokenRequestContext()
-                .setScopes(Collections.singletonList("https://storage.azure.com/.default"))).getToken();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager)
+            .getTokenSync(
+                new TokenRequestContext().setScopes(Collections.singletonList("https://storage.azure.com/.default")))
+            .getToken();
     }
 
     protected String generateContainerName() {
@@ -258,15 +299,17 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
-        if (Objects.equals(match, RECEIVED_ETAG)) {
-            return Objects.requireNonNull(bac.getProperties().block()).getETag();
-        } else {
-            return match;
-        }
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
     }
 
-    protected Mono<String> setupBlobMatchConditionAsync(BlobAsyncClientBase bac, String match) {
+    protected static String convertNull(String condition) {
+        return "null".equals(condition) ? null : condition;
+    }
+
+    protected Mono<String> setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
             return bac.getProperties().map(BlobProperties::getETag);
         } else {
@@ -298,29 +341,10 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
-        String responseLeaseId = null;
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1)
-                .block();
-        }
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return responseLeaseId;
-        } else {
-            return leaseID;
-        }
-    }
-
-    protected Mono<String> setupBlobLeaseConditionAsync(BlobAsyncClientBase bac, String leaseID) {
+    protected Mono<String> setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         Mono<String> responseLeaseId = null;
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1);
+            responseLeaseId = new BlobLeaseClientBuilder().blobAsyncClient(bac).buildAsyncClient().acquireLease(-1);
         }
 
         if (responseLeaseId == null) {
@@ -328,21 +352,13 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
-            ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
+            ? returnedLeaseId
+            : (leaseID == null ? "null" : leaseID));
     }
-
 
     protected String setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseClient(cu).acquireLease(-1);
-        } else {
-            return leaseID;
-        }
-    }
-
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
         } else {
             return leaseID;
         }
@@ -357,8 +373,8 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
@@ -366,8 +382,8 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
@@ -388,8 +404,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies)
-            .buildClient();
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient();
     }
 
     protected BlobServiceClient getServiceClient(String sasToken, String endpoint) {
@@ -409,15 +424,13 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
-                                                 HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies)
-            .buildAsyncClient();
+        HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             if (policy != null) {
@@ -436,8 +449,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -454,10 +466,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobClient(blobClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().blobClient(blobClient).leaseId(leaseId).buildClient();
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
@@ -465,10 +474,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobAsyncClient(blobAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
+        return new BlobLeaseClientBuilder().blobAsyncClient(blobAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
@@ -476,10 +482,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerClient(containerClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().containerClient(containerClient).leaseId(leaseId).buildClient();
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
@@ -488,8 +491,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient,
         String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerAsyncClient(containerAsyncClient)
+        return new BlobLeaseClientBuilder().containerAsyncClient(containerAsyncClient)
             .leaseId(leaseId)
             .buildAsyncClient();
     }
@@ -508,9 +510,10 @@ public class BlobTestBase extends TestProxyTestBase {
      * <p>
      * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
-     * long. The value is going to be a best guess and should be played with to allow test passes to succeed
+     * long. The value is going to be the best guess and should be played with to allow test passes to succeed
      * <p>
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
+     * Timeouts</a>
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
      * timeout value--about 20s/MB. Won't be less than 1 minute.
@@ -520,8 +523,8 @@ public class BlobTestBase extends TestProxyTestBase {
         retryTimeout = Math.max(60, retryTimeout);
         return getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
-            .buildAsyncClient();
+                .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+                .buildAsyncClient();
     }
 
     protected BlobContainerClient getContainerClient(String sasToken, String endpoint) {
@@ -538,9 +541,9 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .endpoint(endpoint);
+    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -552,10 +555,9 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName);
+    protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName);
 
         instrument(builder);
 
@@ -563,10 +565,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobAsyncClient getBlobAsyncClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName).snapshot(snapshotId);
 
         instrument(builder);
 
@@ -578,19 +577,16 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName).snapshot(snapshotId);
 
         instrument(builder);
 
         return builder.sasToken(sasToken).buildClient();
     }
 
-    protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+    protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -601,9 +597,9 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder.credential(credential).buildClient();
     }
 
-    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -617,8 +613,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -628,9 +623,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName);
 
         instrument(builder);
 
@@ -638,8 +631,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
         instrument(builder);
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -649,8 +641,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobAsyncClient getBlobAsyncClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
         instrument(builder);
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -660,8 +651,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClientBuilder getBlobClientBuilder(String endpoint) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
@@ -669,8 +659,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected SpecializedBlobClientBuilder getSpecializedBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -681,16 +670,15 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected SpecializedBlobClientBuilder getSpecializedBuilder(String endpoint) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
     }
 
-    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -702,7 +690,8 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+    protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body,
+        HttpHeaders headers) {
         return new HttpResponse(response.getRequest()) {
 
             @Override
@@ -743,11 +732,11 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-    * Validates the presence of headers that are present on a large number of responses. These headers are generally
-    * random and can really only be checked as not null.
-    * @param headers The object (may be headers object or response object) that has properties which expose these common headers.
-    * @return Whether the header values are appropriate.
-    */
+     * Validates the presence of headers that are present on a large number of responses. These headers are generally
+     * random and can really only be checked as not null.
+     * @param headers The object (may be headers object or response object) that has properties which expose these common headers.
+     * @return Whether the header values are appropriate.
+     */
     protected static boolean validateBasicHeaders(HttpHeaders headers) {
         return headers.getValue(HttpHeaderName.ETAG) != null
             // Quotes should be scrubbed from etag header values
@@ -758,7 +747,7 @@ public class BlobTestBase extends TestProxyTestBase {
             && headers.getValue(HttpHeaderName.DATE) != null;
     }
 
-    protected static boolean validateBlobProperties(Response< BlobProperties > response, String cacheControl,
+    protected static boolean validateBlobProperties(Response<BlobProperties> response, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, byte[] contentMD5,
         String contentType) {
         return Objects.equals(response.getValue().getCacheControl(), cacheControl)
@@ -821,8 +810,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static Stream<Arguments> allConditionsSupplier() {
         return Stream.of(Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null), Arguments.of(null, NEW_DATE, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
@@ -830,8 +818,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> allConditionsFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
@@ -840,21 +827,9 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> fileACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
-        );
-    }
-
-    protected static String redactUrl(String url) {
-        if (url == null) {
-            return null;
-        }
-
-        return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
     protected HttpClient getHttpClient() {
@@ -865,7 +840,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getHttpClient(playbackClientSupplier);
     }
 
-    protected  <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
+    protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
         return StorageCommonTestUtils.instrument(builder, BlobServiceClientBuilder.getDefaultHttpLogOptions(),
             interceptorManager);
     }
@@ -894,18 +869,418 @@ public class BlobTestBase extends TestProxyTestBase {
     Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
     */
     protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
+        List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers);
         sleepIfRunningAgainstService(30 * 1000);
     }
 
     protected Mono<?> setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                                List<BlobSignedIdentifier> identifiers) {
+        List<BlobSignedIdentifier> identifiers) {
         Mono<?> setPolicyMono = cc.setAccessPolicy(access, identifiers);
         if (!interceptorManager.isPlaybackMode()) {
             setPolicyMono = setPolicyMono.then(Mono.delay(Duration.ofSeconds(30)));
         }
 
         return setPolicyMono;
+    }
+
+    protected String createFileAndDirectoryWithoutFileShareDependency(byte[] data, String shareName)
+        throws IOException {
+        String accountName = ENVIRONMENT.getPrimaryAccount().getName();
+        //authenticate
+        BearerTokenAuthenticationPolicy credentialPolicyDataPlane = new BearerTokenAuthenticationPolicy(
+            getTokenCredential(ENVIRONMENT.getTestMode()), Constants.STORAGE_SCOPE);
+
+        //setup headers that will be used in every request
+        genericHeaders = new HttpHeaders().set(X_MS_VERSION, "2025-07-05")
+            .set(HttpHeaderName.ACCEPT, "application/xml")
+            .set(HttpHeaderName.HOST, accountName + ".file.core.windows.net")
+            .set(HttpHeaderName.CONTENT_LENGTH, "0")
+            .set(HttpHeaderName.fromString("x-ms-file-request-intent"), "backup");
+
+        //add policies that will be used in every request
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(credentialPolicyDataPlane);
+        policies.add(new AddDatePolicy());
+        policies.add(new UserAgentPolicy());
+        policies.add(new RequestIdPolicy());
+
+        // create data plane pipeline
+        dataPlanePipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+
+        // create share through data plane pipeline
+        String shareUrl = String.format("https://%s.file.core.windows.net/%s?restype=share", accountName, shareName);
+
+        HttpResponse shareCreateResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(shareUrl), genericHeaders)).block();
+        assertNotNull(shareCreateResponse);
+        assertEquals(201, shareCreateResponse.getStatusCode());
+
+        // create directory
+        String directoryName = generateBlobName();
+        String directoryUrl = String.format("https://%s.file.core.windows.net/%s/%s?restype=directory", accountName,
+            shareName, directoryName);
+
+        HttpResponse directoryCreateResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(directoryUrl), genericHeaders)).block();
+        assertNotNull(directoryCreateResponse);
+        assertEquals(201, directoryCreateResponse.getStatusCode());
+
+        // create file
+        String fileName = generateBlobName();
+        String fileUrl = String.format("https://%s.file.core.windows.net/%s/%s/%s", accountName, shareName,
+            directoryName, fileName);
+        HttpHeaders fileHeaders = new HttpHeaders().setAllHttpHeaders(genericHeaders)
+            .set(HttpHeaderName.fromString("x-ms-type"), "file")
+            .set(HttpHeaderName.fromString("x-ms-content-length"), String.valueOf(Constants.KB));
+
+        HttpResponse fileCreateResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(fileUrl), fileHeaders)).block();
+        assertNotNull(fileCreateResponse);
+        assertEquals(201, fileCreateResponse.getStatusCode());
+
+        // upload data to file
+        HttpHeaders uploadHeaders = new HttpHeaders().setAllHttpHeaders(genericHeaders)
+            .set(HttpHeaderName.fromString("x-ms-write"), "update")
+            .set(HttpHeaderName.fromString("x-ms-range"), "bytes=0-" + (Constants.KB - 1))
+            .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(Constants.KB))
+            .set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+
+        HttpResponse fileUploadResponse = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT,
+            new URL(fileUrl + "?comp=range"), uploadHeaders, Flux.just(ByteBuffer.wrap(data)))).block();
+        assertNotNull(fileUploadResponse);
+        assertEquals(201, fileUploadResponse.getStatusCode());
+
+        return fileUrl;
+    }
+
+    protected void deleteFileShareWithoutDependency(String shareName) throws IOException {
+        String shareUrl = String.format("https://%s.file.core.windows.net/%s?restype=share",
+            ENVIRONMENT.getPrimaryAccount().getName(), shareName);
+
+        HttpResponse shareDeleteResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(shareUrl), genericHeaders)).block();
+        assertNotNull(shareDeleteResponse);
+        assertEquals(202, shareDeleteResponse.getStatusCode());
+    }
+
+    public static final class Body implements JsonSerializable<Body> {
+        private String id;
+        private String name;
+        private String type;
+        private Properties properties;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Properties getProperties() {
+            return properties;
+        }
+
+        public void setProperties(Properties properties) {
+            this.properties = properties;
+        }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeStringField("id", this.id)
+                .writeStringField("name", this.name)
+                .writeStringField("type", this.type);
+            if (properties != null) {
+                jsonWriter.writeJsonField("properties", this.properties);
+            }
+            return jsonWriter.writeEndObject();
+        }
+    }
+
+    public static final class Properties implements JsonSerializable<Properties> {
+        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
+
+        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
+            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
+        }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
+
+            return jsonWriter.writeEndObject();
+        }
+    }
+
+    public static final class ImmutableStorageWithVersioning
+        implements JsonSerializable<ImmutableStorageWithVersioning> {
+        private boolean enabled;
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject().writeBooleanField("enabled", this.enabled);
+
+            return jsonWriter.writeEndObject();
+        }
+    }
+
+    //todo isbr: change the copy of this method in StorageCommonTestUtils to take in TestMode instead of interception manager
+    protected static TokenCredential getTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else if (testMode == TestMode.LIVE) {
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder
+                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                    .addLast(new AzureCliCredentialBuilder().build())
+                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            return builder.build();
+        } else { //playback or not set
+            return new MockTokenCredential();
+        }
+    }
+
+    // todo (isbr): https://github.com/Azure/azure-sdk-for-java/pull/45202#pullrequestreview-2915149773
+    protected static final class PagingTimeoutTestClient implements HttpClient {
+        private final Queue<String> responses = new java.util.LinkedList<>();
+
+        private enum PageType {
+            LIST_BLOBS, FIND_BLOBS, LIST_CONTAINERS
+        }
+
+        public PagingTimeoutTestClient() {
+        }
+
+        public PagingTimeoutTestClient addListBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            boolean isHierarchical) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_BLOBS, isHierarchical);
+        }
+
+        public PagingTimeoutTestClient addFindBlobsResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.FIND_BLOBS, false);
+        }
+
+        public PagingTimeoutTestClient addListContainersResponses(int totalResourcesExpected, int maxResourcesPerPage) {
+            return addPagedResponses(totalResourcesExpected, maxResourcesPerPage, PageType.LIST_CONTAINERS, false);
+        }
+
+        private PagingTimeoutTestClient addPagedResponses(int totalResourcesExpected, int maxResourcesPerPage,
+            PageType pageType, boolean isHierarchical) {
+            int totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
+            int resourcesAdded = 0;
+            for (int pageNum = 0; pageNum < totalPagesExpected; pageNum++) {
+                int numberOfElementsOnThisPage = Math.min(maxResourcesPerPage, totalResourcesExpected - resourcesAdded);
+                resourcesAdded += numberOfElementsOnThisPage;
+
+                try {
+                    responses.add(buildXmlPage(pageNum, maxResourcesPerPage, totalPagesExpected,
+                        numberOfElementsOnThisPage, pageType, isHierarchical));
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to generate XML for paged response", e);
+                }
+            }
+            return this;
+        }
+
+        private String buildXmlPage(int pageNum, int maxResourcesPerPage, int totalPagesExpected,
+            int numberOfElementsOnThisPage, PageType pageType, boolean isHierarchicalForBlobs) throws Exception {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            XmlWriter xmlWriter = XmlWriter.toStream(output);
+
+            String elementType;
+            Callable<Void> additionalElements = null;
+
+            switch (pageType) {
+                case LIST_BLOBS:
+                    elementType = "Blob";
+                    startXml(pageNum, xmlWriter, () -> {
+                        xmlWriter.writeStringAttribute("ContainerName", "foo");
+                        return null;
+                    });
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    if (isHierarchicalForBlobs) {
+                        xmlWriter.writeStringElement("Delimiter", "/");
+                    }
+                    break;
+
+                case FIND_BLOBS:
+                    elementType = "Blob";
+                    additionalElements = () -> {
+                        xmlWriter.writeStringElement("ContainerName", "foo");
+
+                        // Write Tags
+                        xmlWriter.writeStartElement("Tags");
+                        xmlWriter.writeStartElement("TagSet");
+                        xmlWriter.writeStartElement("Tag");
+                        xmlWriter.writeStringElement("Key", "dummyKey");
+                        xmlWriter.writeStringElement("Value", "dummyValue");
+                        xmlWriter.writeEndElement(); // End Tag
+                        xmlWriter.writeEndElement(); // End TagSet
+                        xmlWriter.writeEndElement(); // End Tags
+                        return null;
+                    };
+                    startXml(pageNum, xmlWriter, null);
+                    xmlWriter.writeStringElement("Where", "\"dummyKey\"='dummyValue'");
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                case LIST_CONTAINERS:
+                    elementType = "Container";
+                    startXml(pageNum, xmlWriter, null);
+                    xmlWriter.writeStringElement("MaxResults", String.valueOf(maxResourcesPerPage));
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown PageType: " + pageType);
+            }
+
+            writeGenericListElement(xmlWriter, elementType, numberOfElementsOnThisPage, additionalElements);
+            endXml(pageNum, xmlWriter, totalPagesExpected); // This calls flush
+
+            return output.toString();
+        }
+
+        private void startXml(int pageNum, XmlWriter xmlWriter, Callable<Void> additionalAttributes) throws Exception {
+            xmlWriter.writeStartDocument();
+            xmlWriter.writeStartElement("EnumerationResults");
+            xmlWriter.writeStringAttribute("ServiceEndpoint", "https://account.blob.core.windows.net/");
+
+            if (additionalAttributes != null) {
+                additionalAttributes.call();
+            }
+
+            // Write marker if not first page
+            if (pageNum != 0) {
+                xmlWriter.writeStringElement("Marker", "MARKER--");
+            }
+        }
+
+        private void endXml(int pageNum, XmlWriter xmlWriter, int totalPagesExpected) throws XMLStreamException {
+            // Write NextMarker
+            if (pageNum == totalPagesExpected - 1) {
+                xmlWriter.writeStringElement("NextMarker", null);
+            } else {
+                xmlWriter.writeStringElement("NextMarker", "MARKER--");
+            }
+
+            xmlWriter.writeEndElement(); // End EnumerationResults
+            xmlWriter.flush();
+        }
+
+        private void writeGenericListElement(XmlWriter xmlWriter, String elementType, int numberOfElementsOnThisPage,
+            Callable<Void> additionalElements) throws Exception {
+            // Start elementType + s
+            xmlWriter.writeStartElement(elementType + "s");
+
+            // Write  entries
+            for (int i = 0; i < numberOfElementsOnThisPage; i++) {
+                xmlWriter.writeStartElement(elementType); // Start elementType
+                xmlWriter.writeStringElement("Name", elementType.toLowerCase());
+
+                if (additionalElements != null) {
+                    additionalElements.call();
+                }
+
+                xmlWriter.writeEndElement(); // End elementType
+            }
+
+            xmlWriter.writeEndElement(); // End elementType + s
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            HttpResponse response
+                = new MockHttpResponse(request, 200, headers, responses.poll().getBytes(StandardCharsets.UTF_8));
+
+            int requestDelaySeconds = 4;
+            return Mono.delay(Duration.ofSeconds(requestDelaySeconds)).then(Mono.just(response));
+        }
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
+        }
     }
 }

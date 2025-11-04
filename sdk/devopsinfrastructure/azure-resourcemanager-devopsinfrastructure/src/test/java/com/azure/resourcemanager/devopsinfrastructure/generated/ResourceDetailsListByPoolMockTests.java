@@ -7,8 +7,8 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourceDetailsObject;
@@ -23,20 +23,20 @@ public final class ResourceDetailsListByPoolMockTests {
     @Test
     public void testListByPool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"Reimaging\",\"image\":\"e\",\"imageVersion\":\"psbzkfzbeyvpn\"},\"id\":\"cvinvkjjxdxrbuuk\",\"name\":\"clewyhm\",\"type\":\"wp\"}]}";
+            = "{\"value\":[{\"properties\":{\"status\":\"PendingReturn\",\"image\":\"yylhalnswhccsp\",\"imageVersion\":\"kaivwit\"},\"id\":\"cywuggwol\",\"name\":\"h\",\"type\":\"zbwemh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevOpsInfrastructureManager manager = DevOpsInfrastructureManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceDetailsObject> response
-            = manager.resourceDetails().listByPool("pulpqblylsyxk", "jnsjervtiagxsd", com.azure.core.util.Context.NONE);
+            = manager.resourceDetails().listByPool("ah", "icslfaoq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ResourceStatus.REIMAGING, response.iterator().next().properties().status());
-        Assertions.assertEquals("e", response.iterator().next().properties().image());
-        Assertions.assertEquals("psbzkfzbeyvpn", response.iterator().next().properties().imageVersion());
+        Assertions.assertEquals(ResourceStatus.PENDING_RETURN, response.iterator().next().properties().status());
+        Assertions.assertEquals("yylhalnswhccsp", response.iterator().next().properties().image());
+        Assertions.assertEquals("kaivwit", response.iterator().next().properties().imageVersion());
     }
 }

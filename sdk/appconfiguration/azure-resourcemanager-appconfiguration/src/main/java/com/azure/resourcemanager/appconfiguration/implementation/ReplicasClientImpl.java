@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.ReplicasClient;
@@ -38,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicasClient.
+ */
 public final class ReplicasClientImpl implements ReplicasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicasClientImpl(AppConfigurationManagementClientImpl client) {
@@ -63,106 +71,131 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
     public interface ReplicasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaListResult>> listByConfigurationStore(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicaListResult>> listByConfigurationStore(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaInner>> get(
-            @HostParam("$host") String endpoint,
+        Response<ReplicaListResult> listByConfigurationStoreSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ReplicaInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ReplicaInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @PathParam("replicaName") String replicaName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ReplicaInner replicaCreationParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @PathParam("replicaName") String replicaName,
-            @BodyParam("application/json") ReplicaInner replicaCreationParameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ReplicaInner replicaCreationParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("replicaName") String replicaName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicaListResult>> listByConfigurationStoreNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ReplicaListResult> listByConfigurationStoreNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken) {
+    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(String resourceGroupName,
+        String configStoreName, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,106 +208,29 @@ public final class ReplicasClientImpl implements ReplicasClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByConfigurationStore(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByConfigurationStore(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, configStoreName, this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByConfigurationStore(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists the replicas for a given configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(
-        String resourceGroupName, String configStoreName, String skipToken) {
+    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(String resourceGroupName, String configStoreName,
+        String skipToken) {
         return new PagedFlux<>(
             () -> listByConfigurationStoreSinglePageAsync(resourceGroupName, configStoreName, skipToken),
             nextLink -> listByConfigurationStoreNextSinglePageAsync(nextLink));
@@ -282,7 +238,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,29 +256,92 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replicas as paginated response with {@link PagedFlux}.
+     * @return the result of a request to list replicas along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listByConfigurationStoreSinglePageAsync(resourceGroupName, configStoreName, skipToken, context),
-            nextLink -> listByConfigurationStoreNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ReplicaInner> listByConfigurationStoreSinglePage(String resourceGroupName,
+        String configStoreName, String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ReplicaListResult> res
+            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replicas along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ReplicaInner> listByConfigurationStoreSinglePage(String resourceGroupName,
+        String configStoreName, String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ReplicaListResult> res
+            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists the replicas for a given configuration store.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,17 +352,19 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> listByConfigurationStore(String resourceGroupName, String configStoreName) {
         final String skipToken = null;
-        return new PagedIterable<>(listByConfigurationStoreAsync(resourceGroupName, configStoreName, skipToken));
+        return new PagedIterable<>(
+            () -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, skipToken),
+            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
     }
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -351,38 +372,35 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the result of a request to list replicas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicaInner> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    public PagedIterable<ReplicaInner> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        String skipToken, Context context) {
         return new PagedIterable<>(
-            listByConfigurationStoreAsync(resourceGroupName, configStoreName, skipToken, context));
+            () -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, skipToken, context),
+            nextLink -> listByConfigurationStoreNextSinglePage(nextLink, context));
     }
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified replica along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
+    private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -397,77 +415,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified replica.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (replicaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -484,7 +439,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -495,14 +450,38 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the properties of the specified replica along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicaInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        return getWithResponseAsync(resourceGroupName, configStoreName, replicaName, context).block();
+    public Response<ReplicaInner> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (replicaName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, accept, context);
     }
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -518,7 +497,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -529,19 +508,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName, ReplicaInner replicaCreationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -555,100 +530,121 @@ public final class ReplicasClientImpl implements ReplicasClient {
             return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         if (replicaCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter replicaCreationParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicaCreationParameters is required and cannot be null."));
         } else {
             replicaCreationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            replicaCreationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, replicaCreationParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
      * @param replicaCreationParameters The parameters for creating a replica.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return the replica resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String configStoreName,
+        String replicaName, ReplicaInner replicaCreationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (replicaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         if (replicaCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter replicaCreationParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter replicaCreationParameters is required and cannot be null."));
         } else {
             replicaCreationParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                replicaCreationParameters,
-                accept,
-                context);
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, replicaCreationParameters, accept, Context.NONE);
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param replicaName The name of the replica.
+     * @param replicaCreationParameters The parameters for creating a replica.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the replica resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String configStoreName,
+        String replicaName, ReplicaInner replicaCreationParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (replicaName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+        }
+        if (replicaCreationParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter replicaCreationParameters is required and cannot be null."));
+        } else {
+            replicaCreationParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, replicaCreationParameters, accept, context);
+    }
+
+    /**
+     * Creates a replica with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -659,49 +655,17 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the replica resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, context);
-    }
-
-    /**
-     * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -712,16 +676,17 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        return this
-            .beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters)
-            .getSyncPoller();
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(response, ReplicaInner.class, ReplicaInner.class,
+            Context.NONE);
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -733,20 +698,17 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters, Context context) {
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(response, ReplicaInner.class, ReplicaInner.class,
+            context);
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -757,41 +719,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters)
-            .last()
+    private Mono<ReplicaInner> createAsync(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters) {
+        return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -802,14 +738,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner create(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        return createAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).block();
+    public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters) {
+        return beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).getFinalResult();
     }
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -821,18 +757,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner create(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
-        return createAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context).block();
+    public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters, Context context) {
+        return beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
+            .getFinalResult();
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -842,19 +775,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -869,76 +798,97 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (replicaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                accept,
-                context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, accept, Context.NONE);
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param replicaName The name of the replica.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (replicaName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, accept, context);
+    }
+
+    /**
+     * Deletes a replica.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -948,42 +898,17 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a replica.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -993,14 +918,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String replicaName) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, replicaName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String replicaName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, replicaName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -1011,14 +937,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, replicaName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, replicaName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -1029,34 +956,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String replicaName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a replica.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -1066,12 +972,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String replicaName) {
-        deleteAsync(resourceGroupName, configStoreName, replicaName).block();
+        beginDelete(resourceGroupName, configStoreName, replicaName).getFinalResult();
     }
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -1082,19 +988,18 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        deleteAsync(resourceGroupName, configStoreName, replicaName, context).block();
+        beginDelete(resourceGroupName, configStoreName, replicaName, context).getFinalResult();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(String nextLink) {
@@ -1102,63 +1007,72 @@ public final class ReplicasClientImpl implements ReplicasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replicas along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ReplicaInner> listByConfigurationStoreNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ReplicaListResult> res
+            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the result of a request to list replicas along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(
-        String nextLink, Context context) {
+    private PagedResponse<ReplicaInner> listByConfigurationStoreNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        Response<ReplicaListResult> res
+            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicasClientImpl.class);
 }

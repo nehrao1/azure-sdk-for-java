@@ -50,7 +50,7 @@ public final class MetadataConfigurationsImpl {
      * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientMet")
+    @ServiceInterface(name = "AttestationClientMetadataConfigurations")
     public interface MetadataConfigurationsService {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({ 200 })
@@ -70,12 +70,7 @@ public final class MetadataConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync() {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**

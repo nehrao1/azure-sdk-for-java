@@ -51,7 +51,7 @@ public final class Office365LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private Office365LinkedServiceTypeProperties innerTypeProperties() {
+    Office365LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -199,6 +199,88 @@ public final class Office365LinkedService extends LinkedService {
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalCredentialType();
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    public Office365LinkedService withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Office365LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalCredentialType(servicePrincipalCredentialType);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    public SecretBase servicePrincipalEmbeddedCert() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalEmbeddedCert();
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    public Office365LinkedService withServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Office365LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalEmbeddedCert(servicePrincipalEmbeddedCert);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    public SecretBase servicePrincipalEmbeddedCertPassword() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().servicePrincipalEmbeddedCertPassword();
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    public Office365LinkedService
+        withServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Office365LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalEmbeddedCertPassword(servicePrincipalEmbeddedCertPassword);
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
      * 
@@ -230,13 +312,22 @@ public final class Office365LinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model Office365LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

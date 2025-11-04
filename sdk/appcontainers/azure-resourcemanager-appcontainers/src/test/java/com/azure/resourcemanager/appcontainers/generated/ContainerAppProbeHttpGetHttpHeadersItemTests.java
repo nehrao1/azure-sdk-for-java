@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerAppProbeHttpGetHttpHeadersItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerAppProbeHttpGetHttpHeadersItem model
-            = BinaryData.fromString("{\"name\":\"dopcjwvnh\",\"value\":\"ld\"}")
-                .toObject(ContainerAppProbeHttpGetHttpHeadersItem.class);
-        Assertions.assertEquals("dopcjwvnh", model.name());
-        Assertions.assertEquals("ld", model.value());
+        ContainerAppProbeHttpGetHttpHeadersItem model = BinaryData.fromString("{\"name\":\"qiy\",\"value\":\"torzih\"}")
+            .toObject(ContainerAppProbeHttpGetHttpHeadersItem.class);
+        Assertions.assertEquals("qiy", model.name());
+        Assertions.assertEquals("torzih", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerAppProbeHttpGetHttpHeadersItem model
-            = new ContainerAppProbeHttpGetHttpHeadersItem().withName("dopcjwvnh").withValue("ld");
+            = new ContainerAppProbeHttpGetHttpHeadersItem().withName("qiy").withValue("torzih");
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeHttpGetHttpHeadersItem.class);
-        Assertions.assertEquals("dopcjwvnh", model.name());
-        Assertions.assertEquals("ld", model.value());
+        Assertions.assertEquals("qiy", model.name());
+        Assertions.assertEquals("torzih", model.value());
     }
 }

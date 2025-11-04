@@ -7,8 +7,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
@@ -23,22 +23,23 @@ public final class PrivateEndpointConnectionsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"oxffif\"],\"privateEndpoint\":{\"id\":\"rsnewmozqvbubqma\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"cx\",\"actionsRequired\":\"zgaz\"},\"provisioningState\":\"Succeeded\"},\"id\":\"o\",\"name\":\"dvmfqhppub\",\"type\":\"w\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"eimawzovgkkumui\",\"jcjcazt\",\"wsnsqowx\"],\"privateEndpoint\":{\"id\":\"mlikytw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"swkacvej\",\"actionsRequired\":\"dvlvhbwrnfxtgdd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ehnmnaoyankco\",\"name\":\"qswankltytmhdr\",\"type\":\"znnhd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByServer("yefchnm", "ahmnxhkxjqirw", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.privateEndpointConnections().listByServer("y", "rhpw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("cx", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zgaz",
+        Assertions.assertEquals("swkacvej",
+            response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

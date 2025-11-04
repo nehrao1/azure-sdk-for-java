@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,54 @@ public class AmazonS3LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AmazonS3";
 
     /*
-     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string
+     * (or Expression with resultType string).
      */
+    @Generated
     private Object authenticationType;
 
     /*
-     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
+     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression
+     * with resultType string).
      */
+    @Generated
     private Object accessKeyId;
 
     /*
      * The secret access key of the Amazon S3 Identity and Access Management (IAM) user.
      */
+    @Generated
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only
+     * if you want to try a different service endpoint or want to switch between https and http. Type: string (or
+     * Expression with resultType string).
      */
+    @Generated
     private Object serviceUrl;
 
     /*
      * The session token for the S3 temporary security credential.
      */
+    @Generated
     private SecretBase sessionToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AmazonS3LinkedService class.
      */
+    @Generated
     public AmazonS3LinkedService() {
     }
 
@@ -64,6 +78,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +90,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -86,6 +102,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -97,6 +114,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the accessKeyId value.
      */
+    @Generated
     public Object getAccessKeyId() {
         return this.accessKeyId;
     }
@@ -108,6 +126,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param accessKeyId the accessKeyId value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setAccessKeyId(Object accessKeyId) {
         this.accessKeyId = accessKeyId;
         return this;
@@ -119,6 +138,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the secretAccessKey value.
      */
+    @Generated
     public SecretBase getSecretAccessKey() {
         return this.secretAccessKey;
     }
@@ -130,6 +150,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setSecretAccessKey(SecretBase secretAccessKey) {
         this.secretAccessKey = secretAccessKey;
         return this;
@@ -142,6 +163,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the serviceUrl value.
      */
+    @Generated
     public Object getServiceUrl() {
         return this.serviceUrl;
     }
@@ -154,6 +176,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param serviceUrl the serviceUrl value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setServiceUrl(Object serviceUrl) {
         this.serviceUrl = serviceUrl;
         return this;
@@ -164,6 +187,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the sessionToken value.
      */
+    @Generated
     public SecretBase getSessionToken() {
         return this.sessionToken;
     }
@@ -174,6 +198,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param sessionToken the sessionToken value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setSessionToken(SecretBase sessionToken) {
         this.sessionToken = sessionToken;
         return this;
@@ -185,6 +210,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -196,6 +222,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3LinkedService object itself.
      */
+    @Generated
     public AmazonS3LinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -204,6 +231,17 @@ public class AmazonS3LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AmazonS3LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AmazonS3LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -213,6 +251,7 @@ public class AmazonS3LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -222,6 +261,7 @@ public class AmazonS3LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -231,6 +271,7 @@ public class AmazonS3LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -240,9 +281,11 @@ public class AmazonS3LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -255,12 +298,20 @@ public class AmazonS3LinkedService extends LinkedService {
             || sessionToken != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-            jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+            if (this.authenticationType != null) {
+                jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            }
+            if (this.accessKeyId != null) {
+                jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+            }
             jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
-            jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+            if (this.serviceUrl != null) {
+                jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+            }
             jsonWriter.writeJsonField("sessionToken", this.sessionToken);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -279,6 +330,7 @@ public class AmazonS3LinkedService extends LinkedService {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AmazonS3LinkedService.
      */
+    @Generated
     public static AmazonS3LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonS3LinkedService deserializedAmazonS3LinkedService = new AmazonS3LinkedService();
@@ -287,7 +339,9 @@ public class AmazonS3LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAmazonS3LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAmazonS3LinkedService.setDescription(reader.getString());

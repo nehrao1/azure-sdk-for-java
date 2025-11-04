@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.implementation;
 
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 
 import java.time.OffsetDateTime;
@@ -11,14 +12,24 @@ public final class KeyPropertiesHelper {
 
     public interface KeyPropertiesAccessor {
         void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn);
+
         void setUpdatedOn(KeyProperties keyProperties, OffsetDateTime updatedOn);
+
         void setRecoveryLevel(KeyProperties keyProperties, String recoveryLevel);
+
         void setName(KeyProperties keyProperties, String name);
+
         void setVersion(KeyProperties keyProperties, String version);
+
         void setId(KeyProperties keyProperties, String id);
+
         void setManaged(KeyProperties keyProperties, Boolean managed);
+
         void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays);
+
         void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform);
+
+        void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation);
     }
 
     public static void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
@@ -57,9 +68,14 @@ public final class KeyPropertiesHelper {
         accessor.setHsmPlatform(keyProperties, hsmPlatform);
     }
 
+    public static void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation) {
+        accessor.setKeyAttestation(keyProperties, keyAttestation);
+    }
+
     public static void setAccessor(KeyPropertiesAccessor accessor) {
         KeyPropertiesHelper.accessor = accessor;
     }
 
-    private KeyPropertiesHelper() { }
+    private KeyPropertiesHelper() {
+    }
 }

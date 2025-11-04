@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.License;
@@ -27,30 +27,30 @@ public final class LicensesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"tenantId\":\"hwwn\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012\",\"edition\":\"Standard\",\"type\":\"vCore\",\"processors\":1551351908,\"assignedLicenses\":1123060599,\"immutableId\":\"usnfepgfewet\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 2\",\"invoiceId\":\"cxy\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"jhlimmbcxfhbcpo\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"cjzhqi\"},{\"programYear\":\"Year 1\",\"invoiceId\":\"xtgqscjavftjuh\"}]}},\"location\":\"azkmtgguwp\",\"tags\":{\"vmmghfcfiwrxgk\":\"ajc\"},\"id\":\"euvyinzqodfvpgs\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"zflbqvg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"tenantId\":\"fxapjwogqqnobpu\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":1935612973,\"assignedLicenses\":1150398626,\"immutableId\":\"qbucljgkyexaoguy\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 1\",\"invoiceId\":\"daultxijjumfq\"}]}},\"location\":\"z\",\"tags\":{\"jng\":\"nm\",\"bjwgnyfus\":\"qdqx\",\"fh\":\"zsvtuikzhajqgl\"},\"id\":\"l\",\"name\":\"qryxyn\",\"type\":\"nzrdpsovwxz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         License response = manager.licenses()
-            .getByResourceGroupWithResponse("oaimlnw", "aaomylweazu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("wjwiuub", "efqsfapaqtferrqw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("azkmtgguwp", response.location());
-        Assertions.assertEquals("ajc", response.tags().get("vmmghfcfiwrxgk"));
-        Assertions.assertEquals("hwwn", response.tenantId());
+        Assertions.assertEquals("z", response.location());
+        Assertions.assertEquals("nm", response.tags().get("jng"));
+        Assertions.assertEquals("fxapjwogqqnobpu", response.tenantId());
         Assertions.assertEquals(LicenseType.ESU, response.licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, response.licenseDetails().state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, response.licenseDetails().target());
-        Assertions.assertEquals(LicenseEdition.STANDARD, response.licenseDetails().edition());
-        Assertions.assertEquals(LicenseCoreType.V_CORE, response.licenseDetails().type());
-        Assertions.assertEquals(1551351908, response.licenseDetails().processors());
-        Assertions.assertEquals(ProgramYear.YEAR_2,
+        Assertions.assertEquals(LicenseEdition.DATACENTER, response.licenseDetails().edition());
+        Assertions.assertEquals(LicenseCoreType.P_CORE, response.licenseDetails().type());
+        Assertions.assertEquals(1935612973, response.licenseDetails().processors());
+        Assertions.assertEquals(ProgramYear.YEAR_1,
             response.licenseDetails().volumeLicenseDetails().get(0).programYear());
-        Assertions.assertEquals("cxy", response.licenseDetails().volumeLicenseDetails().get(0).invoiceId());
+        Assertions.assertEquals("daultxijjumfq", response.licenseDetails().volumeLicenseDetails().get(0).invoiceId());
     }
 }

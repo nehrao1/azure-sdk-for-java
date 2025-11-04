@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.providerhub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationInner;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistration;
+import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
 
 public final class ProviderRegistrationImpl implements ProviderRegistration {
@@ -13,8 +15,7 @@ public final class ProviderRegistrationImpl implements ProviderRegistration {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    ProviderRegistrationImpl(
-        ProviderRegistrationInner innerObject,
+    ProviderRegistrationImpl(ProviderRegistrationInner innerObject,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -34,6 +35,14 @@ public final class ProviderRegistrationImpl implements ProviderRegistration {
 
     public ProviderRegistrationProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ProviderRegistrationKind kind() {
+        return this.innerModel().kind();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProviderRegistrationInner innerModel() {

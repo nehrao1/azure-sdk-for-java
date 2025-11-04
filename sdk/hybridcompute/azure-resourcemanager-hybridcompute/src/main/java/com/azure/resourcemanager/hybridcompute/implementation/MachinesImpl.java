@@ -13,6 +13,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.MachinesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatchesResultInner;
+import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
 import com.azure.resourcemanager.hybridcompute.models.MachineAssessPatchesResult;
 import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
@@ -32,17 +33,16 @@ public final class MachinesImpl implements Machines {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String machineName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, machineName, context);
-    }
-
     public void deleteByResourceGroup(String resourceGroupName, String machineName) {
         this.serviceClient().delete(resourceGroupName, machineName);
     }
 
-    public Response<Machine> getByResourceGroupWithResponse(String resourceGroupName, String machineName, String expand,
-        Context context) {
+    public void delete(String resourceGroupName, String machineName, Context context) {
+        this.serviceClient().delete(resourceGroupName, machineName, context);
+    }
+
+    public Response<Machine> getByResourceGroupWithResponse(String resourceGroupName, String machineName,
+        InstanceViewTypes expand, Context context) {
         Response<MachineInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, machineName, expand, context);
         if (inner != null) {

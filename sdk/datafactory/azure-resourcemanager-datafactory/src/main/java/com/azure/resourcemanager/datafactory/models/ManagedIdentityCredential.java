@@ -50,7 +50,7 @@ public final class ManagedIdentityCredential extends Credential {
      * 
      * @return the innerTypeProperties value.
      */
-    private ManagedIdentityTypeProperties innerTypeProperties() {
+    ManagedIdentityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -102,7 +102,6 @@ public final class ManagedIdentityCredential extends Credential {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }

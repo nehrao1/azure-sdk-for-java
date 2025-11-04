@@ -4,117 +4,52 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.OperationInner;
 import java.util.Map;
 
 /**
- * REST API operation definition.
+ * An immutable client-side representation of Operation.
  */
-@Fluent
-public final class Operation {
-    /*
-     * The name of the operation being performed on this particular object.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * The localized display information for this particular operation or action.
-     */
-    @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
-    private OperationDisplay display;
-
-    /*
-     * Indicates whether the operation is a data action
-     */
-    @JsonProperty(value = "isDataAction")
-    private Boolean isDataAction;
-
-    /*
-     * The intended executor of the operation.
-     */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
-    private OperationOrigin origin;
-
-    /*
-     * Additional descriptions for the operation.
-     */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> properties;
-
+public interface Operation {
     /**
-     * Creates an instance of Operation class.
-     */
-    public Operation() {
-    }
-
-    /**
-     * Get the name property: The name of the operation being performed on this particular object.
+     * Gets the name property: The name of the operation being performed on this particular object.
      * 
      * @return the name value.
      */
-    public String name() {
-        return this.name;
-    }
+    String name();
 
     /**
-     * Get the display property: The localized display information for this particular operation or action.
+     * Gets the display property: The localized display information for this particular operation or action.
      * 
      * @return the display value.
      */
-    public OperationDisplay display() {
-        return this.display;
-    }
+    OperationDisplay display();
 
     /**
-     * Get the isDataAction property: Indicates whether the operation is a data action.
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
      * 
      * @return the isDataAction value.
      */
-    public Boolean isDataAction() {
-        return this.isDataAction;
-    }
+    Boolean isDataAction();
 
     /**
-     * Set the isDataAction property: Indicates whether the operation is a data action.
-     * 
-     * @param isDataAction the isDataAction value to set.
-     * @return the Operation object itself.
-     */
-    public Operation withIsDataAction(Boolean isDataAction) {
-        this.isDataAction = isDataAction;
-        return this;
-    }
-
-    /**
-     * Get the origin property: The intended executor of the operation.
+     * Gets the origin property: The intended executor of the operation.
      * 
      * @return the origin value.
      */
-    public OperationOrigin origin() {
-        return this.origin;
-    }
+    OperationOrigin origin();
 
     /**
-     * Get the properties property: Additional descriptions for the operation.
+     * Gets the properties property: Additional descriptions for the operation.
      * 
      * @return the properties value.
      */
-    public Map<String, Object> properties() {
-        return this.properties;
-    }
+    Map<String, Object> properties();
 
     /**
-     * Validates the instance.
+     * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.OperationInner object.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the inner object.
      */
-    public void validate() {
-        if (display() != null) {
-            display().validate();
-        }
-    }
+    OperationInner innerModel();
 }

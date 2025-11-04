@@ -89,6 +89,11 @@ public class ServiceBusConstants {
     public static final String ENTITY_TYPE_KEY = "entityType";
 
     /**
+     * Identifies via entity name in logs.
+     */
+    public static final String VIA_ENTITY_NAME_KEY = "viaEntityName";
+
+    /**
      * Identifies sequence number in logs.
      */
     public static final String SEQUENCE_NUMBER_KEY = "sequenceNumber";
@@ -107,7 +112,6 @@ public class ServiceBusConstants {
      * Identifies disposition status in logs.
      */
     public static final String DISPOSITION_STATUS_KEY = "dispositionStatus";
-
 
     /**
      * Amqp symbol name.
@@ -141,11 +145,12 @@ public class ServiceBusConstants {
     /**
      * Constant for a recommendation message if there is a mismatch between thread pool size, cores and Service Bus Processor concurrency.
      */
-    public static final String CORES_VS_CONCURRENCY_MESSAGE = "The application uses thread pool with {} threads on {} cores, "
-        + "which may not be enough to support the requested Service Bus Processor concurrency of {} "
-        + "and may cause service to stall. Please review the troubleshooting guidelines "
-        + "https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient "
-        + "for cores allocation and thread pool tuning.";
+    public static final String CORES_VS_CONCURRENCY_MESSAGE
+        = "The application uses thread pool with {} threads on {} cores, "
+            + "which may not be enough to support the requested Service Bus Processor concurrency of {} "
+            + "and may cause service to stall. Please review the troubleshooting guidelines "
+            + "https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient "
+            + "for cores allocation and thread pool tuning.";
     /**
      * Constant for the ideal concurrency per core, as described in the troubleshooting guideline.
      */

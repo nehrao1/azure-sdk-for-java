@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.providerhub.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -14,20 +15,27 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.providerhub.fluent.AuthorizedApplicationsClient;
 import com.azure.resourcemanager.providerhub.fluent.CustomRolloutsClient;
 import com.azure.resourcemanager.providerhub.fluent.DefaultRolloutsClient;
+import com.azure.resourcemanager.providerhub.fluent.NewRegionFrontloadReleasesClient;
 import com.azure.resourcemanager.providerhub.fluent.NotificationRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
 import com.azure.resourcemanager.providerhub.fluent.ProviderHub;
+import com.azure.resourcemanager.providerhub.fluent.ProviderMonitorSettingsClient;
 import com.azure.resourcemanager.providerhub.fluent.ProviderRegistrationsClient;
+import com.azure.resourcemanager.providerhub.fluent.ResourceActionsClient;
 import com.azure.resourcemanager.providerhub.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.providerhub.fluent.ResourceTypeRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.SkusClient;
@@ -40,171 +48,201 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ProviderHubImpl type. */
+/**
+ * Initializes a new instance of the ProviderHubImpl type.
+ */
 @ServiceClient(builder = ProviderHubBuilder.class)
 public final class ProviderHubImpl implements ProviderHub {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The CustomRolloutsClient object to access its operations. */
+    /**
+     * The CustomRolloutsClient object to access its operations.
+     */
     private final CustomRolloutsClient customRollouts;
 
     /**
      * Gets the CustomRolloutsClient object to access its operations.
-     *
+     * 
      * @return the CustomRolloutsClient object.
      */
     public CustomRolloutsClient getCustomRollouts() {
         return this.customRollouts;
     }
 
-    /** The DefaultRolloutsClient object to access its operations. */
+    /**
+     * The DefaultRolloutsClient object to access its operations.
+     */
     private final DefaultRolloutsClient defaultRollouts;
 
     /**
      * Gets the DefaultRolloutsClient object to access its operations.
-     *
+     * 
      * @return the DefaultRolloutsClient object.
      */
     public DefaultRolloutsClient getDefaultRollouts() {
         return this.defaultRollouts;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The NotificationRegistrationsClient object to access its operations. */
+    /**
+     * The NotificationRegistrationsClient object to access its operations.
+     */
     private final NotificationRegistrationsClient notificationRegistrations;
 
     /**
      * Gets the NotificationRegistrationsClient object to access its operations.
-     *
+     * 
      * @return the NotificationRegistrationsClient object.
      */
     public NotificationRegistrationsClient getNotificationRegistrations() {
         return this.notificationRegistrations;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ProviderRegistrationsClient object to access its operations. */
+    /**
+     * The ProviderRegistrationsClient object to access its operations.
+     */
     private final ProviderRegistrationsClient providerRegistrations;
 
     /**
      * Gets the ProviderRegistrationsClient object to access its operations.
-     *
+     * 
      * @return the ProviderRegistrationsClient object.
      */
     public ProviderRegistrationsClient getProviderRegistrations() {
         return this.providerRegistrations;
     }
 
-    /** The ResourceTypeRegistrationsClient object to access its operations. */
+    /**
+     * The ResourceTypeRegistrationsClient object to access its operations.
+     */
     private final ResourceTypeRegistrationsClient resourceTypeRegistrations;
 
     /**
      * Gets the ResourceTypeRegistrationsClient object to access its operations.
-     *
+     * 
      * @return the ResourceTypeRegistrationsClient object.
      */
     public ResourceTypeRegistrationsClient getResourceTypeRegistrations() {
         return this.resourceTypeRegistrations;
     }
 
-    /** The SkusClient object to access its operations. */
+    /**
+     * The SkusClient object to access its operations.
+     */
     private final SkusClient skus;
 
     /**
      * Gets the SkusClient object to access its operations.
-     *
+     * 
      * @return the SkusClient object.
      */
     public SkusClient getSkus() {
@@ -212,28 +250,79 @@ public final class ProviderHubImpl implements ProviderHub {
     }
 
     /**
+     * The ResourceActionsClient object to access its operations.
+     */
+    private final ResourceActionsClient resourceActions;
+
+    /**
+     * Gets the ResourceActionsClient object to access its operations.
+     * 
+     * @return the ResourceActionsClient object.
+     */
+    public ResourceActionsClient getResourceActions() {
+        return this.resourceActions;
+    }
+
+    /**
+     * The AuthorizedApplicationsClient object to access its operations.
+     */
+    private final AuthorizedApplicationsClient authorizedApplications;
+
+    /**
+     * Gets the AuthorizedApplicationsClient object to access its operations.
+     * 
+     * @return the AuthorizedApplicationsClient object.
+     */
+    public AuthorizedApplicationsClient getAuthorizedApplications() {
+        return this.authorizedApplications;
+    }
+
+    /**
+     * The ProviderMonitorSettingsClient object to access its operations.
+     */
+    private final ProviderMonitorSettingsClient providerMonitorSettings;
+
+    /**
+     * Gets the ProviderMonitorSettingsClient object to access its operations.
+     * 
+     * @return the ProviderMonitorSettingsClient object.
+     */
+    public ProviderMonitorSettingsClient getProviderMonitorSettings() {
+        return this.providerMonitorSettings;
+    }
+
+    /**
+     * The NewRegionFrontloadReleasesClient object to access its operations.
+     */
+    private final NewRegionFrontloadReleasesClient newRegionFrontloadReleases;
+
+    /**
+     * Gets the NewRegionFrontloadReleasesClient object to access its operations.
+     * 
+     * @return the NewRegionFrontloadReleasesClient object.
+     */
+    public NewRegionFrontloadReleasesClient getNewRegionFrontloadReleases() {
+        return this.newRegionFrontloadReleases;
+    }
+
+    /**
      * Initializes an instance of ProviderHub client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    ProviderHubImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ProviderHubImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+        AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-20";
+        this.apiVersion = "2024-09-01";
         this.customRollouts = new CustomRolloutsClientImpl(this);
         this.defaultRollouts = new DefaultRolloutsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
@@ -242,11 +331,15 @@ public final class ProviderHubImpl implements ProviderHub {
         this.providerRegistrations = new ProviderRegistrationsClientImpl(this);
         this.resourceTypeRegistrations = new ResourceTypeRegistrationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
+        this.resourceActions = new ResourceActionsClientImpl(this);
+        this.authorizedApplications = new AuthorizedApplicationsClientImpl(this);
+        this.providerMonitorSettings = new ProviderMonitorSettingsClientImpl(this);
+        this.newRegionFrontloadReleases = new NewRegionFrontloadReleasesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -255,7 +348,7 @@ public final class ProviderHubImpl implements ProviderHub {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -265,7 +358,7 @@ public final class ProviderHubImpl implements ProviderHub {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -275,26 +368,32 @@ public final class ProviderHubImpl implements ProviderHub {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -307,19 +406,16 @@ public final class ProviderHubImpl implements ProviderHub {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -360,7 +456,7 @@ public final class ProviderHubImpl implements ProviderHub {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

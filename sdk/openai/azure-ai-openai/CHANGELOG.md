@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,121 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2025-03-26)
+
+### Features Added
+
+- Added `ServiceTier` and `ServiceTierOptions` for `ChatCompletions` and `ChatCompletionsOptions` respectively. This is exclusively a non-Azure OpenAI issue and was requested in [this issue](https://github.com/Azure/azure-sdk-for-java/issues/41695#issuecomment-2736037879).
+
+### Bugs Fixed
+
+- The serialization and the subsequent serialization of any subclass of `ChatRequestMessage` (namely, `ChatRequestAssistantMessage`, `ChatRequestDeveloperMessage`, `ChatRequestFunctionMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage`, `ChatRequestUserMessage`) was faulty. The `content` member of most of these classes was lost. Related issues are [42882](https://github.com/Azure/azure-sdk-for-java/issues/42882) and [44094](https://github.com/Azure/azure-sdk-for-java/issues/44094).
+- The documentation for `ChatCompletions` and `Completions` field `usage`, now matches the spec and the field is marked as `Optional`.
+
+## 1.0.0-beta.15 (2025-03-14)
+
+### Features Added
+
+- New subpackage `com.azure.ai.openai.responses` contains support for OpenAI's recently released Responses functionality.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` to version `1.15.11`.
+
+## 1.0.0-beta.14 (2025-02-21)
+
+### Features Added
+
+- For `ChatCompletionOptions`:
+  - `store` (bool), which enables saving outputs for FT (distillation)
+  - `metadata` (string/string map), used with `store`
+  - `reasoning_effort` (enum string, `low`, `medium`, `high`) to configure how hard `o1` thinks
+  - `developer` message role (`system` replacement for `o1` and newer models) now available. Other than the name, it's identical
+  - `prediction` added for predicted outputs
+  - `modalities` added ("text" | "audio") for audio input support
+  - `audio` added for audio content options (voice, format, etc.)
+  - user role message content part representation for audio input added
+  - **AZURE-ONLY** User Security Context (for Defender for Cloud Integration)
+    - Azure chat request bodies now have a user_security_context property
+    - These are JSON objects that have application_name, end_user_id, end_user_tenant_id, and source_ip, all optional string properties
+
+- For `ChatCompletions`:
+  - audio output added as `ChatMessageAudioContentItem`
+  - parity usage updates:
+    - `PromptTokensDetails` gets `AudioTokens`
+    - `CompletionTokensDetails` gets `AcceptedPredictionTokens`, `RejectedPredictionTokens`, and `AudioTokens`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
+
+## 1.0.0-beta.13 (2024-12-04)
+
+### Features Added
+
+- Added support for service API versions `2024-09-01-preview` and `2024-10-01-preview`.
+- Added support for `max_completion_tokens`, `stream_options`, and `parallel_tool_calls` in `ChatCompletionsOptions` class. 
+  New class `ChatCompletionStreamOptions` introduced. 
+- Added new overload streaming methods `getChatCompletionsStream` and `getCompletionsStream` that take `ChatCompletionStreamOptions streamOptions`.
+- Added support for `stream_options` in `CompletionsOptions` class.
+- Added support for `prompt_tokens_details` and `completion_tokens_details` in `CompletionsUsage` class. 
+  New classes `CompletionsUsagePromptTokensDetails` and `CompletionsUsageCompletionTokensDetails` introduced.
+- Added support for `ungrounded_material` in `ContentFilterResultsForChoice` class. 
+  New classes `ContentFilterCompletionTextSpanResult`, `ContentFilterCompletionTextSpan` introduced.
+
+### Breaking Changes
+- Removed public method `setStream` in `ChatCompletionsOptions` and `CompletionsOptions` classes.
+
+### Bugs Fixed
+- Fixed the issue to reduce the log pollution when using Server Sent Event Streaming API. ([#41164](https://github.com/Azure/azure-sdk-for-java/issues/41164))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.7`.
+
+
+## 1.0.0-beta.12 (2024-10-22)
+
+### Features Added
+- Added support for service API version `2024-08-01-preview`.
+- Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined response format or function definitions.
+  - Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes,
+    and a new type of content item class `ChatMessageRefusalContentItem` to support refusal. `refusal` only works with structured output.
+  - Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema.
+    New classes `ChatCompletionsJsonSchemaResponseFormat` and `ChatCompletionsJsonSchemaResponseFormatJsonSchema` are added to support JSON schema response format.
+- Added support for uploading large files in multiple parts. New client methods `createUpload`, `addUploadPart`,
+  `completeUpload` and `cancelUpload` introduced in `OpenAIClient` and `OpenAIAsyncClient` classes.
+- Updated `ChatRequestMessages` derived classes, 
+  - `ChatRequestSystemMessage` content: `String` or `ChatMessageTextContentItem[]`.
+  - `ChatRequestAssistantMessage` content: `String`, `ChatMessageTextContentItem[]`, `ChatMessageRefusalContentItem[]` or `null`.
+  - `ChatRequestToolMessage` content: `String` or `ChatMessageTextContentItem[]`.
+- Added `rerank_score` property in `AzureChatExtensionDataSourceResponseCitation` class to support re-rank score.
+- Added support for MongoDB chat extension. New classes `MongoDBChatExtensionConfiguration`, `MongoDBChatExtensionParameters`,
+  and `MongoDBChatExtensionParametersFieldsMapping` are added to support MongoDB chat extension.
+- Added `username_and_password` in `OnYourDataAuthenticationOptions` class and an input option class`OnYourDataUsernameAndPasswordAuthenticationOptions`  to support username and password authentication.
+- Added `intergrated` property in `OnYourDataVectorizationSource` class and `OnYourDataVectorizationSourceType` to support integrated vectorization source.
+
+### Breaking Changes
+
+- Replaced `FunctionDefintion` by `ChatCompletionsFunctionToolDefinitionFunction` in `ChatCompletionsFunctionToolDefinition` class. 
+  `FunctionDefintion` only works for `functions` but not `tools`, The `functions` is deprecated.
+- Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
+- Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
+
+### Other Changes
+
+- Upgraded `azure-core` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.5`.
 
 ## 1.0.0-beta.11 (2024-08-29)
 

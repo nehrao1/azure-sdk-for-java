@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JobExecution;
@@ -22,33 +22,30 @@ public final class JobsExecutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"lhkalehpavawugi\",\"id\":\"tiogqgdmini\",\"type\":\"teajohiyg\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-01-10T08:24:54Z\",\"endTime\":\"2021-06-30T15:37:59Z\",\"template\":{\"containers\":[{\"image\":\"mktp\",\"name\":\"xqcsehch\",\"command\":[\"fmpqumqyjg\",\"dzulo\",\"saeuzanhsfnhsenw\"],\"args\":[\"zf\",\"gqjclidftujwj\",\"ufwbeqrku\"],\"env\":[{},{},{},{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"uqnmdvhazcvj\",\"name\":\"iqswbqer\",\"command\":[\"iytxt\",\"gukvlbpkt\",\"dstyouam\"],\"args\":[\"reswmowegmmut\",\"yxey\",\"uqi\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"tnspxlzdesygri\",\"name\":\"aiuf\",\"command\":[\"aybfu\",\"qfrojsydgrhyd\",\"ygywe\"],\"args\":[\"iecafygzmxi\",\"qv\",\"smaklixqcahy\"],\"env\":[{},{},{}],\"resources\":{}},{\"image\":\"bx\",\"name\":\"oij\",\"command\":[\"tblxpkkwjdjodqhy\",\"incnr\"],\"args\":[\"hllizhceumoq\",\"dkadppyibn\",\"qladywrxwhydtlu\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
+            = "{\"value\":[{\"name\":\"fiijrykwlefksxqc\",\"id\":\"zfpxgnmqvzvluy\",\"type\":\"aiossscyvaifp\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-06-18T06:17:35Z\",\"endTime\":\"2021-10-04T22:51:20Z\",\"template\":{\"containers\":[{\"image\":\"fxtjdhsoym\",\"name\":\"v\",\"command\":[\"ftteh\",\"pboujs\",\"kfvvdshxcde\",\"suenyg\"],\"args\":[\"g\",\"tfrnquk\",\"rf\",\"s\"],\"env\":[{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"ylt\",\"name\":\"ntf\",\"command\":[\"g\",\"jdxwnazkurrdre\",\"zjwhsetwwjwz\"],\"args\":[\"e\",\"zuukykcyqhyqq\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<JobExecution> response
-            = manager.jobsExecutions().list("y", "mvqdbpbhfckdvez", "rcssbzhddubbnq", com.azure.core.util.Context.NONE);
+        PagedIterable<JobExecution> response = manager.jobsExecutions()
+            .list("nkbtlwljss", "ctsnldkpwol", "isubxbteog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lhkalehpavawugi", response.iterator().next().name());
-        Assertions.assertEquals("tiogqgdmini", response.iterator().next().id());
-        Assertions.assertEquals("teajohiyg", response.iterator().next().type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T08:24:54Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T15:37:59Z"), response.iterator().next().endTime());
-        Assertions.assertEquals("mktp", response.iterator().next().template().containers().get(0).image());
-        Assertions.assertEquals("xqcsehch", response.iterator().next().template().containers().get(0).name());
-        Assertions.assertEquals("fmpqumqyjg",
-            response.iterator().next().template().containers().get(0).command().get(0));
-        Assertions.assertEquals("zf", response.iterator().next().template().containers().get(0).args().get(0));
-        Assertions.assertEquals("uqnmdvhazcvj", response.iterator().next().template().initContainers().get(0).image());
-        Assertions.assertEquals("iqswbqer", response.iterator().next().template().initContainers().get(0).name());
-        Assertions.assertEquals("iytxt",
-            response.iterator().next().template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("reswmowegmmut",
-            response.iterator().next().template().initContainers().get(0).args().get(0));
+        Assertions.assertEquals("fiijrykwlefksxqc", response.iterator().next().name());
+        Assertions.assertEquals("zfpxgnmqvzvluy", response.iterator().next().id());
+        Assertions.assertEquals("aiossscyvaifp", response.iterator().next().type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T06:17:35Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T22:51:20Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("fxtjdhsoym", response.iterator().next().template().containers().get(0).image());
+        Assertions.assertEquals("v", response.iterator().next().template().containers().get(0).name());
+        Assertions.assertEquals("ftteh", response.iterator().next().template().containers().get(0).command().get(0));
+        Assertions.assertEquals("g", response.iterator().next().template().containers().get(0).args().get(0));
+        Assertions.assertEquals("ylt", response.iterator().next().template().initContainers().get(0).image());
+        Assertions.assertEquals("ntf", response.iterator().next().template().initContainers().get(0).name());
+        Assertions.assertEquals("g", response.iterator().next().template().initContainers().get(0).command().get(0));
+        Assertions.assertEquals("e", response.iterator().next().template().initContainers().get(0).args().get(0));
     }
 }

@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -17,8 +16,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -65,6 +64,22 @@ public final class SearchClientImplBuilder
     }
 
     /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public SearchClientImplBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through.
      */
     @Generated
@@ -80,22 +95,6 @@ public final class SearchClientImplBuilder
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public SearchClientImplBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
         return this;
     }
 
@@ -175,16 +174,39 @@ public final class SearchClientImplBuilder
     }
 
     /*
-     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model.  It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To use Microsoft Entra ID security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
+     * Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     */
+    @Generated
+    private String acceptLanguage;
+
+    /**
+     * Sets Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * 
+     * @param acceptLanguage the acceptLanguage value.
+     * @return the SearchClientImplBuilder.
+     */
+    @Generated
+    public SearchClientImplBuilder acceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+    /*
+     * Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents a
+     * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
+     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
     @Generated
     private String clientId;
 
     /**
-     * Sets Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
-     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Sets Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents
+     * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
+     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      * 
      * @param clientId the clientId value.
      * @return the SearchClientImplBuilder.
@@ -274,14 +296,21 @@ public final class SearchClientImplBuilder
      */
     @Generated
     public SearchClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://atlas.microsoft.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "1.0";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-06-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        SearchClientImpl client
-            = new SearchClientImpl(localPipeline, localSerializerAdapter, this.clientId, localHost, localApiVersion);
+        SearchClientImpl client = new SearchClientImpl(localPipeline, localSerializerAdapter, this.acceptLanguage,
+            this.clientId, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated
@@ -297,10 +326,8 @@ public final class SearchClientImplBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()

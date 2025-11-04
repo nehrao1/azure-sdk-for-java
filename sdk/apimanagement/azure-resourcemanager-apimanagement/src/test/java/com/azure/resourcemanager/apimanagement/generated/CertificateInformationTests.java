@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateInformation model =
-            BinaryData
-                .fromString("{\"expiry\":\"2021-06-29T09:59:30Z\",\"thumbprint\":\"zabwmvog\",\"subject\":\"jsvlpg\"}")
-                .toObject(CertificateInformation.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T09:59:30Z"), model.expiry());
-        Assertions.assertEquals("zabwmvog", model.thumbprint());
-        Assertions.assertEquals("jsvlpg", model.subject());
+        CertificateInformation model = BinaryData
+            .fromString("{\"expiry\":\"2021-01-08T14:36:18Z\",\"thumbprint\":\"dahlfxlmuifmuadj\",\"subject\":\"fsn\"}")
+            .toObject(CertificateInformation.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T14:36:18Z"), model.expiry());
+        Assertions.assertEquals("dahlfxlmuifmuadj", model.thumbprint());
+        Assertions.assertEquals("fsn", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateInformation model =
-            new CertificateInformation()
-                .withExpiry(OffsetDateTime.parse("2021-06-29T09:59:30Z"))
-                .withThumbprint("zabwmvog")
-                .withSubject("jsvlpg");
+        CertificateInformation model
+            = new CertificateInformation().withExpiry(OffsetDateTime.parse("2021-01-08T14:36:18Z"))
+                .withThumbprint("dahlfxlmuifmuadj")
+                .withSubject("fsn");
         model = BinaryData.fromObject(model).toObject(CertificateInformation.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T09:59:30Z"), model.expiry());
-        Assertions.assertEquals("zabwmvog", model.thumbprint());
-        Assertions.assertEquals("jsvlpg", model.subject());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T14:36:18Z"), model.expiry());
+        Assertions.assertEquals("dahlfxlmuifmuadj", model.thumbprint());
+        Assertions.assertEquals("fsn", model.subject());
     }
 }

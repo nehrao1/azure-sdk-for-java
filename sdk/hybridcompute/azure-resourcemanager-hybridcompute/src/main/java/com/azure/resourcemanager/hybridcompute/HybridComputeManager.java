@@ -11,22 +11,27 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.HybridComputeManagementClient;
+import com.azure.resourcemanager.hybridcompute.implementation.ExtensionMetadataV2sImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.ExtensionMetadatasImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.ExtensionPublishersImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.ExtensionTypesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.GatewaysImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.HybridComputeManagementClientBuilder;
+import com.azure.resourcemanager.hybridcompute.implementation.LicenseProfilesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.LicensesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachineExtensionsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachineRunCommandsImpl;
@@ -39,8 +44,12 @@ import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkResourc
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkScopesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.SettingsOperationsImpl;
+import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadataV2s;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadatas;
+import com.azure.resourcemanager.hybridcompute.models.ExtensionPublishers;
+import com.azure.resourcemanager.hybridcompute.models.ExtensionTypes;
 import com.azure.resourcemanager.hybridcompute.models.Gateways;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfiles;
 import com.azure.resourcemanager.hybridcompute.models.Licenses;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensions;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommands;
@@ -57,6 +66,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -69,11 +79,19 @@ public final class HybridComputeManager {
 
     private Machines machines;
 
+    private LicenseProfiles licenseProfiles;
+
     private MachineExtensions machineExtensions;
 
     private ResourceProviders resourceProviders;
 
     private ExtensionMetadatas extensionMetadatas;
+
+    private ExtensionMetadataV2s extensionMetadataV2s;
+
+    private ExtensionTypes extensionTypes;
+
+    private ExtensionPublishers extensionPublishers;
 
     private Operations operations;
 
@@ -145,6 +163,9 @@ public final class HybridComputeManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-hybridcompute.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -252,12 +273,14 @@ public final class HybridComputeManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcompute")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -290,7 +313,7 @@ public final class HybridComputeManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -328,6 +351,18 @@ public final class HybridComputeManager {
     }
 
     /**
+     * Gets the resource collection API of LicenseProfiles. It manages LicenseProfile.
+     * 
+     * @return Resource collection API of LicenseProfiles.
+     */
+    public LicenseProfiles licenseProfiles() {
+        if (this.licenseProfiles == null) {
+            this.licenseProfiles = new LicenseProfilesImpl(clientObject.getLicenseProfiles(), this);
+        }
+        return licenseProfiles;
+    }
+
+    /**
      * Gets the resource collection API of MachineExtensions. It manages MachineExtension.
      * 
      * @return Resource collection API of MachineExtensions.
@@ -361,6 +396,42 @@ public final class HybridComputeManager {
             this.extensionMetadatas = new ExtensionMetadatasImpl(clientObject.getExtensionMetadatas(), this);
         }
         return extensionMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of ExtensionMetadataV2s.
+     * 
+     * @return Resource collection API of ExtensionMetadataV2s.
+     */
+    public ExtensionMetadataV2s extensionMetadataV2s() {
+        if (this.extensionMetadataV2s == null) {
+            this.extensionMetadataV2s = new ExtensionMetadataV2sImpl(clientObject.getExtensionMetadataV2s(), this);
+        }
+        return extensionMetadataV2s;
+    }
+
+    /**
+     * Gets the resource collection API of ExtensionTypes.
+     * 
+     * @return Resource collection API of ExtensionTypes.
+     */
+    public ExtensionTypes extensionTypes() {
+        if (this.extensionTypes == null) {
+            this.extensionTypes = new ExtensionTypesImpl(clientObject.getExtensionTypes(), this);
+        }
+        return extensionTypes;
+    }
+
+    /**
+     * Gets the resource collection API of ExtensionPublishers.
+     * 
+     * @return Resource collection API of ExtensionPublishers.
+     */
+    public ExtensionPublishers extensionPublishers() {
+        if (this.extensionPublishers == null) {
+            this.extensionPublishers = new ExtensionPublishersImpl(clientObject.getExtensionPublishers(), this);
+        }
+        return extensionPublishers;
     }
 
     /**

@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.properties.Az
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Session;
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -43,8 +43,10 @@ class ServiceBusJmsAutoConfigurationTests {
         + "SharedAccessKey=sasKey";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
-        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+        .withConfiguration(AutoConfigurations.of(
+            JmsAutoConfiguration.class,
+            ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory =
@@ -117,8 +119,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "standard" })
-    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
+    @ValueSource(strings = { "premium" })
+    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -136,8 +138,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "premium" })
-    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
+    @ValueSource(strings = { "standard" })
+    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -224,7 +226,6 @@ class ServiceBusJmsAutoConfigurationTests {
             });
     }
 
-    @SuppressWarnings("removal")
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
     void jmsPropertiesConfiguredCorrectly(String pricingTier) {
@@ -232,7 +233,7 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
-                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.session.acknowledge-mode=client",
                 "spring.jms.listener.concurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
@@ -242,7 +243,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(JmsProperties.class);
                 JmsProperties jmsProperties = context.getBean(JmsProperties.class);
                 assertThat(jmsProperties.getListener().isAutoStartup()).isFalse();
-                assertThat(jmsProperties.getListener().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
+                assertThat(jmsProperties.getListener().getSession().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
                 assertThat(jmsProperties.getListener().formatConcurrency()).isEqualTo("2-10");
                 assertThat(jmsProperties.getListener().getReceiveTimeout()).isEqualTo(Duration.ofSeconds(2));
                 assertThat(jmsProperties.getListener().getMaxConcurrency()).isEqualTo(10);
@@ -273,7 +274,7 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
-                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.session.acknowledge-mode=client",
                 "spring.jms.listener.concurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
@@ -291,11 +292,80 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void cachingConnectionFactoryBeanConfiguredAsDefault(String pricingTier) {
+    void jmsPoolConnectionFactoryBeanConfiguredAsDefault(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void jmsPoolConnectionFactoryBeanConfiguredExplicitly(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true"
+            )
+            .run(context -> {
+                    assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void jmsPoolConnectionFactoryBeanConfiguredByPoolEnableCacheEnable(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true",
+                "spring.jms.cache.enabled=true"
+            )
+            .run(context -> {
+                    assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void jmsPoolConnectionFactoryBeanConfiguredByPoolEnableCacheDisable(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true",
+                "spring.jms.cache.enabled=false"
+            )
+            .run(context -> {
+                    assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void cachingConnectionFactoryBeanConfiguredByCacheEnable(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.cache.enabled=true"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
@@ -305,12 +375,14 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void cachingConnectionFactoryBeanConfiguredExplicitly(String pricingTier) {
+    void cachingConnectionFactoryBeanConfiguredByPoolDisableCacheEnable(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.cache.enabled=true",
-                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+                "spring.jms.servicebus.pool.enabled=false"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
@@ -320,7 +392,23 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void nativeConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
+    void cachingConnectionFactoryBeanConfiguredByPoolDisable(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=false"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void nativeConnectionFactoryBeanConfiguredByCacheDisable(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -337,17 +425,18 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void jmsPoolConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
+    void nativeConnectionFactoryBeanConfiguredByPoolDisableCacheDisable(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
-                "spring.jms.servicebus.pool.enabled=true"
+                "spring.jms.cache.enabled=false",
+                "spring.jms.servicebus.pool.enabled=false"
             )
             .run(context -> {
-                    assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                    assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
                 }
             );
     }

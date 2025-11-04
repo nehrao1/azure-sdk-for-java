@@ -3,21 +3,17 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.clientcore.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {
@@ -25,15 +21,14 @@ public class HttpPipelinePolicyTests {
     public void verifySend() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
-        URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policy1, policy2)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policy1)
+                .addPolicy(policy2)
+                .build();
 
-
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
@@ -42,14 +37,13 @@ public class HttpPipelinePolicyTests {
     @Test
     public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
-        URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policyWithDefaultSyncImplementation)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policyWithDefaultSyncImplementation)
+                .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -57,13 +51,11 @@ public class HttpPipelinePolicyTests {
 
     /**
      * This is to cover case when reactor could complain about blocking on non-blocking thread.
-     *
-     * @throws MalformedURLException ignored.
      */
     @Test
     public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
-        HttpPipelinePolicy badPolicy1 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -73,7 +65,7 @@ public class HttpPipelinePolicyTests {
             return next.process();
         };
 
-        HttpPipelinePolicy badPolicy2 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy2 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -89,24 +81,23 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+            return new Response<>(request, 200, new HttpHeaders(), null);
         };
-        URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(badClient)
-            .policies(policy1, badPolicy1, badPolicy2)
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(badClient)
+            .addPolicy(policy1)
+            .addPolicy(badPolicy1)
+            .addPolicy(badPolicy2)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
     }
-
 
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -117,7 +108,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

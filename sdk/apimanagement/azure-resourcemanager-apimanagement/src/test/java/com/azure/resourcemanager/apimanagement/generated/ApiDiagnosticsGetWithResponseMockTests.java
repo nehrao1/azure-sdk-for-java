@@ -6,11 +6,9 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
 import com.azure.resourcemanager.apimanagement.models.DiagnosticContract;
@@ -18,74 +16,45 @@ import com.azure.resourcemanager.apimanagement.models.HttpCorrelationProtocol;
 import com.azure.resourcemanager.apimanagement.models.OperationNameFormat;
 import com.azure.resourcemanager.apimanagement.models.SamplingType;
 import com.azure.resourcemanager.apimanagement.models.Verbosity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApiDiagnosticsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"nbuvms\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":51.66775294769329},\"frontend\":{\"request\":{\"headers\":[\"eyrxparxtzayq\",\"ddigeblsplzdss\",\"wwveeozbjkjq\"],\"body\":{\"bytes\":1884210095},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{}]}},\"response\":{\"headers\":[\"ssjdywbnklg\",\"rxactsawvxcimp\"],\"body\":{\"bytes\":269168399},\"dataMasking\":{\"queryParams\":[{},{},{},{}],\"headers\":[{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"nkn\",\"fuysjhv\",\"rllfswarm\"],\"body\":{\"bytes\":1684546781},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"qnipehfwwc\",\"fnxi\",\"juvjucfjisos\"],\"body\":{\"bytes\":161867495},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{}]}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"W3C\",\"verbosity\":\"error\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"ixgofqdqwsj\",\"name\":\"ihuvrqpbxdoicqpk\",\"type\":\"tly\"}";
 
-        String responseStr =
-            "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"rjvqxvwkiocxoer\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":85.4488689271105},\"frontend\":{\"request\":{\"headers\":[\"lrlqxbctatezyozd\",\"cqqnlsjxcsc\",\"it\",\"dmra\"],\"body\":{\"bytes\":242793298},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"vmah\"],\"body\":{\"bytes\":1715303013},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"hyzhrcqdfwbifn\"],\"body\":{\"bytes\":1653699527},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"c\",\"mmynbrpelpfi\",\"tezgxmpe\"],\"body\":{\"bytes\":1648834541},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{},{}]}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"W3C\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":false},\"id\":\"tllxsw\",\"name\":\"dapsmir\",\"type\":\"nrijefmrtwxcevds\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DiagnosticContract response =
-            manager
-                .apiDiagnostics()
-                .getWithResponse("mrs", "ydl", "prel", "xfkz", com.azure.core.util.Context.NONE)
-                .getValue();
+        DiagnosticContract response = manager.apiDiagnostics()
+            .getWithResponse("hcmcgm", "m", "nvqxuyiarznhdqse", "pdlmajpuyxoafrmz", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, response.alwaysLog());
-        Assertions.assertEquals("rjvqxvwkiocxoer", response.loggerId());
+        Assertions.assertEquals("nbuvms", response.loggerId());
         Assertions.assertEquals(SamplingType.FIXED, response.sampling().samplingType());
-        Assertions.assertEquals(85.4488689271105D, response.sampling().percentage());
-        Assertions.assertEquals("lrlqxbctatezyozd", response.frontend().request().headers().get(0));
-        Assertions.assertEquals(242793298, response.frontend().request().body().bytes());
-        Assertions.assertEquals("vmah", response.frontend().response().headers().get(0));
-        Assertions.assertEquals(1715303013, response.frontend().response().body().bytes());
-        Assertions.assertEquals("hyzhrcqdfwbifn", response.backend().request().headers().get(0));
-        Assertions.assertEquals(1653699527, response.backend().request().body().bytes());
-        Assertions.assertEquals("c", response.backend().response().headers().get(0));
-        Assertions.assertEquals(1648834541, response.backend().response().body().bytes());
-        Assertions.assertEquals(false, response.logClientIp());
+        Assertions.assertEquals(51.66775294769329D, response.sampling().percentage());
+        Assertions.assertEquals("eyrxparxtzayq", response.frontend().request().headers().get(0));
+        Assertions.assertEquals(1884210095, response.frontend().request().body().bytes());
+        Assertions.assertEquals("ssjdywbnklg", response.frontend().response().headers().get(0));
+        Assertions.assertEquals(269168399, response.frontend().response().body().bytes());
+        Assertions.assertEquals("nkn", response.backend().request().headers().get(0));
+        Assertions.assertEquals(1684546781, response.backend().request().body().bytes());
+        Assertions.assertEquals("qnipehfwwc", response.backend().response().headers().get(0));
+        Assertions.assertEquals(161867495, response.backend().response().body().bytes());
+        Assertions.assertTrue(response.logClientIp());
         Assertions.assertEquals(HttpCorrelationProtocol.W3C, response.httpCorrelationProtocol());
-        Assertions.assertEquals(Verbosity.VERBOSE, response.verbosity());
-        Assertions.assertEquals(OperationNameFormat.URL, response.operationNameFormat());
-        Assertions.assertEquals(false, response.metrics());
+        Assertions.assertEquals(Verbosity.ERROR, response.verbosity());
+        Assertions.assertEquals(OperationNameFormat.NAME, response.operationNameFormat());
+        Assertions.assertTrue(response.metrics());
     }
 }

@@ -16,30 +16,23 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"bcvhzlhpl\"},\"location\":\"qkdlw\",\"tags\":{\"kxtrq\":\"bum\",\"rtawcoezb\":\"fsmlmbtxhwgfw\"},\"id\":\"hubskhudygooo\",\"name\":\"kqfqjbvl\",\"type\":\"orfmluiqt\"},{\"properties\":{\"provisioningState\":\"avyvnqqyba\"},\"location\":\"euayjkqabqgzsles\",\"tags\":{\"bquwrbehw\":\"hernntiewdjc\",\"mvvhmxtdrjfuta\":\"gohbuffkmrq\",\"jvewzcjznmwcp\":\"oe\"},\"id\":\"guaadraufactkahz\",\"name\":\"v\",\"type\":\"jjziuxxpsh\"}],\"nextLink\":\"e\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"zfttsttktlahb\"},\"location\":\"ctxtgzukxi\",\"tags\":{\"cpjuisa\":\"qtgqqqxhrnxr\"},\"id\":\"okqdzfvaz\",\"name\":\"vjlfrqtt\",\"type\":\"ajlkatnw\"}],\"nextLink\":\"iopid\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("qkdlw", model.value().get(0).location());
-        Assertions.assertEquals("bum", model.value().get(0).tags().get("kxtrq"));
-        Assertions.assertEquals("e", model.nextLink());
+        Assertions.assertEquals("ctxtgzukxi", model.value().get(0).location());
+        Assertions.assertEquals("qtgqqqxhrnxr", model.value().get(0).tags().get("cpjuisa"));
+        Assertions.assertEquals("iopid", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultsList model
-            = new BackupVaultsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new BackupVaultInner().withLocation("qkdlw")
-                                .withTags(mapOf("kxtrq", "bum", "rtawcoezb", "fsmlmbtxhwgfw")),
-                            new BackupVaultInner().withLocation("euayjkqabqgzsles")
-                                .withTags(mapOf("bquwrbehw", "hernntiewdjc", "mvvhmxtdrjfuta", "gohbuffkmrq",
-                                    "jvewzcjznmwcp", "oe"))))
-                .withNextLink("e");
+        BackupVaultsList model = new BackupVaultsList()
+            .withValue(Arrays
+                .asList(new BackupVaultInner().withLocation("ctxtgzukxi").withTags(mapOf("cpjuisa", "qtgqqqxhrnxr"))))
+            .withNextLink("iopid");
         model = BinaryData.fromObject(model).toObject(BackupVaultsList.class);
-        Assertions.assertEquals("qkdlw", model.value().get(0).location());
-        Assertions.assertEquals("bum", model.value().get(0).tags().get("kxtrq"));
-        Assertions.assertEquals("e", model.nextLink());
+        Assertions.assertEquals("ctxtgzukxi", model.value().get(0).location());
+        Assertions.assertEquals("qtgqqqxhrnxr", model.value().get(0).tags().get("cpjuisa"));
+        Assertions.assertEquals("iopid", model.nextLink());
     }
 
     // Use "Map.of" if available

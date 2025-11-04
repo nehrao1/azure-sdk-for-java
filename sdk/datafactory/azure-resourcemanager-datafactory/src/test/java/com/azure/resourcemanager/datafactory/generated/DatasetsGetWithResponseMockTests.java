@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DatasetResource;
@@ -22,14 +22,14 @@ public final class DatasetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"\":{\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DatasetResource response = manager.datasets()
             .getWithResponse("uhjxvcjrxle", "yptvrbgcp", "sd", "swozpm", com.azure.core.util.Context.NONE)

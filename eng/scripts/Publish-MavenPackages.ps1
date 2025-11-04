@@ -71,6 +71,10 @@ foreach ($packageDetail in $packageDetails) {
 
   if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+    # If no JAR/AAR found, use POM as the main file artifact for POM-only packages
+    if (-not $fileAssociatedArtifact) {
+      $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
+    }
   } else {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts[0]
   }
@@ -147,14 +151,11 @@ foreach ($packageDetail in $packageDetails) {
   $gpgexeOption = "-Dgpgexe=$GPGExecutablePath"
   Write-Information "GPG Executable Option is: $gpgexeOption"
 
-  $gpgPluginVersion = . $PSScriptRoot\Get-ExternalDependencyVersion.ps1 -GroupId 'org.apache.maven.plugins' -ArtifactId 'maven-gpg-plugin'
-  if ($LASTEXITCODE) {
-    Write-Information "##vso[task.logissue type=error]Unable to resolve version of external dependency 'org.apache.maven.plugins:maven-gpg-plugin'"
-    exit $LASTEXITCODE
-  }
-
-  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:$gpgPluginVersion`:sign-and-deploy-file"
-
+  # Just hard code the maven-gpg-plugin version rather than the previous logic where it determined it based on values
+  # in /eng/versions/external_dependencies.txt. This will prevent an issue with new scripts that remove unused
+  # dependencies (which this usage wouldn't be considered one) and from an errant update to the version breaking this
+  # release. Effectively, the usage is unique enough here to be handled separately from our normal dependency management.
+  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file"
 
   if ($requiresLocalGpg) {
     $localRepositoryDirectory = Get-RandomRepositoryDirectory

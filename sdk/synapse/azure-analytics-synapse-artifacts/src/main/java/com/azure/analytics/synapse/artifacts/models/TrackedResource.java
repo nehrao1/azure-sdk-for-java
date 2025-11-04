@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,16 +23,39 @@ public class TrackedResource extends Resource {
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The geo-location where the resource lives
      */
+    @Generated
     private String location;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    @Generated
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    @Generated
+    private String id;
 
     /**
      * Creates an instance of TrackedResource class.
      */
+    @Generated
     public TrackedResource() {
     }
 
@@ -40,6 +64,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -50,6 +75,7 @@ public class TrackedResource extends Resource {
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */
+    @Generated
     public TrackedResource setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -60,6 +86,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -70,14 +97,51 @@ public class TrackedResource extends Resource {
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */
+    @Generated
     public TrackedResource setLocation(String location) {
         this.location = location;
         return this;
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Generated
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +159,7 @@ public class TrackedResource extends Resource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TrackedResource.
      */
+    @Generated
     public static TrackedResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrackedResource deserializedTrackedResource = new TrackedResource();
@@ -103,11 +168,11 @@ public class TrackedResource extends Resource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedTrackedResource.setId(reader.getString());
+                    deserializedTrackedResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedTrackedResource.setName(reader.getString());
+                    deserializedTrackedResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedTrackedResource.setType(reader.getString());
+                    deserializedTrackedResource.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedTrackedResource.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {

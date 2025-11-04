@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
@@ -22,20 +22,20 @@ public final class SubvolumesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"fdlpukhpyr\",\"size\":8874450991686184981,\"parentPath\":\"cpeogkhnmgbrou\",\"provisioningState\":\"dbhfhp\"},\"id\":\"azjzo\",\"name\":\"wjxhpdulon\",\"type\":\"acn\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"txd\",\"size\":7982443333722102241,\"parentPath\":\"us\",\"provisioningState\":\"vlnsnnjz\"},\"id\":\"afolpymwamxqzrag\",\"name\":\"gdphtvdula\",\"type\":\"vl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SubvolumeInfo> response = manager.subvolumes()
-            .listByVolume("axmqeqal", "hjnhgwydyynfsvk", "gbv", "ta", com.azure.core.util.Context.NONE);
+        PagedIterable<SubvolumeInfo> response
+            = manager.subvolumes().listByVolume("kcdxfzzzw", "jafi", "lhguyn", "chl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fdlpukhpyr", response.iterator().next().path());
-        Assertions.assertEquals(8874450991686184981L, response.iterator().next().size());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.iterator().next().parentPath());
+        Assertions.assertEquals("txd", response.iterator().next().path());
+        Assertions.assertEquals(7982443333722102241L, response.iterator().next().size());
+        Assertions.assertEquals("us", response.iterator().next().parentPath());
     }
 }

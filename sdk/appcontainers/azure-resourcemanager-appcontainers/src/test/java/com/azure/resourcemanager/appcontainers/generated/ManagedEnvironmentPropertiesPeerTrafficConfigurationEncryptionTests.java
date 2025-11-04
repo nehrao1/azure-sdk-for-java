@@ -14,7 +14,7 @@ public final class ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryptio
         ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption model
             = BinaryData.fromString("{\"enabled\":false}")
                 .toObject(ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -23,6 +23,6 @@ public final class ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryptio
             = new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(false);
         model = BinaryData.fromObject(model)
             .toObject(ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
     }
 }

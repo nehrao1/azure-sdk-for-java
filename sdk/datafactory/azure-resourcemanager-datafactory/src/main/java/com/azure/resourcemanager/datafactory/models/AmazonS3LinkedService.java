@@ -51,7 +51,7 @@ public final class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
+    AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -257,13 +257,22 @@ public final class AmazonS3LinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model AmazonS3LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

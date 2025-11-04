@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,31 +21,41 @@ public final class AzureDataExplorerSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "AzureDataExplorerSource";
 
     /*
-     * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType string).
+     * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType
+     * string).
      */
+    @Generated
     private Object query;
 
     /*
-     * The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a certain row-count limit.
+     * The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a
+     * certain row-count limit.
      */
+    @Generated
     private Object noTruncation;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
+     * Query timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
      */
+    @Generated
     private Object queryTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of AzureDataExplorerSource class.
      */
+    @Generated
     public AzureDataExplorerSource() {
     }
 
@@ -53,6 +64,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +76,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -75,6 +88,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * @param query the query value to set.
      * @return the AzureDataExplorerSource object itself.
      */
+    @Generated
     public AzureDataExplorerSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -86,6 +100,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * 
      * @return the noTruncation value.
      */
+    @Generated
     public Object getNoTruncation() {
         return this.noTruncation;
     }
@@ -97,6 +112,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * @param noTruncation the noTruncation value to set.
      * @return the AzureDataExplorerSource object itself.
      */
+    @Generated
     public AzureDataExplorerSource setNoTruncation(Object noTruncation) {
         this.noTruncation = noTruncation;
         return this;
@@ -108,6 +124,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * 
      * @return the queryTimeout value.
      */
+    @Generated
     public Object getQueryTimeout() {
         return this.queryTimeout;
     }
@@ -119,6 +136,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * @param queryTimeout the queryTimeout value to set.
      * @return the AzureDataExplorerSource object itself.
      */
+    @Generated
     public AzureDataExplorerSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
         return this;
@@ -130,6 +148,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -141,6 +160,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the AzureDataExplorerSource object itself.
      */
+    @Generated
     public AzureDataExplorerSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -149,6 +169,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -158,6 +179,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -167,6 +189,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -176,17 +199,30 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeUntypedField("query", this.query);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("noTruncation", this.noTruncation);
-        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.noTruncation != null) {
+            jsonWriter.writeUntypedField("noTruncation", this.noTruncation);
+        }
+        if (this.queryTimeout != null) {
+            jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -204,6 +240,7 @@ public final class AzureDataExplorerSource extends CopySource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataExplorerSource.
      */
+    @Generated
     public static AzureDataExplorerSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerSource deserializedAzureDataExplorerSource = new AzureDataExplorerSource();

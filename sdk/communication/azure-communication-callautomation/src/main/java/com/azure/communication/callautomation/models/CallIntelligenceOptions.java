@@ -11,11 +11,16 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class CallIntelligenceOptions {
 
-
     /**
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String cognitiveServicesEndpoint;
+
+    /**
+     * Creates an instance of {@link CallIntelligenceOptions}.
+     */
+    public CallIntelligenceOptions() {
+    }
 
     /**
      * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
@@ -32,11 +37,10 @@ public final class CallIntelligenceOptions {
      * attached.
      *
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
-     * @return the CreateGroupCallOptions object itself.
+     * @return the CallIntelligenceOptions object itself.
      */
     public CallIntelligenceOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
-
 }

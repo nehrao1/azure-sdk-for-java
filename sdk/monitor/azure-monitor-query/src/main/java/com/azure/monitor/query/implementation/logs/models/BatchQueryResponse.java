@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,28 +21,31 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
     /*
      * The id property.
      */
+    @Generated
     private String id;
 
     /*
      * The status property.
      */
+    @Generated
     private Integer status;
 
     /*
-     * A query response for a single query in a batch.
-     * 
      * Contains the tables, columns & rows resulting from a query.
      */
+    @Generated
     private BatchQueryResults body;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> headers;
 
     /**
      * Creates an instance of BatchQueryResponse class.
      */
+    @Generated
     public BatchQueryResponse() {
     }
 
@@ -50,6 +54,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -60,6 +65,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * @param id the id value to set.
      * @return the BatchQueryResponse object itself.
      */
+    @Generated
     public BatchQueryResponse setId(String id) {
         this.id = id;
         return this;
@@ -70,6 +76,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * 
      * @return the status value.
      */
+    @Generated
     public Integer getStatus() {
         return this.status;
     }
@@ -80,30 +87,29 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * @param status the status value to set.
      * @return the BatchQueryResponse object itself.
      */
+    @Generated
     public BatchQueryResponse setStatus(Integer status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the body property: A query response for a single query in a batch.
-     * 
-     * Contains the tables, columns &amp; rows resulting from a query.
+     * Get the body property: Contains the tables, columns &amp; rows resulting from a query.
      * 
      * @return the body value.
      */
+    @Generated
     public BatchQueryResults getBody() {
         return this.body;
     }
 
     /**
-     * Set the body property: A query response for a single query in a batch.
-     * 
-     * Contains the tables, columns &amp; rows resulting from a query.
+     * Set the body property: Contains the tables, columns &amp; rows resulting from a query.
      * 
      * @param body the body value to set.
      * @return the BatchQueryResponse object itself.
      */
+    @Generated
     public BatchQueryResponse setBody(BatchQueryResults body) {
         this.body = body;
         return this;
@@ -114,6 +120,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * 
      * @return the headers value.
      */
+    @Generated
     public Map<String, String> getHeaders() {
         return this.headers;
     }
@@ -124,11 +131,16 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * @param headers the headers value to set.
      * @return the BatchQueryResponse object itself.
      */
+    @Generated
     public BatchQueryResponse setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,6 +159,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchQueryResponse.
      */
+    @Generated
     public static BatchQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchQueryResponse deserializedBatchQueryResponse = new BatchQueryResponse();

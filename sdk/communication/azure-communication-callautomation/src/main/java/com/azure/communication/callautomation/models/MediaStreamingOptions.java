@@ -4,48 +4,68 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
-/** The MediaStreamingConfigurationInternal model. */
+/** The MediaStreamingOptions model. */
 @Fluent
-public final class MediaStreamingOptions implements JsonSerializable<MediaStreamingOptions> {
+public final class MediaStreamingOptions {
     /*
      * Transport URL for media streaming
      */
-    private final String transportUrl;
+    private String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private final MediaStreamingTransport transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    private final MediaStreamingContent contentType;
+    private MediaStreamingContentType contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
     private final MediaStreamingAudioChannel audioChannelType;
 
+    /*
+     * The type of transport to be used for media streaming, eg. Websocket
+     */
+    private Boolean startMediaStreaming;
+
+    /*
+     * A value indicating whether bidirectional streaming is enabled.
+     */
+    private Boolean enableBidirectional;
+
+    /*
+     * Specifies the audio format used for encoding, including sample rate and channel type.
+     */
+    private AudioFormat audioFormat;
+
+    /*
+     * A value that indicates whether to stream the DTMF tones.
+     */
+    private Boolean enableDtmfTones;
+
     /**
-     * Creates a new instance of MediaStreamingConfiguration
-     * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
-     * @param contentType - Content Type
+     * Creates a new instance of MediaStreamingOptions
+     * @param audioChannelType - Audio Channel Type
+     * @param transportType - The type of transport to be used for media streaming, eg. Websocket
+     */
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType, StreamingTransport transportType) {
+        this.transportType = StreamingTransport.WEBSOCKET;
+        this.contentType = MediaStreamingContentType.AUDIO;
+        this.audioChannelType = audioChannelType;
+        this.startMediaStreaming = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
      * @param audioChannelType - Audio Channel Type
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
-        this.transportUrl = transportUrl;
-        this.transportType = transportType;
-        this.contentType = contentType;
-        this.audioChannelType = audioChannelType;
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType) {
+        this(audioChannelType, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -58,11 +78,22 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
     }
 
     /**
+     * Set the transportUrl property: Transport URL for media streaming.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
+    }
+
+    /**
      * Get the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
      *
      * @return the transportType value.
      */
-    public MediaStreamingTransport getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -71,8 +102,17 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      *
      * @return the contentType value.
      */
-    public MediaStreamingContent getContentType() {
+    public MediaStreamingContentType getContentType() {
         return this.contentType;
+    }
+
+    /**
+    * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
+    *
+    * @return the startMediaStreaming value.
+    */
+    public Boolean isStartMediaStreamingEnabled() {
+        return this.startMediaStreaming;
     }
 
     /**
@@ -84,46 +124,98 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         return this.audioChannelType;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", transportUrl);
-        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
-        jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
-        jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
-        return jsonWriter.writeEndObject();
+    /**
+    * Set the contentType property: The contentType property.
+    *
+    * @param contentType the contentType value to set.
+    * @return the MediaStreamingOptions object itself.
+    */
+    public MediaStreamingOptions setContentType(MediaStreamingContentType contentType) {
+        this.contentType = contentType;
+        return this;
     }
 
     /**
-     * Reads an instance of MediaStreamingOptions from the JsonReader.
+     * Get the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaStreamingOptions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaStreamingOptions.
+     * @return the startMediaStreaming value.
      */
-    public static MediaStreamingOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String transportUrl = null;
-            MediaStreamingTransport transportType = null;
-            MediaStreamingContent contentType = null;
-            MediaStreamingAudioChannel audioChannelType = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("transportUrl".equals(fieldName)) {
-                    transportUrl = reader.getString();
-                } else if ("transportType".equals(fieldName)) {
-                    transportType = MediaStreamingTransport.fromString(reader.getString());
-                } else if ("contentType".equals(fieldName)) {
-                    contentType = MediaStreamingContent.fromString(reader.getString());
-                } else if ("audioChannelType".equals(fieldName)) {
-                    audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType);
-        });
+    public Boolean isStartMediaStreaming() {
+        return this.startMediaStreaming;
+    }
+
+    /**
+     * Set the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
+     *
+     * @param startMediaStreaming the startMediaStreaming value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setStartMediaStreaming(Boolean startMediaStreaming) {
+        this.startMediaStreaming = startMediaStreaming;
+        return this;
+    }
+
+    /**
+     * Get the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @return the enableDtmfTones value.
+     */
+    public Boolean isEnableDtmfTones() {
+        return this.enableDtmfTones;
+    }
+
+    /**
+     * Set the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @param enableDtmfTones the enableDtmfTones value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setEnableDtmfTones(Boolean enableDtmfTones) {
+        this.enableDtmfTones = enableDtmfTones;
+        return this;
+    }
+
+    /**
+    * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
+    *
+    * @return the enableBidirectional value.
+    */
+    public Boolean isEnableBidirectional() {
+        return this.enableBidirectional;
+    }
+
+    /**
+     * Set the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
+     *
+     * @param enableBidirectional the enableBidirectional value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setEnableBidirectional(Boolean enableBidirectional) {
+        this.enableBidirectional = enableBidirectional;
+        return this;
+    }
+
+    /**
+     * Get the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
+     * type.
+     *
+     * @return the audioFormat value.
+     */
+    public AudioFormat getAudioFormat() {
+        return this.audioFormat;
+    }
+
+    /**
+     * Set the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
+     * type.
+     *
+     * @param audioFormat the audioFormat value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setAudioFormat(AudioFormat audioFormat) {
+        this.audioFormat = audioFormat;
+        return this;
     }
 }

@@ -55,6 +55,7 @@ import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
@@ -87,12 +88,12 @@ public final class DigitalTwinsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIDigitalTwins")
     public interface DigitalTwinsService {
         @Get("/digitaltwins/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getById(@HostParam("$host") String host,
+        Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Map<String, Object>>> getById(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -100,7 +101,7 @@ public final class DigitalTwinsImpl {
         @Get("/digitaltwins/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getByIdNoCustomHeaders(@HostParam("$host") String host,
+        Mono<Response<Map<String, Object>>> getByIdNoCustomHeaders(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -108,7 +109,7 @@ public final class DigitalTwinsImpl {
         @Put("/digitaltwins/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> add(@HostParam("$host") String host,
+        Mono<ResponseBase<DigitalTwinsAddHeaders, Map<String, Object>>> add(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @HeaderParam("If-None-Match") String ifNoneMatch,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object twin,
@@ -117,7 +118,7 @@ public final class DigitalTwinsImpl {
         @Put("/digitaltwins/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> addNoCustomHeaders(@HostParam("$host") String host,
+        Mono<Response<Map<String, Object>>> addNoCustomHeaders(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @HeaderParam("If-None-Match") String ifNoneMatch,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object twin,
@@ -154,7 +155,7 @@ public final class DigitalTwinsImpl {
         @Get("/digitaltwins/{id}/relationships/{relationshipId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipById(
+        Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Map<String, Object>>> getRelationshipById(
             @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
             @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
             @PathParam("relationshipId") String relationshipId, @QueryParam("api-version") String apiVersion,
@@ -163,7 +164,7 @@ public final class DigitalTwinsImpl {
         @Get("/digitaltwins/{id}/relationships/{relationshipId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getRelationshipByIdNoCustomHeaders(@HostParam("$host") String host,
+        Mono<Response<Map<String, Object>>> getRelationshipByIdNoCustomHeaders(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -171,16 +172,17 @@ public final class DigitalTwinsImpl {
         @Put("/digitaltwins/{id}/relationships/{relationshipId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationship(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") Object relationship, @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Map<String, Object>>> addRelationship(
+            @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
+            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
+            @PathParam("relationshipId") String relationshipId, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object relationship,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/digitaltwins/{id}/relationships/{relationshipId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> addRelationshipNoCustomHeaders(@HostParam("$host") String host,
+        Mono<Response<Map<String, Object>>> addRelationshipNoCustomHeaders(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
@@ -256,15 +258,16 @@ public final class DigitalTwinsImpl {
         @Get("/digitaltwins/{id}/components/{componentPath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponent(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Map<String, Object>>> getComponent(
+            @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
+            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
+            @PathParam("componentPath") String componentPath, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/digitaltwins/{id}/components/{componentPath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getComponentNoCustomHeaders(@HostParam("$host") String host,
+        Mono<Response<Map<String, Object>>> getComponentNoCustomHeaders(@HostParam("$host") String host,
             @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
             @PathParam("id") String id, @PathParam("componentPath") String componentPath,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -320,24 +323,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getByIdWithResponseAsync(String id,
+    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Map<String, Object>>> getByIdWithResponseAsync(String id,
         DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getById(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getByIdWithResponseAsync(id, digitalTwinsGetByIdOptions, context));
     }
 
     /**
@@ -355,10 +346,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getByIdWithResponseAsync(String id,
+    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Map<String, Object>>> getByIdWithResponseAsync(String id,
         DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
@@ -389,10 +380,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
+    public Mono<Map<String, Object>> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
         return getByIdWithResponseAsync(id, digitalTwinsGetByIdOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -412,10 +403,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions,
+    public Mono<Map<String, Object>> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions,
         Context context) {
         return getByIdWithResponseAsync(id, digitalTwinsGetByIdOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -435,24 +426,13 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getByIdNoCustomHeadersWithResponseAsync(String id,
+    public Mono<Response<Map<String, Object>>> getByIdNoCustomHeadersWithResponseAsync(String id,
         DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getByIdNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, this.client.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getByIdNoCustomHeadersWithResponseAsync(id, digitalTwinsGetByIdOptions, context));
     }
 
     /**
@@ -470,10 +450,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getByIdNoCustomHeadersWithResponseAsync(String id,
+    public Mono<Response<Map<String, Object>>> getByIdNoCustomHeadersWithResponseAsync(String id,
         DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
@@ -508,29 +488,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> addWithResponseAsync(String id, Object twin,
+    public Mono<ResponseBase<DigitalTwinsAddHeaders, Map<String, Object>>> addWithResponseAsync(String id, Object twin,
         DigitalTwinsAddOptions digitalTwinsAddOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            traceparentInternal = digitalTwinsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            tracestateInternal = digitalTwinsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.add(this.client.getHost(), traceparent, tracestate, id,
-            ifNoneMatch, this.client.getApiVersion(), twin, accept, context));
+        return FluxUtil.withContext(context -> addWithResponseAsync(id, twin, digitalTwinsAddOptions, context));
     }
 
     /**
@@ -552,10 +515,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> addWithResponseAsync(String id, Object twin,
+    public Mono<ResponseBase<DigitalTwinsAddHeaders, Map<String, Object>>> addWithResponseAsync(String id, Object twin,
         DigitalTwinsAddOptions digitalTwinsAddOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
@@ -595,10 +558,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions) {
+    public Mono<Map<String, Object>> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions) {
         return addWithResponseAsync(id, twin, digitalTwinsAddOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -621,10 +584,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions,
+    public Mono<Map<String, Object>> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions,
         Context context) {
         return addWithResponseAsync(id, twin, digitalTwinsAddOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -648,29 +611,13 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
+    public Mono<Response<Map<String, Object>>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
         DigitalTwinsAddOptions digitalTwinsAddOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            traceparentInternal = digitalTwinsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            tracestateInternal = digitalTwinsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.addNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, ifNoneMatch, this.client.getApiVersion(), twin, accept, context));
+        return FluxUtil
+            .withContext(context -> addNoCustomHeadersWithResponseAsync(id, twin, digitalTwinsAddOptions, context));
     }
 
     /**
@@ -692,10 +639,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
+    public Mono<Response<Map<String, Object>>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
         DigitalTwinsAddOptions digitalTwinsAddOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
@@ -739,24 +686,7 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id,
         DigitalTwinsDeleteOptions digitalTwinsDeleteOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            traceparentInternal = digitalTwinsDeleteOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            tracestateInternal = digitalTwinsDeleteOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            ifMatchInternal = digitalTwinsDeleteOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), traceparent, tracestate, id,
-            ifMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(id, digitalTwinsDeleteOptions, context));
     }
 
     /**
@@ -865,7 +795,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -875,24 +806,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DigitalTwinsUpdateHeaders, Void>> updateWithResponseAsync(String id,
         JsonPatchDocument patchDocument, DigitalTwinsUpdateOptions digitalTwinsUpdateOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            tracestateInternal = digitalTwinsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.update(this.client.getHost(), traceparent, tracestate, id,
-            ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil
+            .withContext(context -> updateWithResponseAsync(id, patchDocument, digitalTwinsUpdateOptions, context));
     }
 
     /**
@@ -909,7 +824,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -954,7 +870,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -981,7 +898,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1010,7 +928,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1020,24 +939,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(String id, JsonPatchDocument patchDocument,
         DigitalTwinsUpdateOptions digitalTwinsUpdateOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            tracestateInternal = digitalTwinsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil.withContext(
+            context -> updateNoCustomHeadersWithResponseAsync(id, patchDocument, digitalTwinsUpdateOptions, context));
     }
 
     /**
@@ -1054,7 +957,8 @@ public final class DigitalTwinsImpl {
      * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1101,25 +1005,14 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipByIdWithResponseAsync(
-        String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getRelationshipById(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, this.client.getApiVersion(), accept, context));
+    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Map<String, Object>>>
+        getRelationshipByIdWithResponseAsync(String id, String relationshipId,
+            DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
+        return FluxUtil.withContext(context -> getRelationshipByIdWithResponseAsync(id, relationshipId,
+            digitalTwinsGetRelationshipByIdOptions, context));
     }
 
     /**
@@ -1139,12 +1032,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipByIdWithResponseAsync(
-        String id, String relationshipId, DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions,
-        Context context) {
+    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Map<String, Object>>>
+        getRelationshipByIdWithResponseAsync(String id, String relationshipId,
+            DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (digitalTwinsGetRelationshipByIdOptions != null) {
@@ -1176,10 +1069,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin relationship on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getRelationshipByIdAsync(String id, String relationshipId,
+    public Mono<Map<String, Object>> getRelationshipByIdAsync(String id, String relationshipId,
         DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
         return getRelationshipByIdWithResponseAsync(id, relationshipId, digitalTwinsGetRelationshipByIdOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1202,10 +1095,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin relationship on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getRelationshipByIdAsync(String id, String relationshipId,
+    public Mono<Map<String, Object>> getRelationshipByIdAsync(String id, String relationshipId,
         DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions, Context context) {
         return getRelationshipByIdWithResponseAsync(id, relationshipId, digitalTwinsGetRelationshipByIdOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1227,24 +1120,13 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getRelationshipByIdNoCustomHeaders(this.client.getHost(),
-            traceparent, tracestate, id, relationshipId, this.client.getApiVersion(), accept, context));
+    public Mono<Response<Map<String, Object>>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id,
+        String relationshipId, DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
+        return FluxUtil.withContext(context -> getRelationshipByIdNoCustomHeadersWithResponseAsync(id, relationshipId,
+            digitalTwinsGetRelationshipByIdOptions, context));
     }
 
     /**
@@ -1264,11 +1146,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions, Context context) {
+    public Mono<Response<Map<String, Object>>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id,
+        String relationshipId, DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions,
+        Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (digitalTwinsGetRelationshipByIdOptions != null) {
@@ -1306,30 +1189,14 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationshipWithResponseAsync(String id,
-        String relationshipId, Object relationship,
+    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Map<String, Object>>> addRelationshipWithResponseAsync(
+        String id, String relationshipId, Object relationship,
         DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.addRelationship(this.client.getHost(), traceparent, tracestate,
-            id, relationshipId, ifNoneMatch, this.client.getApiVersion(), relationship, accept, context));
+        return FluxUtil.withContext(context -> addRelationshipWithResponseAsync(id, relationshipId, relationship,
+            digitalTwinsAddRelationshipOptions, context));
     }
 
     /**
@@ -1355,11 +1222,11 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationshipWithResponseAsync(String id,
-        String relationshipId, Object relationship,
+    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Map<String, Object>>> addRelationshipWithResponseAsync(
+        String id, String relationshipId, Object relationship,
         DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
@@ -1403,10 +1270,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin relationship on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addRelationshipAsync(String id, String relationshipId, Object relationship,
+    public Mono<Map<String, Object>> addRelationshipAsync(String id, String relationshipId, Object relationship,
         DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
         return addRelationshipWithResponseAsync(id, relationshipId, relationship, digitalTwinsAddRelationshipOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1435,10 +1302,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin relationship on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addRelationshipAsync(String id, String relationshipId, Object relationship,
+    public Mono<Map<String, Object>> addRelationshipAsync(String id, String relationshipId, Object relationship,
         DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
         return addRelationshipWithResponseAsync(id, relationshipId, relationship, digitalTwinsAddRelationshipOptions,
             context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1466,30 +1333,14 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        Object relationship, DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(
-            context -> service.addRelationshipNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-                relationshipId, ifNoneMatch, this.client.getApiVersion(), relationship, accept, context));
+    public Mono<Response<Map<String, Object>>> addRelationshipNoCustomHeadersWithResponseAsync(String id,
+        String relationshipId, Object relationship,
+        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
+        return FluxUtil.withContext(context -> addRelationshipNoCustomHeadersWithResponseAsync(id, relationshipId,
+            relationship, digitalTwinsAddRelationshipOptions, context));
     }
 
     /**
@@ -1515,11 +1366,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin relationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        Object relationship, DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
+    public Mono<Response<Map<String, Object>>> addRelationshipNoCustomHeadersWithResponseAsync(String id,
+        String relationshipId, Object relationship,
+        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (digitalTwinsAddRelationshipOptions != null) {
@@ -1563,24 +1415,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRelationshipWithResponseAsync(String id, String relationshipId,
         DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsDeleteRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsDeleteRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsDeleteRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.deleteRelationship(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteRelationshipWithResponseAsync(id, relationshipId,
+            digitalTwinsDeleteRelationshipOptions, context));
     }
 
     /**
@@ -1701,7 +1537,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1712,24 +1548,8 @@ public final class DigitalTwinsImpl {
     public Mono<ResponseBase<DigitalTwinsUpdateRelationshipHeaders, Void>> updateRelationshipWithResponseAsync(
         String id, String relationshipId, JsonPatchDocument patchDocument,
         DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsUpdateRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateRelationship(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil.withContext(context -> updateRelationshipWithResponseAsync(id, relationshipId, patchDocument,
+            digitalTwinsUpdateRelationshipOptions, context));
     }
 
     /**
@@ -1751,7 +1571,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1802,7 +1622,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1835,7 +1655,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1869,7 +1689,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1879,25 +1699,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
         JsonPatchDocument patchDocument, DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsUpdateRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil
-            .withContext(context -> service.updateRelationshipNoCustomHeaders(this.client.getHost(), traceparent,
-                tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil.withContext(context -> updateRelationshipNoCustomHeadersWithResponseAsync(id, relationshipId,
+            patchDocument, digitalTwinsUpdateRelationshipOptions, context));
     }
 
     /**
@@ -1919,7 +1722,7 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument JSON Patch description of the update to the relationship properties.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2108,19 +1911,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTelemetryWithResponseAsync(String id, String messageId, Object telemetry,
         String telemetrySourceTime, DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsSendTelemetryOptions != null) {
-            traceparentInternal = digitalTwinsSendTelemetryOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsSendTelemetryOptions != null) {
-            tracestateInternal = digitalTwinsSendTelemetryOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.sendTelemetry(this.client.getHost(), traceparent, tracestate, id,
-            messageId, telemetrySourceTime, this.client.getApiVersion(), telemetry, accept, context));
+        return FluxUtil.withContext(context -> sendTelemetryWithResponseAsync(id, messageId, telemetry,
+            telemetrySourceTime, digitalTwinsSendTelemetryOptions, context));
     }
 
     /**
@@ -2248,20 +2040,8 @@ public final class DigitalTwinsImpl {
     public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(String id, String componentPath,
         String messageId, Object telemetry, String telemetrySourceTime,
         DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsSendComponentTelemetryOptions != null) {
-            traceparentInternal = digitalTwinsSendComponentTelemetryOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsSendComponentTelemetryOptions != null) {
-            tracestateInternal = digitalTwinsSendComponentTelemetryOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(
-            context -> service.sendComponentTelemetry(this.client.getHost(), traceparent, tracestate, id, componentPath,
-                messageId, telemetrySourceTime, this.client.getApiVersion(), telemetry, accept, context));
+        return FluxUtil.withContext(context -> sendComponentTelemetryWithResponseAsync(id, componentPath, messageId,
+            telemetry, telemetrySourceTime, digitalTwinsSendComponentTelemetryOptions, context));
     }
 
     /**
@@ -2386,24 +2166,13 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin component along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponentWithResponseAsync(String id,
-        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getComponent(this.client.getHost(), traceparent, tracestate, id,
-            componentPath, this.client.getApiVersion(), accept, context));
+    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Map<String, Object>>> getComponentWithResponseAsync(
+        String id, String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
+        return FluxUtil.withContext(
+            context -> getComponentWithResponseAsync(id, componentPath, digitalTwinsGetComponentOptions, context));
     }
 
     /**
@@ -2423,11 +2192,12 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return digital twin component along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponentWithResponseAsync(String id,
-        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
+    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Map<String, Object>>> getComponentWithResponseAsync(
+        String id, String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions,
+        Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (digitalTwinsGetComponentOptions != null) {
@@ -2459,10 +2229,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin component on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getComponentAsync(String id, String componentPath,
+    public Mono<Map<String, Object>> getComponentAsync(String id, String componentPath,
         DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
         return getComponentWithResponseAsync(id, componentPath, digitalTwinsGetComponentOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2485,10 +2255,10 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return digital twin component on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getComponentAsync(String id, String componentPath,
+    public Mono<Map<String, Object>> getComponentAsync(String id, String componentPath,
         DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
         return getComponentWithResponseAsync(id, componentPath, digitalTwinsGetComponentOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2510,24 +2280,13 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getComponentNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, componentPath, this.client.getApiVersion(), accept, context));
+    public Mono<Response<Map<String, Object>>> getComponentNoCustomHeadersWithResponseAsync(String id,
+        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
+        return FluxUtil.withContext(context -> getComponentNoCustomHeadersWithResponseAsync(id, componentPath,
+            digitalTwinsGetComponentOptions, context));
     }
 
     /**
@@ -2547,11 +2306,11 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return digital twin component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
+    public Mono<Response<Map<String, Object>>> getComponentNoCustomHeadersWithResponseAsync(String id,
+        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (digitalTwinsGetComponentOptions != null) {
@@ -2582,7 +2341,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2593,24 +2353,8 @@ public final class DigitalTwinsImpl {
     public Mono<ResponseBase<DigitalTwinsUpdateComponentHeaders, Void>> updateComponentWithResponseAsync(String id,
         String componentPath, JsonPatchDocument patchDocument,
         DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            tracestateInternal = digitalTwinsUpdateComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateComponent(this.client.getHost(), traceparent, tracestate,
-            id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil.withContext(context -> updateComponentWithResponseAsync(id, componentPath, patchDocument,
+            digitalTwinsUpdateComponentOptions, context));
     }
 
     /**
@@ -2628,7 +2372,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2675,7 +2420,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2704,7 +2450,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2734,7 +2481,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2744,25 +2492,8 @@ public final class DigitalTwinsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
         JsonPatchDocument patchDocument, DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            tracestateInternal = digitalTwinsUpdateComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil
-            .withContext(context -> service.updateComponentNoCustomHeaders(this.client.getHost(), traceparent,
-                tracestate, id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return FluxUtil.withContext(context -> updateComponentNoCustomHeadersWithResponseAsync(id, componentPath,
+            patchDocument, digitalTwinsUpdateComponentOptions, context));
     }
 
     /**
@@ -2780,7 +2511,8 @@ public final class DigitalTwinsImpl {
      * 
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument An update specification described by JSON Patch. Updates to property values and $model
+     * elements may happen in the same request. Operations are limited to add, replace and remove.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2815,9 +2547,7 @@ public final class DigitalTwinsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param digitalTwinsListRelationshipsOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2848,9 +2578,7 @@ public final class DigitalTwinsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param digitalTwinsListIncomingRelationshipsOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

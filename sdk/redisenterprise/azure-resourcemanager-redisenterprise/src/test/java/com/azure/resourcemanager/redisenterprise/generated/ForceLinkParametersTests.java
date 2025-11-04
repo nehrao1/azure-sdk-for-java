@@ -6,6 +6,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParametersGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,18 +15,19 @@ public final class ForceLinkParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForceLinkParameters model = BinaryData.fromString(
-            "{\"groupNickname\":\"ishc\",\"linkedDatabases\":[{\"id\":\"ajdeyeamdphaga\",\"state\":\"LinkFailed\"}]}")
+            "{\"geoReplication\":{\"groupNickname\":\"t\",\"linkedDatabases\":[{\"id\":\"ulexxbczwtr\",\"state\":\"UnlinkFailed\"}]}}")
             .toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("ishc", model.groupNickname());
-        Assertions.assertEquals("ajdeyeamdphaga", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("t", model.geoReplication().groupNickname());
+        Assertions.assertEquals("ulexxbczwtr", model.geoReplication().linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForceLinkParameters model = new ForceLinkParameters().withGroupNickname("ishc")
-            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("ajdeyeamdphaga")));
+        ForceLinkParameters model = new ForceLinkParameters()
+            .withGeoReplication(new ForceLinkParametersGeoReplication().withGroupNickname("t")
+                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("ulexxbczwtr"))));
         model = BinaryData.fromObject(model).toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("ishc", model.groupNickname());
-        Assertions.assertEquals("ajdeyeamdphaga", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("t", model.geoReplication().groupNickname());
+        Assertions.assertEquals("ulexxbczwtr", model.geoReplication().linkedDatabases().get(0).id());
     }
 }

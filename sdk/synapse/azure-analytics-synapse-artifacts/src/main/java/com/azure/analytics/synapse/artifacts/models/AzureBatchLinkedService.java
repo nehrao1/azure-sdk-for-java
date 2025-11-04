@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,46 +22,56 @@ public class AzureBatchLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureBatch";
 
     /*
      * The Azure Batch account name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object accountName;
 
     /*
      * The Azure Batch account access key.
      */
+    @Generated
     private SecretBase accessKey;
 
     /*
      * The Azure Batch URI. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object batchUri;
 
     /*
      * The Azure Batch pool name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object poolName;
 
     /*
      * The Azure Storage linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureBatchLinkedService class.
      */
+    @Generated
     public AzureBatchLinkedService() {
     }
 
@@ -69,6 +80,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -79,6 +91,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the accountName value.
      */
+    @Generated
     public Object getAccountName() {
         return this.accountName;
     }
@@ -89,6 +102,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param accountName the accountName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setAccountName(Object accountName) {
         this.accountName = accountName;
         return this;
@@ -99,6 +113,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the accessKey value.
      */
+    @Generated
     public SecretBase getAccessKey() {
         return this.accessKey;
     }
@@ -109,6 +124,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param accessKey the accessKey value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setAccessKey(SecretBase accessKey) {
         this.accessKey = accessKey;
         return this;
@@ -119,6 +135,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the batchUri value.
      */
+    @Generated
     public Object getBatchUri() {
         return this.batchUri;
     }
@@ -129,6 +146,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param batchUri the batchUri value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setBatchUri(Object batchUri) {
         this.batchUri = batchUri;
         return this;
@@ -139,6 +157,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the poolName value.
      */
+    @Generated
     public Object getPoolName() {
         return this.poolName;
     }
@@ -149,6 +168,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param poolName the poolName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setPoolName(Object poolName) {
         this.poolName = poolName;
         return this;
@@ -159,6 +179,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -169,6 +190,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -180,6 +202,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -191,6 +214,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -201,6 +225,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -211,6 +236,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureBatchLinkedService object itself.
      */
+    @Generated
     public AzureBatchLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -219,6 +245,17 @@ public class AzureBatchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureBatchLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureBatchLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -228,6 +265,7 @@ public class AzureBatchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBatchLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -237,6 +275,7 @@ public class AzureBatchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBatchLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -246,6 +285,7 @@ public class AzureBatchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBatchLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -255,9 +295,11 @@ public class AzureBatchLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -276,7 +318,9 @@ public class AzureBatchLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("batchUri", this.batchUri);
             jsonWriter.writeUntypedField("poolName", this.poolName);
             jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -297,6 +341,7 @@ public class AzureBatchLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureBatchLinkedService.
      */
+    @Generated
     public static AzureBatchLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBatchLinkedService deserializedAzureBatchLinkedService = new AzureBatchLinkedService();
@@ -305,7 +350,9 @@ public class AzureBatchLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureBatchLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureBatchLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAzureBatchLinkedService.setDescription(reader.getString());

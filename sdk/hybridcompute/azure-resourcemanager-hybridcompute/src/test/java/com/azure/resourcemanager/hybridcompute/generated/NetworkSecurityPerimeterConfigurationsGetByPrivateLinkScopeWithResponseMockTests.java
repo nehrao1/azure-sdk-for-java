@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfiguration;
@@ -20,18 +20,17 @@ public final class NetworkSecurityPerimeterConfigurationsGetByPrivateLinkScopeWi
     @Test
     public void testGetByPrivateLinkScopeWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"lujyxkyxl\",\"provisioningIssues\":[{\"name\":\"gkzz\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Warning\",\"description\":\"ffovwmbjlzqsczp\",\"suggestedResourceIds\":[\"wnapfdq\",\"owftptnuwjtks\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"gqy\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Error\",\"description\":\"rhvyeld\",\"suggestedResourceIds\":[\"v\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"swskuk\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Warning\",\"description\":\"ispkxkdtx\",\"suggestedResourceIds\":[\"dlqvtwknvg\",\"mb\",\"gtywatmqaqkue\",\"tgroesh\"],\"suggestedAccessRules\":[{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"byfqxkfaoy\",\"perimeterGuid\":\"h\",\"location\":\"uvjmv\"},\"resourceAssociation\":{\"name\":\"dwckygroe\",\"accessMode\":\"learning\"},\"profile\":{\"name\":\"jdjusk\",\"accessRulesVersion\":616920183,\"accessRules\":[{\"name\":\"n\",\"properties\":{}}],\"diagnosticSettingsVersion\":1467529685,\"enabledLogCategories\":[\"aq\",\"gplwr\",\"shwddkvbxgk\",\"usybwptdaca\"]}},\"id\":\"vvlfntymtp\",\"name\":\"iwenazero\",\"type\":\"zrsq\"}";
+            = "{\"properties\":{\"provisioningState\":\"xut\",\"provisioningIssues\":[{\"name\":\"r\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Error\",\"description\":\"lmbjwcolbmxlbnw\",\"suggestedResourceIds\":[\"pa\",\"pr\",\"rvxhmtfhocnxzcm\"],\"suggestedAccessRules\":[{},{}]}},{\"name\":\"xnoqrxtdisn\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"ydidwhepfwwtjf\",\"suggestedResourceIds\":[\"sxxh\",\"wcdbckyoik\",\"kxhnegknj\",\"rbhtmeplvukaobr\"],\"suggestedAccessRules\":[{}]}},{\"name\":\"snbagnchjhg\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Error\",\"description\":\"ywalhjymxcg\",\"suggestedResourceIds\":[\"gdrclssolj\",\"mevtfycnlbvgjc\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"ji\",\"perimeterGuid\":\"t\",\"location\":\"ikizbcu\"},\"resourceAssociation\":{\"name\":\"vntnrgmqso\",\"accessMode\":\"audit\"},\"profile\":{\"name\":\"xgnlykmx\",\"accessRulesVersion\":386903198,\"accessRules\":[{\"name\":\"doksqdtiwlwxlbon\",\"properties\":{}}],\"diagnosticSettingsVersion\":840670614,\"enabledLogCategories\":[\"icqchygtv\",\"byjanep\",\"bdpkxyqvgx\"]}},\"id\":\"aodetv\",\"name\":\"hkxdxuwsaifmc\",\"type\":\"nosbz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkSecurityPerimeterConfiguration response = manager.networkSecurityPerimeterConfigurations()
-            .getByPrivateLinkScopeWithResponse("rxmrgchbapx", "iyfjjkbajbuscg", "uusioycblev",
-                com.azure.core.util.Context.NONE)
+            .getByPrivateLinkScopeWithResponse("ofkbtf", "hklbnldpvcbh", "ezyquw", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

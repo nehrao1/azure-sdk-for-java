@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,23 +18,30 @@ import java.io.IOException;
 @Fluent
 public final class TeradataPartitionSettings implements JsonSerializable<TeradataPartitionSettings> {
     /*
-     * The name of the column that will be used for proceeding range or hash partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range or hash partitioning. Type: string (or Expression
+     * with resultType string).
      */
+    @Generated
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionLowerBound;
 
     /**
      * Creates an instance of TeradataPartitionSettings class.
      */
+    @Generated
     public TeradataPartitionSettings() {
     }
 
@@ -43,6 +51,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * 
      * @return the partitionColumnName value.
      */
+    @Generated
     public Object getPartitionColumnName() {
         return this.partitionColumnName;
     }
@@ -54,6 +63,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the TeradataPartitionSettings object itself.
      */
+    @Generated
     public TeradataPartitionSettings setPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
@@ -65,6 +75,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * 
      * @return the partitionUpperBound value.
      */
+    @Generated
     public Object getPartitionUpperBound() {
         return this.partitionUpperBound;
     }
@@ -76,6 +87,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the TeradataPartitionSettings object itself.
      */
+    @Generated
     public TeradataPartitionSettings setPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
@@ -87,6 +99,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * 
      * @return the partitionLowerBound value.
      */
+    @Generated
     public Object getPartitionLowerBound() {
         return this.partitionLowerBound;
     }
@@ -98,6 +111,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the TeradataPartitionSettings object itself.
      */
+    @Generated
     public TeradataPartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
@@ -106,12 +120,19 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +144,7 @@ public final class TeradataPartitionSettings implements JsonSerializable<Teradat
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TeradataPartitionSettings.
      */
+    @Generated
     public static TeradataPartitionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeradataPartitionSettings deserializedTeradataPartitionSettings = new TeradataPartitionSettings();

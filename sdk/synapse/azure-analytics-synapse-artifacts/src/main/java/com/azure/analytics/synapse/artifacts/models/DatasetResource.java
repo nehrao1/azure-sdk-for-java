@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,39 @@ public final class DatasetResource extends SubResource {
     /*
      * Dataset properties.
      */
+    @Generated
     private Dataset properties;
+
+    /*
+     * Resource Etag.
+     */
+    @Generated
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    @Generated
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    @Generated
+    private String id;
 
     /**
      * Creates an instance of DatasetResource class.
      */
+    @Generated
     public DatasetResource() {
     }
 
@@ -31,6 +60,7 @@ public final class DatasetResource extends SubResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public Dataset getProperties() {
         return this.properties;
     }
@@ -41,14 +71,62 @@ public final class DatasetResource extends SubResource {
      * @param properties the properties value to set.
      * @return the DatasetResource object itself.
      */
+    @Generated
     public DatasetResource setProperties(Dataset properties) {
         this.properties = properties;
         return this;
     }
 
     /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Generated
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Generated
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +143,7 @@ public final class DatasetResource extends SubResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatasetResource.
      */
+    @Generated
     public static DatasetResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetResource deserializedDatasetResource = new DatasetResource();
@@ -73,13 +152,13 @@ public final class DatasetResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedDatasetResource.setId(reader.getString());
+                    deserializedDatasetResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedDatasetResource.setName(reader.getString());
+                    deserializedDatasetResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedDatasetResource.setType(reader.getString());
+                    deserializedDatasetResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedDatasetResource.setEtag(reader.getString());
+                    deserializedDatasetResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatasetResource.properties = Dataset.fromJson(reader);
                 } else {

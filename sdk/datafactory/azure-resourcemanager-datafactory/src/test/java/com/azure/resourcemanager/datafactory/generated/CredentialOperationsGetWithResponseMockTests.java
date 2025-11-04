@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.CredentialResource;
@@ -21,14 +21,14 @@ public final class CredentialOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"dlcstucswhmns\",\"annotations\":[\"datahmatfgoerjmhtxip\",\"datavwzbkgt\"],\"\":{\"zeu\":\"datarzmkte\",\"l\":\"dataxt\",\"gpcccg\":\"datajcwlfzxxpwexck\"}},\"name\":\"knjjskzuh\",\"type\":\"yavfeyybyduy\",\"etag\":\"ty\",\"id\":\"miy\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"dlcstucswhmns\",\"annotations\":[\"datahmatfgoerjmhtxip\",\"datavwzbkgt\"],\"zeu\":\"datarzmkte\",\"l\":\"dataxt\",\"gpcccg\":\"datajcwlfzxxpwexck\"},\"name\":\"knjjskzuh\",\"type\":\"yavfeyybyduy\",\"etag\":\"ty\",\"id\":\"miy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CredentialResource response = manager.credentialOperations()
             .getWithResponse("ayjeh", "vowvqpncif", "xtib", "qrhz", com.azure.core.util.Context.NONE)

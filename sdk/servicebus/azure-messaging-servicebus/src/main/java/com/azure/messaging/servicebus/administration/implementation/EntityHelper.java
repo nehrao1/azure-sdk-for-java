@@ -6,17 +6,14 @@ package com.azure.messaging.servicebus.administration.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -61,8 +58,7 @@ public final class EntityHelper {
     static {
         try {
             Class.forName(QueueProperties.class.getName(), true, QueueProperties.class.getClassLoader());
-            Class.forName(SubscriptionProperties.class.getName(), true,
-                SubscriptionProperties.class.getClassLoader());
+            Class.forName(SubscriptionProperties.class.getName(), true, SubscriptionProperties.class.getClassLoader());
             Class.forName(TopicProperties.class.getName(), true, TopicProperties.class.getClassLoader());
             Class.forName(RuleProperties.class.getName(), true, RuleProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
@@ -77,10 +73,9 @@ public final class EntityHelper {
      *
      * @return The corresponding queue.
      */
-    public static QueueDescriptionImpl getQueueDescription(CreateQueueOptions options) {
+    public static QueueDescription getQueueDescription(CreateQueueOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        final QueueDescriptionImpl description = new QueueDescriptionImpl()
-            .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
+        final QueueDescription description = new QueueDescription().setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDeadLetteringOnMessageExpiration(options.isDeadLetteringOnMessageExpiration())
             .setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow())
@@ -107,10 +102,9 @@ public final class EntityHelper {
         return description;
     }
 
-    public static SubscriptionDescriptionImpl getSubscriptionDescription(CreateSubscriptionOptions options) {
+    public static SubscriptionDescription getSubscriptionDescription(CreateSubscriptionOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return new SubscriptionDescriptionImpl()
-            .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
+        return new SubscriptionDescription().setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDeadLetteringOnFilterEvaluationExceptions(options.isDeadLetteringOnFilterEvaluationExceptions())
             .setDeadLetteringOnMessageExpiration(options.isDeadLetteringOnMessageExpiration())
@@ -122,14 +116,13 @@ public final class EntityHelper {
             .setRequiresSession(options.isSessionRequired())
             .setStatus(options.getStatus())
             .setUserMetadata(options.getUserMetadata())
-            .setDefaultRuleDescription(options.getDefaultRule() != null
-                ? EntityHelper.toImplementation(options.getDefaultRule()) : null);
+            .setDefaultRuleDescription(
+                options.getDefaultRule() != null ? EntityHelper.toImplementation(options.getDefaultRule()) : null);
     }
 
-    public static TopicDescriptionImpl getTopicDescription(CreateTopicOptions options) {
+    public static TopicDescription getTopicDescription(CreateTopicOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        final TopicDescriptionImpl description = new TopicDescriptionImpl()
-            .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
+        final TopicDescription description = new TopicDescription().setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow())
             .setEnableBatchedOperations(options.isBatchedOperationsEnabled())
@@ -158,17 +151,17 @@ public final class EntityHelper {
      *
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueDescriptionImpl toImplementation(QueueProperties properties) {
+    public static QueueDescription toImplementation(QueueProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (queueAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'queueAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'queueAccessor' should not be null."));
         }
 
-        final List<AuthorizationRuleImpl> rules = !properties.getAuthorizationRules().isEmpty()
-            ? toImplementation(properties.getAuthorizationRules())
-            : Collections.emptyList();
+        final List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules
+            = !properties.getAuthorizationRules().isEmpty()
+                ? toImplementation(properties.getAuthorizationRules())
+                : Collections.emptyList();
 
         return queueAccessor.toImplementation(properties, rules);
     }
@@ -177,14 +170,14 @@ public final class EntityHelper {
      * Creates a new rule action given an existing rule action.
      *
      * @param properties Rule properties.
-     * @return A new instance of {@link RuleActionImpl}.
+     * @return A new instance of {@link com.azure.messaging.servicebus.administration.implementation.models.RuleAction}.
      */
-    public static RuleActionImpl toImplementation(RuleAction properties) {
+    public static com.azure.messaging.servicebus.administration.implementation.models.RuleAction
+        toImplementation(RuleAction properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toImplementation(properties);
@@ -194,14 +187,13 @@ public final class EntityHelper {
      * Creates a new rule description given an existing rule.
      *
      * @param properties Rule properties.
-     * @return A new instance of {@link RuleDescriptionImpl}.
+     * @return A new instance of {@link RuleDescription}.
      */
-    public static RuleDescriptionImpl toImplementation(RuleProperties properties) {
+    public static RuleDescription toImplementation(RuleProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toImplementation(properties);
@@ -211,14 +203,14 @@ public final class EntityHelper {
      * Creates a new rule filter given an existing rule filter.
      *
      * @param properties Rule filter.
-     * @return A new instance of {@link RuleFilter}.
+     * @return A new instance of {@link com.azure.messaging.servicebus.administration.implementation.models.RuleFilter}.
      */
-    public static RuleFilterImpl toImplementation(RuleFilter properties) {
+    public static com.azure.messaging.servicebus.administration.implementation.models.RuleFilter
+        toImplementation(RuleFilter properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toImplementation(properties);
@@ -231,12 +223,11 @@ public final class EntityHelper {
      *
      * @return A new {@link SubscriptionProperties} with the set options.
      */
-    public static SubscriptionDescriptionImpl toImplementation(SubscriptionProperties description) {
+    public static SubscriptionDescription toImplementation(SubscriptionProperties description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (subscriptionAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'subscriptionAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
         return subscriptionAccessor.toImplementation(description);
@@ -249,17 +240,17 @@ public final class EntityHelper {
      *
      * @return A new {@link TopicProperties} with the set options.
      */
-    public static TopicDescriptionImpl toImplementation(TopicProperties properties) {
+    public static TopicDescription toImplementation(TopicProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (topicAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'topicAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'topicAccessor' should not be null."));
         }
 
-        final List<AuthorizationRuleImpl> rules = !properties.getAuthorizationRules().isEmpty()
-            ? toImplementation(properties.getAuthorizationRules())
-            : Collections.emptyList();
+        final List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules
+            = !properties.getAuthorizationRules().isEmpty()
+                ? toImplementation(properties.getAuthorizationRules())
+                : Collections.emptyList();
 
         return topicAccessor.toImplementation(properties, rules);
     }
@@ -271,12 +262,11 @@ public final class EntityHelper {
      *
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueProperties toModel(QueueDescriptionImpl description) {
+    public static QueueProperties toModel(QueueDescription description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (queueAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'queueAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'queueAccessor' should not be null."));
         }
 
         return queueAccessor.toModel(description);
@@ -288,12 +278,12 @@ public final class EntityHelper {
      * @param description The implementation type.
      * @return A new {@link RuleAction} with the set options.
      */
-    public static RuleAction toModel(RuleActionImpl description) {
+    public static RuleAction
+        toModel(com.azure.messaging.servicebus.administration.implementation.models.RuleAction description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toModel(description);
@@ -305,12 +295,12 @@ public final class EntityHelper {
      * @param description The implementation type.
      * @return A new {@link RuleFilter} with the set options.
      */
-    public static RuleFilter toModel(RuleFilterImpl description) {
+    public static RuleFilter
+        toModel(com.azure.messaging.servicebus.administration.implementation.models.RuleFilter description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toModel(description);
@@ -322,12 +312,11 @@ public final class EntityHelper {
      * @param description The implementation type.
      * @return A new {@link RuleProperties} with the set options.
      */
-    public static RuleProperties toModel(RuleDescriptionImpl description) {
+    public static RuleProperties toModel(RuleDescription description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'ruleAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
         return ruleAccessor.toModel(description);
@@ -340,12 +329,11 @@ public final class EntityHelper {
      *
      * @return A new {@link SubscriptionProperties} with the set options.
      */
-    public static SubscriptionProperties toModel(SubscriptionDescriptionImpl options) {
+    public static SubscriptionProperties toModel(SubscriptionDescription options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (subscriptionAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'subscriptionAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
         return subscriptionAccessor.toModel(options);
@@ -358,12 +346,11 @@ public final class EntityHelper {
      *
      * @return A new {@link TopicProperties} with the set options.
      */
-    public static TopicProperties toModel(TopicDescriptionImpl description) {
+    public static TopicProperties toModel(TopicDescription description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (topicAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'topicAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'topicAccessor' should not be null."));
         }
 
         return topicAccessor.toModel(description);
@@ -378,8 +365,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.queueAccessor != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'accessor' is already set."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'accessor' is already set."));
         }
 
         EntityHelper.queueAccessor = accessor;
@@ -393,8 +379,7 @@ public final class EntityHelper {
      */
     public static void setQueueName(QueueProperties queueProperties, String name) {
         if (queueAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'queueAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'queueAccessor' should not be null."));
         }
 
         queueAccessor.setName(queueProperties, name);
@@ -409,8 +394,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.ruleAccessor != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'ruleAccessor' is already set."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ruleAccessor' is already set."));
         }
 
         EntityHelper.ruleAccessor = accessor;
@@ -425,8 +409,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.subscriptionAccessor != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'subscriptionAccessor' is already set."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'subscriptionAccessor' is already set."));
         }
 
         EntityHelper.subscriptionAccessor = accessor;
@@ -440,8 +423,7 @@ public final class EntityHelper {
      */
     public static void setSubscriptionName(SubscriptionProperties subscription, String subscriptionName) {
         if (subscriptionAccessor == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("'subscriptionAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
         subscriptionAccessor.setSubscriptionName(subscription, subscriptionName);
@@ -456,8 +438,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.topicAccessor != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'topicAccessor' is already set."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'topicAccessor' is already set."));
         }
 
         EntityHelper.topicAccessor = accessor;
@@ -471,8 +452,7 @@ public final class EntityHelper {
      */
     public static void setTopicName(SubscriptionProperties subscription, String topicName) {
         if (subscriptionAccessor == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'subscriptionAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
         subscriptionAccessor.setTopicName(subscription, topicName);
@@ -486,33 +466,32 @@ public final class EntityHelper {
      */
     public static void setTopicName(TopicProperties topicProperties, String topicName) {
         if (topicAccessor == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'topicAccessor' should not be null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'topicAccessor' should not be null."));
         }
 
         topicAccessor.setName(topicProperties, topicName);
     }
 
-    private static List<AuthorizationRuleImpl> toImplementation(List<AuthorizationRule> rules) {
+    private static List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule>
+        toImplementation(List<AuthorizationRule> rules) {
         return rules.stream().map(rule -> {
-            final AuthorizationRuleImpl implementation = new AuthorizationRuleImpl()
-                .setClaimType(rule.getClaimType())
-                .setClaimValue(rule.getClaimValue())
-                .setCreatedTime(rule.getCreatedAt())
-                .setKeyName(rule.getKeyName())
-                .setModifiedTime(rule.getModifiedAt())
-                .setPrimaryKey(rule.getPrimaryKey())
-                .setSecondaryKey(rule.getSecondaryKey())
-                .setRights(rule.getAccessRights());
+            final com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule implementation
+                = new com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule()
+                    .setClaimType(rule.getClaimType())
+                    .setClaimValue(rule.getClaimValue())
+                    .setCreatedTime(rule.getCreatedAt())
+                    .setKeyName(rule.getKeyName())
+                    .setModifiedTime(rule.getModifiedAt())
+                    .setPrimaryKey(rule.getPrimaryKey())
+                    .setSecondaryKey(rule.getSecondaryKey())
+                    .setRights(rule.getAccessRights());
 
             if (rule instanceof SharedAccessAuthorizationRule) {
                 // This is the type name constant.
                 implementation.setType("SharedAccessAuthorizationRule");
             } else {
                 final String className = rule.getClass().getName();
-                LOGGER.atWarning()
-                    .addKeyValue("type", className)
-                    .log("AuthorizationRule type is unknown.");
+                LOGGER.atWarning().addKeyValue("type", className).log("AuthorizationRule type is unknown.");
                 implementation.setType(className);
             }
 
@@ -531,7 +510,8 @@ public final class EntityHelper {
          *
          * @return A new queue with the properties set.
          */
-        QueueDescriptionImpl toImplementation(QueueProperties queueDescription, List<AuthorizationRuleImpl> rules);
+        QueueDescription toImplementation(QueueProperties queueDescription,
+            List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules);
 
         /**
          * Creates a new queue from the given {@code queueDescription}.
@@ -540,7 +520,7 @@ public final class EntityHelper {
          *
          * @return A new queue with the properties set.
          */
-        QueueProperties toModel(QueueDescriptionImpl queueDescription);
+        QueueProperties toModel(QueueDescription queueDescription);
 
         /**
          * Sets the name on a queueDescription.
@@ -555,17 +535,21 @@ public final class EntityHelper {
      * Interface for accessing methods on a rule.
      */
     public interface RuleAccessor {
-        RuleProperties toModel(RuleDescriptionImpl ruleDescriptionImpl);
+        RuleProperties toModel(RuleDescription ruleDescriptionImpl);
 
-        RuleAction toModel(RuleActionImpl implementation);
+        RuleAction
+            toModel(com.azure.messaging.servicebus.administration.implementation.models.RuleAction implementation);
 
-        RuleFilter toModel(RuleFilterImpl implementation);
+        RuleFilter
+            toModel(com.azure.messaging.servicebus.administration.implementation.models.RuleFilter implementation);
 
-        RuleDescriptionImpl toImplementation(RuleProperties ruleProperties);
+        RuleDescription toImplementation(RuleProperties ruleProperties);
 
-        RuleActionImpl toImplementation(RuleAction model);
+        com.azure.messaging.servicebus.administration.implementation.models.RuleAction
+            toImplementation(RuleAction model);
 
-        RuleFilterImpl toImplementation(RuleFilter model);
+        com.azure.messaging.servicebus.administration.implementation.models.RuleFilter
+            toImplementation(RuleFilter model);
     }
 
     /**
@@ -579,7 +563,7 @@ public final class EntityHelper {
          *
          * @return A new subscription.
          */
-        SubscriptionProperties toModel(SubscriptionDescriptionImpl subscription);
+        SubscriptionProperties toModel(SubscriptionDescription subscription);
 
         /**
          * Creates the implementation subscription with the given subscription.
@@ -588,7 +572,7 @@ public final class EntityHelper {
          *
          * @return A new subscription.
          */
-        SubscriptionDescriptionImpl toImplementation(SubscriptionProperties subscription);
+        SubscriptionDescription toImplementation(SubscriptionProperties subscription);
 
         /**
          * Sets the topic name on a subscription.
@@ -618,7 +602,8 @@ public final class EntityHelper {
          *
          * @return A new topic with the properties set.
          */
-        TopicDescriptionImpl toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules);
+        TopicDescription toImplementation(TopicProperties topic,
+            List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules);
 
         /**
          * Sets properties on the TopicProperties based on the CreateTopicOptions.
@@ -627,7 +612,7 @@ public final class EntityHelper {
          *
          * @return A new topic with the properties set.
          */
-        TopicProperties toModel(TopicDescriptionImpl topic);
+        TopicProperties toModel(TopicDescription topic);
 
         /**
          * Sets the name on a topicDescription.
@@ -639,23 +624,22 @@ public final class EntityHelper {
     }
 
     /**
-     * Converts a Response into its corresponding {@link QueueDescriptionFeedImpl} then mapped into {@link
+     * Converts a Response into its corresponding {@link QueueDescriptionFeed} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
      * @param logger The ClientLogger logging errors and warnings.
      * @return The corresponding HTTP response with convenience properties set.
      */
-    public static Response<QueueDescriptionFeedImpl> deserializeQueueFeed(Response<Object> response,
-        ClientLogger logger) {
+    public static Response<QueueDescriptionFeed> deserializeQueueFeed(Response<Object> response, ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
         try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-            QueueDescriptionFeedImpl entry = QueueDescriptionFeedImpl.fromXml(xmlReader);
+            QueueDescriptionFeed entry = QueueDescriptionFeed.fromXml(xmlReader);
             return new SimpleResponse<>(response, entry);
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-                TopicDescriptionFeedImpl entryTopic = TopicDescriptionFeedImpl.fromXml(xmlReader);
+                TopicDescriptionFeed entryTopic = TopicDescriptionFeed.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
                     .log("Expected queue feed, but it is a topic feed.");
@@ -671,7 +655,7 @@ public final class EntityHelper {
     }
 
     /**
-     * Converts a Response into its corresponding {@link QueueDescriptionEntryImpl} then mapped into {@link
+     * Converts a Response into its corresponding {@link QueueDescriptionEntry} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
@@ -682,14 +666,12 @@ public final class EntityHelper {
         String responseBody = response.getValue().toString();
 
         try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-            QueueDescriptionEntryImpl entry = QueueDescriptionEntryImpl.fromXml(xmlReader);
+            QueueDescriptionEntry entry = QueueDescriptionEntry.fromXml(xmlReader);
             // This was an empty response (ie. 204).
             if (entry == null) {
                 return new SimpleResponse<>(response, null);
             } else if (entry.getContent() == null) {
-                logger.atInfo()
-                    .addKeyValue("entry", entry)
-                    .log("The entry content is null. The entity may not exist.");
+                logger.atInfo().addKeyValue("entry", entry).log("The entry content is null. The entity may not exist.");
                 return new SimpleResponse<>(response, null);
             }
 
@@ -700,7 +682,7 @@ public final class EntityHelper {
             return new SimpleResponse<>(response, result);
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-                TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
+                TopicDescriptionEntry entryTopic = TopicDescriptionEntry.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
                     .log("Expected queue, but it is a topic.");
@@ -716,23 +698,22 @@ public final class EntityHelper {
     }
 
     /**
-     * Converts a Response into its corresponding {@link TopicDescriptionFeedImpl} then mapped into {@link
+     * Converts a Response into its corresponding {@link TopicDescriptionFeed} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
      * @param logger The ClientLogger logging errors and warnings.
      * @return The corresponding HTTP response with convenience properties set.
      */
-    public static Response<TopicDescriptionFeedImpl> deserializeTopicFeed(Response<Object> response,
-        ClientLogger logger) {
+    public static Response<TopicDescriptionFeed> deserializeTopicFeed(Response<Object> response, ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
         try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-            TopicDescriptionFeedImpl entry = TopicDescriptionFeedImpl.fromXml(xmlReader);
+            TopicDescriptionFeed entry = TopicDescriptionFeed.fromXml(xmlReader);
             return new SimpleResponse<>(response, entry);
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-                QueueDescriptionFeedImpl entryTopic = QueueDescriptionFeedImpl.fromXml(xmlReader);
+                QueueDescriptionFeed entryTopic = QueueDescriptionFeed.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
                     .log("Expected topic feed, but it is a queue feed.");
@@ -748,7 +729,7 @@ public final class EntityHelper {
     }
 
     /**
-     * Converts a Response into its corresponding {@link TopicDescriptionEntryImpl} then mapped into {@link
+     * Converts a Response into its corresponding {@link TopicDescriptionEntry} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
@@ -759,7 +740,7 @@ public final class EntityHelper {
         String responseBody = response.getValue().toString();
 
         try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-            TopicDescriptionEntryImpl entry = TopicDescriptionEntryImpl.fromXml(xmlReader);
+            TopicDescriptionEntry entry = TopicDescriptionEntry.fromXml(xmlReader);
             // This was an empty response (ie. 204).
             if (entry == null) {
                 return new SimpleResponse<>(response, null);
@@ -777,7 +758,7 @@ public final class EntityHelper {
             return new SimpleResponse<>(response, result);
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
-                QueueDescriptionEntryImpl entryQueue = QueueDescriptionEntryImpl.fromXml(xmlReader);
+                QueueDescriptionEntry entryQueue = QueueDescriptionEntry.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryQueue.getTitle())
                     .log("Expected topic, but it is a queue.");
@@ -803,10 +784,10 @@ public final class EntityHelper {
      * @throws DateTimeParseException If the datetime is neither an ISO offset datetime or ISO local datetime.
      */
     public static OffsetDateTime parseOffsetDateTimeBest(String datetimeString) {
-        TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
-            .parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
+        TemporalAccessor temporal
+            = DateTimeFormatter.ISO_DATE_TIME.parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
 
-        return  (temporal.query(TemporalQueries.offset()) == null)
+        return (temporal.query(TemporalQueries.offset()) == null)
             ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
             : OffsetDateTime.from(temporal);
     }

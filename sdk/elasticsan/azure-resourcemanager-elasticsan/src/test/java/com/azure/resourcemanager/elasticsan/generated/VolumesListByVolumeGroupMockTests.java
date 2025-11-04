@@ -6,57 +6,40 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VolumesListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
+            = "{\"value\":[{\"properties\":{\"volumeId\":\"rfdwoyu\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"iefozbhdmsml\"},\"sizeGiB\":4730263742485000003,\"storageTarget\":{\"targetIqn\":\"ft\",\"targetPortalHostname\":\"ae\",\"targetPortalPort\":2084931512,\"provisioningState\":\"SoftDeleting\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"lfaoqzpiyylhaln\"},\"provisioningState\":\"Succeeded\"},\"id\":\"csphkaiv\",\"name\":\"itqscywuggwoluhc\",\"type\":\"bwemhairs\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<Volume> response = manager.volumes()
+            .listByVolumeGroup("grtwae", "u", "zkopb", XMsAccessSoftDeletedResources.FALSE,
+                com.azure.core.util.Context.NONE);
 
-        PagedIterable<Volume> response = manager.volumes().listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu",
-            com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT,
-            response.iterator().next().creationData().createSource());
-        Assertions.assertEquals("idoamciodhkha", response.iterator().next().creationData().sourceId());
-        Assertions.assertEquals(4852560903522204647L, response.iterator().next().sizeGiB());
-        Assertions.assertEquals("tvb", response.iterator().next().managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.NONE, response.iterator().next().creationData().createSource());
+        Assertions.assertEquals("iefozbhdmsml", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals(4730263742485000003L, response.iterator().next().sizeGiB());
+        Assertions.assertEquals("lfaoqzpiyylhaln", response.iterator().next().managedBy().resourceId());
     }
 }

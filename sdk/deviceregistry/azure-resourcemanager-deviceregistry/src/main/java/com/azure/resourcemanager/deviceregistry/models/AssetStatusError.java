@@ -53,21 +53,11 @@ public final class AssetStatusError implements JsonSerializable<AssetStatusError
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 

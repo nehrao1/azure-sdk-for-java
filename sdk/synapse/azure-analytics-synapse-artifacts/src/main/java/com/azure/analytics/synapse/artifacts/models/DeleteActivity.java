@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,51 @@ public class DeleteActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Delete";
 
     /*
-     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /*
      * The max concurrent connections to connect data source at the same time.
      */
+    @Generated
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
+    @Generated
     private Object enableLogging;
 
     /*
      * Log storage settings customer need to provide when enableLogging is true.
      */
+    @Generated
     private LogStorageSettings logStorageSettings;
 
     /*
      * Delete activity dataset reference.
      */
+    @Generated
     private DatasetReference dataset;
 
     /*
      * Delete activity store settings.
      */
+    @Generated
     private StoreReadSettings storeSettings;
 
     /**
      * Creates an instance of DeleteActivity class.
      */
+    @Generated
     public DeleteActivity() {
     }
 
@@ -64,6 +75,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +87,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -86,6 +99,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param recursive the recursive value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -97,6 +111,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the maxConcurrentConnections value.
      */
+    @Generated
     public Integer getMaxConcurrentConnections() {
         return this.maxConcurrentConnections;
     }
@@ -108,6 +123,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setMaxConcurrentConnections(Integer maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
@@ -119,6 +135,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the enableLogging value.
      */
+    @Generated
     public Object getEnableLogging() {
         return this.enableLogging;
     }
@@ -130,6 +147,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param enableLogging the enableLogging value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setEnableLogging(Object enableLogging) {
         this.enableLogging = enableLogging;
         return this;
@@ -140,6 +158,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the logStorageSettings value.
      */
+    @Generated
     public LogStorageSettings getLogStorageSettings() {
         return this.logStorageSettings;
     }
@@ -150,6 +169,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setLogStorageSettings(LogStorageSettings logStorageSettings) {
         this.logStorageSettings = logStorageSettings;
         return this;
@@ -160,6 +180,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the dataset value.
      */
+    @Generated
     public DatasetReference getDataset() {
         return this.dataset;
     }
@@ -170,6 +191,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param dataset the dataset value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
         return this;
@@ -180,6 +202,7 @@ public class DeleteActivity extends ExecutionActivity {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreReadSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -190,6 +213,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param storeSettings the storeSettings value to set.
      * @return the DeleteActivity object itself.
      */
+    @Generated
     public DeleteActivity setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -198,6 +222,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -207,6 +232,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -216,6 +242,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setName(String name) {
         super.setName(name);
@@ -225,6 +252,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setDescription(String description) {
         super.setDescription(description);
@@ -234,6 +262,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setState(ActivityState state) {
         super.setState(state);
@@ -243,6 +272,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -252,6 +282,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -261,6 +292,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DeleteActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -270,6 +302,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -291,9 +324,13 @@ public class DeleteActivity extends ExecutionActivity {
             || dataset != null
             || storeSettings != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("recursive", this.recursive);
+            if (this.recursive != null) {
+                jsonWriter.writeUntypedField("recursive", this.recursive);
+            }
             jsonWriter.writeNumberField("maxConcurrentConnections", this.maxConcurrentConnections);
-            jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+            if (this.enableLogging != null) {
+                jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+            }
             jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
             jsonWriter.writeJsonField("dataset", this.dataset);
             jsonWriter.writeJsonField("storeSettings", this.storeSettings);
@@ -316,6 +353,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeleteActivity.
      */
+    @Generated
     public static DeleteActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeleteActivity deserializedDeleteActivity = new DeleteActivity();

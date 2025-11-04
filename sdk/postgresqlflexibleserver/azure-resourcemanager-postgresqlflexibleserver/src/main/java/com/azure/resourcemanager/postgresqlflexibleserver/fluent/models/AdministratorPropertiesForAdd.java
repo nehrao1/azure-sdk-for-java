@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
- * The properties of an Active Directory administrator.
+ * The properties of an Microsoft Entra Administrator.
  */
 @Fluent
-public final class AdministratorPropertiesForAdd {
+public final class AdministratorPropertiesForAdd implements JsonSerializable<AdministratorPropertiesForAdd> {
     /*
-     * The principal type used to represent the type of Active Directory Administrator.
+     * The principal type used to represent the type of Microsoft Entra Administrator.
      */
-    @JsonProperty(value = "principalType")
     private PrincipalType principalType;
 
     /*
-     * Active Directory administrator principal name.
+     * Microsoft Entra Administrator principal name.
      */
-    @JsonProperty(value = "principalName")
     private String principalName;
 
     /*
-     * The tenantId of the Active Directory administrator.
+     * The tenantId of the Microsoft Entra Administrator.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
@@ -38,7 +39,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Get the principalType property: The principal type used to represent the type of Active Directory Administrator.
+     * Get the principalType property: The principal type used to represent the type of Microsoft Entra Administrator.
      * 
      * @return the principalType value.
      */
@@ -47,7 +48,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Set the principalType property: The principal type used to represent the type of Active Directory Administrator.
+     * Set the principalType property: The principal type used to represent the type of Microsoft Entra Administrator.
      * 
      * @param principalType the principalType value to set.
      * @return the AdministratorPropertiesForAdd object itself.
@@ -58,7 +59,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Get the principalName property: Active Directory administrator principal name.
+     * Get the principalName property: Microsoft Entra Administrator principal name.
      * 
      * @return the principalName value.
      */
@@ -67,7 +68,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Set the principalName property: Active Directory administrator principal name.
+     * Set the principalName property: Microsoft Entra Administrator principal name.
      * 
      * @param principalName the principalName value to set.
      * @return the AdministratorPropertiesForAdd object itself.
@@ -78,7 +79,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Get the tenantId property: The tenantId of the Active Directory administrator.
+     * Get the tenantId property: The tenantId of the Microsoft Entra Administrator.
      * 
      * @return the tenantId value.
      */
@@ -87,7 +88,7 @@ public final class AdministratorPropertiesForAdd {
     }
 
     /**
-     * Set the tenantId property: The tenantId of the Active Directory administrator.
+     * Set the tenantId property: The tenantId of the Microsoft Entra Administrator.
      * 
      * @param tenantId the tenantId value to set.
      * @return the AdministratorPropertiesForAdd object itself.
@@ -103,5 +104,49 @@ public final class AdministratorPropertiesForAdd {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
+        jsonWriter.writeStringField("principalName", this.principalName);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorPropertiesForAdd from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorPropertiesForAdd if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdministratorPropertiesForAdd.
+     */
+    public static AdministratorPropertiesForAdd fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorPropertiesForAdd deserializedAdministratorPropertiesForAdd
+                = new AdministratorPropertiesForAdd();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalType".equals(fieldName)) {
+                    deserializedAdministratorPropertiesForAdd.principalType
+                        = PrincipalType.fromString(reader.getString());
+                } else if ("principalName".equals(fieldName)) {
+                    deserializedAdministratorPropertiesForAdd.principalName = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAdministratorPropertiesForAdd.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorPropertiesForAdd;
+        });
     }
 }

@@ -48,7 +48,7 @@ public final class AzPowerShellSetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzPowerShellSetupTypeProperties innerTypeProperties() {
+    AzPowerShellSetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -82,7 +82,6 @@ public final class AzPowerShellSetup extends CustomSetupBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

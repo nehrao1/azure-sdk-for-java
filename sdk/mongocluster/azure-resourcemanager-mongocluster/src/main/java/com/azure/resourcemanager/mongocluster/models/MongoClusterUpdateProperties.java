@@ -18,14 +18,9 @@ import java.util.List;
 @Fluent
 public final class MongoClusterUpdateProperties implements JsonSerializable<MongoClusterUpdateProperties> {
     /*
-     * The administrator's login for the mongo cluster.
+     * The local administrator properties for the mongo cluster.
      */
-    private String administratorLogin;
-
-    /*
-     * The password of the administrator login.
-     */
-    private String administratorLoginPassword;
+    private AdministratorProperties administrator;
 
     /*
      * The Mongo DB server version. Defaults to the latest available version if not specified.
@@ -38,9 +33,49 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The list of node group specs in the cluster.
+     * The high availability properties of the mongo cluster.
      */
-    private List<NodeGroupSpec> nodeGroupSpecs;
+    private HighAvailabilityProperties highAvailability;
+
+    /*
+     * The storage properties of the mongo cluster.
+     */
+    private StorageProperties storage;
+
+    /*
+     * The sharding properties of the mongo cluster.
+     */
+    private ShardingProperties sharding;
+
+    /*
+     * The compute properties of the mongo cluster.
+     */
+    private ComputeProperties compute;
+
+    /*
+     * The backup properties of the mongo cluster.
+     */
+    private BackupProperties backup;
+
+    /*
+     * The Data API properties of the mongo cluster.
+     */
+    private DataApiProperties dataApi;
+
+    /*
+     * List of private endpoint connections.
+     */
+    private List<PreviewFeature> previewFeatures;
+
+    /*
+     * The authentication configuration for the cluster.
+     */
+    private AuthConfigProperties authConfig;
+
+    /*
+     * The encryption configuration for the cluster. Depends on identity being configured.
+     */
+    private EncryptionProperties encryption;
 
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
@@ -49,42 +84,22 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the administratorLogin property: The administrator's login for the mongo cluster.
+     * Get the administrator property: The local administrator properties for the mongo cluster.
      * 
-     * @return the administratorLogin value.
+     * @return the administrator value.
      */
-    public String administratorLogin() {
-        return this.administratorLogin;
+    public AdministratorProperties administrator() {
+        return this.administrator;
     }
 
     /**
-     * Set the administratorLogin property: The administrator's login for the mongo cluster.
+     * Set the administrator property: The local administrator properties for the mongo cluster.
      * 
-     * @param administratorLogin the administratorLogin value to set.
+     * @param administrator the administrator value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
-    public MongoClusterUpdateProperties withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
-        return this;
-    }
-
-    /**
-     * Get the administratorLoginPassword property: The password of the administrator login.
-     * 
-     * @return the administratorLoginPassword value.
-     */
-    public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
-    }
-
-    /**
-     * Set the administratorLoginPassword property: The password of the administrator login.
-     * 
-     * @param administratorLoginPassword the administratorLoginPassword value to set.
-     * @return the MongoClusterUpdateProperties object itself.
-     */
-    public MongoClusterUpdateProperties withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+    public MongoClusterUpdateProperties withAdministrator(AdministratorProperties administrator) {
+        this.administrator = administrator;
         return this;
     }
 
@@ -131,34 +146,183 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the nodeGroupSpecs property: The list of node group specs in the cluster.
+     * Get the highAvailability property: The high availability properties of the mongo cluster.
      * 
-     * @return the nodeGroupSpecs value.
+     * @return the highAvailability value.
      */
-    public List<NodeGroupSpec> nodeGroupSpecs() {
-        return this.nodeGroupSpecs;
+    public HighAvailabilityProperties highAvailability() {
+        return this.highAvailability;
     }
 
     /**
-     * Set the nodeGroupSpecs property: The list of node group specs in the cluster.
+     * Set the highAvailability property: The high availability properties of the mongo cluster.
      * 
-     * @param nodeGroupSpecs the nodeGroupSpecs value to set.
+     * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
-    public MongoClusterUpdateProperties withNodeGroupSpecs(List<NodeGroupSpec> nodeGroupSpecs) {
-        this.nodeGroupSpecs = nodeGroupSpecs;
+    public MongoClusterUpdateProperties withHighAvailability(HighAvailabilityProperties highAvailability) {
+        this.highAvailability = highAvailability;
         return this;
     }
 
     /**
-     * Validates the instance.
+     * Get the storage property: The storage properties of the mongo cluster.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the storage value.
      */
-    public void validate() {
-        if (nodeGroupSpecs() != null) {
-            nodeGroupSpecs().forEach(e -> e.validate());
-        }
+    public StorageProperties storage() {
+        return this.storage;
+    }
+
+    /**
+     * Set the storage property: The storage properties of the mongo cluster.
+     * 
+     * @param storage the storage value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withStorage(StorageProperties storage) {
+        this.storage = storage;
+        return this;
+    }
+
+    /**
+     * Get the sharding property: The sharding properties of the mongo cluster.
+     * 
+     * @return the sharding value.
+     */
+    public ShardingProperties sharding() {
+        return this.sharding;
+    }
+
+    /**
+     * Set the sharding property: The sharding properties of the mongo cluster.
+     * 
+     * @param sharding the sharding value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withSharding(ShardingProperties sharding) {
+        this.sharding = sharding;
+        return this;
+    }
+
+    /**
+     * Get the compute property: The compute properties of the mongo cluster.
+     * 
+     * @return the compute value.
+     */
+    public ComputeProperties compute() {
+        return this.compute;
+    }
+
+    /**
+     * Set the compute property: The compute properties of the mongo cluster.
+     * 
+     * @param compute the compute value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withCompute(ComputeProperties compute) {
+        this.compute = compute;
+        return this;
+    }
+
+    /**
+     * Get the backup property: The backup properties of the mongo cluster.
+     * 
+     * @return the backup value.
+     */
+    public BackupProperties backup() {
+        return this.backup;
+    }
+
+    /**
+     * Set the backup property: The backup properties of the mongo cluster.
+     * 
+     * @param backup the backup value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withBackup(BackupProperties backup) {
+        this.backup = backup;
+        return this;
+    }
+
+    /**
+     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @return the dataApi value.
+     */
+    public DataApiProperties dataApi() {
+        return this.dataApi;
+    }
+
+    /**
+     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @param dataApi the dataApi value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withDataApi(DataApiProperties dataApi) {
+        this.dataApi = dataApi;
+        return this;
+    }
+
+    /**
+     * Get the previewFeatures property: List of private endpoint connections.
+     * 
+     * @return the previewFeatures value.
+     */
+    public List<PreviewFeature> previewFeatures() {
+        return this.previewFeatures;
+    }
+
+    /**
+     * Set the previewFeatures property: List of private endpoint connections.
+     * 
+     * @param previewFeatures the previewFeatures value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
+        this.previewFeatures = previewFeatures;
+        return this;
+    }
+
+    /**
+     * Get the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfigProperties authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withAuthConfig(AuthConfigProperties authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
     /**
@@ -167,13 +331,20 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
-        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeJsonField("administrator", this.administrator);
         jsonWriter.writeStringField("serverVersion", this.serverVersion);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
-        jsonWriter.writeArrayField("nodeGroupSpecs", this.nodeGroupSpecs,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("highAvailability", this.highAvailability);
+        jsonWriter.writeJsonField("storage", this.storage);
+        jsonWriter.writeJsonField("sharding", this.sharding);
+        jsonWriter.writeJsonField("compute", this.compute);
+        jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("dataApi", this.dataApi);
+        jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -192,18 +363,34 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("administratorLogin".equals(fieldName)) {
-                    deserializedMongoClusterUpdateProperties.administratorLogin = reader.getString();
-                } else if ("administratorLoginPassword".equals(fieldName)) {
-                    deserializedMongoClusterUpdateProperties.administratorLoginPassword = reader.getString();
+                if ("administrator".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.administrator = AdministratorProperties.fromJson(reader);
                 } else if ("serverVersion".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.serverVersion = reader.getString();
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
-                } else if ("nodeGroupSpecs".equals(fieldName)) {
-                    List<NodeGroupSpec> nodeGroupSpecs = reader.readArray(reader1 -> NodeGroupSpec.fromJson(reader1));
-                    deserializedMongoClusterUpdateProperties.nodeGroupSpecs = nodeGroupSpecs;
+                } else if ("highAvailability".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.highAvailability
+                        = HighAvailabilityProperties.fromJson(reader);
+                } else if ("storage".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.storage = StorageProperties.fromJson(reader);
+                } else if ("sharding".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.sharding = ShardingProperties.fromJson(reader);
+                } else if ("compute".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.compute = ComputeProperties.fromJson(reader);
+                } else if ("backup".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.backup = BackupProperties.fromJson(reader);
+                } else if ("dataApi".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.dataApi = DataApiProperties.fromJson(reader);
+                } else if ("previewFeatures".equals(fieldName)) {
+                    List<PreviewFeature> previewFeatures
+                        = reader.readArray(reader1 -> PreviewFeature.fromString(reader1.getString()));
+                    deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

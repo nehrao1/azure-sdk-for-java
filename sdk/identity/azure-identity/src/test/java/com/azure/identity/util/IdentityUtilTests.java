@@ -9,14 +9,19 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IdentityUtilTests {
@@ -25,11 +30,10 @@ public class IdentityUtilTests {
     public void testMultiTenantAuthenticationEnabled() {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
-        IdentityClientOptions options = new IdentityClientOptions()
-            .setAdditionallyAllowedTenants(Arrays.asList(newTenant));
+        IdentityClientOptions options
+            = new IdentityClientOptions().setAdditionallyAllowedTenants(Arrays.asList(newTenant));
 
         Assertions.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
@@ -37,8 +41,7 @@ public class IdentityUtilTests {
     @Test
     public void testMultiTenantAuthenticationDisabled() {
         String currentTenant = "tenant";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId("newTenant");
         IdentityClientOptions options = new IdentityClientOptions();
         options.disableMultiTenantAuthentication();
@@ -49,16 +52,9 @@ public class IdentityUtilTests {
 
     @Test
     public void testParseJsonIntoMap() throws IOException {
-        String json = "{\n"
-            + "    \"string\": \"string_value\",\n"
-            + "    \"boolean\": true,\n"
-            + "    \"number\": 1,\n"
-            + "    \"array\": [\"an\",\"array\"],\n"
-            + "    \"object\": {\n"
-            + "        \"a\": \"nested\",\n"
-            + "        \"b\": \"object\"\n"
-            + "    }\n"
-            + "}";
+        String json = "{\n" + "    \"string\": \"string_value\",\n" + "    \"boolean\": true,\n"
+            + "    \"number\": 1,\n" + "    \"array\": [\"an\",\"array\"],\n" + "    \"object\": {\n"
+            + "        \"a\": \"nested\",\n" + "        \"b\": \"object\"\n" + "    }\n" + "}";
         Map<String, String> map = IdentityUtil.parseJsonIntoMap(json);
         assertTrue(map.containsKey("string"));
         assertTrue(map.containsKey("boolean"));
@@ -74,17 +70,11 @@ public class IdentityUtilTests {
 
     @Test
     public void testGetAccessToken() throws IOException {
-        String json = "{\n"
-            + "  \"token_type\": \"fake_token_type\",\n"
-            + "  \"scope\": \"fake_scope\",\n"
-            + "  \"expires_in\": 4986,\n"
-            + "  \"ext_expires_in\": 4986,\n"
-            + "  \"access_token\": \"fake_access_token\",\n"
-            + "  \"refresh_token\": \"fake_refresh_token\",\n"
-            + "  \"foci\": \"1\",\n"
-            + "  \"id_token\": \"fake_id_token\",\n"
-            + "  \"client_info\": \"fake_client_info\",\n"
-            + "}";
+        String json = "{\n" + "  \"token_type\": \"fake_token_type\",\n" + "  \"scope\": \"fake_scope\",\n"
+            + "  \"expires_in\": 4986,\n" + "  \"ext_expires_in\": 4986,\n"
+            + "  \"access_token\": \"fake_access_token\",\n" + "  \"refresh_token\": \"fake_refresh_token\",\n"
+            + "  \"foci\": \"1\",\n" + "  \"id_token\": \"fake_id_token\",\n"
+            + "  \"client_info\": \"fake_client_info\",\n" + "}";
         String result = IdentityUtil.getAccessToken(json);
         assertEquals("fake_access_token", result);
     }
@@ -93,8 +83,7 @@ public class IdentityUtilTests {
     public void testAdditionallyAllowedTenants() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
         options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
@@ -107,8 +96,7 @@ public class IdentityUtilTests {
     public void testAdditionallyAllowedTenantsCaseInsensitive() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
         options.setAdditionallyAllowedTenants(Arrays.asList("newtenant"));
@@ -121,8 +109,7 @@ public class IdentityUtilTests {
     public void testAlienTenantWithAdditionallyAllowedTenants() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
         options.setAdditionallyAllowedTenants(Arrays.asList("tenant"));
@@ -135,8 +122,7 @@ public class IdentityUtilTests {
     public void testAlienTenantWithAdditionallyAllowedNotConfigured() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
 
@@ -149,11 +135,10 @@ public class IdentityUtilTests {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "newTenant;oldTenant";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
 
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
 
         IdentityClientOptions options = new IdentityClientOptions()
@@ -169,11 +154,10 @@ public class IdentityUtilTests {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "*;randomTenant";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
 
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
 
         IdentityClientOptions options = new IdentityClientOptions()
@@ -189,10 +173,9 @@ public class IdentityUtilTests {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "randomTenant";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
-        TokenRequestContext trc = new TokenRequestContext()
-            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+        TokenRequestContext trc = new TokenRequestContext().setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
 
         IdentityClientOptions options = new IdentityClientOptions()
@@ -202,5 +185,56 @@ public class IdentityUtilTests {
             () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
-}
+    @Test
+    public void testShouldProbeImdsWhenChainedAndImdsAndNotConfiguredForDacReturnsTrue() {
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setChained(true);
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
 
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertTrue(result);
+        }
+    }
+
+    @Test
+    public void testShouldProbeImdsWhenConfiguredForDacReturnsFalse() {
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential"));
+
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setConfiguration(configuration);
+        options.setChained(true);
+
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertFalse(result);
+        }
+    }
+
+    @Test
+    public void testShouldProbeImdsWhenAllConditionsFalseReturnsFalse() {
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "Managedidentitycredential"));
+
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setConfiguration(configuration);
+        options.setChained(false);
+
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.APP_SERVICE);
+
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertFalse(result);
+        }
+    }
+
+}

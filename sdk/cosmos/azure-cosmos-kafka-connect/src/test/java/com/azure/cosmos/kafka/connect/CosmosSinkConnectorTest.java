@@ -3,21 +3,31 @@
 
 package com.azure.cosmos.kafka.connect;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
 import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
+import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -57,7 +68,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         ConfigDef configDef = sinkConnector.config();
         Map<String, ConfigDef.ConfigKey> configs = configDef.configKeys();
-        List<KafkaCosmosConfigEntry<?>> allValidConfigs = CosmosSinkConnectorTest.SinkConfigs.ALL_VALID_CONFIGS;
+        List<KafkaCosmosConfigEntry<?>> allValidConfigs = SinkConfigs.ALL_VALID_CONFIGS;
 
         for (KafkaCosmosConfigEntry<?> sinkConfigEntry : allValidConfigs) {
             System.out.println(sinkConfigEntry.getName());
@@ -114,6 +125,95 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
+    @Test(groups = "kafka-emulator")
+    public void taskConfigsForClientMetadataCachesSnapshot() {
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
+        String connectorName = "test";
+        KafkaCosmosReflectionUtils.setConnectorName(sinkConnector, connectorName);
+
+        String throughputControlContainerName = "throughputControl-" + UUID.randomUUID();
+        // create throughput control container
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .key(KafkaCosmosTestConfigurations.MASTER_KEY)
+                .endpoint(KafkaCosmosTestConfigurations.HOST)
+                .buildAsyncClient();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(throughputControlContainerName, "/groupId");
+            client.getDatabase(databaseName).createContainerIfNotExists(containerProperties).block();
+
+            Map<String, String> sinkConfigMap = new HashMap<>();
+            sinkConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+            sinkConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+            sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+            String topicMap =
+                String.join(
+                    ",",
+                    Arrays.asList(
+                        singlePartitionContainerName + "#" + singlePartitionContainerName,
+                        multiPartitionContainerName + "#" + multiPartitionContainerName));
+            sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicMap);
+            sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+            sinkConfigMap.put("azure.cosmos.throughputControl.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+            sinkConfigMap.put("azure.cosmos.throughputControl.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+            sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "throughputControl-metadataCachesSnapshot");
+            sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(400));
+            sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", databaseName);
+            sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+            sinkConnector.start(sinkConfigMap);
+
+            int maxTask = 2;
+            List<Map<String, String>> taskConfigs = sinkConnector.taskConfigs(maxTask);
+            assertThat(taskConfigs.size()).isEqualTo(maxTask);
+            validateTaskConfigsTaskId(taskConfigs, connectorName);
+
+            for (Map<String, String> taskConfig : taskConfigs) {
+                assertThat(taskConfig.get("azure.cosmos.account.endpoint")).isEqualTo(KafkaCosmosTestConfigurations.HOST);
+                assertThat(taskConfig.get("azure.cosmos.account.key")).isEqualTo(KafkaCosmosTestConfigurations.MASTER_KEY);
+                assertThat(taskConfig.get("azure.cosmos.sink.database.name")).isEqualTo(databaseName);
+                assertThat(taskConfig.get("azure.cosmos.sink.containers.topicMap")).isEqualTo(topicMap);
+
+                // validate the client metadata cache snapshot is also populated in the task configs
+                List<Pair<String, String>> metadataCachesPairList = new ArrayList<>();
+                metadataCachesPairList.add(
+                    Pair.of("azure.cosmos.client.metadata.caches.snapshot", singlePartitionContainerName));
+                metadataCachesPairList.add(
+                    Pair.of("azure.cosmos.client.metadata.caches.snapshot", multiPartitionContainerName));
+                metadataCachesPairList.add(
+                    Pair.of("azure.cosmos.throughputControl.client.metadata.caches.snapshot", throughputControlContainerName));
+
+                for (Pair<String, String> metadataCachesPair : metadataCachesPairList) {
+                    CosmosClientMetadataCachesSnapshot clientMetadataCachesSnapshot =
+                        KafkaCosmosUtils.getCosmosClientMetadataFromString(taskConfig.get(metadataCachesPair.getLeft()));
+                    assertThat(clientMetadataCachesSnapshot).isNotNull();
+                    AsyncCache<String, DocumentCollection> collectionInfoCache = clientMetadataCachesSnapshot.getCollectionInfoByNameCache();
+
+                    AtomicInteger invokedCount = new AtomicInteger(0);
+                    String cacheKey = String.format("dbs/%s/colls/%s", databaseName, metadataCachesPair.getRight());
+                    collectionInfoCache.getAsync(cacheKey, null, () -> {
+                        invokedCount.incrementAndGet();
+                        return Mono.just(new DocumentCollection());
+                    }).block();
+
+                    assertThat(invokedCount.get()).isEqualTo(0);
+                }
+            }
+        } finally {
+            if (client != null) {
+                client.getDatabase(databaseName)
+                    .getContainer(throughputControlContainerName)
+                    .delete()
+                    .onErrorResume(throwable -> {
+                        logger.warn("Failed to delete container {}", throughputControlContainerName, throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+
+                client.close();
+            }
+        }
+    }
+
     @Test(groups = "unit")
     public void misFormattedConfig() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
@@ -146,6 +246,31 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "unit" })
+    public void sinkConfigWithAuthEndpointOverride() {
+        String tenantId = "tenantId";
+        String clientId = "clientId";
+        String clientSecret = "clientSecret";
+        String authEndpoint = "https://login.example.com/";
+
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+        sinkConfigMap.put("azure.cosmos.account.tenantId", tenantId);
+        sinkConfigMap.put("azure.cosmos.auth.aad.clientId", clientId);
+        sinkConfigMap.put("azure.cosmos.auth.aad.clientSecret", clientSecret);
+        sinkConfigMap.put("azure.cosmos.auth.aad.authEndpointOverride", authEndpoint);
+
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
+        assertThat(sinkConfig.getAccountConfig()).isNotNull();
+        assertThat(sinkConfig.getAccountConfig().getCosmosAuthConfig()).isInstanceOf(CosmosAadAuthConfig.class);
+        CosmosAadAuthConfig cosmosAadAuthConfig = (CosmosAadAuthConfig) sinkConfig.getAccountConfig()
+                .getCosmosAuthConfig();
+        assertThat(cosmosAadAuthConfig.getTenantId()).isEqualTo(tenantId);
+        assertThat(cosmosAadAuthConfig.getClientId()).isEqualTo(clientId);
+        assertThat(cosmosAadAuthConfig.getClientSecret()).isEqualTo(clientSecret);
+        assertThat(cosmosAadAuthConfig.getAuthEndpoint()).isEqualTo(authEndpoint);
+    }
+
+    @Test(groups = { "unit" })
     public void sinkConfigWithThroughputControl() {
         String throughputControlGroupName = "test";
         int targetThroughput= 6;
@@ -153,15 +278,15 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         String throughputControlDatabaseName = "throughputControlDatabase";
         String throughputControlContainerName = "throughputControlContainer";
 
-        Map<String, String> sourceConfigMap = this.getValidSinkConfig();
-        sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
-        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
-        sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sourceConfigMap);
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
@@ -295,6 +420,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.authEndpointOverride", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),

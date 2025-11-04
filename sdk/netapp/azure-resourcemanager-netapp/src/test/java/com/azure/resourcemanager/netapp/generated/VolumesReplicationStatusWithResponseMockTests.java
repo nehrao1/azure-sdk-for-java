@@ -6,11 +6,10 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 import java.nio.charset.StandardCharsets;
@@ -23,24 +22,23 @@ public final class VolumesReplicationStatusWithResponseMockTests {
     @Test
     public void testReplicationStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"zsdbccxjmon\",\"errorMessage\":\"gnwncypuuwwlt\"}";
+            = "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"igorqjbttzhragl\",\"errorMessage\":\"fhonqjujeickpzvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicationStatus response = manager.volumes()
-            .replicationStatusWithResponse("reljeamur", "zmlovuanash", "xlpm", "erbdk",
+            .replicationStatusWithResponse("zkzobgopxlhslnel", "ieixynllxe", "wcrojphslhcaw", "u",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, response.relationshipStatus());
-        Assertions.assertEquals(MirrorState.MIRRORED, response.mirrorState());
-        Assertions.assertEquals("zsdbccxjmon", response.totalProgress());
-        Assertions.assertEquals("gnwncypuuwwlt", response.errorMessage());
+        Assertions.assertTrue(response.healthy());
+        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, response.relationshipStatus());
+        Assertions.assertEquals("igorqjbttzhragl", response.totalProgress());
+        Assertions.assertEquals("fhonqjujeickpzvc", response.errorMessage());
     }
 }

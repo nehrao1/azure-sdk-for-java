@@ -6,61 +6,52 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ElasticSansListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"zpyqsemwab\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":6262179068899223005,\"extendedCapacitySizeTiB\":4936822045800298371,\"totalVolumeSizeGiB\":854866866416651839,\"volumeGroupCount\":6111204244847646570,\"totalIops\":6033840789921327792,\"totalMBps\":2247461655033792564,\"totalSizeTiB\":1945497697988409229,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"wwtppj\"]},\"id\":\"cxogaokonzm\",\"name\":\"sikvmkqzeqqkdlt\",\"type\":\"zxmhhvhgu\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"kwobdagxtibq\",\"tags\":{\"ogqxndlkzgxhuri\":\"xwak\",\"ebxmubyynt\":\"lbpodxunk\"},\"id\":\"lrb\",\"name\":\"tkoievseotgq\",\"type\":\"l\"}]}";
+            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"vaolpsslqlf\",\"mdnbbglzpswiy\"],\"provisioningState\":\"Deleted\",\"baseSizeTiB\":6855898880348717340,\"extendedCapacitySizeTiB\":2986988161676305406,\"totalVolumeSizeGiB\":3868778507667885775,\"volumeGroupCount\":5645412032437353957,\"totalIops\":5470431238820396350,\"totalMBps\":6861155578766594130,\"totalSizeTiB\":4489175795860033731,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"zbn\"]},\"id\":\"lylpstdb\",\"name\":\"hxsrzdzucersc\",\"type\":\"ntnev\"},{\"properties\":{\"provisioningState\":\"Restoring\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gtdsslswt\",\"weriofzpyqsem\",\"abnetshh\"]},\"id\":\"h\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"pp\",\"flcxoga\"]},\"id\":\"onz\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"tibqdxbxwakb\",\"gqxndlkzgxhuripl\",\"podxunkb\",\"bxmubyynt\"]},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}],\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":3347544403521690336,\"increaseCapacityUnitByTiB\":2140041182301879771,\"capacityUnitScaleUpLimitTiB\":2676034725139393325,\"autoScalePolicyEnforcement\":\"Disabled\"}}},\"location\":\"u\",\"tags\":{\"morppxebmnzbtbh\":\"vpbttd\"},\"id\":\"pglkf\",\"name\":\"ohdneuel\",\"type\":\"phsdyhto\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticSan> response = manager.elasticSans().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kwobdagxtibq", response.iterator().next().location());
-        Assertions.assertEquals("xwak", response.iterator().next().tags().get("ogqxndlkzgxhuri"));
+        Assertions.assertEquals("u", response.iterator().next().location());
+        Assertions.assertEquals("vpbttd", response.iterator().next().tags().get("morppxebmnzbtbh"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals("zpyqsemwab", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(6262179068899223005L, response.iterator().next().baseSizeTiB());
-        Assertions.assertEquals(4936822045800298371L, response.iterator().next().extendedCapacitySizeTiB());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("vaolpsslqlf", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(6855898880348717340L, response.iterator().next().baseSizeTiB());
+        Assertions.assertEquals(2986988161676305406L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals(3347544403521690336L,
+            response.iterator().next().autoScaleProperties().scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(2140041182301879771L,
+            response.iterator().next().autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
+        Assertions.assertEquals(2676034725139393325L,
+            response.iterator().next().autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
+        Assertions.assertEquals(AutoScalePolicyEnforcement.DISABLED,
+            response.iterator().next().autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
     }
 }

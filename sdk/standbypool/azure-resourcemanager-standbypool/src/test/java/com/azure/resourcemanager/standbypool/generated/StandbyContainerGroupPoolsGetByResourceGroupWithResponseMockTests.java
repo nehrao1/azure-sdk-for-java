@@ -6,8 +6,8 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.standbypool.StandbyPoolManager;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
@@ -22,27 +22,28 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupWithResponseMockT
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":2005682789733735628,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"fuaxbe\",\"revision\":1834993457183141824},\"subnetIds\":[{\"id\":\"ktwh\"},{\"id\":\"dxwzywqsmbsurexi\"},{\"id\":\"o\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"fsfksymddyst\",\"tags\":{\"yudxorrqnbp\":\"uxh\",\"vkd\":\"czvyifq\",\"d\":\"jsllrmv\"},\"id\":\"watkpnpulexxb\",\"name\":\"zwtruwiqzbqjvsov\",\"type\":\"yokacspkw\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":8537222250971960818,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"wbavxbniwdj\",\"revision\":2198924095068889531},\"subnetIds\":[{\"id\":\"bpg\"},{\"id\":\"xytxhpzxbz\"},{\"id\":\"fzab\"}]},\"zones\":[\"uhxwtctyqiklbbov\"],\"provisioningState\":\"Canceled\"},\"location\":\"bhvgy\",\"tags\":{\"ss\":\"osvmk\",\"gmgsxnkjzkde\":\"qukkfp\",\"yighxpk\":\"lpvlopw\",\"baumnyqupedeoj\":\"wzbaiue\"},\"id\":\"a\",\"name\":\"ckhsmtxpsieb\",\"type\":\"fhvpesaps\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StandbyPoolManager manager = StandbyPoolManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StandbyContainerGroupPoolResource response = manager.standbyContainerGroupPools()
-            .getByResourceGroupWithResponse("atuokthfuiu", "odsfcpkvxodpuozm", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("walm", "zyoxaepdkzjan", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fsfksymddyst", response.location());
-        Assertions.assertEquals("uxh", response.tags().get("yudxorrqnbp"));
-        Assertions.assertEquals(2005682789733735628L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("bhvgy", response.location());
+        Assertions.assertEquals("osvmk", response.tags().get("ss"));
+        Assertions.assertEquals(8537222250971960818L, response.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, response.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("fuaxbe",
+        Assertions.assertEquals("wbavxbniwdj",
             response.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(1834993457183141824L,
+        Assertions.assertEquals(2198924095068889531L,
             response.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("ktwh", response.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("bpg", response.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("uhxwtctyqiklbbov", response.properties().zones().get(0));
     }
 }

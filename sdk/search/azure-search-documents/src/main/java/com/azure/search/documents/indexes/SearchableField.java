@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -18,7 +19,7 @@ import java.lang.annotation.Target;
  * An annotation that directs {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions)} to turn the
  * field or method into a searchable {@link SearchField field}.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SearchableField {
     /**
@@ -41,6 +42,13 @@ public @interface SearchableField {
      * @return A flag indicating if the field or method should generate as a facetable {@link SearchField field}.
      */
     boolean isFacetable() default false;
+
+    /**
+     * Indicates if the field or method should be used as a permission filter {@link SearchField field}.
+     *
+     * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
+     */
+    String permissionFilter() default "";
 
     /**
      * Indicates if the field or method should generate as a sortable {@link SearchField field}.
@@ -88,6 +96,14 @@ public @interface SearchableField {
     String indexAnalyzerName() default "";
 
     /**
+     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
+     *
+     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
+     * {@link SearchField field}.
+     */
+    String normalizerName() default "";
+
+    /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.
      * <p>
      * Assigning a synonym map to a field ensures that query terms targeting that field are expanded at query-time using
@@ -97,7 +113,7 @@ public @interface SearchableField {
      *
      * @return The {@link SynonymMap} names that will be associated with the {@link SearchField field}.
      */
-    String[] synonymMapNames() default {};
+    String[] synonymMapNames() default { };
 
     /**
      * The dimensionality of the vector field.

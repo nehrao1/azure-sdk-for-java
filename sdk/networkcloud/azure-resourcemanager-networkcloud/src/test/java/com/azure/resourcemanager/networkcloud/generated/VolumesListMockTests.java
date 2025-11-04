@@ -6,66 +6,37 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.Volume;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VolumesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"etag\":\"jgquxweysland\",\"extendedLocation\":{\"name\":\"dcdjhunh\",\"type\":\"hcgawn\"},\"properties\":{\"attachedTo\":[\"quox\",\"otire\",\"mseobfsxstcyilbv\",\"m\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"zlquzexo\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"bjvbzinzab\",\"sizeMiB\":6852976663989653349},\"location\":\"gl\",\"tags\":{\"cehaqi\":\"lpgidn\"},\"id\":\"oyzlt\",\"name\":\"iomqoqpepiaea\",\"type\":\"fsergdtpeqnacy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"ggrunozfvualjt\",\"type\":\"oivsdwsngkrf\"},\"properties\":{\"attachedTo\":[\"cjvakmh\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"a\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"i\",\"sizeMiB\":5907895514067975579},\"location\":\"x\",\"tags\":{\"pfzsclefyrl\":\"ynuqqkotauratnic\",\"ggnbbuypwovvvsfl\":\"tndqlmf\",\"xrlzhpziha\":\"evnoqayrehjuqwva\",\"fonfdbgm\":\"enqqzlxnqzu\"},\"id\":\"fwmjcwtewfhxwy\",\"name\":\"kbrehzlrynjp\",\"type\":\"ha\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Volume> response = manager.volumes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("x", response.iterator().next().location());
-        Assertions.assertEquals("ynuqqkotauratnic", response.iterator().next().tags().get("pfzsclefyrl"));
-        Assertions.assertEquals("ggrunozfvualjt", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("oivsdwsngkrf", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(5907895514067975579L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("gl", response.iterator().next().location());
+        Assertions.assertEquals("lpgidn", response.iterator().next().tags().get("cehaqi"));
+        Assertions.assertEquals("dcdjhunh", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("hcgawn", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(6852976663989653349L, response.iterator().next().sizeMiB());
     }
 }

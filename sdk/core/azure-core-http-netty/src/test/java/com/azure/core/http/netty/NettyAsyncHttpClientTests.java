@@ -235,10 +235,11 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
-            .parallel()
+            .parallel((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0))
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long"))
-            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
+            .flatMap(ignored -> doRequest(client, "/long"), true, 1, 1)
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close),
+                true, 1, 1);
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             assertArraysEqual(LONG_BODY, response);
@@ -251,24 +252,21 @@ public class NettyAsyncHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
-        try {
-            List<Callable<Void>> requests = new ArrayList<>(numRequests);
-            for (int i = 0; i < numRequests; i++) {
-                requests.add(() -> {
-                    try (HttpResponse response = doRequestSync(client, "/long")) {
-                        byte[] body = response.getBodyAsBinaryData().toBytes();
-                        assertArraysEqual(LONG_BODY, body);
-                        return null;
-                    }
-                });
-            }
-
-            pool.invokeAll(requests);
-        } finally {
-            pool.shutdown();
-            assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
         }
+
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
     /**

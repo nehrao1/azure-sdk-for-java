@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,39 +21,45 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
     /*
      * The number of items received.
      */
+    @Generated
     private Integer itemsReceived;
 
     /*
      * The number of items accepted.
      */
+    @Generated
     private Integer itemsAccepted;
 
     /*
      * An array of error detail objects.
      */
+    @Generated
     private List<TelemetryErrorDetails> errors;
 
     /**
      * Creates an instance of ExportResult class.
      */
+    @Generated
     public ExportResult() {
     }
 
     /**
      * Get the itemsReceived property: The number of items received.
-     *
+     * 
      * @return the itemsReceived value.
      */
+    @Generated
     public Integer getItemsReceived() {
         return this.itemsReceived;
     }
 
     /**
      * Set the itemsReceived property: The number of items received.
-     *
+     * 
      * @param itemsReceived the itemsReceived value to set.
      * @return the ExportResult object itself.
      */
+    @Generated
     public ExportResult setItemsReceived(Integer itemsReceived) {
         this.itemsReceived = itemsReceived;
         return this;
@@ -60,19 +67,21 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Get the itemsAccepted property: The number of items accepted.
-     *
+     * 
      * @return the itemsAccepted value.
      */
+    @Generated
     public Integer getItemsAccepted() {
         return this.itemsAccepted;
     }
 
     /**
      * Set the itemsAccepted property: The number of items accepted.
-     *
+     * 
      * @param itemsAccepted the itemsAccepted value to set.
      * @return the ExportResult object itself.
      */
+    @Generated
     public ExportResult setItemsAccepted(Integer itemsAccepted) {
         this.itemsAccepted = itemsAccepted;
         return this;
@@ -80,19 +89,21 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Get the errors property: An array of error detail objects.
-     *
+     * 
      * @return the errors value.
      */
+    @Generated
     public List<TelemetryErrorDetails> getErrors() {
         return this.errors;
     }
 
     /**
      * Set the errors property: An array of error detail objects.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the ExportResult object itself.
      */
+    @Generated
     public ExportResult setErrors(List<TelemetryErrorDetails> errors) {
         this.errors = errors;
         return this;
@@ -101,6 +112,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,12 +124,13 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Reads an instance of ExportResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExportResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExportResult.
      */
+    @Generated
     public static ExportResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExportResult deserializedExportResult = new ExportResult();

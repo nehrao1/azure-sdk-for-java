@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.RegionInfoResource;
@@ -22,21 +22,21 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"g\",\"isAvailable\":true},{\"availabilityZone\":\"xslhvnhlabrqnkk\",\"isAvailable\":true},{\"availabilityZone\":\"b\",\"isAvailable\":true}]},\"id\":\"ehvvib\",\"name\":\"xjjs\",\"type\":\"oqbeitpkxzt\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"kkjqnvbroylaxxu\",\"isAvailable\":true},{\"availabilityZone\":\"sdosfjbjsvgjr\",\"isAvailable\":false},{\"availabilityZone\":\"vyc\",\"isAvailable\":false}]},\"id\":\"lxgccknfnwmbtm\",\"name\":\"pdvjdhttzaefedx\",\"type\":\"hchrphkmcrjdqn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionInfoResource response = manager.netAppResourceRegionInfos()
-            .getWithResponse("seypxiutcxapz", com.azure.core.util.Context.NONE)
+            .getWithResponse("zvytnrzvuljraaer", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("g", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, response.storageToNetworkProximity());
+        Assertions.assertEquals("kkjqnvbroylaxxu", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

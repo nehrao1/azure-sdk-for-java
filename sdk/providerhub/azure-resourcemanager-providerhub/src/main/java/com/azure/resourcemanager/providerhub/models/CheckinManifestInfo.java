@@ -6,39 +6,41 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.resourcemanager.providerhub.fluent.models.CheckinManifestInfoInner;
 
-/** An immutable client-side representation of CheckinManifestInfo. */
+/**
+ * An immutable client-side representation of CheckinManifestInfo.
+ */
 public interface CheckinManifestInfo {
     /**
-     * Gets the isCheckedIn property: The isCheckedIn property.
-     *
+     * Gets the isCheckedIn property: Whether the manifest is checked in.
+     * 
      * @return the isCheckedIn value.
      */
     boolean isCheckedIn();
 
     /**
-     * Gets the statusMessage property: The statusMessage property.
-     *
+     * Gets the statusMessage property: The status message.
+     * 
      * @return the statusMessage value.
      */
     String statusMessage();
 
     /**
-     * Gets the pullRequest property: The pullRequest property.
-     *
+     * Gets the pullRequest property: The pull request.
+     * 
      * @return the pullRequest value.
      */
     String pullRequest();
 
     /**
-     * Gets the commitId property: The commitId property.
-     *
+     * Gets the commitId property: The commit id.
+     * 
      * @return the commitId value.
      */
     String commitId();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.CheckinManifestInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckinManifestInfoInner innerModel();

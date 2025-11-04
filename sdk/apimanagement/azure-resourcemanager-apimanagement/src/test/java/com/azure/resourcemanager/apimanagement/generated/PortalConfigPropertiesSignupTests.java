@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalConfigPropertiesSignupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalConfigPropertiesSignup model =
-            BinaryData
-                .fromString("{\"termsOfService\":{\"text\":\"euu\",\"requireConsent\":true}}")
+        PortalConfigPropertiesSignup model
+            = BinaryData.fromString("{\"termsOfService\":{\"text\":\"dn\",\"requireConsent\":true}}")
                 .toObject(PortalConfigPropertiesSignup.class);
-        Assertions.assertEquals("euu", model.termsOfService().text());
-        Assertions.assertEquals(true, model.termsOfService().requireConsent());
+        Assertions.assertEquals("dn", model.termsOfService().text());
+        Assertions.assertTrue(model.termsOfService().requireConsent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalConfigPropertiesSignup model =
-            new PortalConfigPropertiesSignup()
-                .withTermsOfService(
-                    new PortalConfigTermsOfServiceProperties().withText("euu").withRequireConsent(true));
+        PortalConfigPropertiesSignup model = new PortalConfigPropertiesSignup()
+            .withTermsOfService(new PortalConfigTermsOfServiceProperties().withText("dn").withRequireConsent(true));
         model = BinaryData.fromObject(model).toObject(PortalConfigPropertiesSignup.class);
-        Assertions.assertEquals("euu", model.termsOfService().text());
-        Assertions.assertEquals(true, model.termsOfService().requireConsent());
+        Assertions.assertEquals("dn", model.termsOfService().text());
+        Assertions.assertTrue(model.termsOfService().requireConsent());
     }
 }

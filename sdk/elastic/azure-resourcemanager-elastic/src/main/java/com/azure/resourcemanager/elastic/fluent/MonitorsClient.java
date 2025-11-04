@@ -14,11 +14,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elastic.fluent.models.ElasticMonitorResourceInner;
 import com.azure.resourcemanager.elastic.models.ElasticMonitorResourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public interface MonitorsClient {
     /**
-     * List all monitors under the specified subscription.
-     *
+     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
+     * setup.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
@@ -27,8 +30,9 @@ public interface MonitorsClient {
     PagedIterable<ElasticMonitorResourceInner> list();
 
     /**
-     * List all monitors under the specified subscription.
-     *
+     * List all Elastic monitor resources within a specified subscription, helping you audit and manage your monitoring
+     * setup.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,9 +43,10 @@ public interface MonitorsClient {
     PagedIterable<ElasticMonitorResourceInner> list(Context context);
 
     /**
-     * List all monitors under the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
+     * manage your monitoring setup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -51,9 +56,10 @@ public interface MonitorsClient {
     PagedIterable<ElasticMonitorResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all monitors under the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and
+     * manage your monitoring setup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,37 +70,40 @@ public interface MonitorsClient {
     PagedIterable<ElasticMonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource along with {@link Response}.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ElasticMonitorResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<ElasticMonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Get detailed properties of a specific Elastic monitor resource, helping you manage observability and performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return detailed properties of a specific Elastic monitor resource, helping you manage observability and
+     * performance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticMonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
-     * Create a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
+     * Azure resources through Elastic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,13 +111,14 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName);
+    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+        beginCreate(String resourceGroupName, String monitorName);
 
     /**
-     * Create a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
+     * Azure resources through Elastic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
@@ -118,13 +128,14 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName, ElasticMonitorResourceInner body, Context context);
+    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+        beginCreate(String resourceGroupName, String monitorName, ElasticMonitorResourceInner body, Context context);
 
     /**
-     * Create a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
+     * Azure resources through Elastic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,9 +146,10 @@ public interface MonitorsClient {
     ElasticMonitorResourceInner create(String resourceGroupName, String monitorName);
 
     /**
-     * Create a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Create a new Elastic monitor resource in your Azure subscription, enabling observability and monitoring of your
+     * Azure resources through Elastic.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic monitor resource model.
      * @param context The context to associate with this operation.
@@ -147,29 +159,46 @@ public interface MonitorsClient {
      * @return monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticMonitorResourceInner create(
-        String resourceGroupName, String monitorName, ElasticMonitorResourceInner body, Context context);
+    ElasticMonitorResourceInner create(String resourceGroupName, String monitorName, ElasticMonitorResourceInner body,
+        Context context);
 
     /**
-     * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
+     * performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of monitor resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+        beginUpdate(String resourceGroupName, String monitorName);
+
+    /**
+     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
+     * performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic resource model update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitor resource along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of monitor resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ElasticMonitorResourceInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginUpdate(
         String resourceGroupName, String monitorName, ElasticMonitorResourceUpdateParameters body, Context context);
 
     /**
-     * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
+     * performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,9 +209,27 @@ public interface MonitorsClient {
     ElasticMonitorResourceInner update(String resourceGroupName, String monitorName);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Update an existing Elastic monitor resource in your Azure subscription, ensuring optimal observability and
+     * performance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body Elastic resource model update parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitor resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ElasticMonitorResourceInner update(String resourceGroupName, String monitorName,
+        ElasticMonitorResourceUpdateParameters body, Context context);
+
+    /**
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -193,9 +240,10 @@ public interface MonitorsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,9 +255,10 @@ public interface MonitorsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,9 +268,10 @@ public interface MonitorsClient {
     void delete(String resourceGroupName, String monitorName);
 
     /**
-     * Delete a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,6 +5,8 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,31 +26,37 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     /*
      * Unique document classifier name.
      */
+    @Generated
     private final String classifierId;
 
     /*
      * Document classifier description.
      */
+    @Generated
     private String description;
 
     /*
      * Date and time (UTC) when the document classifier was created.
      */
+    @Generated
     private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the document classifier will expire.
      */
+    @Generated
     private OffsetDateTime expirationDateTime;
 
     /*
      * API version used to create this document classifier.
      */
+    @Generated
     private final String apiVersion;
 
     /*
      * List of document types to classify against.
      */
+    @Generated
     private final Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /**
@@ -59,6 +67,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * @param apiVersion the apiVersion value to set.
      * @param docTypes the docTypes value to set.
      */
+    @Generated
     public DocumentClassifierDetails(String classifierId, OffsetDateTime createdDateTime, String apiVersion,
         Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.classifierId = classifierId;
@@ -72,6 +81,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the classifierId value.
      */
+    @Generated
     public String getClassifierId() {
         return this.classifierId;
     }
@@ -81,6 +91,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -91,6 +102,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * @param description the description value to set.
      * @return the DocumentClassifierDetails object itself.
      */
+    @Generated
     public DocumentClassifierDetails setDescription(String description) {
         this.description = description;
         return this;
@@ -101,6 +113,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -110,6 +123,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the expirationDateTime value.
      */
+    @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
     }
@@ -120,6 +134,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the DocumentClassifierDetails object itself.
      */
+    @Generated
     public DocumentClassifierDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
         return this;
@@ -130,6 +145,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public String getApiVersion() {
         return this.apiVersion;
     }
@@ -139,10 +155,15 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * 
      * @return the docTypes value.
      */
+    @Generated
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -152,8 +173,10 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +189,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentClassifierDetails.
      */
+    @Generated
     public static DocumentClassifierDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean classifierIdFound = false;
@@ -186,8 +210,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                     classifierId = reader.getString();
                     classifierIdFound = true;
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     createdDateTimeFound = true;
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
@@ -198,8 +222,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

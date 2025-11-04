@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,36 +22,47 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "BlobEventsTrigger";
 
     /*
-     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
+     * will only fire the trigger for blobs in the december folder under the records container. At least one of these
+     * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
+    @Generated
     private String blobPathBeginsWith;
 
     /*
-     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will only
+     * fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
+     * blobPathBeginsWith, blobPathEndsWith.
      */
+    @Generated
     private String blobPathEndsWith;
 
     /*
      * If set to true, blobs with zero bytes will be ignored.
      */
+    @Generated
     private Boolean ignoreEmptyBlobs;
 
     /*
      * The type of events that cause this trigger to fire.
      */
+    @Generated
     private List<BlobEventType> events;
 
     /*
      * The ARM resource ID of the Storage Account.
      */
+    @Generated
     private String scope;
 
     /**
      * Creates an instance of BlobEventsTrigger class.
      */
+    @Generated
     public BlobEventsTrigger() {
     }
 
@@ -59,6 +71,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -71,6 +84,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the blobPathBeginsWith value.
      */
+    @Generated
     public String getBlobPathBeginsWith() {
         return this.blobPathBeginsWith;
     }
@@ -83,6 +97,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @param blobPathBeginsWith the blobPathBeginsWith value to set.
      * @return the BlobEventsTrigger object itself.
      */
+    @Generated
     public BlobEventsTrigger setBlobPathBeginsWith(String blobPathBeginsWith) {
         this.blobPathBeginsWith = blobPathBeginsWith;
         return this;
@@ -95,6 +110,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the blobPathEndsWith value.
      */
+    @Generated
     public String getBlobPathEndsWith() {
         return this.blobPathEndsWith;
     }
@@ -107,6 +123,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @param blobPathEndsWith the blobPathEndsWith value to set.
      * @return the BlobEventsTrigger object itself.
      */
+    @Generated
     public BlobEventsTrigger setBlobPathEndsWith(String blobPathEndsWith) {
         this.blobPathEndsWith = blobPathEndsWith;
         return this;
@@ -117,6 +134,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the ignoreEmptyBlobs value.
      */
+    @Generated
     public Boolean isIgnoreEmptyBlobs() {
         return this.ignoreEmptyBlobs;
     }
@@ -127,6 +145,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @param ignoreEmptyBlobs the ignoreEmptyBlobs value to set.
      * @return the BlobEventsTrigger object itself.
      */
+    @Generated
     public BlobEventsTrigger setIgnoreEmptyBlobs(Boolean ignoreEmptyBlobs) {
         this.ignoreEmptyBlobs = ignoreEmptyBlobs;
         return this;
@@ -137,6 +156,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the events value.
      */
+    @Generated
     public List<BlobEventType> getEvents() {
         return this.events;
     }
@@ -147,6 +167,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @param events the events value to set.
      * @return the BlobEventsTrigger object itself.
      */
+    @Generated
     public BlobEventsTrigger setEvents(List<BlobEventType> events) {
         this.events = events;
         return this;
@@ -157,6 +178,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -167,6 +189,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @param scope the scope value to set.
      * @return the BlobEventsTrigger object itself.
      */
+    @Generated
     public BlobEventsTrigger setScope(String scope) {
         this.scope = scope;
         return this;
@@ -175,6 +198,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
@@ -184,6 +208,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobEventsTrigger setDescription(String description) {
         super.setDescription(description);
@@ -193,6 +218,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobEventsTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -202,6 +228,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -240,6 +267,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BlobEventsTrigger.
      */
+    @Generated
     public static BlobEventsTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BlobEventsTrigger deserializedBlobEventsTrigger = new BlobEventsTrigger();

@@ -13,31 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"a\",\"description\":\"twieopexelxqdwr\",\"recipients\":{\"emails\":[\"ljpibkgxyxyauxre\",\"do\"],\"users\":[\"n\"]}}")
-                .toObject(NotificationContractProperties.class);
-        Assertions.assertEquals("a", model.title());
-        Assertions.assertEquals("twieopexelxqdwr", model.description());
-        Assertions.assertEquals("ljpibkgxyxyauxre", model.recipients().emails().get(0));
-        Assertions.assertEquals("n", model.recipients().users().get(0));
+        NotificationContractProperties model = BinaryData.fromString(
+            "{\"title\":\"vecvzts\",\"description\":\"gmusaictdscnkzzo\",\"recipients\":{\"emails\":[\"d\",\"lze\",\"ozrehlbzqixbnjrq\"],\"users\":[\"u\",\"xozony\",\"pam\"]}}")
+            .toObject(NotificationContractProperties.class);
+        Assertions.assertEquals("vecvzts", model.title());
+        Assertions.assertEquals("gmusaictdscnkzzo", model.description());
+        Assertions.assertEquals("d", model.recipients().emails().get(0));
+        Assertions.assertEquals("u", model.recipients().users().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationContractProperties model =
-            new NotificationContractProperties()
-                .withTitle("a")
-                .withDescription("twieopexelxqdwr")
-                .withRecipients(
-                    new RecipientsContractProperties()
-                        .withEmails(Arrays.asList("ljpibkgxyxyauxre", "do"))
-                        .withUsers(Arrays.asList("n")));
+        NotificationContractProperties model = new NotificationContractProperties().withTitle("vecvzts")
+            .withDescription("gmusaictdscnkzzo")
+            .withRecipients(new RecipientsContractProperties().withEmails(Arrays.asList("d", "lze", "ozrehlbzqixbnjrq"))
+                .withUsers(Arrays.asList("u", "xozony", "pam")));
         model = BinaryData.fromObject(model).toObject(NotificationContractProperties.class);
-        Assertions.assertEquals("a", model.title());
-        Assertions.assertEquals("twieopexelxqdwr", model.description());
-        Assertions.assertEquals("ljpibkgxyxyauxre", model.recipients().emails().get(0));
-        Assertions.assertEquals("n", model.recipients().users().get(0));
+        Assertions.assertEquals("vecvzts", model.title());
+        Assertions.assertEquals("gmusaictdscnkzzo", model.description());
+        Assertions.assertEquals("d", model.recipients().emails().get(0));
+        Assertions.assertEquals("u", model.recipients().users().get(0));
     }
 }

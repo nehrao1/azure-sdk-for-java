@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntimeNode;
@@ -20,17 +20,17 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"nodeName\":\"fxjpgjaynofwyzpn\",\"machineName\":\"pgwriyxyelzm\",\"hostServiceUri\":\"harucpkpm\",\"status\":\"Limited\",\"capabilities\":{\"gxhjbapflluyhivl\":\"obkfutohkrq\",\"rkgtlrmmmsaujx\":\"wipobtbtlmp\",\"hxmwf\":\"ogtwxgswu\",\"txju\":\"ehryordinfwnlif\"},\"versionStatus\":\"ddtubzekfb\",\"version\":\"tyxmel\",\"registerTime\":\"2021-09-13T01:16:21Z\",\"lastConnectTime\":\"2021-09-11T15:49:12Z\",\"expiryTime\":\"2021-04-16T17:13:53Z\",\"lastStartTime\":\"2021-01-01T01:52:32Z\",\"lastStopTime\":\"2021-09-19T14:31:43Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-09-29T21:30:47Z\",\"lastEndUpdateTime\":\"2021-02-26T07:53:48Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1124062533,\"maxConcurrentJobs\":916889299,\"\":{\"jslk\":\"dataeqruoan\",\"qsxecejlyhuyhqqq\":\"dataawocsetkrtexji\",\"dmyemvyijvvb\":\"datacdzmh\"}}";
+            = "{\"nodeName\":\"upygnlfyddyy\",\"machineName\":\"dlhytckp\",\"hostServiceUri\":\"jzrdgnlsnmzlsg\",\"status\":\"Online\",\"capabilities\":{\"mz\":\"yovwuhvpipaafvt\",\"hox\":\"rdplhwip\",\"wcdczml\":\"eyixbrsjgrjt\",\"itcg\":\"zcikhcpdohvw\"},\"versionStatus\":\"uuubtfxjpgjaynof\",\"version\":\"zpnta\",\"registerTime\":\"2021-11-11T04:13:26Z\",\"lastConnectTime\":\"2021-07-18T00:56:37Z\",\"expiryTime\":\"2021-04-06T06:43:32Z\",\"lastStartTime\":\"2021-01-09T03:35:46Z\",\"lastStopTime\":\"2021-07-20T18:10:55Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-03-29T14:22:50Z\",\"lastEndUpdateTime\":\"2021-10-01T06:03Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":146666343,\"maxConcurrentJobs\":1978005827,\"futohkrqbgx\":\"datannwob\",\"vlswipobt\":\"datajbapflluyh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .getWithResponse("brsjgrjtlw", "dcz", "lbzcikhcpd", "hvwyitcgybuuu", com.azure.core.util.Context.NONE)
+            .getWithResponse("xwkjhzgmvzfpv", "eofvzeih", "ubdjdiqsu", "kyvr", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

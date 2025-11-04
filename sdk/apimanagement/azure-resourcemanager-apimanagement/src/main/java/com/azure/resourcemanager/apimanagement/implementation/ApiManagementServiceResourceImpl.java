@@ -19,7 +19,11 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuPro
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceUpdateParameters;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.LegacyPortalStatus;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
@@ -31,10 +35,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class ApiManagementServiceResourceImpl
-    implements ApiManagementServiceResource,
-        ApiManagementServiceResource.Definition,
-        ApiManagementServiceResource.Update {
+public final class ApiManagementServiceResourceImpl implements ApiManagementServiceResource,
+    ApiManagementServiceResource.Definition, ApiManagementServiceResource.Update {
     private ApiManagementServiceResourceInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -172,6 +174,10 @@ public final class ApiManagementServiceResourceImpl
         return this.innerModel().publicNetworkAccess();
     }
 
+    public ConfigurationApi configurationApi() {
+        return this.innerModel().configurationApi();
+    }
+
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
         return this.innerModel().virtualNetworkConfiguration();
     }
@@ -249,6 +255,14 @@ public final class ApiManagementServiceResourceImpl
         return this.innerModel().platformVersion();
     }
 
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.innerModel().legacyPortalStatus();
+    }
+
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.innerModel().developerPortalStatus();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -281,25 +295,21 @@ public final class ApiManagementServiceResourceImpl
     }
 
     public ApiManagementServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .createOrUpdate(resourceGroupName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .createOrUpdate(resourceGroupName, serviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ApiManagementServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .createOrUpdate(resourceGroupName, serviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .createOrUpdate(resourceGroupName, serviceName, this.innerModel(), context);
         return this;
     }
 
-    ApiManagementServiceResourceImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    ApiManagementServiceResourceImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new ApiManagementServiceResourceInner();
         this.serviceManager = serviceManager;
         this.serviceName = name;
@@ -311,49 +321,40 @@ public final class ApiManagementServiceResourceImpl
     }
 
     public ApiManagementServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .update(resourceGroupName, serviceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .update(resourceGroupName, serviceName, updateParameters, Context.NONE);
         return this;
     }
 
     public ApiManagementServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .update(resourceGroupName, serviceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .update(resourceGroupName, serviceName, updateParameters, context);
         return this;
     }
 
-    ApiManagementServiceResourceImpl(
-        ApiManagementServiceResourceInner innerObject,
+    ApiManagementServiceResourceImpl(ApiManagementServiceResourceInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
     }
 
     public ApiManagementServiceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiManagementServiceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiManagementServices()
-                .getByResourceGroupWithResponse(resourceGroupName, serviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiManagementServices()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceName, context)
+            .getValue();
         return this;
     }
 
@@ -361,8 +362,8 @@ public final class ApiManagementServiceResourceImpl
         return serviceManager.apiManagementServices().backup(resourceGroupName, serviceName, parameters);
     }
 
-    public ApiManagementServiceResource backup(
-        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
+    public ApiManagementServiceResource backup(ApiManagementServiceBackupRestoreParameters parameters,
+        Context context) {
         return serviceManager.apiManagementServices().backup(resourceGroupName, serviceName, parameters, context);
     }
 
@@ -370,8 +371,9 @@ public final class ApiManagementServiceResourceImpl
         return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName);
     }
 
-    public ApiManagementServiceResource migrateToStv2(Context context) {
-        return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName, context);
+    public ApiManagementServiceResource migrateToStv2(MigrateToStv2Contract parameters, Context context) {
+        return serviceManager.apiManagementServices()
+            .migrateToStv2(resourceGroupName, serviceName, parameters, context);
     }
 
     public Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(Context context) {
@@ -388,8 +390,7 @@ public final class ApiManagementServiceResourceImpl
 
     public ApiManagementServiceResource applyNetworkConfigurationUpdates(
         ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
-        return serviceManager
-            .apiManagementServices()
+        return serviceManager.apiManagementServices()
             .applyNetworkConfigurationUpdates(resourceGroupName, serviceName, parameters, context);
     }
 
@@ -473,8 +474,8 @@ public final class ApiManagementServiceResourceImpl
         }
     }
 
-    public ApiManagementServiceResourceImpl withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceResourceImpl
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withHostnameConfigurations(hostnameConfigurations);
             return this;
@@ -504,8 +505,18 @@ public final class ApiManagementServiceResourceImpl
         }
     }
 
-    public ApiManagementServiceResourceImpl withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceResourceImpl withConfigurationApi(ConfigurationApi configurationApi) {
+        if (isInCreateMode()) {
+            this.innerModel().withConfigurationApi(configurationApi);
+            return this;
+        } else {
+            this.updateParameters.withConfigurationApi(configurationApi);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         if (isInCreateMode()) {
             this.innerModel().withVirtualNetworkConfiguration(virtualNetworkConfiguration);
             return this;
@@ -605,13 +616,33 @@ public final class ApiManagementServiceResourceImpl
         }
     }
 
-    public ApiManagementServiceResourceImpl withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceResourceImpl
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         if (isInCreateMode()) {
             this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
             return this;
         } else {
             this.updateParameters.withPrivateEndpointConnections(privateEndpointConnections);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        if (isInCreateMode()) {
+            this.innerModel().withLegacyPortalStatus(legacyPortalStatus);
+            return this;
+        } else {
+            this.updateParameters.withLegacyPortalStatus(legacyPortalStatus);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeveloperPortalStatus(developerPortalStatus);
+            return this;
+        } else {
+            this.updateParameters.withDeveloperPortalStatus(developerPortalStatus);
             return this;
         }
     }

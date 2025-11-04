@@ -7,15 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -24,6 +20,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
@@ -35,14 +32,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTestBase {
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
-    protected static final boolean IS_MANAGED_HSM_DEPLOYED =
-        Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-administration.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+    protected static final boolean IS_MANAGED_HSM_DEPLOYED
+        = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     static final String DISPLAY_NAME = "{displayName}";
 
     @Override
@@ -70,8 +74,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
             credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new CustomMatcher()
-                .setComparingBodies(false)
+            customMatchers.add(new CustomMatcher().setComparingBodies(false)
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
                 .setExcludedHeaders(Arrays.asList("Authorization", "Accept-Language")));
             interceptorManager.addMatchers(customMatchers);
@@ -80,7 +83,8 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
+        policies.add(
+            new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION, Configuration.getGlobalConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
@@ -92,20 +96,19 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (interceptorManager.isRecordMode() && !forCleanup) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+        final String endpoint = interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT");
 
         Objects.requireNonNull(endpoint);
@@ -119,6 +122,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
      * @return A stream of {@link HttpClient HTTP clients} to test.
      */
     static Stream<Arguments> createHttpClients() {
-        return TestBase.getHttpClients().map(Arguments::of);
+        return TestProxyTestBase.getHttpClients().map(Arguments::of);
     }
 }

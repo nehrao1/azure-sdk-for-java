@@ -7,8 +7,8 @@ package com.azure.resourcemanager.standbypool.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.standbypool.StandbyPoolManager;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
@@ -23,25 +23,26 @@ public final class StandbyVirtualMachinePoolsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":4492808256673380449},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"axcfjpgddtocjjx\",\"provisioningState\":\"Canceled\"},\"location\":\"o\",\"tags\":{\"xibqeojnx\":\"hd\",\"dntwndeicbtw\":\"bzv\",\"cffcyddglmj\":\"pzaoqvuhr\",\"wpyeicxmqciwqvh\":\"hjq\"},\"id\":\"hix\",\"name\":\"igdtopbob\",\"type\":\"og\"}]}";
+            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":1895207882840842396,\"minReadyCapacity\":2222190240805338362},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"m\",\"provisioningState\":\"Failed\"},\"location\":\"shxmzsbbzoggigrx\",\"tags\":{\"jnspydp\":\"rvjx\"},\"id\":\"koen\",\"name\":\"ou\",\"type\":\"nvudwtiukb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StandbyPoolManager manager = StandbyPoolManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StandbyVirtualMachinePoolResource> response = manager.standbyVirtualMachinePools()
-            .listByResourceGroup("bkbfkgukdkex", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("vleggzfbuhfmvfax", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().location());
-        Assertions.assertEquals("hd", response.iterator().next().tags().get("xibqeojnx"));
-        Assertions.assertEquals(4492808256673380449L,
+        Assertions.assertEquals("shxmzsbbzoggigrx", response.iterator().next().location());
+        Assertions.assertEquals("rvjx", response.iterator().next().tags().get("jnspydp"));
+        Assertions.assertEquals(1895207882840842396L,
             response.iterator().next().properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals(2222190240805338362L,
+            response.iterator().next().properties().elasticityProfile().minReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.RUNNING,
             response.iterator().next().properties().virtualMachineState());
-        Assertions.assertEquals("axcfjpgddtocjjx",
-            response.iterator().next().properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("m", response.iterator().next().properties().attachedVirtualMachineScaleSetId());
     }
 }

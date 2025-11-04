@@ -22,28 +22,35 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.providerhub.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.providerhub.fluent.models.CheckinManifestInfoInner;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManifestInner;
 import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ProviderHubImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,41 +59,50 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ProviderHubResourceP")
+    @ServiceInterface(name = "ProviderHubResourceProviders")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/generateManifest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateManifest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceProviderManifestInner>> generateManifest(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceProviderManifestInner>> generateManifest(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/checkinManifest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateManifest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckinManifestInfoInner>> checkinManifest(
-            @HostParam("$host") String endpoint,
+        Response<ResourceProviderManifestInner> generateManifestSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/checkinManifest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CheckinManifestInfoInner>> checkinManifest(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckinManifestParams checkinManifestParams,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/checkinManifest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CheckinManifestInfoInner> checkinManifestSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckinManifestParams checkinManifestParams,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -96,16 +112,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceProviderManifestInner>> generateManifestWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -113,63 +125,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateManifest(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.generateManifest(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Generates the manifest for the given provider.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceProviderManifestInner>> generateManifestWithResponseAsync(
-        String providerNamespace, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .generateManifest(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,7 +146,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,14 +155,30 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceProviderManifestInner> generateManifestWithResponse(
-        String providerNamespace, Context context) {
-        return generateManifestWithResponseAsync(providerNamespace, context).block();
+    public Response<ResourceProviderManifestInner> generateManifestWithResponse(String providerNamespace,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.generateManifestSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,7 +192,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,19 +201,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -248,72 +223,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkinManifest(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            checkinManifestParams,
-                            accept,
-                            context))
+            .withContext(context -> service.checkinManifest(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), checkinManifestParams, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checkin the manifest.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (checkinManifestParams == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter checkinManifestParams is required and cannot be null."));
-        } else {
-            checkinManifestParams.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .checkinManifest(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                checkinManifestParams,
-                accept,
-                context);
-    }
-
-    /**
-     * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,15 +239,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckinManifestInfoInner> checkinManifestAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    private Mono<CheckinManifestInfoInner> checkinManifestAsync(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         return checkinManifestWithResponseAsync(providerNamespace, checkinManifestParams)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @param context The context to associate with this operation.
@@ -340,14 +257,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckinManifestInfoInner> checkinManifestWithResponse(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context) {
-        return checkinManifestWithResponseAsync(providerNamespace, checkinManifestParams, context).block();
+    public Response<CheckinManifestInfoInner> checkinManifestWithResponse(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (checkinManifestParams == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter checkinManifestParams is required and cannot be null."));
+        } else {
+            checkinManifestParams.validate();
+        }
+        final String accept = "application/json";
+        return service.checkinManifestSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, this.client.getApiVersion(), checkinManifestParams, accept, context);
     }
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,8 +295,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckinManifestInfoInner checkinManifest(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    public CheckinManifestInfoInner checkinManifest(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         return checkinManifestWithResponse(providerNamespace, checkinManifestParams, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersClientImpl.class);
 }

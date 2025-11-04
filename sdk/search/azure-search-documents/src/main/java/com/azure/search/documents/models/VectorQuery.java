@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     /*
      * The kind of vector query being performed.
      */
+    @Generated
     private VectorQueryKind kind = VectorQueryKind.fromString("VectorQuery");
 
     /*
      * Number of nearest neighbors to return as top hits.
      */
+    @Generated
     private Integer kNearestNeighborsCount;
 
     /*
      * Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
      */
+    @Generated
     private String fields;
 
     /*
      * When true, triggers an exhaustive k-nearest neighbor search across all vectors within the vector index. Useful
      * for scenarios where exact matches are critical, such as determining ground truth values.
      */
+    @Generated
     private Boolean exhaustive;
 
     /*
@@ -44,6 +49,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted when a
      * compression method is used on the underlying vector field.
      */
+    @Generated
     private Double oversampling;
 
     /*
@@ -53,11 +59,34 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * documents that matched that query will be in the final ranking. Default is 1.0 and the value needs to be a
      * positive number larger than zero.
      */
+    @Generated
     private Float weight;
+
+    /*
+     * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
+     */
+    @Generated
+    private VectorThreshold threshold;
+
+    /*
+     * The OData filter expression to apply to this specific vector query. If no filter expression is defined at the
+     * vector level, the expression defined in the top level filter parameter is used instead.
+     */
+    @Generated
+    private String filterOverride;
+
+    /*
+     * Controls how many vectors can be matched from each document in a vector search query. Setting it to 1 ensures at
+     * most one vector per document is matched, guaranteeing results come from distinct documents. Setting it to 0
+     * (unlimited) allows multiple relevant vectors from the same document to be matched. Default is 0.
+     */
+    @Generated
+    private Integer perDocumentVectorLimit;
 
     /**
      * Creates an instance of VectorQuery class.
      */
+    @Generated
     public VectorQuery() {
     }
 
@@ -66,6 +95,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the kind value.
      */
+    @Generated
     public VectorQueryKind getKind() {
         return this.kind;
     }
@@ -75,6 +105,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the kNearestNeighborsCount value.
      */
+    @Generated
     public Integer getKNearestNeighborsCount() {
         return this.kNearestNeighborsCount;
     }
@@ -85,6 +116,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param kNearestNeighborsCount the kNearestNeighborsCount value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         this.kNearestNeighborsCount = kNearestNeighborsCount;
         return this;
@@ -95,6 +127,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the fields value.
      */
+    @Generated
     public String getFields() {
         return this.fields;
     }
@@ -105,6 +138,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param fields the fields value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setFields(String... fields) {
         this.fields = (fields == null) ? null : String.join(",", fields);
         return this;
@@ -117,6 +151,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the exhaustive value.
      */
+    @Generated
     public Boolean isExhaustive() {
         return this.exhaustive;
     }
@@ -129,6 +164,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param exhaustive the exhaustive value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setExhaustive(Boolean exhaustive) {
         this.exhaustive = exhaustive;
         return this;
@@ -141,6 +177,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the oversampling value.
      */
+    @Generated
     public Double getOversampling() {
         return this.oversampling;
     }
@@ -153,6 +190,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param oversampling the oversampling value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setOversampling(Double oversampling) {
         this.oversampling = oversampling;
         return this;
@@ -167,6 +205,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the weight value.
      */
+    @Generated
     public Float getWeight() {
         return this.weight;
     }
@@ -181,14 +220,94 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param weight the weight value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setWeight(Float weight) {
         this.weight = weight;
         return this;
     }
 
     /**
+     * Get the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @return the threshold value.
+     */
+    @Generated
+    public VectorThreshold getThreshold() {
+        return this.threshold;
+    }
+
+    /**
+     * Set the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @param threshold the threshold value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setThreshold(VectorThreshold threshold) {
+        this.threshold = threshold;
+        return this;
+    }
+
+    /**
+     * Get the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
+     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
+     * instead.
+     *
+     * @return the filterOverride value.
+     */
+    @Generated
+    public String getFilterOverride() {
+        return this.filterOverride;
+    }
+
+    /**
+     * Set the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
+     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
+     * instead.
+     *
+     * @param filterOverride the filterOverride value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setFilterOverride(String filterOverride) {
+        this.filterOverride = filterOverride;
+        return this;
+    }
+
+    /**
+     * Get the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @return the perDocumentVectorLimit value.
+     */
+    @Generated
+    public Integer getPerDocumentVectorLimit() {
+        return this.perDocumentVectorLimit;
+    }
+
+    /**
+     * Set the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @param perDocumentVectorLimit the perDocumentVectorLimit value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        this.perDocumentVectorLimit = perDocumentVectorLimit;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,6 +317,9 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
         jsonWriter.writeNumberField("oversampling", this.oversampling);
         jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeJsonField("threshold", this.threshold);
+        jsonWriter.writeStringField("filterOverride", this.filterOverride);
+        jsonWriter.writeNumberField("perDocumentVectorLimit", this.perDocumentVectorLimit);
         return jsonWriter.writeEndObject();
     }
 
@@ -209,6 +331,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorQuery.
      */
+    @Generated
     public static VectorQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -228,6 +351,10 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("text".equals(discriminatorValue)) {
                     return VectorizableTextQuery.fromJson(readerToUse.reset());
+                } else if ("imageUrl".equals(discriminatorValue)) {
+                    return VectorizableImageUrlQuery.fromJson(readerToUse.reset());
+                } else if ("imageBinary".equals(discriminatorValue)) {
+                    return VectorizableImageBinaryQuery.fromJson(readerToUse.reset());
                 } else if ("vector".equals(discriminatorValue)) {
                     return VectorizedQuery.fromJson(readerToUse.reset());
                 } else {
@@ -237,6 +364,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         });
     }
 
+    @Generated
     static VectorQuery fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorQuery deserializedVectorQuery = new VectorQuery();
@@ -255,6 +383,12 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
+                } else if ("filterOverride".equals(fieldName)) {
+                    deserializedVectorQuery.filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    deserializedVectorQuery.perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

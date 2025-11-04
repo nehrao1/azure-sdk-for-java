@@ -3,52 +3,38 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /**
  * The MediaStreamingStarted model.
  */
 @Fluent
 public final class MediaStreamingStarted extends CallAutomationEventBase {
-    /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     */
-    private ResultInformation resultInformation;
 
     /*
-     * Defines the result for MediaStreamingUpdate with the current status and the details about the status
+     * Defines the result for MediaStreamingUpdateResult with the current status and the details about the status
      */
-    private MediaStreamingUpdate mediaStreamingUpdateResult;
+    private MediaStreamingUpdateResult mediaStreamingUpdateResult;
 
     /**
      * Creates an instance of MediaStreamingStarted class.
      */
     public MediaStreamingStarted() {
-        resultInformation = null;
         mediaStreamingUpdateResult = null;
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-     /**
-     * Get the mediaStreamingUpdateResult property: Defines the result for audio streaming update with the current status
-     * and the details about the status.
-     *
-     * @return the mediaStreamingUpdateResult value.
-     */
-    public MediaStreamingUpdate getMediaStreamingUpdateResult() {
+    * Get the mediaStreamingUpdateResult property: Defines the result for audio streaming update with the current status
+    * and the details about the status.
+    *
+    * @return the mediaStreamingUpdateResult value.
+    */
+    public MediaStreamingUpdateResult getMediaStreamingUpdateResult() {
         return this.mediaStreamingUpdateResult;
     }
 
@@ -58,7 +44,6 @@ public final class MediaStreamingStarted extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         jsonWriter.writeJsonField("mediaStreamingUpdate", mediaStreamingUpdateResult);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
@@ -78,10 +63,8 @@ public final class MediaStreamingStarted extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("mediaStreamingUpdate".equals(fieldName)) {
-                    event.mediaStreamingUpdateResult = MediaStreamingUpdate.fromJson(reader);
+                if ("mediaStreamingUpdate".equals(fieldName)) {
+                    event.mediaStreamingUpdateResult = MediaStreamingUpdateResult.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
