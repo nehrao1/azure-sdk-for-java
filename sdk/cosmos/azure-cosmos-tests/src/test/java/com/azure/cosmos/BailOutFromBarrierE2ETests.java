@@ -17,9 +17,17 @@ import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseInterceptorUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -28,11 +36,14 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -379,6 +390,131 @@ public class BailOutFromBarrierE2ETests extends TestSuiteBase {
         } finally {
             safeClose(targetClient);
         }
+    }
+
+    @Test(groups = {"multi-region-strong"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void validateReadRequestBailOutWhenHitWithRUBasedThrottle() {
+
+        CosmosAsyncClient targetClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .buildAsyncClient();
+
+        ConsistencyLevel effectiveConsistencyLevel
+            = cosmosAsyncClientAccessor.getEffectiveConsistencyLevel(targetClient, operationTypeForWhichBarrierFlowIsTriggered, null);
+
+        ConnectionMode connectionModeOfClientUnderTest
+            = ConnectionMode.valueOf(
+            cosmosAsyncClientAccessor.getConnectionMode(
+                targetClient).toUpperCase());
+
+        if (!shouldTestExecutionHappen(
+            effectiveConsistencyLevel,
+            OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered) ? ConsistencyLevel.STRONG : ConsistencyLevel.BOUNDED_STALENESS,
+            consistencyLevelApplicableForTest,
+            connectionModeOfClientUnderTest)) {
+
+            safeClose(targetClient);
+
+            throw new SkipException("Skipping test for arguments: " +
+                " OperationType: " + operationTypeForWhichBarrierFlowIsTriggered +
+                " ConsistencyLevel: " + effectiveConsistencyLevel +
+                " ConnectionMode: " + connectionModeOfClientUnderTest +
+                " DesiredConsistencyLevel: " + consistencyLevelApplicableForTest);
+        }
+
+        String serverGoneRuleId = "serverErrorRule-serverGone-" + UUID.randomUUID();
+        FaultInjectionRule serverGoneErrorRule =
+            new FaultInjectionRuleBuilder(serverGoneRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        String tooManyRequestsRuleId = "serverErrorRule-tooManyRequests-" + UUID.randomUUID();
+        FaultInjectionRule serverTooManyRequestsErrorRule =
+            new FaultInjectionRuleBuilder(tooManyRequestsRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .region(this.preferredRegions.get(0))
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                        .build()
+                )
+                .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverTooManyRequestsErrorRule)).block();
+
+    }
+
+    @Test(groups = {"multi-region-strong"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void validateBarrierOnReadRequestBailOutWhenHitWithRUBasedThrottle() {
+
+        CosmosAsyncClient targetClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .buildAsyncClient();
+
+        ConsistencyLevel effectiveConsistencyLevel
+            = cosmosAsyncClientAccessor.getEffectiveConsistencyLevel(targetClient, operationTypeForWhichBarrierFlowIsTriggered, null);
+
+        ConnectionMode connectionModeOfClientUnderTest
+            = ConnectionMode.valueOf(
+            cosmosAsyncClientAccessor.getConnectionMode(
+                targetClient).toUpperCase());
+
+        if (!shouldTestExecutionHappen(
+            effectiveConsistencyLevel,
+            OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered) ? ConsistencyLevel.STRONG : ConsistencyLevel.BOUNDED_STALENESS,
+            consistencyLevelApplicableForTest,
+            connectionModeOfClientUnderTest)) {
+
+            safeClose(targetClient);
+
+            throw new SkipException("Skipping test for arguments: " +
+                " OperationType: " + operationTypeForWhichBarrierFlowIsTriggered +
+                " ConsistencyLevel: " + effectiveConsistencyLevel +
+                " ConnectionMode: " + connectionModeOfClientUnderTest +
+                " DesiredConsistencyLevel: " + consistencyLevelApplicableForTest);
+        }
+
+        CosmosInterceptorHelper.registerTransportClientInterceptor(targetClient, (request, storeResponse) -> {
+            if (OperationType.Read.equals(request.getOperationType())) {
+                long lsn = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN);
+            }
+
+            return storeResponse;
+        });
+
+
+        String tooManyRequestsRuleId = "serverErrorRule-tooManyRequests-" + UUID.randomUUID();
+        FaultInjectionRule serverTooManyRequestsErrorRule =
+            new FaultInjectionRuleBuilder(tooManyRequestsRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.HEAD_COLLECTION)
+                        .region(this.preferredRegions.get(0))
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                        .build()
+                )
+                .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverTooManyRequestsErrorRule)).block();
     }
 
     private void validateContactedRegions(CosmosDiagnostics diagnostics, int expectedRegionsContactedCount) {
