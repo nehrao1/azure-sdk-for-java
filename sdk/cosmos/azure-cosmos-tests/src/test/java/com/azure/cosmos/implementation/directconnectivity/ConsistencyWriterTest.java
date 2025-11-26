@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -21,11 +22,13 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.rx.TestSuiteBase;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
@@ -46,6 +49,7 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTI
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 public class ConsistencyWriterTest {
     private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
@@ -76,6 +80,19 @@ public class ConsistencyWriterTest {
             { null, Mockito.mock(StoreResponse.class), }
         };
     }
+
+    /*@Test(groups = "unit")
+    public void ConsistencyWriter_BarrierRetriesExhaustedWith429_Throws408Async() {
+        int barrierRequestCount = 0;
+
+        sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        transportClient = Mockito.mock(TransportClient.class);
+        when(transportClient.invokeStoreAsync(
+                Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class))
+            .thenAnswer(i -> i.getArguments()[0]));
+    }*/
 
     @Test(groups = "unit", dataProvider = "exceptionArgProvider")
     public void exception(Exception ex, Class<Exception> klass, int expectedStatusCode, Integer expectedSubStatusCode) {
